@@ -1,7 +1,40 @@
 #!/bin/bash
 # Script for setting up 4 minecraft servers using papermc and screen
 
-test 
+echo "Installing papermc and screen..."
+
+	sudo apt install openjdk-11-jre
+	sudo apt install screen
+
+
+echo "Scanning for already existing directorys..."
+
+if [ -d "$server0" ]; then
+	echo "Directory server0 already exists! exiting..."
+	exit
+fi
+
+if [ -d "$server1" ]; then
+	echo "Directory server1 already exists! exiting..."
+	exit
+fi
+
+if [ -d "$server2" ]; then
+	echo "Directory server2 already exists! exiting..."
+	exit
+fi
+
+if [ -d "$server3" ]; then
+	echo "Directory server3 already exists! exiting..."
+	exit
+fi
+
+if [ -d "$backups" ]; then
+	echo "Directory backups already exists! exiting..."
+	exit
+fi
+
+echo "Setting up directorys..."
 
 mkdir server0
 	cd server0
@@ -37,4 +70,8 @@ mkdir server3
 	cd
 
 mkdir backups
+	cd backups
+		wget -0 backup.sh https://github.com/simylein/Minecraft_Server/blob/master/backup.sh
+	cd
 
+echo "done"
