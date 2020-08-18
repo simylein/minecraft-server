@@ -17,6 +17,7 @@ date +"%Y-%m-%d"
 
 var=$(date +"%FORMAT_STRING")
 now=$(date +"%m_%d_%Y")
+
 printf "%s\n" $now
 today=$(date +"%Y-%m-%d")
 
