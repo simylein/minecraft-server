@@ -30,22 +30,22 @@ if [ -d "$server3" ]; then
 fi
 
 if [ -d "$backup0" ]; then
-	echo "Directory backups already exists! exiting..."
+	echo "Directory backup0 already exists! exiting..."
 	exit 1
 fi
 
 if [ -d "$backup1" ]; then
-	echo "Directory backups already exists! exiting..."
+	echo "Directory backup1 already exists! exiting..."
 	exit 1
 fi
 
 if [ -d "$backup2" ]; then
-	echo "Directory backups already exists! exiting..."
+	echo "Directory backup2 already exists! exiting..."
 	exit 1
 fi
 
 if [ -d "$backup3" ]; then
-	echo "Directory backups already exists! exiting..."
+	echo "Directory backup3 already exists! exiting..."
 	exit 1
 fi
 
@@ -53,7 +53,7 @@ echo "Setting up directorys..."
 
 mkdir server0
 	cd server0
-		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
@@ -63,7 +63,7 @@ mkdir server0
 
 mkdir server1
 	cd server1
-		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
@@ -72,7 +72,7 @@ mkdir server1
 
 mkdir server2
 	cd server2
-		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
@@ -81,7 +81,7 @@ mkdir server2
 		
 mkdir server3
 	cd server3
-		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
