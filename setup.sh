@@ -38,40 +38,40 @@ echo "Setting up directorys..."
 
 mkdir server0
 	cd server0
-		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
+		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
 	cd
 		
 
 mkdir server1
 	cd server1
-		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
+		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
 	cd
 
 mkdir server2
 	cd server2
-		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
+		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
 	cd
 		
 mkdir server3
 	cd server3
-		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
+		wget -0 https://papermc.io/api/v1/paper/1.16.1/latest/download paperclip.jar
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
 	cd
 
 mkdir backups
 	cd backups
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 
 echo "done"
