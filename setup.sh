@@ -29,7 +29,22 @@ if [ -d "$server3" ]; then
 	exit 1
 fi
 
-if [ -d "$backups" ]; then
+if [ -d "$backup0" ]; then
+	echo "Directory backups already exists! exiting..."
+	exit 1
+fi
+
+if [ -d "$backup1" ]; then
+	echo "Directory backups already exists! exiting..."
+	exit 1
+fi
+
+if [ -d "$backup2" ]; then
+	echo "Directory backups already exists! exiting..."
+	exit 1
+fi
+
+if [ -d "$backup3" ]; then
 	echo "Directory backups already exists! exiting..."
 	exit 1
 fi
@@ -42,6 +57,7 @@ mkdir server0
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 		
 
@@ -51,6 +67,7 @@ mkdir server1
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 
 mkdir server2
@@ -59,6 +76,7 @@ mkdir server2
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 		
 mkdir server3
@@ -67,11 +85,16 @@ mkdir server3
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
-	cd
-
-mkdir backups
-	cd backups
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
+
+mkdir backup0
+
+mkdir backup0
+
+mkdir backup0
+
+mkdir backup0
+
 
 echo "done"
