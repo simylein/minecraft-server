@@ -11,27 +11,27 @@ echo "Scanning for already existing directorys..."
 
 if [ -d "$server0" ]; then
 	echo "Directory server0 already exists! exiting..."
-	exit
+	exit 1
 fi
 
 if [ -d "$server1" ]; then
 	echo "Directory server1 already exists! exiting..."
-	exit
+	exit 1
 fi
 
 if [ -d "$server2" ]; then
 	echo "Directory server2 already exists! exiting..."
-	exit
+	exit 1
 fi
 
 if [ -d "$server3" ]; then
 	echo "Directory server3 already exists! exiting..."
-	exit
+	exit 1
 fi
 
 if [ -d "$backups" ]; then
 	echo "Directory backups already exists! exiting..."
-	exit
+	exit 1
 fi
 
 echo "Setting up directorys..."
