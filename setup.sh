@@ -90,11 +90,11 @@ mkdir server3
 
 mkdir backup0
 
-mkdir backup0
+mkdir backup1
 
-mkdir backup0
+mkdir backup2
 
-mkdir backup0
+mkdir backup3
 
 
 echo "done"
