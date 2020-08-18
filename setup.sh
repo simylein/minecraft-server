@@ -1,5 +1,5 @@
 #!/bin/bash
-#Script for setting up 4 minecraft servers using papermc and screen
+# Script for setting up 4 minecraft servers using papermc and screen
 
 test 
 
@@ -35,3 +35,6 @@ mkdir server3
 		wget -0 restart.sh https://github.com/simylein/Minecraft_Server/blob/master/restart.sh
 		wget -0 stop.sh https://github.com/simylein/Minecraft_Server/blob/master/stop.sh
 	cd
+
+mkdir backups
+
