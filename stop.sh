@@ -1,10 +1,14 @@
 #!/bin/sh
-# Minecraft Server Stop Script
+
+# Minecraft Server stop script
+
 if ! screen -list | grep -q "minecraft"; then
         echo "Server is not currently running!"
         exit 1
 fi
+
 echo "Initiating Stopping Sequenze for Minecraft Server"
+
 echo "Server is stopping in 30 seconds!"
 screen -Rd minecraft -X stuff "say Server is stopping in 30 seconds! $(printf '\r')"
 sleep 23s
@@ -32,6 +36,7 @@ sleep 1s
 echo "Stopping server..."
 screen -Rd minecraft -X stuff "say Stopping server...$(printf '\r')"
 screen -Rd minecraft -X stuff "stop $(printf '\r')"
+
 StopChecks=0
 while [ $StopChecks -lt 30 ]; do
         if ! screen -list | grep -q "minecraft"; then
@@ -40,8 +45,10 @@ while [ $StopChecks -lt 30 ]; do
         sleep 1;
         StopChecks=$((StopChecks+1))
 done
+
 if screen -list | grep -q "minecraft"; then
         echo "Minecraft server still hasn't closed after 30 seconds, closing screen manually"
         screen -S minecraft -X quit
 fi
+
 echo "Server Stopped"
