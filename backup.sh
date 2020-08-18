@@ -3,7 +3,7 @@
 
 echo "Initiated Backup Sequenze for Minecraft Servers"
 
-echo "Changing Directory" 
+echo "Changing Directory..." 
 cd
 
 echo "Starting Backup..."
@@ -26,4 +26,4 @@ cp -r /server1/ /backups/server1-${today}
 cp -r /server2/ /backups/server2-${today}
 cp -r /server3/ /backups/server3-${today}
 
-echo "Server Backup finished Succesfully"
+echo "Server Backups finished Succesfully"
