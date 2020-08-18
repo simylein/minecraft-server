@@ -6,49 +6,6 @@ echo "Installing papermc and screen..."
 	sudo apt install openjdk-11-jre-headless
 	sudo apt install screen
 
-
-echo "Scanning for already existing directorys..."
-
-if [ -d "$server0" ]; then
-	echo "Directory server0 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$server1" ]; then
-	echo "Directory server1 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$server2" ]; then
-	echo "Directory server2 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$server3" ]; then
-	echo "Directory server3 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$backup0" ]; then
-	echo "Directory backup0 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$backup1" ]; then
-	echo "Directory backup1 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$backup2" ]; then
-	echo "Directory backup2 already exists! exiting..."
-	exit 1
-fi
-
-if [ -d "$backup3" ]; then
-	echo "Directory backup3 already exists! exiting..."
-	exit 1
-fi
-
 echo "Setting up directorys..."
 
 mkdir server0
