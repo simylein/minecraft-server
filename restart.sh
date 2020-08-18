@@ -1,9 +1,12 @@
 #!/bin/sh
-# Minecraft Server Restart Script
+
+# Minecraft Server restart script
+
 if ! screen -list | grep -q "minecraft"; then
         echo "Server is not currently running!"
         exit 1
 fi
+
 echo "Initiating Restarting Sequenze for Minecraft Server"
 echo "Server is restarting in 30 seconds!"
 screen -Rd minecraft -X stuff "say Server is restarting in 30 seconds! $(printf '\r')"
@@ -32,6 +35,7 @@ sleep 1s
 echo "Closing server..."
 screen -Rd minecraft -X stuff "say Closing server...$(printf '\r')"
 screen -Rd minecraft -X stuff "stop $(printf '\r')"
+
 StopChecks=0
 while [ $StopChecks -lt 30 ]; do
         if ! screen -list | grep -q "minecraft"; then
@@ -40,11 +44,11 @@ while [ $StopChecks -lt 30 ]; do
         sleep 1;
         StopChecks=$((StopChecks+1))
 done
+
 if screen -list | grep -q "minecraft"; then
         echo "Minecraft server still hasn't closed after 30 seconds, closing screen manually"
         screen -S minecraft -X quit
 fi
-echo "Updating to most recent paperclip version..."
-wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+
 echo "Restarting Server..."
 ./start.sh
