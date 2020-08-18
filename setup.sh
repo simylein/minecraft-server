@@ -6,43 +6,43 @@ echo "Installing papermc and screen..."
 	sudo apt install openjdk-11-jre-headless
 	sudo apt install screen
 
-echo "Setting up directorys..."
+echo "Setting up directorys with Scripts..."
 
 mkdir server0
 	cd server0
-		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
+		wget -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 		
 
 mkdir server1
 	cd server1
-		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
+		wget -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 
 mkdir server2
 	cd server2
-		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
+		wget -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 		
 mkdir server3
 	cd server3
-		wget -q -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
-		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
+		wget -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh start.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh restart.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh stop.sh
+		wget -O https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh backup.sh
 	cd
 
 mkdir backup0
