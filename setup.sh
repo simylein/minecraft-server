@@ -3,7 +3,7 @@
 
 echo "Installing papermc and screen..."
 
-	sudo apt install openjdk-11-jre
+	sudo apt install openjdk-11-jre-headless
 	sudo apt install screen
 
 
