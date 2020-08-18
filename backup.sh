@@ -1,7 +1,8 @@
 #!/bin/bash
-# Minecraft Server Backup
 
-echo "Initiated Backup Sequenze for Minecraft Servers"
+# Minecraft Server backup script
+
+echo "Initiated Backup Sequenze for Minecraft Server"
 
 echo "Changing Directory..." 
 cd
@@ -21,9 +22,6 @@ today=$(date +"%Y-%m-%d")
 
 printf "Backup Location as follows '%s'\n" "/backups/${today}"
 
-cp -r /server0/ /backups/server0-${today}
-cp -r /server1/ /backups/server1-${today}
-cp -r /server2/ /backups/server2-${today}
-cp -r /server3/ /backups/server3-${today}
+cp -r /minecraft/ /backups/minecraft-${today}
 
 echo "Server Backups finished Succesfully"
