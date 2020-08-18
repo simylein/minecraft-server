@@ -38,7 +38,7 @@ echo "Setting up directorys..."
 
 mkdir server0
 	cd server0
-		wget paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
@@ -47,7 +47,7 @@ mkdir server0
 
 mkdir server1
 	cd server1
-		wget paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
@@ -55,7 +55,7 @@ mkdir server1
 
 mkdir server2
 	cd server2
-		wget paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
@@ -63,7 +63,7 @@ mkdir server2
 		
 mkdir server3
 	cd server3
-		wget paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
+		wget -0 paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
 		wget https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
