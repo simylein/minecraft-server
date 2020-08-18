@@ -20,7 +20,7 @@ echo "Initiated Starting Sequenze for Minecraft Server"
 echo "Starting Minecraft server.  To view window type screen -r minecraft."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 cd /home/simylein/minecraft/
-/usr/bin/screen -dmS minecraft /usr/bin/java -jar -Xms1280M -Xmx2560M /home/simylein/minecraft/paperclip.jar
+/usr/bin/screen -dmS minecraft /usr/bin/java -jar -Xms2048 -Xmx8192M /minecraft/paperclip.jar
 echo "Server is Starting..."
 sleep 4s
 cd /home/simylein/
