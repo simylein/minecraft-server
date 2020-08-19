@@ -30,6 +30,6 @@ cd /home/simylein/minecraft/
 echo "Server is Starting..."
 sleep 4s
 
-cd
+cd /home/simylein/
 
 screen -r minecraft
