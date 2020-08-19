@@ -21,8 +21,8 @@ now=$(date +"%m_%d_%Y")
 printf "%s\n" $now
 today=$(date +"%Y-%m-%d")
 
-printf "Backup Location as follows '%s'\n" "/backups/${today}"
+printf "Backup Location as follows '%s'\n" "/home/simylein/backups/${today}"
 
-cp -r /minecraft/ /backups/minecraft-${today}
+cp -r /home/simylein/minecraft/ /home/simylein/backups/minecraft-${today}
 
 echo "Server Backups finished Succesfully"
