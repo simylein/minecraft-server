@@ -17,6 +17,9 @@ mkdir minecraft
 		wget -O stop.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
 		wget -O backup.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh
 		wget -O update.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/update.sh
+
+echo "Making Scripts executable..."
+
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
