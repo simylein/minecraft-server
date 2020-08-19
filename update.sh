@@ -52,7 +52,7 @@ if screen -list | grep -q "minecraft"; then
 fi
 
 echo "Updating to most recent paperclip version..."
-wget -O /minecraft/paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+wget -O /home/simylein/minecraft/paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 
 echo "Restarting Server..."
 ./start.sh
