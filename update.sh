@@ -2,6 +2,8 @@
 
 # Minecraft Server update script
 
+cd /home/simylein/minecraft/
+
 if ! screen -list | grep -q "minecraft"; then
         echo "Server is not currently running!"
         exit 1
@@ -55,4 +57,4 @@ echo "Updating to most recent paperclip version..."
 wget -O /home/simylein/minecraft/paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 
 echo "Restarting Server..."
-./home/simylein/minecraft/start.sh
+./start.sh
