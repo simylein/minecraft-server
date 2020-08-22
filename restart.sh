@@ -2,6 +2,8 @@
 
 # Minecraft Server restart script
 
+cd /home/simylein/minecraft/
+
 if ! screen -list | grep -q "minecraft"; then
         echo "Server is not currently running!"
         exit 1
@@ -51,4 +53,4 @@ if screen -list | grep -q "minecraft"; then
 fi
 
 echo "Restarting Server..."
-./home/simylein/minecraft/start.sh
+./start.sh
