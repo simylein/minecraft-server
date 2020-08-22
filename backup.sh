@@ -4,9 +4,6 @@
 
 echo "Initiated Backup Sequenze for Minecraft Server"
 
-echo "Changing Directory..." 
-cd
-
 echo "Starting Backup..."
 
 echo "Backing up Server Files for Minecraft Server... (this may take a while)"
