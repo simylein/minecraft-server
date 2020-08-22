@@ -54,7 +54,5 @@ fi
 echo "Updating to most recent paperclip version..."
 wget -O /home/simylein/minecraft/paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
 
-cd /home/simylein/minecraft/
-
 echo "Restarting Server..."
-./start.sh
+./home/simylein/minecraft/start.sh
