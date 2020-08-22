@@ -50,7 +50,5 @@ if screen -list | grep -q "minecraft"; then
         screen -S minecraft -X quit
 fi
 
-cd /home/simylein/minecraft/
-
 echo "Restarting Server..."
-./start.sh
+./home/simylein/minecraft/start.sh
