@@ -3,6 +3,8 @@ Scripts for a Minecraft Server on Linux using papermc and screen.
 
 Feel free to change the installations paths to something you like. 
 
+You will need to replace /home/simylein/ with your own home directory. 
+
 donwloading setup script:
 ```
   wget -O setup.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/setup.sh
@@ -42,7 +44,7 @@ each one can be executed with:
 ```
 
 If you wish you can configure a crontab to automatically execute these. 
-Here an Example with daily Restarts and Backups:
+Here an example with daily restarts and backups:
 
 ```
 # Minecraft Server restart at 02:00
