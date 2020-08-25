@@ -22,7 +22,7 @@ executing setup script:
 
 done
 
-Now you dot a minecraft directory with different Scripts. 
+Now you do have minecraft directory with different Scripts. 
 
 Those automate the start, stop, restart, update and backup procedure. 
 
