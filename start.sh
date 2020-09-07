@@ -1,11 +1,12 @@
 #!/bin/bash
+# Minecraft Server startup script
 
-# Minecraft Server startup script using screen
+../settings.sh
 
-cd /home/simylein/minecraft/
+cd ${directory}${servername}
 
-if screen -list | grep -q "minecraft";then
-        echo "Server is already running!  Type screen -r minecraft to open the console"
+if screen -list | grep -q "${servername}t";then
+        echo "Server is already running!  Type screen -r ${servername} to open the console"
         exit 1
 fi
 
@@ -22,12 +23,11 @@ while [ -z "$DefaultRoute" ]; do
         fi
 done
 
-echo "Initiated Starting Sequenze for Minecraft Server"
-echo "Starting Minecraft server.  To view window type screen -r minecraft."
+echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 
-/usr/bin/screen -dmSL minecraft /usr/bin/java -jar -Xms2048M -Xmx8192M /home/simylein/minecraft/paperclip.jar
+${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${directory}${servername}${serverfile}
 echo "Server is Starting..."
 sleep 4s
 
-screen -r minecraft
+screen -r ${servername}
