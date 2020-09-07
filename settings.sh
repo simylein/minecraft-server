@@ -2,9 +2,11 @@
 # Minecraft Server settings
 
 # All variables for the server
-servername=$minecraft
-directory=$/home/simylein/
 screen=$/usr/bin/screen
 java=$/usr/bin/java
-mems=$256M
-memx=$2048M
+serverfile=$/minecraft_server.1.16.2.jar
+servername=$minecraft
+directory=$/home/simylein/
+mems=$-Xms256M
+memx=$-Xmx2048M
+threadcount=$-XX:ParallelGCThreads=2
