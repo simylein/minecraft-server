@@ -1,32 +1,29 @@
 #!/bin/bash
+# Script for setting up a Minecraft Server
 
-# Script for setting up a Minecraft Server using papermc and screen
+../settings.sh
 
-echo "Installing openjdk and screen..."
+echo "Setting up Serverdirectory..."
+mkdir ${servername}
 
-	sudo apt install openjdk-11-jre-headless
-	sudo apt install screen
-
-echo "Setting up directorys with Scripts..."
-
-mkdir minecraft
-	cd minecraft
-		wget -O paperclip.jar https://papermc.io/api/v1/paper/1.16.1/latest/download
-		wget -O start.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/start.sh
-		wget -O restart.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/restart.sh
-		wget -O stop.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/stop.sh
-		wget -O backup.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/backup.sh
-		wget -O update.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/update.sh
+echo "Downloading Scripts from GitHub..."
+	cd ${servername}
+		wget -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/settings.sh
+		wget -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
+		wget -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
+		wget -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
+		wget -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
+		wget -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 
 echo "Making Scripts executable..."
-
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
 		chmod +x backup.sh
 		chmod +x update.sh
-	cd
-		
-mkdir backups
+	cd ${directory}
+	
+echo "Setting up Backupdirectory..."		
+mkdir ${servername}-backups
 
-echo "done"
+echo "Script is done"
