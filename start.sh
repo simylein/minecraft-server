@@ -1,5 +1,5 @@
 #!/bin/bash
-# Minecraft Server startup script
+# Minecraft Server start script
 
 ../settings.sh
 
@@ -10,24 +10,23 @@ if screen -list | grep -q "${servername}t";then
         exit 1
 fi
 
-NetworkChecks=0
-DefaultRoute=$(route -n | awk '$4 == "UG" {print $2}')
-while [ -z "$DefaultRoute" ]; do
-        echo "Network interface not up, will try again in 1 second";
-        sleep 1;
-        DefaultRoute=$(route -n | awk '$4 == "UG" {print $2}')
-        NetworkChecks=$((NetworkChecks+1))
-        if [ $NetworkChecks -gt 20 ]; then
-                echo "Waiting for network interface to come up timed out - starting server without network connection ..."
-                break
-        fi
-done
+if ping -w 4 -c2 adress &> /dev/null
+        then echo "1.1.1.1 DNS Server reachable - you are online - starting server with network connection..."
+        else echo "1.1.1.1 DNS Server unreachable - you are offline - starting server without network connection..."
+fi
 
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 
 ${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${directory}${servername}${serverfile}
-echo "Server is Starting..."
+
+if ! screen -list | grep -q "${servername}"; then
+        echo "Something went wrong - Server failed to start!"
+        exit 1
+fi
+
+echo "Server startup successful - changing to Server Console..."
+
 sleep 4s
 
 screen -r ${servername}
