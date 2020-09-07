@@ -4,7 +4,7 @@
 ../settings.sh
 
 echo "Starting Backup..."
-echo "Backing up Server Files for Minecraft Server... (this may take a while)"
+echo "Backing up Server Files for Minecraft Server... (This may take a while)"
 
 date +"%Y-%m-%d"
 today=$(date +"%Y-%m-%d")
