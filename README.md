@@ -1,14 +1,14 @@
 # Minecraft_Server
-Scripts for a Minecraft Server on Linux using papermc and screen. 
+Scripts for a Minecraft Server on Linux using screen. 
 
-Feel free to change the installations paths to something you like. 
-
-You will need to replace /home/simylein/ with your own home directory. 
+First, you can download and execute the setup script.
 
 donwloading setup script:
 ```
-  wget -O setup.sh https://raw.githubusercontent.com/Simylein/Minecraft_Server/master/setup.sh
+  wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
 ```
+
+You will need to edit the file and changing "servername=$minecraft" and "directory=$/home/simylein/" to something that suits you. 
 
 making setup script executable:
 ```
@@ -20,11 +20,11 @@ executing setup script:
 ./setup.sh
 ```
 
-done
+Now you got two directorys
 
-Now you do have minecraft directory with different Scripts. 
+One is called "minecraft" and has all the scripts in it and the otherone is called backups-minecraft
 
-Those automate the start, stop, restart, update and backup procedure. 
+These Scripts automate the start, stop, restart, update and backup procedure. 
 
 each one can be executed with:
 ```
@@ -42,20 +42,5 @@ each one can be executed with:
 ```
 ./backup.sh
 ```
-
-If you wish you can configure a crontab to automatically execute these. 
-Here an example with daily restarts and backups:
-
-```
-# Minecraft Server restart at 02:00
-0 2 * * * /home/simylein/minecraft/restart.sh
-# Minecraft Server backup at 04:00
-0 4 * * * /home/simylein/minecraft/backup.sh
-```
-
-If you wish you can also execute start.sh at boot:
-```
-# Minecraft Server start at boot
-@reboot /home/simylein/minecraft/start.sh
-```
+The file settings.sh can be edited and confiured to suit your needs
 
