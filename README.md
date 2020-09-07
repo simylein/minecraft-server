@@ -8,7 +8,7 @@ donwloading setup script:
   wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
 ```
 
-You will need to edit the file and changing "servername=$minecraft" and "directory=$/home/simylein/" to something that suits you. 
+You will need to edit the file and change "servername=$minecraft" and "directory=$/home/simylein/" to something that suits you. 
 
 making setup script executable:
 ```
