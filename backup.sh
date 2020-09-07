@@ -1,25 +1,16 @@
 #!/bin/bash
-
 # Minecraft Server backup script
 
-echo "Initiated Backup Sequenze for Minecraft Server"
+../settings.sh
 
 echo "Starting Backup..."
-
 echo "Backing up Server Files for Minecraft Server... (this may take a while)"
 
-date +"%FORMAT_STRING"
-date +"%m_%d_%Y"
 date +"%Y-%m-%d"
-
-var=$(date +"%FORMAT_STRING")
-now=$(date +"%m_%d_%Y")
-
-printf "%s\n" $now
 today=$(date +"%Y-%m-%d")
 
-printf "Backup Location as follows '%s'\n" "/home/simylein/backups/${today}"
+echo "Backup Location as follows "${directory}${servername}/${servername}${today}"
 
-cp -r /home/simylein/minecraft/ /home/simylein/backups/minecraft-${today}
+cp -r ${directory}${servername} ${directory}${servername}/${servername}-${today}
 
 echo "Server Backups finished Succesfully"
