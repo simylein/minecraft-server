@@ -1,9 +1,11 @@
 #!/bin/bash
 # Script for setting up a Minecraft Server
 
-../settings.sh
+# Feel free to change those variables to somthing you like
+servername=$minecraft
+directory=$/home/simylein/
 
-echo "Setting up Serverdirectory..."
+echo "Setting up a Serverdirectory..."
 mkdir ${servername}
 
 echo "Downloading Scripts from GitHub..."
@@ -23,7 +25,7 @@ echo "Making Scripts executable..."
 		chmod +x update.sh
 	cd ${directory}
 	
-echo "Setting up Backupdirectory..."		
+echo "Setting up a Backupdirectory..."		
 mkdir ${servername}-backups
 
-echo "Script is done"
+echo "Setup is complete"
