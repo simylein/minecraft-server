@@ -22,9 +22,11 @@ executing setup script:
 
 Now you got two directorys
 
-One is called "minecraft" and has all the scripts in it and the otherone is called backups-minecraft
+One is called "minecraft" and has all the scripts in it and the otherone is called "minecraft-backups"
 
-These Scripts automate the start, stop, restart, update and backup procedure. 
+The "minecraft" is your Live-Server so to Speak and the "minecraft-backups" stores your backups as an archiv or restore option. 
+
+The following Scripts automate the start, stop, restart, update and backup procedure. 
 
 each one can be executed with:
 ```
