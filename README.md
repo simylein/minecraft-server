@@ -13,6 +13,8 @@ You will need to edit the file and change "servername=$minecraft" and "directory
 nano setup.sh
 ```
 
+After you are done you can go ahead and execute it.
+
 making setup script executable:
 ```
 chmod +x setup.sh
@@ -25,11 +27,9 @@ executing setup script:
 
 Now you got two directorys. 
 
-One is called "minecraft" and has all the scripts in it and the otherone is called "minecraft-backups"
+By default, one is called "minecraft" and has all the scripts in it and the other one is called "minecraft-backups" (if you chose another name it will replace "minecraft" with your name)
 
 The "minecraft" is your Live-Server so to Speak and the "minecraft-backups" stores your backups as an archiv or restore option. 
-
-The following Scripts automate the start, stop, restart, update and backup procedure. 
 
 There is also a Script which is called settings.sh
 
@@ -42,6 +42,8 @@ you can edit it like this:
 nano settings.sh
 ```
 
+The following Scripts automate the start, stop, restart, backup and update procedure. 
+
 each one can be executed with:
 ```
 ./start.sh
@@ -53,14 +55,13 @@ each one can be executed with:
 ./restart.sh
 ```
 ```
-./update.sh
-```
-```
 ./backup.sh
 ```
-The file settings.sh can be edited and confiured to suit your needs. 
+```
+./update.sh
+```
 
-The Speedrun and Varo Scripts can be downloaded if you wish for some Varo/Speedrun functionality. 
+The Varo and Speedrun Scripts can be downloaded if you wish for some Varo/Speedrun functionality. 
 
 They can be executed with:
 
