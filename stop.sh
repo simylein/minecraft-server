@@ -1,7 +1,7 @@
 #!/bin/sh
 # Minecraft Server stop script
 
-../settings.sh
+. ./settings.sh
 
 cd ${directory}${servername}
 
