@@ -1,7 +1,7 @@
 #!/bin/sh
 # Minecraft Server speedrun script
 
-../settings.sh
+. ./settings.sh
 
 echo "Initiating Timer Sequenze for Minecraft Speedrun Server..."
 
