@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minecraft Server start script
 
-../settings.sh
+. ./settings.sh
 
 cd ${directory}${servername}
 
