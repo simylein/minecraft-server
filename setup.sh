@@ -10,7 +10,7 @@ mkdir ${servername}
 
 echo "Downloading Scripts from GitHub..."
 	cd ${servername}
-		wget -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/settings.sh
+		wget -O settings.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/settings.sh
 		wget -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
 		wget -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
 		wget -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
