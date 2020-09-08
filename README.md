@@ -9,6 +9,9 @@ donwloading setup script:
 ```
 
 You will need to edit the file and change "servername=$minecraft" and "directory=$/home/simylein/" to something that suits you. 
+```
+nano setup.sh
+```
 
 making setup script executable:
 ```
@@ -27,6 +30,17 @@ One is called "minecraft" and has all the scripts in it and the otherone is call
 The "minecraft" is your Live-Server so to Speak and the "minecraft-backups" stores your backups as an archiv or restore option. 
 
 The following Scripts automate the start, stop, restart, update and backup procedure. 
+
+There is also a Script which is called settings.sh
+
+This stores all the variables for your Minecraft Server.
+
+Again you should edit it and change it as you like. 
+
+you can edit it like this:
+```
+nano settings.sh
+```
 
 each one can be executed with:
 ```
