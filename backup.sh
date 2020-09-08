@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minecraft Server backup script
 
-../settings.sh
+. ./settings.sh
 
 echo "Starting Backup..."
 echo "Backing up Server Files for Minecraft Server... (This may take a while)"
