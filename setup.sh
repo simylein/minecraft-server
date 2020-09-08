@@ -2,8 +2,8 @@
 # Script for setting up a Minecraft Server
 
 # Feel free to change those variables to somthing you like
-servername=$minecraft
-directory=$/home/simylein/
+servername='minecraft'
+directory='/home/simylein/'
 
 echo "Setting up a Serverdirectory..."
 mkdir ${servername}
