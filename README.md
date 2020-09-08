@@ -20,7 +20,7 @@ executing setup script:
 ./setup.sh
 ```
 
-Now you got two directorys
+Now you got two directorys. 
 
 One is called "minecraft" and has all the scripts in it and the otherone is called "minecraft-backups"
 
@@ -44,5 +44,19 @@ each one can be executed with:
 ```
 ./backup.sh
 ```
-The file settings.sh can be edited and confiured to suit your needs
+The file settings.sh can be edited and confiured to suit your needs. 
 
+The Speedrun and Varo Scripts can be downloaded if you wish for some Varo/Speedrun functionality. 
+
+They can be executed with:
+
+```
+./speedrun.sh
+```
+```
+./varo.sh
+```
+
+I hope you learned something and that those Scripts I provide may help you and your Minecraft Server Experience. 
+
+Have Fun and enjoy the Game ;^)
