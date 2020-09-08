@@ -16,6 +16,8 @@ echo "Downloading Scripts from GitHub..."
 		wget -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
 		wget -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
 		wget -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
+		wget -O speedrun.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/speedrun.sh
+		wget -O varo.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/varo.sh
 
 echo "Making Scripts executable..."
 		chmod +x start.sh
@@ -23,6 +25,8 @@ echo "Making Scripts executable..."
 		chmod +x stop.sh
 		chmod +x backup.sh
 		chmod +x update.sh
+		chmod +x speedrun.sh
+		chmod +x varo.sh
 	cd ${directory}
 	
 echo "Setting up a Backupdirectory..."		
