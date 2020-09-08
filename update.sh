@@ -1,6 +1,8 @@
 #!/bin/sh
 # Minecraft Server update script
 
+. ./settings.sh
+
 cd ${directory}${servername}
 
 if ! screen -list | grep -q "${servername}"; then
