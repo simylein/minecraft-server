@@ -1,7 +1,7 @@
 #!/bin/sh
 # Minecraft Server varo script
 
-../settings.sh
+. ./settings.sh
 
 echo "Initiating Varo Start Sequenze for Minecraft Varo Server..."
 
@@ -75,4 +75,3 @@ screen -Rd ${servername} -X stuff "say Minecraft Varo has started $(printf '\r')
 screen -Rd ${servername} -X stuff "say Good Luck and Have fun to all Teams $(printf '\r')"
 
 echo "script has finished"
-
