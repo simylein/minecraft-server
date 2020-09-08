@@ -51,7 +51,7 @@ done
 
 if screen -list | grep -q "${servername}"; then
         echo "Minecraft server still hasn't closed after 30 seconds, closing screen manually"
-        screen -S minecraft -X quit
+        screen -S ${servername} -X quit
 fi
 
 echo "Server Stopped"
