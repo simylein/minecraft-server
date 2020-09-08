@@ -10,7 +10,7 @@ if screen -list | grep -q "${servername}t";then
         exit 1
 fi
 
-if ping -w 4 -c2 adress &> /dev/null
+if ping -w 4 -c2 1.1.1.1 &> /dev/null
         then echo "1.1.1.1 DNS Server reachable - you are online - starting server with network connection..."
         else echo "1.1.1.1 DNS Server unreachable - you are offline - starting server without network connection..."
 fi
