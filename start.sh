@@ -18,7 +18,7 @@ fi
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 
-${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${directory}${servername}${serverfile}
+${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
 
 if ! screen -list | grep -q "${servername}"; then
         echo "Something went wrong - Server failed to start!"
