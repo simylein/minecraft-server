@@ -5,7 +5,7 @@
 
 cd ${directory}${servername}
 
-if screen -list | grep -q "${servername}t";then
+if screen -list | grep -q "${servername}";then
         echo "Server is already running!  Type screen -r ${servername} to open the console"
         exit 1
 fi
