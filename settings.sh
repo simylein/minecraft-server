@@ -15,6 +15,9 @@ homedirectory='/home/simylein/'
 # Serverdirectory
 serverdirectory='/home/simylein/minecraft/'
 
+# Backupdirectory
+backupdirectory='Home/simylein/minecraft-backups/'
+
 # Directory path of the server.jar
 serverfile='/home/simylein/minecraft/minecraft_server.1.16.3.jar'
 
