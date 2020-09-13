@@ -3,7 +3,7 @@
 
 . ./settings.sh
 
-cd ${directory}${servername}
+cd ${serverdirectory}
 
 if screen -list | grep -q "${servername}";then
         echo "Server is already running!  Type screen -r ${servername} to open the console"
