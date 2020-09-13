@@ -3,6 +3,11 @@
 
 . ./settings.sh
 
+if ! screen -list | grep -q "${servername}"; then
+        echo "Server is not currently running!"
+        exit 1
+fi
+
 echo "Initiating Varo Start Sequenze for Minecraft Varo Server..."
 
 screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 2 Minutes$(printf '\r')"
