@@ -29,9 +29,9 @@ Now you got two directorys.
 
 By default, one is called "minecraft" and has all the scripts in it and the other one is called "minecraft-backups" (if you chose another name it will replace "minecraft" with your name)
 
-The "minecraft" is your Live-Server so to Speak and the "minecraft-backups" stores your backups as an archiv or restore option. 
+The "minecraft" is your Live-Server so to speak and the "minecraft-backups" stores your backups as an archiv or restore option. 
 
-There is also a Script which is called settings.sh
+There is also a file which is called settings.sh
 
 This stores all the variables for your Minecraft Server.
 
@@ -61,7 +61,7 @@ each one can be executed with:
 ./update.sh
 ```
 
-The Varo and Speedrun Scripts can be downloaded if you wish for some Varo/Speedrun functionality. 
+The Varo and Speedrun Scripts can be used if you wish for some Varo/Speedrun functionality. 
 
 They can be executed with:
 
