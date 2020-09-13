@@ -9,14 +9,17 @@ screen='/usr/bin/screen'
 # Directory path of the java binary
 java='/usr/bin/java'
 
+# Homedirectory
+homedirectory='/home/simylein/'
+
+# Serverdirectory
+serverdirectory='/home/simylein/minecraft/'
+
 # Directory path of the server.jar
-serverfile='/minecraft_server.1.16.2.jar'
+serverfile='/home/simylein/minecraft/minecraft_server.1.16.3.jar'
 
 # Name of Server
 servername='minecraft'
-
-# Homedirectory
-directory='/home/simylein/'
 
 # Minimum ammount of Memory granted
 mems='-Xms256M'
