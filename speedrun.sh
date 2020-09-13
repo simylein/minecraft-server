@@ -3,6 +3,11 @@
 
 . ./settings.sh
 
+if ! screen -list | grep -q "${servername}"; then
+        echo "Server is not currently running!"
+        exit 1
+fi
+
 echo "Initiating Timer Sequenze for Minecraft Speedrun Server..."
 
 echo "applying effects..."
