@@ -3,7 +3,7 @@
 
 # Feel free to change those variables to somthing you like
 servername='minecraft'
-directory='/home/simylein/'
+homedirectory='/home/simylein/'
 
 echo "Setting up a Serverdirectory..."
 mkdir ${servername}
@@ -27,7 +27,7 @@ echo "Making Scripts executable..."
 		chmod +x update.sh
 		chmod +x speedrun.sh
 		chmod +x varo.sh
-	cd ${directory}
+	cd ${homedirectory}
 	
 echo "Setting up a Backupdirectory..."		
 mkdir ${servername}-backups
