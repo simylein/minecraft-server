@@ -1,4 +1,4 @@
-# Minecraft_Server
+# MinecraftServer
 Scripts for a Minecraft Server on Linux using screen. 
 
 First, you can download and execute the setup script.
