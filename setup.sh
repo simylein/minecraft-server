@@ -5,11 +5,16 @@
 servername='minecraft'
 homedirectory='/home/simylein/'
 
-# read -p "I will now Setup Server directory's and download Scripts. Continue?"
-# if [[ ! $REPLY =~ ^[Yy]$ ]]
-# then
-#    exit 1
-# fi
+echo "I will now setup a server and backup directory. "
+echo "I will also download the following scripts:"
+echo "start, stop, restart, backup, update, maintenance, speedrun and varo."
+echo "Continue?"
+read -p "[Y] or [N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+	else
+		exit 1
+fi
 
 echo "Setting up a Serverdirectory..."
 mkdir ${servername}
