@@ -11,13 +11,13 @@ if screen -list | grep -q "${servername}";then
 fi
 
 if ping -w 4 -c2 ${dnsserver} &> /dev/null
-        then echo "1.1.1.1 DNS Server reachable - you are online - starting server with network connection..."
-        else echo "1.1.1.1 DNS Server unreachable - you are offline - starting server without network connection..."
+        then echo "Success: 1.1.1.1 reachable - you are online - starting server with network connection..."
+        else echo "Success: 1.1.1.1 unreachable - you are offline - starting server without network connection..."
 fi
 
 if ping -w 4 -c2 ${interface} &> /dev/null
-then echo "Succes: content"
-else echo "Warning: content"
+        then echo "Success: 192.168.1.1 reachable - you are online - starting server with network connection..."
+        else echo "Warning: 192.168.1.1 unreachable - you are offline - starting server without network connection..."
 fi
 
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
