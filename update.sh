@@ -54,9 +54,3 @@ if screen -list | grep -q "${servername}"; then
         screen -S ${servername} -X quit
 fi
 
-# Script not finished
-# Placeholder for userinput asking for version - then downloading server file from API - replacing existing one
-sleep 600s
-
-echo "Restarting Server..."
-./start.sh
