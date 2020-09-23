@@ -6,7 +6,7 @@ servername='minecraft'
 homedirectory='/home/simylein/'
 
 # read -p "I will now Setup Server directory's and download Scripts. Continue?"
-# if [[ ! $REPLY =~ ^[Yes]$ ]]
+# if [[ ! $REPLY =~ ^[Yy]$ ]]
 # then
 #    exit 1
 # fi
