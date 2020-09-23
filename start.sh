@@ -12,37 +12,27 @@ fi
 
 NetworkChecks=0
 while
-  [ $NetworkChecks -lt 20 ]; do
-    if ping -c 1 -w 0.2 ${dnsserver} &> /dev/null
-      then echo "Warning: Nameserver is offline"
-      else echo "Success: Nameserver is online"
-      break
-    fi
-  sleep 1s;
-  NetworkChecks=$((NetworkChecks+1))
+	[ $NetworkChecks -lt 4 ]; do
+		if ping -c 1 ${dnsserver} &> /dev/null
+			then echo "Success: Nameserver is online"
+			break
+			else echo "Warning: Nameserver is offline"
+		fi
+	sleep 1s;
+	NetworkChecks=$((NetworkChecks+1))
 done
 
 InterfaceChecks=0
 while
-  [ $InterfaceChecks -lt 20 ]; do
-     if ping -c 1 -w 0.2 ${interface} &> /dev/null
-        then echo "Warning: Interface is offline"
-        else echo "Success: Interface is online"
-        break
-     fi
-  sleep 1s
-  InterfaceChecks=$((InterfaceChecks+1))
+	[ $InterfaceChecks -lt 4 ]; do
+		 if ping -c 1 ${interface} &> /dev/null
+				then echo "Success: Interface is online"
+				break
+				else echo "Warning: Interface is offline"
+		 fi
+	sleep 1s
+	InterfaceChecks=$((InterfaceChecks+1))
 done
-
-if ping -w 4 -c2 ${dnsserver} &> /dev/null
-        then echo "Success: 1.1.1.1 reachable - you are online - starting server with network connection..."
-        else echo "Success: 1.1.1.1 unreachable - you are offline - starting server without network connection..."
-fi
-
-if ping -w 4 -c2 ${interface} &> /dev/null
-        then echo "Success: 192.168.1.1 reachable - you are online - starting server with network connection..."
-        else echo "Warning: 192.168.1.1 unreachable - you are offline - starting server without network connection..."
-fi
 
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
