@@ -32,3 +32,10 @@ memx='-Xmx2048M'
 
 # Number of Threads allowed
 threadcount='-XX:ParallelGCThreads=2'
+
+# Network Name Server
+dnsserver='1.1.1.1'
+
+# Network Interface
+interface='192.168.1.1'
+
