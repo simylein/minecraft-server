@@ -11,8 +11,8 @@ echo "start, stop, restart, backup, update, maintenance, speedrun and varo."
 echo "Continue?"
 read -p "[Y] or [N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo "Starting setup..."
-	else
+	then echo "starting setup..."
+	else echo "exiting..."
 		exit 1
 fi
 
