@@ -10,6 +10,30 @@ if screen -list | grep -q "${servername}";then
         exit 1
 fi
 
+NetworkChecks=0
+while
+  [ $NetworkChecks -lt 20 ]; do
+    if ping ${dnsserver} &> /dev/null
+      then echo "Warning: Nameserver is offline"
+      else echo "Success: Nameserver is online"
+      break
+    fi
+  sleep 1s;
+  NetworkChecks=$((NetworkChecks+1))
+done
+
+InterfaceChecks=0
+while
+  [ $InterfaceChecks -lt 20 ]; do
+     if ping ${interface} &> /dev/null
+        then echo "Warning: Interface is offline"
+        else echo "Success: Interface is online"
+        break
+     fi
+  sleep 1s
+  InterfaceChecks=$((InterfaceChecks+1))
+done
+
 if ping -w 4 -c2 ${dnsserver} &> /dev/null
         then echo "Success: 1.1.1.1 reachable - you are online - starting server with network connection..."
         else echo "Success: 1.1.1.1 unreachable - you are offline - starting server without network connection..."
