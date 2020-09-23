@@ -10,9 +10,14 @@ if screen -list | grep -q "${servername}";then
         exit 1
 fi
 
-if ping -w 4 -c2 1.1.1.1 &> /dev/null
+if ping -w 4 -c2 ${dnsserver} &> /dev/null
         then echo "1.1.1.1 DNS Server reachable - you are online - starting server with network connection..."
         else echo "1.1.1.1 DNS Server unreachable - you are offline - starting server without network connection..."
+fi
+
+if ping -w 4 -c2 ${interface} &> /dev/null
+then echo "Succes: content"
+else echo "Warning: content"
 fi
 
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
