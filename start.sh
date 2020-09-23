@@ -13,7 +13,7 @@ fi
 NetworkChecks=0
 while
   [ $NetworkChecks -lt 20 ]; do
-    if ping ${dnsserver} &> /dev/null
+    if ping -c 1 -w 0.2 ${dnsserver} &> /dev/null
       then echo "Warning: Nameserver is offline"
       else echo "Success: Nameserver is online"
       break
@@ -25,7 +25,7 @@ done
 InterfaceChecks=0
 while
   [ $InterfaceChecks -lt 20 ]; do
-     if ping ${interface} &> /dev/null
+     if ping -c 1 -w 0.2 ${interface} &> /dev/null
         then echo "Warning: Interface is offline"
         else echo "Success: Interface is online"
         break
