@@ -18,10 +18,10 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		exit 1
 fi
 
-echo "Setting up a Serverdirectory..."
+echo "setting up a Serverdirectory..."
 mkdir ${servername}
 
-echo "Downloading Scripts from GitHub..."
+echo "downloading Scripts from GitHub..."
 	cd ${servername}
 		wget -q -O settings.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/settings.sh
 		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
@@ -33,7 +33,7 @@ echo "Downloading Scripts from GitHub..."
 		wget -q -O speedrun.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/speedrun.sh
 		wget -q -O varo.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/varo.sh
 
-echo "Making Scripts executable..."
+echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
@@ -42,9 +42,25 @@ echo "Making Scripts executable..."
 		chmod +x maintenance.sh
 		chmod +x speedrun.sh
 		chmod +x varo.sh
+    serverdirectory=`pwd`
 	cd ${homedirectory}
 	
-echo "Setting up a Backupdirectory..."		
+echo "setting up a Backupdirectory..."		
 mkdir ${servername}-backups
+  cd ${servername}-backups
+    backupdirectory=`pwd`
+  cd ${homedirectory}
 
-echo "Setup is complete"
+echo "storing variables..."
+  cd ${servername}
+    for var in servername; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in homedirectory; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in serverdirectory; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+
+echo "setup is complete"
