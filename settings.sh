@@ -2,40 +2,13 @@
 # Minecraft Server settings
 
 # All variables for the server
+# If you know what you are doing, feel free to tinker with them ;^)
 
-# Directory path of the screen binary
 screen='/usr/bin/screen'
-
-# Directory path of the java binary
 java='/usr/bin/java'
-
-# Homedirectory
-homedirectory='/home/simylein/'
-
-# Serverdirectory
-serverdirectory='/home/simylein/minecraft/'
-
-# Backupdirectory
-backupdirectory='Home/simylein/minecraft-backups/'
-
-# Directory path of the server.jar
-serverfile='/home/simylein/minecraft/minecraft_server.1.16.3.jar'
-
-# Name of Server
-servername='minecraft'
-
-# Minimum ammount of Memory granted
-mems='-Xms256M'
-
-# Maximum ammount of Memory granted
-memx='-Xmx2048M'
-
-# Number of Threads allowed
-threadcount='-XX:ParallelGCThreads=2'
-
-# Network Name Server
 dnsserver='1.1.1.1'
-
-# Network Interface
 interface='192.168.1.1'
-
+threadcount='-XX:ParallelGCThreads=2'
+mems='-Xms256M'
+memx='-Xmx2048M'
+serverfile='/home/simylein/minecraft/minecraft_server.1.16.3.jar'
