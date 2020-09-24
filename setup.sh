@@ -63,13 +63,19 @@ echo "storing variables..."
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
     done
 
-echo "How much minimum Memory would you like to grant your Server?"
+echo "How much minimum memory would you like to grant your Server?"
 read -p "Please in enter Megabytes. Example: -Xms256M" mems
 echo "Your Server will will have ${mems} of minimum memory allocated"
 
-echo "How much maximum Memory would you like to grant your Server?"
+echo "How much maximum memory would you like to grant your Server?"
 read -p "Please in enter Megabytes. Example: -Xmx2048M" mems
-echo "Your Server will will have ${mems} of maximum memory allocated"
+echo "Your Server will will have ${memx} of maximum memory allocated"
 
+    for var in mems; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in memx; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
 
 echo "setup is complete"
