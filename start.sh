@@ -39,6 +39,8 @@ echo "To minimize the window and let the server run in the background, press Ctr
 
 ${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
 
+sleep 4s
+
 if ! screen -list | grep -q "${servername}"; then
         echo "Something went wrong - Server failed to start!"
         exit 1
