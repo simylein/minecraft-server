@@ -62,14 +62,30 @@ echo "storing variables..."
     for var in serverdirectory; do
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
     done
+    for var in backupdirectory; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
 
 echo "How much minimum memory would you like to grant your Server?"
-read -p "Please in enter Megabytes. Example: -Xms256M" mems
+echo "Please enter in Megabytes. Example:-Xms256M"
+read -p "Your amount:" mems
 echo "Your Server will will have ${mems} of minimum memory allocated"
 
 echo "How much maximum memory would you like to grant your Server?"
-read -p "Please in enter Megabytes. Example: -Xmx2048M" mems
+echo "Please enter in Megabytes. Example:-Xmx2048M Your amount:"
+read -p "Your amount:" memx
 echo "Your Server will will have ${memx} of maximum memory allocated"
+
+echo "How many Threads would you like your Server to use?"
+echo "Please enter like this. Example:-XX:ParallelGCThreads=2"
+read -p "Your amount:" threadcount
+echo "Your Server will will have ${threadcount} allocated"
+
+echo "Please enter the location of your serverfile (executable)."
+echo "Please enter like this. Example:${serverdirectory}/minecraft_server.1.16.3.jar"
+read -p "Your location:" serverfile
+echo "Your Server will execute ${serverfile} at start"
+
 
     for var in mems; do
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
@@ -77,5 +93,15 @@ echo "Your Server will will have ${memx} of maximum memory allocated"
     for var in memx; do
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
     done
+    for var in threadcount; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in serverfile; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
 
-echo "setup is complete"
+echo "setup is complete!"
+echo "If you would like to start your Server:"
+echo "go into your ${serverdirectory} and execute start.sh"
+echo "like this ./start.sh"
+echo "God Luck and Have Fun! ;^)"
