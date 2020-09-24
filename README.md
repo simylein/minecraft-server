@@ -8,13 +8,6 @@ donwloading setup script:
   wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
 ```
 
-You will need to edit the file and change servername='minecraft' and directory='/home/simylein/' to something that suits you. 
-```
-nano setup.sh
-```
-
-After you are done you can go ahead and execute it.
-
 making setup script executable:
 ```
 chmod +x setup.sh
@@ -25,22 +18,15 @@ executing setup script:
 ./setup.sh
 ```
 
+The Script will ask you some Questions. Please answer them in order for the Server to work. 
+
 Now you got two directorys. 
 
-By default, one is called "minecraft" and has all the scripts in it and the other one is called "minecraft-backups" (if you chose another name it will replace "minecraft" with your name)
+One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
 
-The "minecraft" is your Live-Server so to speak and the "minecraft-backups" stores your backups as an archiv or restore option. 
+Like you can imagine ${servername} holds your live Server and ${servername}-backups stores your backups. 
 
-There is also a file which is called settings.sh
 
-This stores all the variables for your Minecraft Server.
-
-Again you should edit it and change it as you like. 
-
-you can edit it like this:
-```
-nano settings.sh
-```
 
 The following Scripts automate the start, stop, restart, backup and update procedure. 
 
@@ -72,6 +58,6 @@ They can be executed with:
 ./varo.sh
 ```
 
-I hope you learned something and that those Scripts I provide may help you and your Minecraft Server Experience. 
+I hope you learned something and that those Scripts I provide may help you and your Minecraft Server experience. 
 
 Have Fun and enjoy the Game ;^)
