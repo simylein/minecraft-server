@@ -3,7 +3,7 @@
 
 echo "How should I call your Server?"
 read -p "Please enter a servername: " servername
-echo "Your Server will be called $servername"
+echo "Your Server will be called ${servername}"
 
 homedirectory=`pwd`
 
