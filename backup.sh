@@ -10,9 +10,9 @@ screen -Rd ${servername} -X stuff "Complete Server Database Backup has started..
 date +"%Y-%m-%d"
 today=$(date +"%Y-%m-%d")
 
-echo "Backup Location as follows "${serverdirectory}/${servername}${today}"
+echo "Backup Location as follows "${backupdirectory}/${servername}${today}"
 
 cp -r ${serverdirectory} ${backupdirectory}/${servername}-${today}
 
 echo "Server Backups finished Succesfully"
-screen -Rd ${servername} -X stuff "Complete Server Database Backup has successful finished!$(printf '\r')"
+screen -Rd ${servername} -X stuff "Complete Server Database Backup has successfully finished!$(printf '\r')"
