@@ -56,7 +56,7 @@ Important settings are:
 
 max-players=            (limuts the maximumg amount of players on the server at the same time[Warning large numbers may impact performance])
 
-difficulty=             (defines ingame difficulty [peaceful,easy, normal, hard])
+difficulty=             (defines ingame difficulty [peaceful, easy, normal, hard])
 
 view-distance=          (defines number of ingame chnuks to be rendered [Warning large numbers may impact performance])
 
