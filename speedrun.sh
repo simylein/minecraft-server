@@ -10,6 +10,10 @@ fi
 
 echo "Initiating Timer Sequenze for Minecraft Speedrun Server..."
 
+echo "creating scoreboard..."
+screen -Rd ${servername} -X stuff "scoreboard objectives add health health$(printf '\r')"
+screen -Rd ${servername} -X stuff "scoreboard objectives setdisplay list health$(printf '\r')"
+
 echo "applying effects..."
 screen -Rd ${servername} -X stuff "effect give @a minecraft:blindness 100 2$(printf '\r')"
 screen -Rd ${servername} -X stuff "gamemode adventure @a$(printf '\r')"
