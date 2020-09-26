@@ -68,9 +68,9 @@ online-mode=            (runs server in online mode with Mojang authentication [
 
 motd=                   (this will be displayed in the menu below your server - chose what you like)
 
-server-port=            (deafault by 25565. Only importent if you are dealing with multiple server)
+server-port=            (default by 25565. Only importent if you are dealing with multiple server)
 
-max-tick-time=          (deafault by 60000. Time in millisecound until the server considers itself as crashed)
+max-tick-time=          (default by 60000. Time in millisecound until the server considers itself as crashed)
 
 gamemode=               (default survival. Defines your game mode. For creative server replace with creative)
 
