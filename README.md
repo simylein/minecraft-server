@@ -1,5 +1,5 @@
 # MinecraftServer
-Scripts for a Minecraft Server on Linux using screen. 
+Scripts for a Minecraft Server on Linux [Debian] using screen. 
 
 First, you can download and execute the setup script.
 
