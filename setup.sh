@@ -72,7 +72,7 @@ read -p "Your amount:" mems
 echo "Your Server will will have ${mems} of minimum memory allocated"
 
 echo "How much maximum memory would you like to grant your Server?"
-echo "Please enter in Megabytes. Example:-Xmx2048M Your amount:"
+echo "Please enter in Megabytes. Example:-Xmx2048M"
 read -p "Your amount:" memx
 echo "Your Server will will have ${memx} of maximum memory allocated"
 
