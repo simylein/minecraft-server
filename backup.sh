@@ -10,7 +10,7 @@ screen -Rd ${servername} -X stuff "Complete Server Database Backup has started..
 date +"%Y-%m-%d"
 today=$(date +"%Y-%m-%d")
 
-echo "Backup Location as follows "${backupdirectory}/${servername}${today}"
+echo "Backup Location as follows ${backupdirectory}/${servername}${today}"
 
 cp -r ${serverdirectory} ${backupdirectory}/${servername}-${today}
 
