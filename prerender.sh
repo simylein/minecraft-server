@@ -52,56 +52,56 @@ echo "Setting player into spectator mode"
 screen -Rd ${servername} -X stuff "gamemode ${playername} spectator$(printf '\r')"
 
 echo "Prerendering started"
+sleep 20s
+echo "Progress: 00.00%"
+screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
 ${interval}
-screen -Rd ${servername} -X stuff "tp ${playername} 2048 128 2048$(printf '\r')"
+screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 1792 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 1536 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 1280 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 1024 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 0768 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 0512 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 0256 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} 0000 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -0256 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -0512 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -0768 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -1024 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -1280 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -1536 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -1792 128 2048$(printf '\r')"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${a}$(printf '\r')"
 echo "Progress: 00.00%"
-
-screen -Rd ${servername} -X stuff "tp ${playername} -2048 128 2048$(printf '\r')"
-
-
+${interval}
