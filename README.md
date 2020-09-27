@@ -7,7 +7,7 @@ In Order for the Server to run we will need to install 2 Programms:
 
 Java:
 ```
-sudo apt install openjdk-14-jre headless
+sudo apt install openjdk-14-jre-headless
 ```
 
 Screen:
