@@ -50,7 +50,7 @@ q='-2048'
 # teleporting sequence
 
 echo "Setting player into spectator mode"
-screen -Rd ${servername} -X stuff "gamemode ${playername} spectator$(printf '\r')"
+screen -Rd ${servername} -X stuff "gamemode spectator ${playername}$(printf '\r')"
 
 echo "Prerendering started"
 sleep 20s
