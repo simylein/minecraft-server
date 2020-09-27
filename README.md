@@ -91,7 +91,7 @@ gamemode=               (default survival. Defines your game mode. For creative 
 
 sync-chunk-writes=      (stores your changes [I would strongely recomment to set this to true])
 
-The following Scripts automate the start, stop, restart, backup and update procedure. 
+The following scripts automate the start, stop, restart, backup and update procedure. 
 
 each one can be executed with:
 ```
@@ -110,7 +110,7 @@ each one can be executed with:
 ./update.sh
 ```
 
-The Varo and Speedrun Scripts can be used if you wish for some Varo/Speedrun functionality. 
+The varo and speedrun scripts can be used if you wish for some varo and speedrun functionality. 
 
 They can be executed with:
 
@@ -119,6 +119,18 @@ They can be executed with:
 ```
 ```
 ./varo.sh
+```
+
+The prerender script is for pregenerating your world if you so desire. 
+
+It will require at least one player on the server. 
+```
+./prerender.sh
+```
+
+The maintenance script is there to let people know you take their server offline while you perform maintenance. 
+```
+./maintenance.sh
 ```
 
 I hope you learned something and that those Scripts I provide may help you and your Minecraft Server experience. 
