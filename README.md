@@ -47,7 +47,7 @@ You can download it from: https://www.minecraft.net/en-us/download/server
 
 This is your file that holds the variables you have chosen with the setup script.
 
-If you know what your are doing feel free to edit it to siut your needs.
+If you know what your are doing feel free to edit it to suit your needs.
 
 # serverstart
 
