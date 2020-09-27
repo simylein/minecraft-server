@@ -206,6 +206,10 @@ Example: (In order to work, please replace the variable with your own ones)
 ```
 Close and save your crontab. 
 # ending
-I hope you learned something and that those Scripts I provide may help you and your Minecraft Server experience. 
+I hope you learned something and that those scripts I provide may help you and your minecraft server experience. 
 
 Have Fun and enjoy the Game ;^)
+
+best regards,
+
+Simylein
