@@ -12,7 +12,8 @@ echo "The player will be ${playername}"
 
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 secounds"
-read -p "Please enter an interval in secounds. Example: sleep 60s" interval
+echo "Please enter an interval in secounds. Example: sleep 60s"
+read -p "interval:" interval
 echo "The selected interval will be ${interval}"
 
 echo "I will now start to teleport the selected player through he world"
