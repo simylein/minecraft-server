@@ -153,7 +153,7 @@ If you would like to automate some of those task on your server you can create a
 ```
 crontab -e
 ```
-A new file will open (If you got one already the existing on will open)
+A new file will open (If you got one already the existing one will open)
 
 In this file, you can automate things as follows:
 
