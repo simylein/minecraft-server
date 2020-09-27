@@ -163,5 +163,30 @@ screen -Rd ${servername} -X stuff "say Time elapsed: 02:35:00$(printf '\r')"
 sleep 300s
 echo "Time elapsed: 02:40:00"
 screen -Rd ${servername} -X stuff "say Time elapsed: 02:40:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 02:45:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 02:45:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 02:50:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 02:50:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 02:55:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 02:55:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 03:00:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 03:00:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 03:05:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 03:05:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 03:10:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 03:10:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 03:15:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 03:15:00$(printf '\r')"
+sleep 300s
+echo "Time elapsed: 03:20:00"
+screen -Rd ${servername} -X stuff "say Time elapsed: 03:20:00$(printf '\r')"
 
+screen -Rd ${servername} -X stuff "say script has finished$(printf '\r')"
 echo "script has finished"
