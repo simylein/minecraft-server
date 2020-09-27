@@ -1,9 +1,23 @@
 # MinecraftServer
 Scripts for a Minecraft Server on Linux [Debian] using screen. 
 
-First, you can download and execute the setup script.
+Software:
 
-donwloading setup script:
+In Order for the Server to run we will need to install 2 Programms:
+
+Java:
+```
+sudo apt install openjdk-14-jre headless
+```
+
+Screen:
+```
+sudo apt install screen
+```
+
+Then, you can download and execute the setup script.
+
+downloading setup script:
 ```
   wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
 ```
@@ -47,6 +61,7 @@ Now start your server a secound time - this time it should work.
 ```
 ./start.sh
 ```
+Settings: 
 
 If you would like to costumize your server further have a look at your server.properties file. 
 ```
