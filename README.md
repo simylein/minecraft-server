@@ -208,8 +208,8 @@ Close and save your crontab.
 # ending
 I hope you learned something and that those scripts I provide may help you and your minecraft server experience. 
 
-Have Fun and enjoy the Game ;^)
+Have fun and enjoy the Game ;^)
 
-best regards,
+Best regards,
 
 Simylein
