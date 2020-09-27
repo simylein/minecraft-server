@@ -2,7 +2,6 @@
 Scripts for a Minecraft Server on Linux [Debian] using screen. 
 
 This tutorial contains important steps if you would like to host a minecarft server from the command line. 
-
 # software
 In order for the Server to run we will need to install 2 Programms:
 ```
@@ -36,21 +35,15 @@ Now you got two directorys.
 One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
 
 Like you can imagine ${servername} holds your live Server and ${servername}-backups stores your backups. 
-
 # download jar file
-
 Now you will need to download the server executable from Mojang and place it into your ${servername} directory. 
 
 You can download it from: https://www.minecraft.net/en-us/download/server
-
 # settings.sh
-
 This is your file that holds the variables you have chosen with the setup script.
 
 If you know what your are doing feel free to edit it to suit your needs.
-
 # serverstart
-
 Start your Server for the first time:
 ```
 ./start.sh
@@ -70,9 +63,7 @@ Now start your server a secound time - this time it should work.
 ```
 ./start.sh
 ```
-
 # server.properties
-
 If you would like to costumize your server further have a look at your server.properties file. 
 ```
 nano server.properties
@@ -102,9 +93,7 @@ gamemode=               (default survival. Defines your game mode. For creative 
 
 sync-chunk-writes=      (stores your changes [I would strongely recomment to set this to true])
 ```
-
 # scripts
-
 The following scripts automate the start, stop, restart, backup and update procedure. 
 
 each one can be executed with:
@@ -146,9 +135,7 @@ The maintenance script is there to let people know you take their server offline
 ```
 ./maintenance.sh
 ```
-
 # crontab
-
 If you would like to automate some of those task on your server you can create a crontab.
 ```
 crontab -e
@@ -202,7 +189,7 @@ Example: (In order to work, please replace the variable with your own ones)
 @reboot ${serverdirectory}/start.sh
 ```
 Close and save your crontab. 
-
+# ending
 I hope you learned something and that those Scripts I provide may help you and your Minecraft Server experience. 
 
 Have Fun and enjoy the Game ;^)
