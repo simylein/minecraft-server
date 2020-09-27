@@ -189,6 +189,8 @@ Example: (In order to work, please replace the variable with your own ones)
 # minecraft ${servername} server start at boot
 @reboot ${serverdirectory}/start.sh
 ```
+Close and save your crontab. 
+
 I hope you learned something and that those Scripts I provide may help you and your Minecraft Server experience. 
 
 Have Fun and enjoy the Game ;^)
