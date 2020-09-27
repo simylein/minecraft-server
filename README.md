@@ -44,7 +44,7 @@ This is your file that holds the variables you have chosen with the setup script
 
 If you know what your are doing feel free to edit it to suit your needs.
 
-It look like this: (the empty variables are filled with the content your provided in setup.sh)
+It looks like this: (the empty variables are filled with the content your provided in setup.sh)
 ```
 screen='/usr/bin/screen'
 java='/usr/bin/java'
