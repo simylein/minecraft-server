@@ -166,7 +166,7 @@ Example: (In order to work, please replace the variable with your own ones)
 01 02 * * * ${serverdirectory}/backup.sh
 
 # minecraft ${servername} server start at 02:05
-05 04 * * * ${serverdirectory}/start.sh
+05 02 * * * ${serverdirectory}/start.sh
 ```
 Also, if you want your server to be online from a certain time to time:
 
