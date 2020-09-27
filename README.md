@@ -79,6 +79,7 @@ nano server.properties
 ```
 Important settings are:
 
+```
 max-players=            (limuts the maximumg amount of players on the server at the same time[Warning large numbers may impact performance])
 
 difficulty=             (defines ingame difficulty [peaceful, easy, normal, hard])
@@ -100,6 +101,7 @@ max-tick-time=          (default by 60000. Time in millisecound until the server
 gamemode=               (default survival. Defines your game mode. For creative server replace with creative)
 
 sync-chunk-writes=      (stores your changes [I would strongely recomment to set this to true])
+```
 
 # scripts
 
