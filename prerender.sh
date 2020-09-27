@@ -480,6 +480,114 @@ screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${h}$(printf '\r')
 echo "Progress: [136/289]"
 ${interval}
 
+# Sequence I
+screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${i}$(printf '\r')"
+echo "Progress: [137/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${i}$(printf '\r')"
+echo "Progress: [138/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${i}$(printf '\r')"
+echo "Progress: [139/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${i}$(printf '\r')"
+echo "Progress: [140/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${i}$(printf '\r')"
+echo "Progress: [141/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${i}$(printf '\r')"
+echo "Progress: [142/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${i}$(printf '\r')"
+echo "Progress: [143/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${i}$(printf '\r')"
+echo "Progress: [144/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${i}$(printf '\r')"
+echo "Progress: [145/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${i}$(printf '\r')"
+echo "Progress: [146/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${i}$(printf '\r')"
+echo "Progress: [147/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${i}$(printf '\r')"
+echo "Progress: [148/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${i}$(printf '\r')"
+echo "Progress: [149/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${i}$(printf '\r')"
+echo "Progress: [150/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${i}$(printf '\r')"
+echo "Progress: [151/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${i}$(printf '\r')"
+echo "Progress: [152/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${i}$(printf '\r')"
+echo "Progress: [153/289]"
+${interval}
+
+# Sequence J
+screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${j}$(printf '\r')"
+echo "Progress: [154/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${j}$(printf '\r')"
+echo "Progress: [155/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${j}$(printf '\r')"
+echo "Progress: [156/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${j}$(printf '\r')"
+echo "Progress: [157/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${j}$(printf '\r')"
+echo "Progress: [158/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${j}$(printf '\r')"
+echo "Progress: [159/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${j}$(printf '\r')"
+echo "Progress: [160/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${j}$(printf '\r')"
+echo "Progress: [161/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${j}$(printf '\r')"
+echo "Progress: [162/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${j}$(printf '\r')"
+echo "Progress: [163/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${j}$(printf '\r')"
+echo "Progress: [164/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${j}$(printf '\r')"
+echo "Progress: [165/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${j}$(printf '\r')"
+echo "Progress: [166/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${j}$(printf '\r')"
+echo "Progress: [167/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${j}$(printf '\r')"
+echo "Progress: [168/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${j}$(printf '\r')"
+echo "Progress: [169/289]"
+${interval}
+screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${j}$(printf '\r')"
+echo "Progress: [170/289]"
+${interval}
+
+
+
 screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
 echo "Prerendering of your world has finished"
 screen -Rd ${servername} -X stuff "Rendered 4096 blocks of area$(printf '\r')"
