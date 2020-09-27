@@ -37,9 +37,19 @@ One is called ${servername} (it's the name you have chosen for your server) and 
 
 Like you can imagine ${servername} holds your live Server and ${servername}-backups stores your backups. 
 
+# download jar file
+
 Now you will need to download the server executable from Mojang and place it into your ${servername} directory. 
 
 You can download it from: https://www.minecraft.net/en-us/download/server
+
+# settings.sh
+
+This is your file that holds the variables you have chosen with the setup script.
+
+If you know what your are doing feel free to edit it to siut your needs.
+
+# serverstart
 
 Start your Server for the first time:
 ```
