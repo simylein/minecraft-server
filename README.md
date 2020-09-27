@@ -3,7 +3,7 @@ Scripts for a Minecraft Server on Linux [Debian] using screen.
 
 Software:
 
-In Order for the Server to run we will need to install 2 Programms:
+In order for the Server to run we will need to install 2 Programms:
 
 Java:
 ```
