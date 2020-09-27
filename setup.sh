@@ -32,16 +32,13 @@ echo "downloading Scripts from GitHub..."
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 		wget -q -O speedrun.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/speedrun.sh
 		wget -q -O varo.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/varo.sh
+		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh
 
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
 		chmod +x backup.sh
-		chmod +x update.sh
-		chmod +x maintenance.sh
-		chmod +x speedrun.sh
-		chmod +x varo.sh
     serverdirectory=`pwd`
 	cd ${homedirectory}
 	
