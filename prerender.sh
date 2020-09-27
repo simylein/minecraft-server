@@ -54,218 +54,218 @@ screen -Rd ${servername} -X stuff "gamemode spectator ${playername}$(printf '\r'
 
 echo "Prerendering started"
 sleep 20s
-echo "Progress: 00.00%"
+echo "Progress: [0/289]"
 
 # Sequence A
 screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${a}$(printf '\r')"
-echo "Progress: 00.35%"
+echo "Progress: [001/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${a}$(printf '\r')"
-echo "Progress: 00.69%"
+echo "Progress: [002/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${a}$(printf '\r')"
-echo "Progress: 01.04%"
+echo "Progress: [003/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${a}$(printf '\r')"
-echo "Progress: 01.38%"
+echo "Progress: [004/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${a}$(printf '\r')"
-echo "Progress: 01.74%"
+echo "Progress: [005/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${a}$(printf '\r')"
-echo "Progress: 02.07%"
+echo "Progress: [006/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${a}$(printf '\r')"
-echo "Progress: 02.42%"
+echo "Progress: [007/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${a}$(printf '\r')"
-echo "Progress: 02.77%"
+echo "Progress: [008/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${a}$(printf '\r')"
-echo "Progress: 03.11%"
+echo "Progress: [009/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${a}$(printf '\r')"
-echo "Progress: 03.46%"
+echo "Progress: [010/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${a}$(printf '\r')"
-echo "Progress: 03.80%"
+echo "Progress: [011/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${a}$(printf '\r')"
-echo "Progress: 04.15%"
+echo "Progress: [012/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${a}$(printf '\r')"
-echo "Progress: 04.49%"
+echo "Progress: [013/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${a}$(printf '\r')"
-echo "Progress: 04.84%"
+echo "Progress: [014/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${a}$(printf '\r')"
-echo "Progress: 05.19%"
+echo "Progress: [015/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${a}$(printf '\r')"
-echo "Progress: 05.54%"
+echo "Progress: [016/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${a}$(printf '\r')"
-echo "Progress: 05.88%"
+echo "Progress: [017/289]"
 ${interval}
 
 # Sequence B
 screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [018/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [019/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [020/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [021/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [022/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [023/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [024/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [025/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [026/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [027/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [028/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [029/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [030/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [031/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [032/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [033/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${b}$(printf '\r')"
-echo "Progress: 11.76%"
+echo "Progress: [034/289]"
 ${interval}
 
 # Sequence C
 screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [035/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [036/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [037/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [038/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [039/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [040/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [041/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [042/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [043/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [044/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [045/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [046/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [047/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [048/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [049/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [050/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${c}$(printf '\r')"
-echo "Progress: 17.65%"
+echo "Progress: [051/289]"
 ${interval}
 
 # Sequence D
 screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [052/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${b} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [053/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${c} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [054/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${d} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [055/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${e} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [056/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${f} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [057/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${g} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [058/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${h} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [059/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${i} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [060/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${j} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [061/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${k} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [062/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${l} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [063/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${m} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [064/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${n} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [065/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${o} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [066/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: [067/289]"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${d}$(printf '\r')"
-echo "Progress: 23.53%"
+echo "Progress: [068/289]"
 ${interval}
 
 # Sequence E
