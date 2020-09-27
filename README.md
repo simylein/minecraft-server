@@ -42,6 +42,8 @@ Like you can imagine ${servername} holds your live Server and ${servername}-back
 
 Now you will need to download the server executable from Mojang and place it into your ${servername} directory. 
 
+You can download it from: https://www.minecraft.net/en-us/download/server
+
 Start your Server for the first time:
 ```
 ./start.sh
