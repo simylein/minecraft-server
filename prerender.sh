@@ -159,7 +159,7 @@ screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${b}$(printf '\r')
 echo "Progress: 00.00%"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${b}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: 11.76%"
 ${interval}
 
 # Sequence C
@@ -212,7 +212,7 @@ screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${c}$(printf '\r')
 echo "Progress: 00.00%"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${c}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: 17.65%"
 ${interval}
 
 # Sequence D
@@ -265,7 +265,7 @@ screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${d}$(printf '\r')
 echo "Progress: 00.00%"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${d}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: 23.53%"
 ${interval}
 
 # Sequence E
@@ -477,5 +477,13 @@ screen -Rd ${servername} -X stuff "tp ${playername} ${p} ${x} ${h}$(printf '\r')
 echo "Progress: 00.00%"
 ${interval}
 screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${h}$(printf '\r')"
-echo "Progress: 00.00%"
+echo "Progress: 47.06%"
 ${interval}
+
+screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
+echo "Prerendering of your world has finished"
+screen -Rd ${servername} -X stuff "Rendered 4096 blocks of area$(printf '\r')"
+echo "Rendered 4096 blocks of area"
+
+screen -Rd ${servername} -X stuff "kick ${playername}$(printf '\r')"
+echo "script is done"
