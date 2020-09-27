@@ -1,6 +1,9 @@
 # MinecraftServer
 Scripts for a Minecraft Server on Linux [Debian] using screen. 
 
+This tutorial contains important steps if you would like to host a minecarft server from the command line. 
+
+# software
 In order for the Server to run we will need to install 2 Programms:
 ```
 sudo apt install openjdk-14-jre-headless
@@ -8,7 +11,7 @@ sudo apt install openjdk-14-jre-headless
 ```
 sudo apt install screen
 ```
-
+# setup
 Then, you can download and execute the setup script.
 
 downloading setup script:
@@ -57,7 +60,8 @@ Now start your server a secound time - this time it should work.
 ```
 ./start.sh
 ```
-Settings: 
+
+# server.properties
 
 If you would like to costumize your server further have a look at your server.properties file. 
 ```
@@ -86,6 +90,8 @@ max-tick-time=          (default by 60000. Time in millisecound until the server
 gamemode=               (default survival. Defines your game mode. For creative server replace with creative)
 
 sync-chunk-writes=      (stores your changes [I would strongely recomment to set this to true])
+
+# scripts
 
 The following scripts automate the start, stop, restart, backup and update procedure. 
 
@@ -129,6 +135,60 @@ The maintenance script is there to let people know you take their server offline
 ./maintenance.sh
 ```
 
+# crontab
+
+If you would like to automate some of those task on your server you can create a crontab.
+```
+crontab -e
+```
+A new file will open (If you got one already the existing on will open)
+
+In this file, you can automate things as follows:
+
+Suggestion:
+
+Example: (In order to work, please replace the variable with your own ones)
+```
+# minecraft ${servername} server restart at 02:00
+00 02 * * * ${serverdirectory}/restart.sh
+
+# minecraft ${servername} server backup at 04:00
+00 04 * * * ${serverdirectory}/backup.sh
+```
+You may also do it differently:
+
+Example: (In order to work, please replace the variable with your own ones)
+```
+# minecraft ${servername} server stop at 02:00
+00 02 * * * ${serverdirectory}/stop.sh
+
+# minecraft ${servername} server backup at 02:01
+01 02 * * * ${serverdirectory}/backup.sh
+
+# minecraft ${servername} server start at 02:05
+05 04 * * * ${serverdirectory}/start.sh
+```
+Also, if you want your server to be online from a certain time to time:
+
+Example: (In order to work, please replace the variable with your own ones)
+```
+# minecraft ${servername} server start at 16:00
+00 16 * * * ${serverdirectory}/start.sh
+
+# minecraft ${servername} server stop at 22:00
+00 22 * * * ${serverdirectory}/stop.sh
+
+# minecraft ${servername} server backup at 04:00
+00 04 * * * ${serverdirectory}/backup.sh
+```
+
+If you want to start up your minecraft server at boot of your Linux server:
+
+Example: (In order to work, please replace the variable with your own ones)
+```
+# minecraft ${servername} server start at boot
+@reboot ${serverdirectory}/start.sh
+```
 I hope you learned something and that those Scripts I provide may help you and your Minecraft Server experience. 
 
 Have Fun and enjoy the Game ;^)
