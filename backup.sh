@@ -17,10 +17,10 @@ screen -Rd ${servername} -X stuff "say file available under ${backupdirectory}/$
 
 # deleting old backup
 echo "deleting old backup..."
-screen -Rd ${sevrername} -X stuff "say deleting old backup..."
+screen -Rd ${servername} -X stuff "say deleting old backup..."
 
 rm -r ${serverdirectory}/${servername}-${old}
 
 echo "deleted ${serverdirectory}/${servername}-${old}$(printf '\r')"
-screen -Rd ${sevrername} -X stuff "say deleted ${serverdirectory}/${servername}-${old}$(printf '\r')"
+screen -Rd ${servername} -X stuff "say deleted ${serverdirectory}/${servername}-${old}$(printf '\r')"
 
