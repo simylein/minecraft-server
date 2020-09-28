@@ -4,11 +4,13 @@
 . ./settings.sh
 
 if ! screen -list | grep -q "${servername}"; then
-        echo "Server is not currently running!"
+        echo -e "${yellow}Server is not currently running!{nocolor}"
         exit 1
 fi
 
-echo "Initiating Varo Start Sequenze for Minecraft Varo Server..."
+screen -Rd ${servername} -X stuff "say Welcome to Minecraft Varo$(printf '\r')"
+echo "Welcome to Minecraft Varo"
+sleep 5s
 
 screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 2 Minutes$(printf '\r')"
 screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
@@ -82,6 +84,4 @@ sleep 1s
 
 screen -Rd ${servername} -X stuff "gamemode 0 @a$(printf '\r')"
 screen -Rd ${servername} -X stuff "say Minecraft Varo has started$(printf '\r')"
-screen -Rd ${servername} -X stuff "say Good Luck and Have fun to all Teams$(printf '\r')"
-
-echo "script has finished"
+screen -Rd ${servername} -X stuff "say Good Luck and have fun to all Teams$(printf '\r')"
