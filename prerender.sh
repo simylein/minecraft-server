@@ -10,8 +10,8 @@ if ! screen -list | grep -q "${servername}"; then
         exit 1
 fi
 
-echo "I will prerender your minecraft world by teleporting a selcted player through it"
-echo "I will scan so to speak in a grid with the spacing of 256 blocks"
+echo -e "${blue}I will prerender your minecraft world by teleporting a selcted player through it${nocolor}"
+echo -e "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
 read -p "Please enter a playername: " playername
 echo -e "The player will be ${green}${playername}${nocolor}"
 
@@ -21,10 +21,10 @@ echo "Please enter an interval in secounds. Example: sleep 60s"
 read -p "interval:" interval
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
 
-echo "I will now start to teleport the selected player through he world"
+echo "I will now start to teleport the selected player through the world"
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo -e "${green}starting prerender...${nocolor}"
+	then echo -e "${green}starting prerenderer...${nocolor}"
 	else echo -e "${red}exiting...${nocolor}"
 		exit 1
 fi
@@ -856,9 +856,8 @@ echo "Progress: [255/289]"
 ${interval}
 
 screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
-echo -e "${blue}Prerendering of your world has finished${nocolor}"
+echo -e "${green}Prerendering of your world has finished${nocolor}"
 screen -Rd ${servername} -X stuff "Rendered 4096 blocks of area$(printf '\r')"
-echo -e "${blue}Rendered 16777216 [4096 times 4096] blocks of area${nocolor}"
+echo -e "${green}Rendered 16777216 [4096 times 4096] blocks of area${nocolor}"
 
 screen -Rd ${servername} -X stuff "kick ${playername} prerendering of your world has finished$(printf '\r')"
-echo -e "${green}script is done${nocolor}"
