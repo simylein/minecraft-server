@@ -6,11 +6,9 @@
 cd ${serverdirectory}
 
 if ! screen -list | grep -q "${servername}"; then
-        echo "Server is not currently running!"
+        echo -e "${yellow}Server is not currently running!${nocolor}"
         exit 1
 fi
-
-echo "Initiating Restarting Sequenze for Minecraft Server"
 
 echo "Server is restarting in 30 seconds!"
 screen -Rd ${servername} -X stuff "say Server is restarting in 30 seconds!$(printf '\r')"
@@ -50,9 +48,9 @@ while [ $StopChecks -lt 30 ]; do
 done
 
 if screen -list | grep -q "${servername}"; then
-        echo "Minecraft server still hasn't closed after 30 seconds, closing screen manually"
+        echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
         screen -S ${servername} -X quit
 fi
 
-echo "Restarting Server..."
+echo -e "${green}restarting Server...${nocolor}"
 ./start.sh
