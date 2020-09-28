@@ -4,11 +4,9 @@
 . ./settings.sh
 
 if ! screen -list | grep -q "${servername}"; then
-        echo "Server is not currently running!"
+        echo -e "${yellow}Server is not currently running!${nocolor}"
         exit 1
 fi
-
-echo "Initiating Timer Sequenze for Minecraft Speedrun Server..."
 
 echo "creating scoreboard..."
 screen -Rd ${servername} -X stuff "scoreboard objectives add health health$(printf '\r')"
@@ -189,4 +187,4 @@ echo "Time elapsed: 03:20:00"
 screen -Rd ${servername} -X stuff "say Time elapsed: 03:20:00$(printf '\r')"
 
 screen -Rd ${servername} -X stuff "say script has finished$(printf '\r')"
-echo "script has finished"
+echo -e "${green}script has finished${nocolor}"
