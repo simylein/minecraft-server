@@ -43,13 +43,29 @@ You can download it from: https://www.minecraft.net/en-us/download/server
 This is your file that holds the variables you have chosen with the setup script.
 
 If you know what your are doing feel free to edit it to suit your needs.
-
+```
+nano settings.sh
+```
 It looks like this: (the empty variables are filled with the content your provided in setup.sh)
 ```
-screen='/usr/bin/screen'
-java='/usr/bin/java'
-dnsserver='1.1.1.1'
-interface='192.168.1.1'
+#!/bin/bash
+# Minecraft Server settings
+
+# This file stores all the variables for the server. 
+# If you know what you are doing, feel free to tinker with them ;^)
+
+# command line colors
+red="\033[0;31m"
+yellow="\033[1;33m"
+green="\033[0;32m"
+blue="\033[0;34m"
+purple="\033[0;35m"
+nocolor="\033[0m"
+# server variables
+screen=
+java=
+dnsserver=
+interface=
 servername=
 homedirectory=
 serverdirectory=
