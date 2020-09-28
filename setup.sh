@@ -10,21 +10,22 @@ nocolor='\033[0m'
 
 echo -e "${blue}I will setup a minecraft server for you${nocolor}"
 echo "How should I call your server?"
-read -p "Please enter a servername: " servername
+echo -e "Please enter a servername: Example:${yellow}minecraft${nocolor}"
+read -p "Your name:" servername
 echo -e "Your Server will be called ${green}${servername}${nocolor}"
 
 homedirectory=`pwd`
 
-echo "I will now setup a server and backup directory. "
-echo "I will also download the following scripts:"
+echo "I will download the following scripts:"
 echo "start, stop, restart, backup, update, maintenance, speedrun and varo."
-echo "Continue?"
-read -p "[Y/N]:"
+read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo "starting setup..."
-	else echo "exiting..."
+	then echo -e "${green}starting setup...${nocolor}"
+	else echo -e "${red}exiting...${nocolor}"
 		exit 1
 fi
+
+echo "I will now setup a server and backup directory. "
 
 echo "setting up a Serverdirectory..."
 mkdir ${servername}
@@ -56,8 +57,72 @@ mkdir ${servername}-backups
     backupdirectory=`pwd`
   cd ${homedirectory}
 
+echo "Please tell me which DNS server you would like to use"
+echo -e "Example from Cloudflare:${yellow}1.1.1.1${nocolor}"
+read -p "Your dnsserver:" dnsserver
+echo -e "Your server will use ${green}${dnsserver}${nocolor} as a name server"
+
+echo "Please tell me the adsress of your interface (router)"
+echo -e "Usally it is something like this Example:${yellow}192.168.1.1${nocolor}"
+read -p "Your interface:" interface
+echo -e "Your server will use ${green}${interface}${nocolor} as an interface"
+
+echo "Tell me where your java binary is located"
+echo -e "Usally it is Example:${yellow}/usr/bin/java${nocolor}"
+read -p "Your location of the java binary:" java
+echo -e "Your server will access${green}${java}${nocolor} as java binary"
+
+echo "Tell me where your screen binary is located"
+echo -e "Usally it is Example:${yellow}/usr/bin/screen${nocolor}"
+read -p "Your location of the screen binary:" screen
+echo -e "Your server will access${green}${screen}${nocolor} as screen binary"
+
+echo "How much minimum memory would you like to grant your Server?"
+echo -e "Please enter like this: Example:${yellow}-Xms256M${nocolor}"
+read -p "Your amount:" mems
+echo -e "Your Server will will have ${green}${mems}${nocolor} of minimum memory allocated"
+
+echo "How much maximum memory would you like to grant your Server?"
+echo -e "Please enter like this: Example:${yellow}-Xmx2048M${nocolor}"
+read -p "Your amount:" memx
+echo -e "Your Server will will have ${green}${memx}${nocolor} of maximum memory allocated"
+
+echo "How many threads would you like your Server to use?"
+echo -e "Please enter like this. Example:${yellow}-XX:ParallelGCThreads=2${nocolor}"
+read -p "Your amount:" threadcount
+echo -e "Your Server will will have ${green}${threadcount}${nocolor} of threads to work with"
+
+echo "Please enter the location of your serverfile (executable)."
+echo -e "Please enter like this. Example:${yellow}${serverdirectory}/minecraft_server.1.16.3.jar${nocolor}"
+read -p "Your location:" serverfile
+echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
+
 echo "storing variables..."
   cd ${servername}
+    for var in dnsserver; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in interface; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in java; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in screen; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in mems; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in memx; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in threadcount; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
+    for var in serverfile; do
+      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+    done
     for var in servername; do
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
     done
@@ -71,42 +136,8 @@ echo "storing variables..."
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
     done
 
-echo "How much minimum memory would you like to grant your Server?"
-echo "Please enter in Megabytes. Example:-Xms256M"
-read -p "Your amount:" mems
-echo "Your Server will will have ${mems} of minimum memory allocated"
-
-echo "How much maximum memory would you like to grant your Server?"
-echo "Please enter in Megabytes. Example:-Xmx2048M"
-read -p "Your amount:" memx
-echo "Your Server will will have ${memx} of maximum memory allocated"
-
-echo "How many Threads would you like your Server to use?"
-echo "Please enter like this. Example:-XX:ParallelGCThreads=2"
-read -p "Your amount:" threadcount
-echo "Your Server will will have ${threadcount} allocated"
-
-echo "Please enter the location of your serverfile (executable)."
-echo "Please enter like this. Example:${serverdirectory}/minecraft_server.1.16.3.jar"
-read -p "Your location:" serverfile
-echo "Your Server will execute ${serverfile} at start"
-
-
-    for var in mems; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
-    done
-    for var in memx; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
-    done
-    for var in threadcount; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
-    done
-    for var in serverfile; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
-    done
-
-echo "setup is complete!"
+echo -e "${blue}setup is complete!${nocolor}"
 echo "If you would like to start your Server:"
-echo "go into your ${serverdirectory} and execute start.sh"
-echo "like this ./start.sh"
-echo "God Luck and Have Fun! ;^)"
+echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
+echo -e "execute like this: ${green}./start.sh${nocolor}"
+echo -e "God Luck and Have Fun! ${blue};^)${nocolor}"
