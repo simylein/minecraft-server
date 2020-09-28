@@ -42,14 +42,16 @@ echo "downloading Scripts from GitHub..."
 		wget -q -O speedrun.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/speedrun.sh
 		wget -q -O varo.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/varo.sh
 		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh
-echo "downloading server.jar..."
-		wget -q -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
 
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
 		chmod +x backup.sh
+
+echo "downloading server.jar..."
+		wget -q -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+
     serverdirectory=`pwd`
 	cd ${homedirectory}
 	
@@ -64,7 +66,7 @@ echo -e "Example from Cloudflare:${yellow}1.1.1.1${nocolor}"
 read -p "Your dnsserver:" dnsserver
 echo -e "Your server will use ${green}${dnsserver}${nocolor} as a name server"
 
-echo "Please tell me the adsress of your interface (router)"
+echo "Please tell me the address of your interface (router)"
 echo -e "Usally it is something like this Example:${yellow}192.168.1.1${nocolor}"
 read -p "Your interface:" interface
 echo -e "Your server will use ${green}${interface}${nocolor} as an interface"
