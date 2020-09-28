@@ -8,20 +8,19 @@ cd ${serverdirectory}
 echo "I will prerender your minecraft world by teleporting a selcted player through it"
 echo "I will scan so to speak in a grid with the spacing of 256 blocks"
 read -p "Please enter a playername: " playername
-echo "The player will be ${playername}"
+echo -e "The player will be ${green}${playername}${nocolor}"
 
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 secounds"
 echo "Please enter an interval in secounds. Example: sleep 60s"
 read -p "interval:" interval
-echo "The selected interval will be ${interval}"
+echo -e "The selected interval will be ${green}${interval}${nocolor}"
 
 echo "I will now start to teleport the selected player through he world"
-echo "Continue?"
-read -p "[Y/N]:"
+read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo "starting prerender..."
-	else echo "exiting..."
+	then echo -e "${green}starting prerender...${nocolor}"
+	else echo -e "${red}exiting...${nocolor}"
 		exit 1
 fi
 
@@ -799,9 +798,9 @@ echo "Progress: [238/289]"
 ${interval}
 
 screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
-echo "Prerendering of your world has finished"
+echo -e "${blue}Prerendering of your world has finished${nocolor}"
 screen -Rd ${servername} -X stuff "Rendered 4096 blocks of area$(printf '\r')"
-echo "Rendered 16777216 [4096 times 4096] blocks of area"
+echo -e "${blue}Rendered 16777216 [4096 times 4096] blocks of area${nocolor}"
 
-screen -Rd ${servername} -X stuff "kick ${playername} prerender has finished$(printf '\r')"
-echo "script is done"
+screen -Rd ${servername} -X stuff "kick ${playername} prerendering of your world has finished$(printf '\r')"
+echo -e "${green}script is done${nocolor}"
