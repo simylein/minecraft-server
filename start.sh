@@ -6,7 +6,7 @@
 cd ${serverdirectory}
 
 if screen -list | grep -q "${servername}";then
-        echo "Server is already running!  Type screen -r ${servername} to open the console"
+        echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
         exit 1
 fi
 
@@ -14,9 +14,9 @@ NetworkChecks=0
 while
 	[ $NetworkChecks -lt 4 ]; do
 		if ping -c 1 ${dnsserver} &> /dev/null
-			then echo "Success: Nameserver is online"
+			then echo -e "${green}Success: Nameserver is online${nocolor}"
 			break
-			else echo "Warning: Nameserver is offline"
+			else echo -e "${red}Warning: Nameserver is offline${nocolor}"
 		fi
 	sleep 1s;
 	NetworkChecks=$((NetworkChecks+1))
@@ -26,9 +26,9 @@ InterfaceChecks=0
 while
 	[ $InterfaceChecks -lt 4 ]; do
 		 if ping -c 1 ${interface} &> /dev/null
-				then echo "Success: Interface is online"
+				then echo -e "${green}Success: Interface is online${nocolor}"
 				break
-				else echo "Warning: Interface is offline"
+				else echo -e "${red}Warning: Interface is offline${nocolor}"
 		 fi
 	sleep 1s
 	InterfaceChecks=$((InterfaceChecks+1))
@@ -43,11 +43,11 @@ ${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -ja
 sleep 4s
 
 if ! screen -list | grep -q "${servername}"; then
-        echo "Something went wrong - Server failed to start!"
+        echo -e "${red}Something went wrong - Server failed to start!${nocolor}"
         exit 1
 fi
 
-echo "Server startup successful - changing to Server Console..."
+echo -e "${green}Server startup successful! - changing to Server Console...${nocolor}"
 
 sleep 4s
 
