@@ -3,16 +3,24 @@
 
 . ./settings.sh
 
-echo "Starting Backup..."
-echo "Backing up Server Files for Minecraft Server... (This may take a while)"
-screen -Rd ${servername} -X stuff "say Complete Server Database Backup has started...$(printf '\r')"
+new=$(date +"%Y-%m-%d")
+old=$(date -d "-24 days" +"%Y-%m-%d")
 
-date +"%Y-%m-%d"
-today=$(date +"%Y-%m-%d")
+# adding new backup
+echo "creating new backup..."
+screen -Rd ${servername} -X stuff "say creating new backup...$(printf '\r')"
 
-echo "Backup Location as follows ${backupdirectory}/${servername}${today}"
+cp -r ${serverdirectory} ${backupdirectory}/${servername}-${new}
 
-cp -r ${serverdirectory} ${backupdirectory}/${servername}-${today}
+echo "file available under ${backupdirectory}/${servername}-${new}"
+screen -Rd ${servername} -X stuff "say file available under ${backupdirectory}/${servername}-${new}$(printf '\r')"
 
-echo "Server Backups finished Succesfully"
-screen -Rd ${servername} -X stuff "say Complete Server Database Backup has successfully finished!$(printf '\r')"
+# deleting old backup
+echo "deleting old backup..."
+screen -Rd ${sevrername} -X stuff "say deleting old backup..."
+
+rm -r ${serverdirectory}/${servername}-${old}
+
+echo "deleted ${serverdirectory}/${servername}-${old}$(printf '\r')"
+screen -Rd ${sevrername} -X stuff "say deleted ${serverdirectory}/${servername}-${old}$(printf '\r')"
+
