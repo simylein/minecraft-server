@@ -3,9 +3,6 @@
 
 . ./settings.sh
 
-new=$(date +"%Y-%m-%d")
-old=$(date -d "-24 days" +"%Y-%m-%d")
-
 # adding new backup
 echo "creating new backup..."
 screen -Rd ${servername} -X stuff "say creating new backup...$(printf '\r')"
