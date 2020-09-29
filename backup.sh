@@ -1,6 +1,7 @@
 #!/bin/bash
 # Minecraft Server backup script
 
+# read the settings
 . ./settings.sh
 
 # adding new backup
