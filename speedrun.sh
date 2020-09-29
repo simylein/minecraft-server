@@ -1,6 +1,7 @@
 #!/bin/sh
 # Minecraft Server speedrun script
 
+# read the settings
 . ./settings.sh
 
 if ! screen -list | grep -q "${servername}"; then
@@ -63,128 +64,19 @@ echo "Speedrun Challange has started"
 screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\r')"
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
-echo "Time elapsed: 00:00:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:00:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:05:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:05:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:10:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:10:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:15:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:15:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:20:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:20:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:25:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:25:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:30:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:30:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:35:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:35:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:40:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:40:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:45:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:45:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:50:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:50:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 00:55:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 00:55:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:00:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:00:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:05:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:05:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:10:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:10:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:15:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:15:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:20:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:20:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:25:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:25:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:30:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:30:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:35:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:35:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:40:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:40:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:45:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:45:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:50:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:50:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 01:55:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 01:55:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:00:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:00:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:05:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:05:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:10:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:10:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:15:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:15:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:20:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:20:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:25:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:25:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:30:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:30:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:35:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:35:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:40:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:40:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:45:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:45:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:50:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:50:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 02:55:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 02:55:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 03:00:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 03:00:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 03:05:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 03:05:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 03:10:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 03:10:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 03:15:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 03:15:00$(printf '\r')"
-sleep 300s
-echo "Time elapsed: 03:20:00"
-screen -Rd ${servername} -X stuff "say Time elapsed: 03:20:00$(printf '\r')"
+#!/bin/bash
+# Timer sequence
+
+counter=0
+while [ $counter -lt 12000 ]; do
+    if [ $((counter%300)) -eq 0 ];
+      then 
+        echo "Time elapsed: ${counter} seconds"
+        screen -Rd ${servername} -X stuff "say Time elapsed: ${counter} seconds$(printf '\r)"
+    fi
+  sleep 1s;
+  counter=$((counter+1))
+done
 
 screen -Rd ${servername} -X stuff "say script has finished$(printf '\r')"
 echo -e "${green}script has finished${nocolor}"
