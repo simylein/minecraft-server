@@ -12,5 +12,5 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 # server variables
-new=(date +"%Y-%m-%d")
-old=(date -d "-24 days" +"%Y-%m-%d")
+new=$(date +"%Y-%m-%d")
+old=$(date -d "-24 days" +"%Y-%m-%d")
