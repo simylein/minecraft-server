@@ -67,13 +67,22 @@ screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZac
 # Timer sequence
 counter=0
 while [ ${counter} -lt 12000 ]; do
- if [ $((counter%1)) -eq 0 ]; then
+ if [ $((counter%240)) -eq 0 ]; then
   let "hours=counter/3600"
+   if (( ${hours} < 10 )); then
+    hours=0${hours}
+   fi
   let "minutes=(counter%3600)/60"
+   if (( ${minutes} < 10 )); then
+    minutes=0${minutes}
+   fi
   let "seconds=(counter%3600)%60"
+   if (( ${seconds} < 10 )); then
+    seconds=0${seconds}
+   fi
+    echo "Time elapsed: ${hours}:${minutes}:${secounds}"
+    screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${secounds}$(printf '\r')"
  fi
 done
 
-
-screen -Rd ${servername} -X stuff "say script has finished$(printf '\r')"
 echo -e "${green}script has finished${nocolor}"
