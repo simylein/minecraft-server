@@ -83,6 +83,6 @@ while [ ${counter} -lt 12000 ]; do
     echo "Time elapsed: ${hours}:${minutes}:${secounds}"
     screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${secounds}$(printf '\r')"
  fi
+ sleep 1s
+ counter=$((counter+1))
 done
-
-echo -e "${green}script has finished${nocolor}"
