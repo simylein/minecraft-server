@@ -64,19 +64,16 @@ echo "Speedrun Challange has started"
 screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\r')"
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
-#!/bin/bash
 # Timer sequence
-
 counter=0
-while [ $counter -lt 12000 ]; do
-    if [ $((counter%300)) -eq 0 ];
-      then 
-        echo "Time elapsed: ${counter} seconds"
-        screen -Rd ${servername} -X stuff "say Time elapsed: ${counter} seconds$(printf '\r)"
-    fi
-  sleep 1s;
-  counter=$((counter+1))
+while [ ${counter} -lt 12000 ]; do
+ if [ $((counter%1)) -eq 0 ]; then
+  let "hours=counter/3600"
+  let "minutes=(counter%3600)/60"
+  let "seconds=(counter%3600)%60"
+ fi
 done
+
 
 screen -Rd ${servername} -X stuff "say script has finished$(printf '\r')"
 echo -e "${green}script has finished${nocolor}"
