@@ -1,12 +1,13 @@
 #!/bin/bash
 # Script for setting up a Minecraft Server
 
-red='\033[0;31m'
-yellow='\033[1;33m'
-green='\033[0;32m'
-blue='\033[0;34m'
-purple='\033[0;35m'
-nocolor='\033[0m'
+# command line colours 
+red="\033[0;31m"
+yellow="\033[1;33m"
+green="\033[0;32m"
+blue="\033[0;34m"
+purple="\033[0;35m"
+nocolor="\033[0m"
 
 echo -e "${blue}I will setup a minecraft server for you${nocolor}"
 echo "How should I call your server?"
