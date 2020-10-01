@@ -1,20 +1,27 @@
 #!/bin/bash
 # Minecraft Server start script
 
+# read the settings
 . ./settings.sh
 
+# change to server directory
 cd ${serverdirectory}
 
+# check if server is running
 if ! screen -list | grep -q "${servername}"; then
         echo -e "${yellow}Server is not currently running!${nocolor}"
         exit 1
 fi
 
+# explain to user
 echo -e "${blue}I will prerender your minecraft world by teleporting a selcted player through it${nocolor}"
 echo -e "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
+
+# ask for playername
 read -p "Please enter a playername: " playername
 echo -e "The player will be ${green}${playername}${nocolor}"
 
+# ask for interval in seconds
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 secounds"
 echo "Please enter an interval in secounds. Example: sleep 60s"
@@ -30,7 +37,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # grid settings
-
 x='128'
 
 a='2048'
@@ -52,10 +58,10 @@ p='-1792'
 q='-2048'
 
 # teleporting sequence
-
 echo "Setting player into spectator mode"
 screen -Rd ${servername} -X stuff "gamemode spectator ${playername}$(printf '\r')"
 
+# prerender start
 echo "Prerendering started"
 sleep 20s
 echo "Progress: [0/289]"
@@ -855,9 +861,11 @@ screen -Rd ${servername} -X stuff "tp ${playername} ${q} ${x} ${o}$(printf '\r')
 echo "Progress: [255/289]"
 ${interval}
 
+# command line finished message
 screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
 echo -e "${green}Prerendering of your world has finished${nocolor}"
 screen -Rd ${servername} -X stuff "Rendered 4096 blocks of area$(printf '\r')"
 echo -e "${green}Rendered 16777216 [4096 times 4096] blocks of area${nocolor}"
 
+# kick player with finished message
 screen -Rd ${servername} -X stuff "kick ${playername} prerendering of your world has finished$(printf '\r')"
