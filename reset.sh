@@ -49,6 +49,7 @@ fi
 echo -e "${green}server successfully stopped!{nocolor}"
 
 # remove log and world
+echo -e "${red}removing world and log files...{nocolor}"
 rm screenlog.0
 rm -r world
 
