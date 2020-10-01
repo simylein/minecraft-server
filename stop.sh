@@ -9,7 +9,7 @@ cd ${serverdirectory}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Server is not currently running!${nocolor}"
+        echo -e "${yellow}server is not currently running!${nocolor}"
         exit 1
 fi
 
@@ -25,8 +25,8 @@ sleep 1s
 done
 
 # server stop
-echo "Stopping server..."
-screen -Rd ${servername} -X stuff "say Stopping server...$(printf '\r')"
+echo "stopping server..."
+screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
 screen -Rd ${servername} -X stuff "stop$(printf '\r')"
 
 # check if server stopped
@@ -41,7 +41,7 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+        echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
         screen -S ${servername} -X quit
 fi
 
