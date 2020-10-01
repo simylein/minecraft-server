@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script for setting up a Minecraft Server
+# script for setting up a minecraft server on linux debian
 
 # command line colours 
 red="\033[0;31m"
@@ -9,14 +9,17 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 
+# initial questions
 echo -e "${blue}I will setup a minecraft server for you${nocolor}"
 echo "How should I call your server?"
 echo -e "Please enter a servername: Example:${yellow}minecraft${nocolor}"
 read -p "Your name:" servername
 echo -e "Your Server will be called ${green}${servername}${nocolor}"
 
+# store homedirectory
 homedirectory=`pwd`
 
+# ask for permission to proceed
 echo "I will download the following scripts:"
 echo "start, stop, restart, backup, update, maintenance, speedrun and varo."
 read -p "Continue? [Y/N]:"
@@ -26,15 +29,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		exit 1
 fi
 
+# set up directorys
 echo "I will now setup a server and backup directory. "
 
-echo "setting up a Serverdirectory..."
+# set up server directory
+echo "setting up a serverdirectory..."
 mkdir ${servername}
 
-echo "downloading Scripts from GitHub..."
+# donwload all the github scripts
+echo "downloading scripts from GitHub..."
 	cd ${servername}
 		wget -q -O settings.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/settings.sh
 		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
+		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh
 		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
 		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
 		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
@@ -44,24 +51,29 @@ echo "downloading Scripts from GitHub..."
 		wget -q -O varo.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/varo.sh
 		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh
 
+# making the core scripts executable 
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
 		chmod +x backup.sh
 
+# download java executable from mojang.com
 echo "downloading server.jar..."
 		wget -q -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
 
+# store serverdirectory
     serverdirectory=`pwd`
 	cd ${homedirectory}
 	
+# set up backupdirectory
 echo "setting up a Backupdirectory..."		
 mkdir ${servername}-backups
   cd ${servername}-backups
     backupdirectory=`pwd`
   cd ${homedirectory}
 
+# ask all the importatnt user input
 echo "Please tell me which DNS server you would like to use"
 echo -e "Example from Cloudflare:${yellow}1.1.1.1${nocolor}"
 read -p "Your dnsserver:" dnsserver
@@ -102,6 +114,7 @@ echo -e "Please enter like this. Example:${yellow}${serverdirectory}/minecraft_s
 read -p "Your location:" serverfile
 echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
 
+# store all the userinput
 echo "storing variables..."
   cd ${servername}
     for var in dnsserver; do
@@ -141,6 +154,7 @@ echo "storing variables..."
       declare -p $var | cut -d ' ' -f 3- >> settings.sh
     done
 
+# finish messages
 echo -e "${blue}setup is complete!${nocolor}"
 echo "If you would like to start your Server:"
 echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
