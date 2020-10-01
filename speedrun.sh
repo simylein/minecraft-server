@@ -1,5 +1,5 @@
 #!/bin/sh
-# Minecraft Server speedrun script
+# minecraft server speedrun script
 
 # read the settings
 . ./settings.sh
