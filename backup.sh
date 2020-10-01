@@ -13,6 +13,7 @@ screen -Rd ${servername} -X stuff "say creating new backup...$(printf '\r')"
 
 cp -r ${serverdirectory} ${backupdirectory}/${servername}-${new}
 
+# output file location of new backup
 echo "file available under ${backupdirectory}/${servername}-${new}"
 screen -Rd ${servername} -X stuff "say file available under ${backupdirectory}/${servername}-${new}$(printf '\r')"
 
@@ -22,5 +23,6 @@ screen -Rd ${servername} -X stuff "say deleting old backup...$(printf '\r')"
 
 rm -r ${backupdirectory}/${servername}-${old}
 
+# output deleted backup location
 echo "deleted ${backupdirectory}/${servername}-${old}"
 screen -Rd ${servername} -X stuff "say deleted ${backupdirectory}/${servername}-${old}$(printf '\r')"
