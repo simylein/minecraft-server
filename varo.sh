@@ -1,87 +1,34 @@
 #!/bin/sh
 # Minecraft Server varo script
 
+# read the settings
 . ./settings.sh
 
+# check if server is running
 if ! screen -list | grep -q "${servername}"; then
         echo -e "${yellow}Server is not currently running!{nocolor}"
         exit 1
 fi
 
+# welcome message
 screen -Rd ${servername} -X stuff "say Welcome to Minecraft Varo$(printf '\r')"
 echo "Welcome to Minecraft Varo"
 sleep 5s
 
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 2 Minutes$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 2 Minutes"
-sleep 60s
 
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 1 Minute$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 1 Minute"
-sleep 30s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 30 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 30 Seconds"
-sleep 10s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 20 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 20 Seconds"
-sleep 10s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 10 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 10 Seconds"
+# countdown to varo
+counter="240"
+while [ ${counter} -gt 0 ]; do
+        if [[ "${counter}" =~ ^(240|180|120|60|40|20|10|5|4|3|2|1)$ ]];then
+                echo "Minecraft Varo is starting in ${counter} seconds!"
+                screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
+                screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in ${counter} seconds!$(printf '\r')"
+        fi
+counter=$((counter-1))
 sleep 1s
+done
 
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 9 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 9 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 8 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 8 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 7 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 7 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 6 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 6 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 5 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 5 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 4 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 4 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 3 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 3 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 2 Seconds$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 2 Seconds"
-sleep 1s
-
-screen -Rd ${servername} -X stuff "say Minecraft Varo is starting in 1 Second$(printf '\r')"
-screen -Rd ${servername} -X stuff "gamemode 2 @a$(printf '\r')"
-echo "Minecraft Varo is starting in 1 Second"
-sleep 1s
-
+# start of varo
 screen -Rd ${servername} -X stuff "gamemode 0 @a$(printf '\r')"
 screen -Rd ${servername} -X stuff "say Minecraft Varo has started$(printf '\r')"
 screen -Rd ${servername} -X stuff "say Good Luck and have fun to all Teams$(printf '\r')"
