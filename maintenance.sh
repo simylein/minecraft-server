@@ -1,45 +1,35 @@
 #!/bin/sh
-# Minecraft Server maintenance script
+# minecraft server stop script
 
+# read the settings
 . ./settings.sh
 
+# change to server directory
 cd ${serverdirectory}
 
+# check if server is running
 if ! screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Server is not currently running!${nocolor}"
+        echo -e "${yellow}server is not currently running!${nocolor}"
         exit 1
 fi
 
-echo "Initiating Updating Sequenze for Minecraft Server"
+# countdown
+counter="60"
+while [ ${counter} -gt 0 ]; do
+        if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+                echo "server is going into maintenance in ${counter} seconds!"
+                screen -Rd ${servername} -X stuff "say server is going into maintenance in ${counter} seconds!$(printf '\r')"
+        fi
+counter=$((counter-1))
+sleep 1s
+done
 
-echo "Server is going into maintenance in 30 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 30 seconds!$(printf '\r')"
-sleep 23s
-echo "Server is going into maintenance in 7 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 7 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is going into maintenance in 6 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 6 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is going into maintenance in 5 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 5 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is going into maintenance in 4 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 4 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is going into maintenance in 3 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 3 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is going into maintenance in 2 seconds!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 2 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is going into maintenance in 1 second!"
-screen -Rd ${servername} -X stuff "say Server is going into maintenance in 1 second!$(printf '\r')"
-sleep 1s
-echo "Closing server..."
-screen -Rd ${servername} -X stuff "say Closing server...$(printf '\r')"
+# server stop
+echo "stopping server..."
+screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
 screen -Rd ${servername} -X stuff "stop$(printf '\r')"
 
+# check if server stopped
 StopChecks=0
 while [ $StopChecks -lt 30 ]; do
         if ! screen -list | grep -q "${servername}"; then
@@ -49,7 +39,11 @@ while [ $StopChecks -lt 30 ]; do
         StopChecks=$((StopChecks+1))
 done
 
+# force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+        echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
         screen -S ${servername} -X quit
 fi
+
+# output confirmed stop
+echo -e "${green}server successfully stopped!{nocolor}"
