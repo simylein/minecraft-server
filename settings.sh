@@ -14,4 +14,3 @@ nocolor="\033[0m"
 # server variables
 new=$(date +"%Y-%m-%d")
 old=$(date -d "-24 days" +"%Y-%m-%d")
-timer=$(date -d "${counter} seconds" +"%H:%M:%S" +"00:00:00")
