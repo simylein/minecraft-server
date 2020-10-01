@@ -52,5 +52,6 @@ echo -e "${green}server successfully stopped!{nocolor}"
 rm screenlog.0
 rm -r world
 
-# start server
+# restart the server
+echo -e "${green}restarting server...${nocolor}"
 ./start.sh
