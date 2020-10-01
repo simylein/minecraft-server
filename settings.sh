@@ -1,8 +1,8 @@
 #!/bin/bash
-# Minecraft Server settings
+# minecraft server settings
 
-# This file stores all the variables for the server. 
-# If you know what you are doing, feel free to tinker with them ;^)
+# this file stores all the variables for the server. 
+# if you know what you are doing, feel free to tinker with them ;^)
 
 # command line colors
 red="\033[0;31m"
