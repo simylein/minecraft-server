@@ -1,5 +1,5 @@
 #!/bin/sh
-# Minecraft Server stop script
+# minecraft server stop script
 
 # read the settings
 . ./settings.sh
