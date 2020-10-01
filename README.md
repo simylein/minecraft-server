@@ -159,7 +159,11 @@ The maintenance script is there to let people know you take their server offline
 ```
 ./maintenance.sh
 ```
-There is also a reset script. Warning it will reset your world and log files
+The update script will updaet your server to the newest java version avaible. 
+```
+./update.sh
+```
+There is also a reset script. Warning it will reset your world and log files. 
 ```
 ./reset.sh
 ```
