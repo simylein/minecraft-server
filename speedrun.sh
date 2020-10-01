@@ -82,6 +82,6 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
                       echo "Time elapsed: ${hours}:${minutes}:${seconds}" # command line time output
                       screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
         fi
-sleep 1s
 counter=$((counter+1))
+sleep 1s
 done
