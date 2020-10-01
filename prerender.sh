@@ -63,8 +63,23 @@ screen -Rd ${servername} -X stuff "gamemode spectator ${playername}$(printf '\r'
 
 # prerender start
 echo "Prerendering started"
-sleep 20s
-echo "Progress: [0/289]"
+echo "Progress: [000/000]"
+counter="1"
+progress="1"
+while [ ${counter} -lt 290 ]; do
+    let "progress=counter"
+    if (( ${progress} < 10 )); then
+      progress=00${progress}
+    elif (( ${progress} > 99 )); then
+      progress=${progress}
+    else
+      progress=0${progress}
+    fi
+  echo "tp ${playername} ${a} ${x} ${a}"
+  echo "Progress: [${progress}/289]"
+counter=$((counter+1))
+sleep 0.1s
+done
 
 # Sequence A
 screen -Rd ${servername} -X stuff "tp ${playername} ${a} ${x} ${a}$(printf '\r')"
