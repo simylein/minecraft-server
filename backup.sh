@@ -1,8 +1,11 @@
 #!/bin/bash
-# Minecraft Server backup script
+# minecraft server backup script
 
 # read the settings
 . ./settings.sh
+
+# change to server directory
+cd ${serverdirectory}
 
 # adding new backup
 echo "creating new backup..."
