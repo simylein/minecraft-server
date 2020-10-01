@@ -58,6 +58,8 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 # server variables
+new=$(date +"%Y-%m-%d")
+old=$(date -d "-24 days" +"%Y-%m-%d")
 screen=
 java=
 dnsserver=
@@ -137,21 +139,15 @@ each one can be executed with:
 ```
 ./backup.sh
 ```
-```
-./update.sh
-```
-
 The varo and speedrun scripts can be used if you wish for some varo and speedrun functionality. 
 
 They can be executed with:
-
 ```
 ./speedrun.sh
 ```
 ```
 ./varo.sh
 ```
-
 The prerender script is for pregenerating your world if you so desire. 
 
 It will require at least one player on the server. 
@@ -162,6 +158,10 @@ It will require at least one player on the server.
 The maintenance script is there to let people know you take their server offline while you perform maintenance. 
 ```
 ./maintenance.sh
+```
+There is also a reset script. Warning it will reset your world and log files
+```
+./reset.sh
 ```
 # crontab
 If you would like to automate some of those task on your server you can create a crontab.
