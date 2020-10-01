@@ -80,8 +80,8 @@ while [ ${counter} -lt 12000 ]; do
    if (( ${seconds} < 10 )); then
     seconds=0${seconds}
    fi
-    echo "Time elapsed: ${hours}:${minutes}:${secounds}"
-    screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${secounds}$(printf '\r')"
+    echo "Time elapsed: ${hours}:${minutes}:${seconds}"
+    screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
  fi
  sleep 1s
  counter=$((counter+1))
