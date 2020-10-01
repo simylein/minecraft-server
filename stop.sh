@@ -1,43 +1,35 @@
 #!/bin/sh
 # Minecraft Server stop script
 
+# read the settings
 . ./settings.sh
 
+# change to server directory
 cd ${serverdirectory}
 
+# check if server is running
 if ! screen -list | grep -q "${servername}"; then
         echo -e "${yellow}Server is not currently running!${nocolor}"
         exit 1
 fi
 
-echo "Server is stopping in 30 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 30 seconds!$(printf '\r')"
-sleep 23s
-echo "Server is stopping in 7 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 7 seconds!$(printf '\r')"
+# countdown
+counter="60"
+while [ ${counter} -gt 0 ]; do
+        if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+                echo "server is stopping in ${counter} seconds!"
+                screen -Rd ${servername} -X stuff "say server is stopping in ${counter} seconds!$(printf '\r')"
+        fi
+counter=$((counter-1))
 sleep 1s
-echo "Server is stopping in 6 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 6 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is stopping in 5 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 5 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is stopping in 4 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 4 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is stopping in 3 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 3 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is stopping in 2 seconds!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 2 seconds!$(printf '\r')"
-sleep 1s
-echo "Server is stopping in 1 second!"
-screen -Rd ${servername} -X stuff "say Server is stopping in 1 second!$(printf '\r')"
-sleep 1s
+done
+
+# server stop
 echo "Stopping server..."
 screen -Rd ${servername} -X stuff "say Stopping server...$(printf '\r')"
 screen -Rd ${servername} -X stuff "stop$(printf '\r')"
 
+# check if server stopped
 StopChecks=0
 while [ $StopChecks -lt 30 ]; do
         if ! screen -list | grep -q "${servername}"; then
@@ -47,9 +39,11 @@ while [ $StopChecks -lt 30 ]; do
         StopChecks=$((StopChecks+1))
 done
 
+# force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
         echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
         screen -S ${servername} -X quit
 fi
 
+# output confirmed stop
 echo -e "${green}server successfully stopped!{nocolor}"
