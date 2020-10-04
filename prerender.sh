@@ -44,40 +44,34 @@ cords=( 2048 1792 1536 1280 1024 0768 0512 0256 0000 -0256 -0512 -0768 -1024 -12
 echo "Prerendering started"
 echo "Progress: [000/000]"
 
+# grid settings
+cords=( 2048 1792 1536 1280 1024 0768 0512 0256 0000 -0256 -0512 -0768 -1024 -1280 -1536 -1792 -2048 )
 
-# teleport script
-y="128"
-for  x in "${cords[@]}"; do
-  echo "tp ${playername} ${x} ${y} ${z}"
-    for z in "${cords[@]}"; do
-      echo "tp ${playername} ${x} ${y} ${z}"
-      sleep 1s
-    done
-  sleep 1s
-done
+# prerender start
+echo "Prerendering started"
+echo "Progress: [000/000]"
 
-# progress script
-counter="1"
+# teleport script with progress
 progress="1"
-while [ ${counter} -lt 290 ]; do
-    let "progress=counter"
-    if (( ${progress} < 10 )); then
-      progress=00${progress}
-    elif (( ${progress} > 99 )); then
-      progress=${progress}
-    else
-      progress=0${progress}
-    fi
-  echo "tp ${playername} ${x} ${y} ${z}"
-  echo "Progress: [${progress}/289]"
-counter=$((counter+1))
-sleep 1s
+counter="1"
+y="128"
+for x in "${cords[@]}"; do
+		for z in "${cords[@]}"; do
+			echo "tp ${playername} ${x} ${y} ${z}"
+			let "progress=counter"
+			if (( ${progress} < 10 )); then
+				progress=00${progress}
+			elif (( ${progress} > 99 )); then
+				progress=${progress}
+			else
+				progress=0${progress}
+			fi
+			counter=$((counter+1))
+			echo "Progress: [${progress}/289]"
+			${interval}
+		done
+	${interval}
 done
-
-
-# to do
-# combine teleport and progress script
-
 
 # command line finished message
 screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
