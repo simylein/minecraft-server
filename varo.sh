@@ -15,7 +15,6 @@ screen -Rd ${servername} -X stuff "say Welcome to Minecraft Varo$(printf '\r')"
 echo "Welcome to Minecraft Varo"
 sleep 5s
 
-
 # countdown to varo
 counter="240"
 while [ ${counter} -gt 0 ]; do
