@@ -40,9 +40,10 @@ while
 done
 
 # user information
-echo "starting ${servername} server..."
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
+echo "starting ${servername} server..."
+
 
 # main start commmand
 ${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
