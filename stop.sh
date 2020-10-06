@@ -46,4 +46,4 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # output confirmed stop
-echo -e "${green}server successfully stopped!{nocolor}"
+echo -e "${green}server successfully stopped!${nocolor}"
