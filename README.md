@@ -1,5 +1,5 @@
 # MinecraftServer
-Scripts for a Minecraft Server on Linux [Debian] using screen. 
+Scripts for a Minecraft Server on Linux Debian using screen. 
 
 This tutorial contains important steps if you would like to host a minecarft server from the command line. 
 # software
