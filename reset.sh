@@ -2,7 +2,7 @@
 # minecraft server reset script
 
 # read the settings
-. ./settings.sh
+. ./server.settings
 
 # change to server directory
 cd ${serverdirectory}
