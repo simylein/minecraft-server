@@ -2,7 +2,7 @@
 # Minecraft Server varo script
 
 # read the settings
-. ./settings.sh
+. ./server.settings
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
