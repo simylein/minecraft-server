@@ -118,40 +118,40 @@ echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
 echo "storing variables..."
   cd ${servername}
     for var in dnsserver; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in interface; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in java; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in screen; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in mems; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in memx; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in threadcount; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in serverfile; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in servername; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in homedirectory; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in serverdirectory; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in backupdirectory; do
-      declare -p $var | cut -d ' ' -f 3- >> settings.sh
+      declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
 
 # finish messages
