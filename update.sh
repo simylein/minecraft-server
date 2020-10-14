@@ -2,7 +2,7 @@
 # Minecraft Server update script
 
 # read the settings
-. ./settings.sh
+. ./server.settings
 
 # change to serverdirectory
 cd ${serverdirectory}
