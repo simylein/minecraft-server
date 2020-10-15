@@ -35,17 +35,17 @@ Now you got two directorys.
 One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
 
 Like you can imagine ${servername} holds your live Server and ${servername}-backups stores your backups. 
-# settings.sh
+# server.settings
 This is your file that holds the variables you have chosen with the setup script.
 
 If you know what your are doing feel free to edit it to suit your needs.
 ```
-nano settings.sh
+nano server.settings
 ```
 It looks like this: (the empty variables are filled with the content your provided in setup.sh)
 ```
 #!/bin/bash
-# Minecraft Server settings
+# minecraft server settings
 
 # This file stores all the variables for the server. 
 # If you know what you are doing, feel free to tinker with them ;^)
