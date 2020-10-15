@@ -1,5 +1,5 @@
 #!/bin/bash
-# Minecraft Server start script
+# mincraft server prerender script
 
 # read the settings
 . ./server.settings
