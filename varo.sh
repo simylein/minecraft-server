@@ -1,8 +1,11 @@
-#!/bin/sh
-# Minecraft Server varo script
+#!/bin/bash
+# minecraft server varo script
 
 # read the settings
 . ./server.settings
+
+# change to server directory
+cd ${serverdirectory}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
