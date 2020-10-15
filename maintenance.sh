@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # minecraft server stop script
 
 # read the settings
