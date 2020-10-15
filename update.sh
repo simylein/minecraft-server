@@ -1,5 +1,5 @@
-#!/bin/sh
-# Minecraft Server update script
+#!/bin/bash
+# minecraft server update script
 
 # read the settings
 . ./server.settings
