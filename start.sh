@@ -1,5 +1,5 @@
 #!/bin/bash
-# Minecraft Server start script
+# minecraft server start script
 
 # read the settings
 . ./server.settings
