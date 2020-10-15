@@ -1,5 +1,5 @@
 #!/bin/bash
-# Minecraft Server restart script
+# minecraft server restart script
 
 # read the settings
 . ./server.settings
