@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Minecraft Server restart script
 
 # read the settings
