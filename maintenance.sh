@@ -1,5 +1,5 @@
 #!/bin/bash
-# minecraft server stop script
+# minecraft server maintenance script
 
 # read the settings
 . ./server.settings
