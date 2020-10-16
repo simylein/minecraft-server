@@ -67,7 +67,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 			./reset.sh # execution of the reset script
 			break
 		fi
-			let "hours=counter/3600" 
+			let "hours=counter/3600"
 				if (( ${hours} < 10 )); then
 					hours=0${hours}
 				fi
