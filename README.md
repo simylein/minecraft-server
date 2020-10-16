@@ -24,7 +24,7 @@ Then, you can download and execute the setup script.
 
 downloading setup script:
 ```
-  wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
+wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
 ```
 
 making setup script executable:
