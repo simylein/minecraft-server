@@ -73,7 +73,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 					seconds=0${seconds}
 				fi
 			echo "Challange has been completed in ${hours}:${minutes}:${seconds}" # command line time output
-			screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}${seconds}$(printf '\r')" # ingame time output
+			screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 			screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 			./reset.sh # execution of the reset script
 			break
