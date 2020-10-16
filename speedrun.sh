@@ -55,7 +55,7 @@ screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
 # timer sequence
-dragondeath="[Free the End]"
+dragondeath="Free the End"
 screenlog="screenlog.0"
 counter="0"
 while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
