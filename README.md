@@ -124,7 +124,7 @@ gamemode=               (default survival. Defines your game mode. For creative 
 sync-chunk-writes=      (stores your changes [I would strongely recomment to set this to true])
 ```
 # scripts
-The following scripts automate the start, stop, restart, backup and update procedure. 
+The following scripts automate the start, stop, restart and backup procedure. 
 
 each one can be executed with:
 ```
