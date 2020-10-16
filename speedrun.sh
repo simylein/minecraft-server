@@ -59,7 +59,6 @@ dragondeath="Free the End"
 screenlog="screenlog.0"
 counter="0"
 while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
-	if [ $((counter%240)) -eq 0 ]; then # output time every 4 minutes
 		if [[ ! -z $(grep "$dragondeath" "$screenlog") ]]; then # if dragon is killed output time and reset server
 			echo "Challange has been completed in ${hours}:${minutes}:${seconds}" # command line time output
 			screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}${seconds}$(printf '\r')" # ingame time output
@@ -67,6 +66,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 			./reset.sh # execution of the reset script
 			break
 		fi
+    if [ $((counter%240)) -eq 0 ]; then # output time every 4 minutes
 			let "hours=counter/3600"
 				if (( ${hours} < 10 )); then
 					hours=0${hours}
@@ -79,9 +79,9 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 				if (( ${seconds} < 10 )); then
 					seconds=0${seconds}
 				fi
-                      echo "Time elapsed: ${hours}:${minutes}:${seconds}" # command line time output
-                      screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
-        fi
+            echo "Time elapsed: ${hours}:${minutes}:${seconds}" # command line time output
+            screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+      fi
 counter=$((counter+1))
 sleep 1s
 done
