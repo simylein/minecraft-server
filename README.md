@@ -43,7 +43,7 @@ Now you got two directorys.
 
 One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
 
-Like you can imagine ${servername} holds your live Server and ${servername}-backups stores your backups. 
+Like you can imagine ${servername} holds your live server and ${servername}-backups stores your backups. 
 # serverstart
 Start your Server for the first time:
 ```
