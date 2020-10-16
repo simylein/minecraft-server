@@ -46,10 +46,10 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # output confirmed stop
-echo -e "${green}server successfully stopped!{nocolor}"
+echo -e "${green}server successfully stopped!${nocolor}"
 
 # remove log and world
-echo -e "${red}removing world and log files...{nocolor}"
+echo -e "${red}removing world and log files...${nocolor}"
 rm screenlog.0
 rm -r world
 
