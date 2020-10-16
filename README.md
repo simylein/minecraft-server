@@ -44,6 +44,26 @@ Now you got two directorys.
 One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
 
 Like you can imagine ${servername} holds your live Server and ${servername}-backups stores your backups. 
+# serverstart
+Start your Server for the first time:
+```
+./start.sh
+```
+
+The first time the server will fail to start - this is normal.
+
+You need to accept the eula (End User License Agreement):
+```
+nano eula.txt
+```
+replace eula=false with eula=true
+
+By doing this, of course you will have to follow their terms and conditions. 
+
+Now start your server a secound time - this time it should work.
+```
+./start.sh
+```
 # server.settings
 This is your file that holds the variables you have chosen with the setup script.
 
@@ -81,26 +101,6 @@ mems=
 memx=
 threadcount=
 serverfile=
-```
-# serverstart
-Start your Server for the first time:
-```
-./start.sh
-```
-
-The first time the server will fail to start - this is normal.
-
-You need to accept the eula (End User License Agreement):
-```
-nano eula.txt
-```
-replace eula=false with eula=true
-
-By doing this, of course you will have to follow their terms and conditions. 
-
-Now start your server a secound time - this time it should work.
-```
-./start.sh
 ```
 # server.properties
 If you would like to costumize your server further have a look at your server.properties file. 
