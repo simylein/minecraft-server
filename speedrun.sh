@@ -9,9 +9,19 @@ cd ${serverdirectory}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Server is not currently running!${nocolor}"
-        exit 1
+	echo -e "${yellow}Server is not currently running!${nocolor}"
+	exit 1
 fi
+
+# wait for ingame start command
+start="confirm challange start"
+screenlog="screenlog.0"
+while true; do
+	if [[ ! -z $(grep "$start" "$screenlog") ]]; then
+		break
+	fi
+sleep 1s
+done
 
 # create ingame scoreboard
 echo "creating scoreboard..."
@@ -33,10 +43,10 @@ echo "starting countdown..."
 # countdown
 counter="60"
 while [ ${counter} -gt 0 ]; do
-        if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-                echo "Speedrun Challange starts in ${counter} seconds!"
-                screen -Rd ${servername} -X stuff "say Speedrun Challange starts in ${counter} seconds!$(printf '\r')"
-        fi
+	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+		echo "Speedrun Challange starts in ${counter} seconds!"
+		screen -Rd ${servername} -X stuff "say Speedrun Challange starts in ${counter} seconds!$(printf '\r')"
+	fi
 counter=$((counter-1))
 sleep 1s
 done
