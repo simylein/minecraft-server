@@ -110,12 +110,15 @@ nano server.properties
 Important settings are:
 
 ```
-max-players=            (limuts the maximumg amount of players on the server at the same time[Warning large numbers may impact performance])
+max-players=            (limuts the maximumg amount of players on the server at the same time
+                        [Warning large numbers may impact performance])
 difficulty=             (defines ingame difficulty [peaceful, easy, normal, hard])
-view-distance=          (defines number of ingame chnuks to be rendered [Warning large numbers may impact performance])
+view-distance=          (defines number of ingame chnuks to be rendered 
+                        [Warning large numbers may impact performance])
 enforce-whitelist=      (enforces the whitelist[I would strongely recomment to set this to true])
 white-list=             (turns on the whitelist[I would strongely recomment to set this to true])
-online-mode=            (runs server in online mode with Mojang authentication [I would strongely recomment to set this to true])
+online-mode=            (runs server in online mode with Mojang authentication 
+                        [I would strongely recomment to set this to true])
 motd=                   (this will be displayed in the menu below your server - chose what you like)
 server-port=            (default by 25565. Only importent if you are dealing with multiple server)
 max-tick-time=          (default by 60000. Time in millisecound until the server considers itself as crashed)
