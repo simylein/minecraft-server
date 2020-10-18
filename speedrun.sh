@@ -64,7 +64,7 @@ echo "Speedrun Challange has started"
 screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\r')"
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
-# timer sequence
+# timer sequence and main scanning sequenze
 death1="was shot by"
 death2="was slain by"
 death3="was killed by"
