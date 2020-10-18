@@ -65,29 +65,92 @@ screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
 # timer sequence
+death1="was shot by"
+death2="was slain by"
+death3="was killed by"
+death4="tried to swim in lava"
+death5="burned to death"
+death6="fell from a high place"
+death7="hit the ground too hard"
+death8="drowned"
+reset="confirm challange reset"
 dragondeath="Free the End"
 screenlog="screenlog.0"
 counter="0"
 while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
-			let "hours=counter/3600"
-				if (( ${hours} < 10 )); then
+	let "hours=counter/3600"
+		if (( ${hours} < 10 )); then
 					hours=0${hours}
-				fi
-			let "minutes=(counter%3600)/60"
-				if (( ${minutes} < 10 )); then
-					minutes=0${minutes}
-				fi
-			let "seconds=(counter%3600)%60"
-				if (( ${seconds} < 10 )); then
-					seconds=0${seconds}
-				fi
-		if [[ ! -z $(grep "$dragondeath" "$screenlog") ]]; then # if dragon is killed output time and reset server
-			echo "Challange has been completed in ${hours}:${minutes}:${seconds}" # command line time output
-			screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
-			screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
-			./reset.sh # execution of the reset script
-		break
 		fi
+	let "minutes=(counter%3600)/60"
+		if (( ${minutes} < 10 )); then
+					minutes=0${minutes}
+		fi
+	let "seconds=(counter%3600)%60"
+		if (( ${seconds} < 10 )); then
+					seconds=0${seconds}
+		fi
+	if [[ ! -z $(grep "$dragondeath" "$screenlog") ]]; then # if dragon is killed output time and reset server
+		echo "Challange has been completed in ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+		break
+	fi
+	if [[ ! -z $(grep "$reset" "$screenlog") ]]; then # if ingame reset request output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death1" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death2" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death3" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death4" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death5" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death6" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death7" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
+	if [[ ! -z $(grep "$death8" "$screenlog") ]]; then # if a player dies output time and reset server
+		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
+		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
+		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+		./reset.sh # execution of the reset script
+	fi
 	if [ $((counter%240)) -eq 0 ]; then # output time every 4 minutes
 		echo "Time elapsed: ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
