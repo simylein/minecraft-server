@@ -102,54 +102,63 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death1" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death2" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death3" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death4" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death5" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death6" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death7" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [[ ! -z $(grep "$death8" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}" # command line time output
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')" # ingame time output
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh # execution of the reset script
+		break
 	fi
 	if [ $((counter%240)) -eq 0 ]; then # output time every 4 minutes
 		echo "Time elapsed: ${hours}:${minutes}:${seconds}" # command line time output
