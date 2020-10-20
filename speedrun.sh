@@ -108,7 +108,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		./reset.sh
 		break
 	fi
-	if [[ ! -r $(grep "$death1|$death2|$death3|$death4|$death5|$death6|$death7|$death8" "$screenlog") ]]; then # if a player dies output time and reset server
+	if [[ ! -z $(grep -E "$death1|$death2|$death3|$death4|$death5|$death6|$death7|$death8" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "You died! Challange stopped at ${hours}:${minutes}:${seconds}!"
 		screen -Rd ${servername} -X stuff "say You died! Challange stopped at ${hours}:${minutes}:${seconds}!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
