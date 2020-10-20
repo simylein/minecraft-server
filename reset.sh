@@ -59,5 +59,5 @@ rm screenlog.0
 rm -r world
 
 # restart the server
-echo -e "${green}restarting server...${nocolor}"
+echo -e "${blue}restarting server...${nocolor}"
 ./start.sh
