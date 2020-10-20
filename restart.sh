@@ -46,5 +46,5 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # restart the server
-echo -e "${green}restarting server...${nocolor}"
+echo -e "${blue}restarting server...${nocolor}"
 ./start.sh
