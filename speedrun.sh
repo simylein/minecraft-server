@@ -94,7 +94,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		echo "Challange has been completed in ${hours}:${minutes}:${seconds}"
 		screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')"
 		echo "Congratulations! You did it!"
-		screen -Rd ${servername} -X stuff "Congratulations! You did it!$(printf '\r')"
+		screen -Rd ${servername} -X stuff "say Congratulations! You did it!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh
 		break
