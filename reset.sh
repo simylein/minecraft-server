@@ -50,7 +50,7 @@ fi
 echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
-echo -e "${blue} creating backup...${nocolor}"
+echo -e "${blue}creating backup...${nocolor}"
 ./backup.sh
 
 # remove log and world
