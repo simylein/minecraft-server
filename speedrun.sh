@@ -66,7 +66,7 @@ screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
 # timer sequence and main scanning sequenze
-reset="confirm challange reset"
+reset="confirm speedrun reset"
 dragondeath="Free the End"
 screenlog="screenlog.0"
 counter="0"
