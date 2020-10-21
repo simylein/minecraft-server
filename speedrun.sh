@@ -14,7 +14,7 @@ if ! screen -list | grep -q "${servername}"; then
 fi
 
 # wait for ingame start command
-echo "waiting for start ingame command..."
+echo "waiting for ingame start command..."
 start="confirm challange start"
 screenlog="screenlog.0"
 while true; do
