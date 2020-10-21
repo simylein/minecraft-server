@@ -20,8 +20,8 @@ echo -e "Your Server will be called ${green}${servername}${nocolor}"
 homedirectory=`pwd`
 
 # ask for permission to proceed
-echo "I will download the following scripts:"
-echo "start, stop, restart, backup, update, maintenance, speedrun and varo."
+echo "I will download the following:"
+echo "start, stop, restart, backup and many more scripts from GitHub."
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}starting setup...${nocolor}"
@@ -146,12 +146,12 @@ read -p "Your difficulty:" difficulty
 echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
 
 echo "Would you like to turn on pvp?"
-echo -e "Please enter like this. Example:${yellow}pvp=true${nocolor}
+echo -e "Please enter like this. Example:${yellow}pvp=true${nocolor}"
 read -p "Your choice:" pvp
 echo -e "Your Server will be on ${green}${pvp}${nocolor}"
 
 echo "Please chose your server message"
-echo -e "Please enter like this. Example:${yellow}motd=Hello World${nocolor}
+echo -e "Please enter like this. Example:${yellow}motd=Hello World${nocolor}"
 read -p "Your message:" motd
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
