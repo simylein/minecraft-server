@@ -136,12 +136,12 @@ read -p "Your server-port:" serverport
 echo -e "Your Server will be on ${green}${serverport}${nocolor}"
 
 echo "Which gamemode would you like to play?"
-echo -e "Please enter like this. Example:${yellow}survival${nocolor}"
+echo -e "Please enter like this. Example:${yellow}gamemode=survival${nocolor}"
 read -p "Your gamemode:" gamemode
 echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
 
 echo "Which difficulty would you like to have?"
-echo -e "Please enter like this. Example:${yellow}easy${nocolor}"
+echo -e "Please enter like this. Example:${yellow}difficulty=easy${nocolor}"
 read -p "Your difficulty:" difficulty
 echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
 
