@@ -12,6 +12,30 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 
+# players
+player01="playername01"
+player02="playername02"
+palyer03="playername03"
+player04="playername04"
+player05="playername05"
+player06="playername06"
+player07="playername07"
+player08="playername08"
+player09="playername09"
+player10="playername10"
+player11="playername11"
+player12="playername12"
+player13="playername13"
+player14="playername14"
+player15="playername15"
+player16="playername16"
+
+# admins
+admin1="adminname1"
+admin2="adminname2"
+admin3="adminname3"
+admin4="adminname4"
+
 # all possible death messages
 death01="was shot by"
 death02="was pummeled by"
@@ -51,6 +75,12 @@ death35="fell out of the world"
 death36="didn't want to live in the same world as"
 death37="withered away"
 
-# server variables
+# backup stuff
 new=$(date +"%Y-%m-%d")
 old=$(date -d "-24 days" +"%Y-%m-%d")
+
+# binarys
+java="/usr/bin/java"
+screen="/usr/bin/screen"
+
+# server variables
