@@ -14,6 +14,7 @@ if ! screen -list | grep -q "${servername}"; then
 fi
 
 # wait for ingame start command
+echo "waiting for start ingame command..."
 start="confirm challange start"
 screenlog="screenlog.0"
 while true; do
@@ -64,15 +65,46 @@ echo "Speedrun Challange has started"
 screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\r')"
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
+# all possible death messages
+death01="was shot by"
+death02="was pummeled by"
+death03="was pricked to death"
+death04="walked into a cactus whilst trying to escape"
+death05="drowned"
+death06="experienced kinetic energy"
+death07="blew up"
+death08="was blown up by"
+death09="was killed by"
+death10="hit the ground too hard"
+death11="fell from a high place"
+death12="fell off"
+death13="fell while climbing"
+death14="was squashed by a falling"
+death15="went up in flames"
+death16="walked into fire"
+death17="burned to death"
+death18="was burnt to a crisp"
+death19="went off with a bang"
+death20="tried to swim in lava"
+death21="was struck by lightning"
+death22="discovered the floor was lava"
+death23="walked into danger zone"
+death24="was killed by"
+death25="was slain by"
+death26="was fireballed by"
+death27="was stung to death"
+death28="starved to death"
+death29="suffocated in a wall"
+death30="was squished too much"
+death31="was squashed by"
+death32="was poked to death by a sweet berry bush"
+death33="was killed trying to hurt"
+death34="was impaled by"
+death35="fell out of the world"
+death36="didn't want to live in the same world as"
+death37="withered away"
+
 # timer sequence and main scanning sequenze
-death1="was shot by"
-death2="was slain by"
-death3="was killed by"
-death4="tried to swim in lava"
-death5="burned to death"
-death6="fell from a high place"
-death7="hit the ground too hard"
-death8="drowned"
 reset="confirm challange reset"
 dragondeath="Free the End"
 screenlog="screenlog.0"
@@ -108,7 +140,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		./reset.sh
 		break
 	fi
-	if [[ ! -z $(grep -E "$death1|$death2|$death3|$death4|$death5|$death6|$death7|$death8" "$screenlog") ]]; then # if a player dies output time and reset server
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$screenlog") ]]; then # if a player dies output time and reset server
 		echo "You died! Challange stopped at ${hours}:${minutes}:${seconds}!"
 		screen -Rd ${servername} -X stuff "say You died! Challange stopped at ${hours}:${minutes}:${seconds}!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
