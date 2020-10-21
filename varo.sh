@@ -69,9 +69,9 @@ screen -Rd ${servername} -X stuff "say Minecraft Varo has started$(printf '\r')"
 screen -Rd ${servername} -X stuff "say Good Luck and have fun to all Teams$(printf '\r')"
 
 # death checking sequenze
+screenlog="screenlog.0"
 while true; do
-screen ${servername} -X hardcopy "tmplog"
-tail -n1 tmplog >> tmploglastline
+tail -n1 ${screenlog} >> tmploglastline
         if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmp-log-last-line") ]]; then
                 if [[ ! -z $(grep "$player1" "$tmploglastline") ]]; then
                         screen -Rd ${servername} -X stuff "gamemode 3 ${player1}$(printf '\r')"
