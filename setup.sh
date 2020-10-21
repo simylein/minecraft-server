@@ -179,7 +179,7 @@ echo "storing variables in server.settings..."
     done
     for var in screen; do
     declare -p $var | cut -d ' ' -f 3- >> server.settings
-    	done
+    done
     for var in mems; do
     	declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
