@@ -11,7 +11,7 @@ cd ${serverdirectory}
 echo -e "${blue}creating new backup...${nocolor}"
 screen -Rd ${servername} -X stuff "say creating new backup...$(printf '\r')"
 
-cp -r ${serverdirectory} ${backupdirectory}/${servername}-${new}
+cp -r -f ${serverdirectory} ${backupdirectory}/${servername}-${new}
 
 # output file location of new backup
 echo -e "${blue}file available under ${backupdirectory}/${servername}-${new}${nocolor}"
@@ -21,7 +21,7 @@ screen -Rd ${servername} -X stuff "say file available under ${backupdirectory}/$
 echo -e "${red}deleting old backup...${nocolor}"
 screen -Rd ${servername} -X stuff "say deleting old backup...$(printf '\r')"
 
-rm -r ${backupdirectory}/${servername}-${old}
+rm -r -f ${backupdirectory}/${servername}-${old}
 
 # output deleted backup location
 echo -e "${red}deleted ${backupdirectory}/${servername}-${old}${nocolor}"
