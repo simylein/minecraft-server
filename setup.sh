@@ -85,16 +85,6 @@ echo -e "Usally it is something like this Example:${yellow}192.168.1.1${nocolor}
 read -p "Your interface:" interface
 echo -e "Your server will use ${green}${interface}${nocolor} as an interface"
 
-echo "Tell me where your java binary is located"
-echo -e "Usally it is Example:${yellow}/usr/bin/java${nocolor}"
-read -p "Your location of the java binary:" java
-echo -e "Your server will access${green}${java}${nocolor} as java binary"
-
-echo "Tell me where your screen binary is located"
-echo -e "Usally it is Example:${yellow}/usr/bin/screen${nocolor}"
-read -p "Your location of the screen binary:" screen
-echo -e "Your server will access${green}${screen}${nocolor} as screen binary"
-
 echo "How much minimum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}-Xms256M${nocolor}"
 read -p "Your amount:" mems
@@ -173,12 +163,6 @@ echo "storing variables in server.settings..."
     done
     for var in interface; do
     	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in java; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in screen; do
-    declare -p $var | cut -d ' ' -f 3- >> server.settings
     done
     for var in mems; do
     	declare -p $var | cut -d ' ' -f 3- >> server.settings
