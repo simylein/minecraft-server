@@ -155,6 +155,16 @@ echo -e "Please enter like this. Example:${yellow}motd=Hello World${nocolor}"
 read -p "Your message:" motd
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
+# eula question
+echo "Would you like to accept the End User License Agreement from Mojang?"
+read -p "If you say yes you must abide by their terms and conditions! [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then echo -e "${green}accepting eula...${nocolor}"
+	echo "eula=true" >> eula.txt
+	else echo -e "${red}declining eula...${nocolor}"
+	echo "eula=false" >> eula.txt
+fi
+
 # store all the userinput
 echo "storing variables..."
   cd ${servername}
