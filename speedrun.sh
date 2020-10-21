@@ -15,7 +15,7 @@ fi
 
 # wait for ingame start command
 echo "waiting for ingame start command..."
-start="confirm challange start"
+start="confirm speedrun start"
 screenlog="screenlog.0"
 while true; do
 	if [[ ! -z $(grep "$start" "$screenlog") ]]; then
