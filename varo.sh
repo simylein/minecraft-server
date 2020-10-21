@@ -129,5 +129,5 @@ tail -n1 ${screenlog} >> tmploglastline
                 fi
         fi
 rm tmploglastline
-sleep 2s
+sleep 1s
 done
