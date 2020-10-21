@@ -25,6 +25,7 @@ read -p "playername7:" player7
 read -p "playername8:" player8
 
 # list all participating players
+echo "All participating Varo Players:"
 echo "${player1}"
 echo "${player2}"
 echo "${player3}"
