@@ -128,5 +128,6 @@ tail -n1 ${screenlog} >> tmploglastline
                         echo -e "${red}${player8} died!"
                 fi
         fi
+rm tmploglastline
 sleep 0.2s
 done
