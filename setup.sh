@@ -115,45 +115,64 @@ echo -e "Please enter like this. Example:${yellow}${serverdirectory}/minecraft_s
 read -p "Your location:" serverfile
 echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
 
+echo "Please specifie your desired view-distance"
+echo -e "Please enter like this. Example:${yellow}view-distance=16${nocolor}"
+read -p "Your view-distance:" viewdistance
+echo -e "Your Server will have ${green}${viewdistance}${nocolor}"
+
+echo "Please specifie your desired spawn-protection"
+echo -e "Please enter like this. Example:${yellow}spawn-protection=16${nocolor}"
+read -p "Your spawn-protection:" spawnprotection
+echo -e "Your Server will have ${green}${spawnprotection}${nocolor}"
+
+echo "Please tell me the max-players amount"
+echo -e "Please enter like this. Example:${yellow}max-players=8${nocolor}"
+read -p "Your spawn-protection:" maxplayers
+echo -e "Your Server will have ${green}${maxplayers}${nocolor}"
+
+echo "Please specifie your desired server-port"
+echo -e "Please enter like this. Example:${yellow}server-port=25565${nocolor}"
+read -p "Your server-port:" serverport
+echo -e "Your Server will be on ${green}${serverport}${nocolor}"
+
+echo "Which gamemode would you like to play?"
+echo -e "Please enter like this. Example:${yellow}survival${nocolor}"
+read -p "Your gamemode:" gamemode
+echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
+
+echo "Which difficulty would you like to have?"
+echo -e "Please enter like this. Example:${yellow}easy${nocolor}"
+read -p "Your difficulty:" difficulty
+echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
+
+echo "Would you like to turn on pvp?"
+echo -e "Please enter like this. Example:${yellow}pvp=true${nocolor}
+read -p "Your choice:" pvp
+echo -e "Your Server will be on ${green}${pvp}${nocolor}"
+
 # store all the userinput
 echo "storing variables..."
   cd ${servername}
-    for var in dnsserver; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in interface; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in java; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in screen; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in mems; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in memx; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in threadcount; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in serverfile; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in servername; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in homedirectory; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in serverdirectory; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in backupdirectory; do
-      declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
+    for var in dnsserver; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in interface; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in java; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in screen; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in mems; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in memx; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in threadcount; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in serverfile; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in servername; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in homedirectory; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in serverdirectory; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+    for var in backupdirectory; do; declare -p $var | cut -d ' ' -f 3- >> server.settings; done
+
+	echo "${viewdistance}" >> server.properties
+	echo "${spawnprotection}" >> server.properties
+	echo "${maxplayers}" >> server.properties
+	echo "${serverport}" >> server.properties
+	echo "${gamemode}" >> server.properties
+	echo "${difficulty}" >> server.properties
+	echo "${pvp}" >> server.properties
 
 # finish messages
 echo -e "${blue}setup is complete!${nocolor}"
