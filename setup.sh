@@ -150,6 +150,11 @@ echo -e "Please enter like this. Example:${yellow}pvp=true${nocolor}
 read -p "Your choice:" pvp
 echo -e "Your Server will be on ${green}${pvp}${nocolor}"
 
+echo "Please chose your server message"
+echo -e "Please enter like this. Example:${yellow}motd=Hello World${nocolor}
+read -p "Your message:" motd
+echo -e "Your server message will be ${green}${motd}${nocolor}"
+
 # store all the userinput
 echo "storing variables..."
   cd ${servername}
@@ -173,6 +178,7 @@ echo "storing variables..."
 	echo "${gamemode}" >> server.properties
 	echo "${difficulty}" >> server.properties
 	echo "${pvp}" >> server.properties
+	echo "${motd}" >> server.properties
 
 # finish messages
 echo -e "${blue}setup is complete!${nocolor}"
