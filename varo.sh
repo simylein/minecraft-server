@@ -51,6 +51,7 @@ tail -n1 ${screenlog} >> tmploglastline
 	if [[ ! -z $(grep "$start" "tmploglastline") ]]; then
 		break
 	fi
+rm tmploglastline
 sleep 1s
 done
 
