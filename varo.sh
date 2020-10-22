@@ -48,7 +48,7 @@ start="confirm varo start"
 screenlog="screenlog.0"
 while true; do
 tail -n1 ${screenlog} >> tmploglastline
-	if [[ ! -z $(grep "$start" "$tmploglastline") ]]; then
+	if [[ ! -z $(grep "$start" "tmploglastline") ]]; then
 		break
 	fi
 sleep 1s
