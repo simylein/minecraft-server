@@ -48,6 +48,14 @@ It looks like this: (there will be alot of variables after setup.sh)
 
 # This file stores all the variables for the server. 
 # If you know what you are doing, feel free to tinker with them ;^)
+
+# command line colors
+red="\033[0;31m"
+yellow="\033[1;33m"
+green="\033[0;32m"
+blue="\033[0;34m"
+purple="\033[0;35m"
+nocolor="\033[0m"
 ```
 # server.properties
 If you would like to costumize your server further have a look at your server.properties file. 
