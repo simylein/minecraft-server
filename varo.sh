@@ -13,34 +13,42 @@ if ! screen -list | grep -q "${servername}"; then
         exit 1
 fi
 
-# collect all playernames
-echo "Please put in all participating Varo Players"
-read -p "playername1:" player01
-read -p "playername2:" player02
-read -p "playername3:" player03
-read -p "playername4:" player04
-read -p "playername5:" player05
-read -p "playername6:" player06
-read -p "playername7:" player07
-read -p "playername8:" player08
+# ask for playerinput
+echo "Would you like to put in the players yourself or read them from server.settings?"
+read -p "Put in yourself [Y] Read from server.settings [N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+		# collect all playernames
+		echo "Please put in all participating Varo Players"
+		read -p "playername1:" player01
+		read -p "playername2:" player02
+		read -p "playername3:" player03
+		read -p "playername4:" player04
+		read -p "playername5:" player05
+		read -p "playername6:" player06
+		read -p "playername7:" player07
+		read -p "playername8:" player08
+		read -p "playername1:" player09
+		read -p "playername2:" player10
+		read -p "playername3:" player11
+		read -p "playername4:" player12
+		read -p "playername5:" player13
+		read -p "playername6:" player14
+		read -p "playername7:" player15
+		read -p "playername8:" player16
 
-# list all participating players
-echo "All participating Varo Players:"
-echo "${player01}"
-echo "${player02}"
-echo "${player03}"
-echo "${player04}"
-echo "${player05}"
-echo "${player06}"
-echo "${player07}"
-echo "${player08}"
+		# list all participating players
+		echo "All participating Varo Players:"
+		echo "${player01}, ${player02}, ${player03}, ${player04}, ${player05}, ${player06}, ${player07}, ${player08}, ${player09}, ${player10}, ${player11}, ${player12}, ${player13}, ${player14}, ${player15}, ${player16}"
+fi
 
 # wait for ingame start command
 echo "waiting for ingame start command..."
 start="confirm varo start"
 screenlog="screenlog.0"
 while true; do
-	if [[ ! -z $(grep "$start" "$screenlog") ]]; then
+tail -n1 ${screenlog} >> tmploglastline
+	if [[ ! -z $(grep "$start" "$tmploglastline") ]]; then
 		break
 	fi
 sleep 1s
