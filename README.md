@@ -168,7 +168,7 @@ In this file, you can automate things as follows:
 
 Suggestion:
 
-Example: (In order to work, please replace the variables with your own ones)
+Restart and Backup Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server restart at 02:00
 00 02 * * * ${serverdirectory}/restart.sh
@@ -176,33 +176,16 @@ Example: (In order to work, please replace the variables with your own ones)
 # minecraft ${servername} server backup at 04:00
 00 04 * * * ${serverdirectory}/backup.sh
 ```
-You may also do it differently:
+Stop and Start example:
 
 Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server stop at 02:00
 00 02 * * * ${serverdirectory}/stop.sh
 
-# minecraft ${servername} server backup at 02:01
-01 02 * * * ${serverdirectory}/backup.sh
-
 # minecraft ${servername} server start at 02:05
 05 02 * * * ${serverdirectory}/start.sh
 ```
-Also, if you want your server to be online from a certain time to time:
-
-Example: (In order to work, please replace the variables with your own ones)
-```
-# minecraft ${servername} server start at 16:00
-00 16 * * * ${serverdirectory}/start.sh
-
-# minecraft ${servername} server stop at 22:00
-00 22 * * * ${serverdirectory}/stop.sh
-
-# minecraft ${servername} server backup at 04:00
-00 04 * * * ${serverdirectory}/backup.sh
-```
-
 If you want to start up your minecraft server at boot of your Linux server:
 
 Example: (In order to work, please replace the variables with your own ones)
