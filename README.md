@@ -59,36 +59,13 @@ If you know what your are doing feel free to edit it to suit your needs.
 ```
 nano server.settings
 ```
-It looks like this: (the empty variables are filled with the content your provided in setup.sh)
+It looks like this: (there will be alot of variables after setup.sh)
 ```
 #!/bin/bash
 # minecraft server settings
 
 # This file stores all the variables for the server. 
 # If you know what you are doing, feel free to tinker with them ;^)
-
-# command line colors
-red="\033[0;31m"
-yellow="\033[1;33m"
-green="\033[0;32m"
-blue="\033[0;34m"
-purple="\033[0;35m"
-nocolor="\033[0m"
-# server variables
-new=$(date +"%Y-%m-%d")
-old=$(date -d "-24 days" +"%Y-%m-%d")
-screen=
-java=
-dnsserver=
-interface=
-servername=
-homedirectory=
-serverdirectory=
-backupdirectory=
-mems=
-memx=
-threadcount=
-serverfile=
 ```
 # server.properties
 If you would like to costumize your server further have a look at your server.properties file. 
@@ -101,17 +78,19 @@ Important settings are:
 max-players=            (limuts the maximumg amount of players on the server at the same time
                         [Warning large numbers may impact performance])
 difficulty=             (defines ingame difficulty [peaceful, easy, normal, hard])
-view-distance=          (defines number of ingame chnuks to be rendered 
-                        [Warning large numbers may impact performance])
-enforce-whitelist=      (enforces the whitelist[I would strongely recomment to set this to true])
-white-list=             (turns on the whitelist[I would strongely recomment to set this to true])
-online-mode=            (runs server in online mode with Mojang authentication 
-                        [I would strongely recomment to set this to true])
+view-distance=          (defines number of ingame chnuks to be rendered)
+                        [Warning large numbers may impact performance]
+enforce-whitelist=      (enforces the whitelist) [I would strongely recomment to set this to true]
+white-list=             (turns on the whitelist) [I would strongely recomment to set this to true]
+online-mode=            (runs server in online mode with Mojang authentication)
+                        [I would strongely recomment to set this to true]
 motd=                   (this will be displayed in the menu below your server - chose what you like)
 server-port=            (default by 25565. Only importent if you are dealing with multiple server)
+                        [if you run multiple servers each server wants to have its own port]
 max-tick-time=          (default by 60000. Time in millisecound until the server considers itself as crashed)
 gamemode=               (default survival. Defines your game mode. For creative server replace with creative)
-sync-chunk-writes=      (stores your changes [I would strongely recomment to set this to true])
+sync-chunk-writes=      (stores your changes) [I would strongely recomment to set this to true]
+spawn-protection=       (the number of block at the worldspawn only operators can touch)
 ```
 # scripts
 The following scripts automate the start, stop, restart and backup procedure. 
@@ -180,11 +159,11 @@ Stop and Start example:
 
 Example: (In order to work, please replace the variables with your own ones)
 ```
-# minecraft ${servername} server stop at 02:00
-00 02 * * * ${serverdirectory}/stop.sh
+# minecraft ${servername} server stop at 22:00
+00 22 * * * ${serverdirectory}/stop.sh
 
-# minecraft ${servername} server start at 02:05
-05 02 * * * ${serverdirectory}/start.sh
+# minecraft ${servername} server start at 08:00
+00 08 * * * ${serverdirectory}/start.sh
 ```
 If you want to start up your minecraft server at boot of your Linux server:
 
