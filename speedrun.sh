@@ -18,9 +18,11 @@ echo "waiting for ingame start command..."
 start="confirm speedrun start"
 screenlog="screenlog.0"
 while true; do
-	if [[ ! -z $(grep "$start" "$screenlog") ]]; then
+tail -n1 ${screenlog} >> tmploglastline
+	if [[ ! -z $(grep "$start" "tmploglastline") ]]; then
 		break
 	fi
+rm tmploglastline
 sleep 1s
 done
 
