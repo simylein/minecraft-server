@@ -17,6 +17,9 @@ sudo apt install dnsutils
 sudo apt install screen
 ```
 ```
+sudo apt install grep
+```
+```
 sudo apt install wget
 ```
 # setup
