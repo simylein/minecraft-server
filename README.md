@@ -5,7 +5,7 @@ This tutorial contains important steps if you would like to host a minecarft ser
 # software
 In order for the Server to run we will need to install some Programms: (please note: some of them could be installed already)
 ```
-sudo apt install openjdk-16-jre-headless iputils-ping dnsutils screen grep wget
+sudo apt install openjdk-16-jre-headless iputils-ping dnsutils screen grep nano wget
 ```
 # setup
 Then, you can download and execute the setup script.
