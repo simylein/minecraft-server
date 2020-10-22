@@ -50,12 +50,11 @@ fi
 echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
-echo -e "${blue}creating backup...${nocolor}"
+echo -e "${blue}backing up...${nocolor}"
 ./backup.sh
 
 # remove log and world
-echo -e "${red}removing world and log files...${nocolor}"
-rm screenlog.0
+echo -e "${red}removing world directory...${nocolor}"
 rm -r world
 
 # restart the server
