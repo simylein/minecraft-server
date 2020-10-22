@@ -73,6 +73,7 @@ dragondeath="Free the End"
 screenlog="screenlog.0"
 counter="0"
 while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
+tail -n1 ${screenlog} >> tmploglastline
 	let "hours=counter/3600"
 		if (( ${hours} < 10 )); then
 					hours=0${hours}
@@ -85,7 +86,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		if (( ${seconds} < 10 )); then
 					seconds=0${seconds}
 		fi
-	if [[ ! -z $(grep "$dragondeath" "$screenlog") ]]; then # if dragon is killed output time and reset server
+	if [[ ! -z $(grep "$dragondeath" "tmploglastline") ]]; then # if dragon is killed output time and reset server
 		echo "Challange has been completed in ${hours}:${minutes}:${seconds}"
 		screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')"
 		echo "Congratulations! You did it!"
@@ -94,7 +95,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		./reset.sh
 		break
 	fi
-	if [[ ! -z $(grep "$reset" "$screenlog") ]]; then # if ingame reset id requested output time and reset server
+	if [[ ! -z $(grep "$reset" "tmploglastline") ]]; then # if ingame reset id requested output time and reset server
 		echo "A server reset has been requested"
 		screen -Rd ${servername} -X stuff "say A server reset has been requested$(printf '\')"
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}"
@@ -103,7 +104,7 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		./reset.sh
 		break
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$screenlog") ]]; then # if a player dies output time and reset server
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then # if a player dies output time and reset server
 		echo "You died! Challange stopped at ${hours}:${minutes}:${seconds}!"
 		screen -Rd ${servername} -X stuff "say You died! Challange stopped at ${hours}:${minutes}:${seconds}!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
@@ -115,5 +116,6 @@ while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
 	fi
 counter=$((counter+1))
+rm tmploglastline
 sleep 1s
 done
