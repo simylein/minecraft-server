@@ -14,17 +14,14 @@ downloading setup script:
 ```
 wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
 ```
-
 making setup script executable:
 ```
 chmod +x setup.sh
 ```
-
 executing setup script:
 ```
 ./setup.sh
 ```
-
 The Script will ask you some Questions. Please answer them in order for the Server to work. 
 
 Now you got two directorys. 
@@ -34,21 +31,6 @@ One is called ${servername} (it's the name you have chosen for your server) and 
 Like you can imagine ${servername} holds your live server and ${servername}-backups stores your backups. 
 # serverstart
 Start your Server for the first time:
-```
-./start.sh
-```
-
-The first time the server will fail to start - this is normal.
-
-You need to accept the eula (End User License Agreement):
-```
-nano eula.txt
-```
-replace eula=false with eula=true
-
-By doing this, of course you will have to follow their terms and conditions. 
-
-Now start your server a secound time - this time it should work.
 ```
 ./start.sh
 ```
@@ -73,7 +55,6 @@ If you would like to costumize your server further have a look at your server.pr
 nano server.properties
 ```
 Important settings are:
-
 ```
 max-players=            (limuts the maximumg amount of players on the server at the same time
                         [Warning large numbers may impact performance])
@@ -123,7 +104,6 @@ It will require at least one player on the server.
 ```
 ./prerender.sh
 ```
-
 The maintenance script is there to let people know you take their server offline while you perform maintenance. 
 ```
 ./maintenance.sh
@@ -155,7 +135,7 @@ Restart and Backup Example: (In order to work, please replace the variables with
 # minecraft ${servername} server backup at 04:00
 00 04 * * * ${serverdirectory}/backup.sh
 ```
-Stop and Start example:
+Stop and Start
 
 Example: (In order to work, please replace the variables with your own ones)
 ```
