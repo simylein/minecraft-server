@@ -30,13 +30,13 @@ screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
 screen -Rd ${servername} -X stuff "stop$(printf '\r')"
 
 # check if server stopped
-StopChecks=0
-while [ $StopChecks -lt 30 ]; do
+stopchecks="0"
+while [ $stopchecks -lt 30 ]; do
         if ! screen -list | grep -q "${servername}"; then
                 break
         fi
         sleep 1;
-        StopChecks=$((StopChecks+1))
+        stopchecks=$((stopchecks+1))
 done
 
 # force quit server if not stopped
