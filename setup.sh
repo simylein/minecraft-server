@@ -70,9 +70,11 @@ echo "downloading server.jar..."
 # set up backupdirectory
 echo "setting up a Backupdirectory..."		
 mkdir ${servername}-backups
-  cd ${servername}-backups
-    backupdirectory=`pwd`
-  cd ${homedirectory}
+	cd ${servername}-backups
+		mkdir hourly
+		mkdir daily
+		backupdirectory=`pwd`
+	cd ${homedirectory}
 
 # ask all the importatnt user input
 echo "Please tell me which DNS server you would like to use"
