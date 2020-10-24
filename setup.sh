@@ -45,7 +45,8 @@ echo "downloading scripts from GitHub..."
 		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh
 		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
 		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
-		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
+		wget -q -O backuphourly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backuphourly.sh
+		wget -q -O backupdaily.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupdaily.sh
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 		wget -q -O speedrun.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/speedrun.sh
