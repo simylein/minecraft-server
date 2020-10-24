@@ -57,7 +57,10 @@ echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
-		chmod +x backup.sh
+		chmod +x update.sh
+		chmod +x maintenance.sh
+		chmod +x backuphourly.sh
+		chmod +x backupdaily.sh
 
 # download java executable from mojang.com
 echo "downloading server.jar..."
@@ -70,9 +73,11 @@ echo "downloading server.jar..."
 # set up backupdirectory
 echo "setting up a Backupdirectory..."		
 mkdir ${servername}-backups
-  cd ${servername}-backups
-    backupdirectory=`pwd`
-  cd ${homedirectory}
+	cd ${servername}-backups
+		mkdir hourly
+		mkdir daily
+		backupdirectory=`pwd`
+	cd ${homedirectory}
 
 # ask all the importatnt user input
 echo "Please tell me which DNS server you would like to use"
