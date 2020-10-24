@@ -57,7 +57,10 @@ echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
 		chmod +x stop.sh
-		chmod +x backup.sh
+		chmod +x update.sh
+		chmod +x maintenance.sh
+		chmod +x backuphourly.sh
+		chmod +x backupdaily.sh
 
 # download java executable from mojang.com
 echo "downloading server.jar..."
