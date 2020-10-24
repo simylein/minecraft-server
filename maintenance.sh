@@ -35,8 +35,8 @@ while [ $stopchecks -lt 30 ]; do
         if ! screen -list | grep -q "${servername}"; then
                 break
         fi
-sleep 1;
 stopchecks=$((stopchecks+1))
+sleep 1;
 done
 
 # force quit server if not stopped
