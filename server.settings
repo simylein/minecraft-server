@@ -76,8 +76,8 @@ death36="didn't want to live in the same world as"
 death37="withered away"
 
 # backup stuff
-newhourly=$(date +"%H-%M")
-oldhourly=$(date -d "-23 hours" +"%H-%M")
+newhourly=$(date +"%H"-00)
+oldhourly=$(date -d "-23 hours" +"%H"-00)
 newdaily=$(date +"%Y-%m-%d")
 olddaily=$(date -d "-24 days" +"%Y-%m-%d")
 
