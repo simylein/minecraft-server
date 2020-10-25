@@ -138,32 +138,32 @@ Suggestion:
 Backup Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server backup hourly
-00 * * * * ${serverdirectory}/backuphourly.sh
+00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh
 
 # minecraft ${servername} server backup daily at 22:00
-00 22 * * * ${serverdirectory}/backupdaily.sh
+00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh
 ```
 Stop and Start Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server stop at 22:30
-30 22 * * * ${serverdirectory}/stop.sh
+30 22 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh
 
 # minecraft ${servername} server start at 06:30
-30 06 * * * ${serverdirectory}/start.sh
+30 06 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh
 ```
 If you  like to restart your minecraft server:
 
 Restart Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server restart at 23:00
-00 23 * * * ${serverdirectory}/restart.sh
+00 23 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh
 ```
 If you want to start up your minecraft server at boot of your Linux server:
 
 Start at Boot Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server start at boot
-@reboot ${serverdirectory}/start.sh
+@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh
 ```
 Close and save your crontab. 
 # ending
