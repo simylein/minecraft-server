@@ -3,7 +3,7 @@ Scripts for a Minecraft Server on Linux Debian using screen.
 
 This tutorial contains important steps if you would like to host a minecarft server from the command line. 
 # software
-In order for the Server to run we will need to install some Programms: (please note: some of them could be installed already)
+In order for the Server to run we will need to install some packages: (please note: some of them could be installed already)
 ```
 sudo apt install openjdk-16-jre-headless iputils-ping dnsutils screen grep nano wget
 ```
