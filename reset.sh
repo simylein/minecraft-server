@@ -51,7 +51,8 @@ echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-./backup.sh
+./backupdaily.sh
+./backuphourly.sh
 
 # remove log and world
 echo -e "${red}removing world directory...${nocolor}"
