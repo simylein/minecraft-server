@@ -44,14 +44,13 @@ fi
 
 # wait for ingame start command
 echo "waiting for ingame start command..."
-start="confirm varo start"
-screenlog="screenlog.0"
+start="/confirm varo start"
 while true; do
-tail -n1 ${screenlog} >> tmploglastline
-	if [[ ! -z $(grep "$start" "tmploglastline") ]]; then
+tail -n1 ${screenlog} >> ${tmpscreenlog}
+	if [[ ! -z $(grep "$start" "$tmpscreenlog") ]]; then
 		break
 	fi
-rm tmploglastline
+rm ${tmpscreenlog}
 sleep 1s
 done
 
@@ -78,121 +77,120 @@ screen -Rd ${servername} -X stuff "say Minecraft Varo has started$(printf '\r')"
 screen -Rd ${servername} -X stuff "say Good Luck and have fun to all Teams$(printf '\r')"
 
 # death checking sequenze
-screenlog="screenlog.0"
 while true; do
-tail -n1 ${screenlog} >> tmploglastline
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player01" "tmploglastline") ]]; then
+tail -n1 ${screenlog} >> ${tmpscreenlog}
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player01" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player01} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player01} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player01} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player02" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player02" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player02} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player02} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player02} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player03" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player03" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player03} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player03} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player03} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player04" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player04" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player04} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player04} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player04} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player05" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player05" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player05} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player05} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player05} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player06" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player06" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player06} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player06} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player06} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player07" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player07" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player07} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player07} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player07} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-		if [[ ! -z $(grep "$player08" "tmploglastline") ]]; then
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player08" "$tmpscreenlog") ]]; then
 			screen -Rd ${servername} -X stuff "say ${player08} has left varo due to death$(printf '\r')"
 			screen -Rd ${servername} -X stuff "ban ${player08} You died! Thank you for participating in Varo$(printf '\r')"
 			echo -e "${red}${player08} died!"
 		fi
 	fi
-	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player09" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player09} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player09} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player09} died!"
-			fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player09" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player09} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player09} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player09} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player10" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player10} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player10} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player10} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player10" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player10} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player10} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player10} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player11" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player11} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player11} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player11} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player11" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player11} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player11} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player11} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player12" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player12} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player12} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player12} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player12" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player12} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player12} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player12} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player13" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player13} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player13} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player13} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player13" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player13} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player13} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player13} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player14" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player14} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player14} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player14} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player14" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player14} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player14} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player14} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player15" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player15} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player15} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player15} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player15" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player15} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player15} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player15} died!"
 		fi
-		if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "tmploglastline") ]]; then
-			if [[ ! -z $(grep "$player08" "tmploglastline") ]]; then
-				screen -Rd ${servername} -X stuff "say ${player08} has left varo due to death$(printf '\r')"
-				screen -Rd ${servername} -X stuff "ban ${player08} You died! Thank you for participating in Varo$(printf '\r')"
-				echo -e "${red}${player08} died!"
-			fi
+	fi
+	if [[ ! -z $(grep -E "$death01|$death02|$death03|$death04|$death05|$death06|$death07|$death08|$death09|$death10|$death11|$death12|$death13|$death14|$death15|$death16|$death17|$death18|$death19|$death20|$death21|$death22|$death23|$death24|$death25|$death26|$death27|$death28|$death29|$death30|$death31|$death32|$death33|$death34|$death35|$death36|$death37" "$tmpscreenlog") ]]; then
+		if [[ ! -z $(grep "$player08" "$tmpscreenlog") ]]; then
+			screen -Rd ${servername} -X stuff "say ${player08} has left varo due to death$(printf '\r')"
+			screen -Rd ${servername} -X stuff "ban ${player08} You died! Thank you for participating in Varo$(printf '\r')"
+			echo -e "${red}${player08} died!"
 		fi
-rm tmploglastline
+	fi
+rm ${tmpscreenlog}
 sleep 1s
 done
