@@ -69,8 +69,9 @@ screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZac
 # timer sequence and main scanning sequenze
 reset="confirm speedrun reset"
 dragondeath="Free the End"
+time="speedrun time"
 counter="0"
-while [ ${counter} -lt 12000 ]; do # while under 3 hours and 20 minutes do loop
+while [ ${counter} -lt 12000 ]; do
 tail -n1 ${screenlog} >> ${tmpscreenlog}
 	let "hours=counter/3600"
 		if (( ${hours} < 10 )); then
@@ -84,7 +85,7 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		if (( ${seconds} < 10 )); then
 					seconds=0${seconds}
 		fi
-	if [[ ! -z $(grep "$dragondeath" "$tmpscreenlog") ]]; then # if dragon is killed output time and reset server
+	if [[ ! -z $(grep "$dragondeath" "$tmpscreenlog") ]]; then
 		echo "Challange has been completed in ${hours}:${minutes}:${seconds}"
 		screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')"
 		echo "Congratulations! You did it!"
@@ -93,9 +94,9 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		./reset.sh
 		break
 	fi
-	if [[ ! -z $(grep "$reset" "$tmpscreenlog") ]]; then # if ingame reset id requested output time and reset server
+	if [[ ! -z $(grep "$reset" "$tmpscreenlog") ]]; then
 		echo "A server reset has been requested"
-		screen -Rd ${servername} -X stuff "say A server reset has been requested$(printf '\')"
+		screen -Rd ${servername} -X stuff "say A server reset has been requested$(printf '\r')"
 		echo "Challange stopped at ${hours}:${minutes}:${seconds}"
 		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
@@ -110,6 +111,10 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		break
 	fi
 	if [ $((counter%240)) -eq 0 ]; then # output time every 4 minutes
+		echo "Time elapsed: ${hours}:${minutes}:${seconds}"
+		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
+	fi
+	if [[ ! -z $(grep "$time" "$tmpscreenlog") ]]; then
 		echo "Time elapsed: ${hours}:${minutes}:${seconds}"
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
 	fi
