@@ -15,7 +15,7 @@ fi
 
 # wait for ingame start command
 echo "waiting for ingame start command..."
-start="confirm speedrun start"
+start="/confirm speedrun start"
 while true; do
 tail -n1 ${screenlog} >> ${tmpscreenlog}
 	if [[ ! -z $(grep "$start" "$tmpscreenlog") ]]; then
@@ -67,9 +67,9 @@ screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
 # timer sequence and main scanning sequenze
-reset="confirm speedrun reset"
+reset="/confirm speedrun reset"
 dragondeath="Free the End"
-time="speedrun time"
+time="/speedrun time"
 counter="0"
 while [ ${counter} -lt 12000 ]; do
 tail -n1 ${screenlog} >> ${tmpscreenlog}
