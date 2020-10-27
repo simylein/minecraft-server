@@ -19,7 +19,7 @@ echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >
 echo -e "${blue}file available under ${backupdirectory}/daily/${servername}-${newdaily}${nocolor}"
 
 # deleting old daily backup
-echo "creating new backup..." >> ${backuplog}
+echo "deleting new backup..." >> ${backuplog}
 echo -e "${red}deleting old backup...${nocolor}"
 
 # rm command
