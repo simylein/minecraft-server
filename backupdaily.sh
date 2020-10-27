@@ -8,7 +8,7 @@
 cd ${serverdirectory}
 
 # ingame output
-screen -Rd ${servername} -X stuff "backing up files...$(printf '\r')"
+screen -Rd ${servername} -X stuff "say backing up files...$(printf '\r')"
 
 # adding new daily backup
 echo "creating new backup..." >> ${backuplog}
@@ -33,4 +33,4 @@ echo "deleted ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog
 echo -e "${red}deleted ${backupdirectory}/daily/${servername}-${olddaily}${nocolor}"
 
 # ingame output
-screen -Rd ${servername} -X stuff "backup has successfully finished!$(printf '\r')"
+screen -Rd ${servername} -X stuff "say backup has successfully finished!$(printf '\r')"
