@@ -1,3 +1,4 @@
+
 #!/bin/bash
 # minecraft server backup script
 
@@ -7,22 +8,27 @@
 # change to server directory
 cd ${serverdirectory}
 
-# adding new hourly backup
-echo -e "${blue}creating new backup...${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say creating new backup...$(printf '\r')"
+# adding new daily backup
+echo "creating new backup..." >> ${backuplog}
+echo -e "${blue}creating new backup...${nocolor}"
 
-cp -r -f ${serverdirectory} ${backupdirectory}/hourly/${servername}-${newhourly}
+# cp command
+cp -r -f ${serverdirectory} ${backupdirectory}/daily/${servername}-${newdaily}
 
-# output file location of new hourly backup
-echo -e "${blue}file available under ${backupdirectory}/hourly/${servername}-${newhourly}${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say file available under ${backupdirectory}/hourly/${servername}-${newhourly}$(printf '\r')"
+# output file location of new daily backup and write to logfile
+echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
+echo -e "${blue}file available under ${backupdirectory}/daily/${servername}-${newdaily}${nocolor}"
 
 # deleting old hourly backup
-echo -e "${red}deleting old backup...${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say deleting old backup...$(printf '\r')"
+echo "deleting old backup..." >> ${backuplog}
+echo -e "${red}deleting old backup...${nocolor}"
 
+# rm command
 rm -r -f ${backupdirectory}/hourly/${servername}-${oldhourly}
 
-# output deleted hourly backup location
-echo -e "${red}deleted ${backupdirectory}/hourly/${servername}-${oldhourly}${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say deleted ${backupdirectory}/hourly/${servername}-${oldhourly}$(printf '\r')"
+# output file location of old hourly backup and write to logfile
+echo "deleted ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
+echo -e "${red}deleted ${backupdirectory}/hourly/${servername}-${oldhourly}${nocolor}"
+
+# ingame output
+screen -Rd ${servername} -X stuff "backup has finished!$(printf '\r')"
