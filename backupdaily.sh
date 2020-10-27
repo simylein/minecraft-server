@@ -7,19 +7,19 @@
 # change to server directory
 cd ${serverdirectory}
 
-# adding new daily backup
+# adding new hourly backup
 echo "creating new backup..." >> ${backuplog}
 echo -e "${blue}creating new backup...${nocolor}"
 
 # cp command
-cp -r -f ${serverdirectory} ${backupdirectory}/daily/${servername}-${newdaily}
+cp -r -f ${serverdirectory} ${backupdirectory}/hourly/${servername}-${newhourly}
 
 # output file location of new daily backup and write to logfile
-echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
-echo -e "${blue}file available under ${backupdirectory}/daily/${servername}-${newdaily}${nocolor}"
+echo "file available under ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
+echo -e "${blue}file available under ${backupdirectory}/hourly/${servername}-${newhourly}${nocolor}"
 
 # deleting old daily backup
-echo "deleting new backup..." >> ${backuplog}
+echo "deleting old backup..." >> ${backuplog}
 echo -e "${red}deleting old backup...${nocolor}"
 
 # rm command
