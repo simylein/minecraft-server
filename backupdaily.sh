@@ -8,21 +8,26 @@
 cd ${serverdirectory}
 
 # adding new daily backup
-echo -e "${blue}creating new backup...${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say creating new backup...$(printf '\r')"
+echo "creating new backup..." >> ${backuplog}
+echo -e "${blue}creating new backup...${nocolor}"
 
+# cp command
 cp -r -f ${serverdirectory} ${backupdirectory}/daily/${servername}-${newdaily}
 
-# output file location of new daily backup
-echo -e "${blue}file available under ${backupdirectory}/daily/${servername}-${newdaily}${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say file available under ${backupdirectory}/daily/${servername}-${newdaily}$(printf '\r')"
+# output file location of new daily backup and write to logfile
+echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
+echo -e "${blue}file available under ${backupdirectory}/daily/${servername}-${newdaily}${nocolor}"
 
 # deleting old daily backup
-echo -e "${red}deleting old backup...${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say deleting old backup...$(printf '\r')"
+echo "creating new backup..." >> ${backuplog}
+echo -e "${red}deleting old backup...${nocolor}"
 
+# rm command
 rm -r -f ${backupdirectory}/daily/${servername}-${olddaily}
 
-# output deleted daily backup location
-echo -e "${red}deleted ${backupdirectory}/daily/${servername}-${olddaily}${nocolor}" >> ${backuplog}
-screen -Rd ${servername} -X stuff "say deleted ${backupdirectory}/daily/${servername}-${olddaily}$(printf '\r')"
+# output file location of old daily backup and write to logfile
+echo "deleted ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog}
+echo -e "${red}deleted ${backupdirectory}/daily/${servername}-${olddaily}${nocolor}"
+
+# ingame output
+screen -Rd ${servername} -X stuff "backup has finished!$(printf '\r')"
