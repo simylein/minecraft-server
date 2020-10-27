@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # minecraft server backup script
 
