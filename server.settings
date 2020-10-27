@@ -81,6 +81,11 @@ oldhourly=$(date -d "-23 hours" +"%H"-00)
 newdaily=$(date +"%Y-%m-%d")
 olddaily=$(date -d "-24 days" +"%Y-%m-%d")
 
+# loggiles
+screenlog="screen.log"
+backuplog="backup.log"
+tmpscreenlog="tmpscreen.log"
+
 # binarys
 java="/usr/bin/java"
 screen="/usr/bin/screen"
