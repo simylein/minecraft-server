@@ -46,7 +46,7 @@ echo "starting ${servername} server..."
 
 
 # main start commmand
-${screen} -dmSL ${servername} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
+${screen} -dmSL ${servername} -Logfile screen.log ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
 ${screen} -r ${servername} -X colon "logfile flush 1^M"
 
 sleep 4s
