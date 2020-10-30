@@ -44,7 +44,7 @@ fi
 
 # wait for ingame start command
 echo "waiting for ingame start command..."
-start="/confirm varo start"
+start="confirm varo start"
 while true; do
 tail -n1 ${screenlog} >> ${tmpscreenlog}
 	if [[ ! -z $(grep "$start" "$tmpscreenlog") ]]; then
