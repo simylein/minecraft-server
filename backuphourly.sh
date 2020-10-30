@@ -15,7 +15,7 @@ echo "creating new backup..." >> ${backuplog}
 echo -e "${blue}creating new backup...${nocolor}"
 
 # cp command
-cp -r -f ${serverdirectory} ${backupdirectory}/hourly/${servername}-${newdaily}
+cp -r -f ${serverdirectory} ${backupdirectory}/hourly/${servername}-${newhourly}
 
 # output file location of new hourly backup and write to logfile
 echo "file available under ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
