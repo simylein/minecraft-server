@@ -68,6 +68,8 @@ screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZac
 
 # timer sequence and main scanning sequenze
 reset="confirm speedrun reset"
+nether="We Need to Go Deeper"
+theend="The End?"
 dragondeath="Free the End"
 time="speedrun time"
 counter="0"
@@ -110,12 +112,22 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		./reset.sh
 		break
 	fi
-	if [ $((counter%240)) -eq 0 ]; then # output time every 4 minutes
+	if [ $((counter%480)) -eq 0 ]; then # output time every 8 minutes
 		echo "Time elapsed: ${hours}:${minutes}:${seconds}"
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
 	fi
 	if [[ ! -z $(grep "$time" "$tmpscreenlog") ]]; then
 		echo "Time elapsed: ${hours}:${minutes}:${seconds}"
+		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
+	fi
+	if [[ ! -z $(grep "$nether" "$tmpscreenlog") ]]; then
+		echo "Time elapsed: ${hours}:${minutes}:${seconds}"
+		screen -Rd ${servername} -X stuff "You reached the Nether!$(printf '\r')"
+		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
+	fi
+	if [[ ! -z $(grep "$theend" "$tmpscreenlog") ]]; then
+		echo "Time elapsed: ${hours}:${minutes}:${seconds}"
+		screen -Rd ${servername} -X stuff "You reached the End!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
 	fi
 counter=$((counter+1))
