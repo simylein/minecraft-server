@@ -81,7 +81,7 @@ oldhourly=$(date -d "-23 hours" +"%H"-00)
 newdaily=$(date +"%Y-%m-%d")
 olddaily=$(date -d "-24 days" +"%Y-%m-%d")
 
-# loggiles
+# logfiles
 screenlog="screen.log"
 backuplog="backup.log"
 tmpscreenlog="tmpscreen.log"
@@ -90,4 +90,6 @@ tmpscreenlog="tmpscreen.log"
 java="/usr/bin/java"
 screen="/usr/bin/screen"
 
-# server variables
+# network
+dnsserver="1.1.1.1"
+interface="192.168.1.1"

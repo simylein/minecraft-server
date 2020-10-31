@@ -1,0 +1,103 @@
+#!/bin/bash
+# minecraft server settings
+
+# this file stores all the variables for the server.
+# if you know what you are doing, feel free to tinker with them ;^)
+
+# command line colors
+red="\033[0;31m"
+yellow="\033[1;33m"
+green="\033[0;32m"
+blue="\033[0;34m"
+purple="\033[0;35m"
+nocolor="\033[0m"
+
+# players
+player01="playername01"
+player02="playername02"
+palyer03="playername03"
+player04="playername04"
+player05="playername05"
+player06="playername06"
+player07="playername07"
+player08="playername08"
+player09="playername09"
+player10="playername10"
+player11="playername11"
+player12="playername12"
+player13="playername13"
+player14="playername14"
+player15="playername15"
+player16="playername16"
+
+# admins
+admin1="adminname1"
+admin2="adminname2"
+admin3="adminname3"
+admin4="adminname4"
+
+# all possible death messages
+death01="was shot by"
+death02="was pummeled by"
+death03="was pricked to death"
+death04="walked into a cactus whilst trying to escape"
+death05="drowned"
+death06="experienced kinetic energy"
+death07="blew up"
+death08="was blown up by"
+death09="was killed by"
+death10="hit the ground too hard"
+death11="fell from a high place"
+death12="fell off"
+death13="fell while climbing"
+death14="was squashed by a falling"
+death15="went up in flames"
+death16="walked into fire"
+death17="burned to death"
+death18="was burnt to a crisp"
+death19="went off with a bang"
+death20="tried to swim in lava"
+death21="was struck by lightning"
+death22="discovered the floor was lava"
+death23="walked into danger zone"
+death24="was killed by"
+death25="was slain by"
+death26="was fireballed by"
+death27="was stung to death"
+death28="starved to death"
+death29="suffocated in a wall"
+death30="was squished too much"
+death31="was squashed by"
+death32="was poked to death by a sweet berry bush"
+death33="was killed trying to hurt"
+death34="was impaled by"
+death35="fell out of the world"
+death36="didn't want to live in the same world as"
+death37="withered away"
+
+# backup stuff
+newhourly=$(date +"%H"-00)
+oldhourly=$(date -d "-23 hours" +"%H"-00)
+newdaily=$(date +"%Y-%m-%d")
+olddaily=$(date -d "-24 days" +"%Y-%m-%d")
+
+# loggiles
+screenlog="screen.log"
+backuplog="backup.log"
+tmpscreenlog="tmpscreen.log"
+
+# binarys
+java="/usr/bin/java"
+screen="/usr/bin/screen"
+
+# server variables
+# memory and threads
+mems="-Xms256M"
+memx="-Xms2048M"
+threadcount="-XX:ParallelGCThreads=4"
+# files and directorys
+servername="minecraft"
+homedirectory="/Users/simylein/Documents/Work/GitHub/MinecraftServer"
+serverdirectory="/Users/simylein/Documents/Work/GitHub/MinecraftServer/minecraft"
+backupdirectory="/Users/simylein/Documents/Work/GitHub/MinecraftServer/minecraft-backups"
+serverfile="/Users/simylein/Documents/Work/GitHub/MinecraftServer/minecraft/minecraft-server.1.12.2.jar"

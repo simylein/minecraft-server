@@ -9,8 +9,8 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 
-# initial questions
-echo -e "${blue}I will setup a minecraft server for you${nocolor}"
+# initial question
+echo -e "${purple}I will setup a minecraft server for you${nocolor} ${nocolor} ${blue};^)${nocolor}"
 echo "How should I call your server?"
 echo -e "Please enter a servername: Example:${yellow}minecraft${nocolor}"
 read -p "Your name:" servername
@@ -63,12 +63,58 @@ echo "making Scripts executable..."
 		chmod +x backuphourly.sh
 		chmod +x backupdaily.sh
 
-# download java executable from mojang.com
-echo "downloading server.jar..."
-		wget -q -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
-
 # store serverdirectory
-    serverdirectory=`pwd`
+serverdirectory=`pwd`
+
+# download java executable from mojang.com
+PS3='Which server version would you like to install? '
+versions=("1.16.3" "1.15.2" "1.14.4" "1.13.2" "1.12.2" "1.11.2" "1.10.2" "1.9.4" "1.8.9" "1.7.10")
+select version in "${versions[@]}"; do
+	case $version in
+		"1.16.3")
+			echo "downloading minecraft-server.1.16.3.jar..."
+				wget -q -O minecraft-server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.16.3.jar"
+			break
+			;;
+		"1.15.2")
+			echo "downloading minecraft-server.1.15.2.jar..."
+				wget -q -O minecraft-server.1.15.2.jar https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.15.2.jar"
+			break
+			;;
+		"1.14.4")
+			echo "downloading minecraft-server.1.14.4.jar..."
+				wget -q -O minecraft-server.1.14.4.jar https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.14.4.jar"
+			break
+			;;
+		"1.13.2")
+			echo "downloading minecraft-server.1.13.2.jar..."
+				wget -q -O minecraft-server.1.13.2.jar https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.13.2.jar"
+			break
+			;;
+		"1.12.2")
+			echo "downloading minecraft-server.1.12.2.jar..."
+				wget -q -O minecraft-server.1.12.2.jar https://launcher.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.12.2.jar"
+			break
+			;;
+		"1.11.2")
+			echo "downloading minecraft-server.1.11.2.jar..."
+				wget -q -O minecraft-server.1.11.2.jar https://launcher.mojang.com/v1/objects/f00c294a1576e03fddcac777c3cf4c7d404c4ba4/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.11.2.jar"
+			break
+			;;
+		*) echo "Please choose an option from the list 1 - 10 ";;
+	esac
+done
+
+# user information
+echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
+
+# return to homedirectory
 	cd ${homedirectory}
 	
 # set up backupdirectory
@@ -81,74 +127,70 @@ mkdir ${servername}-backups
 	cd ${homedirectory}
 
 # ask all the importatnt user input
-echo "Please tell me which DNS server you would like to use"
-echo -e "Example from Cloudflare:${yellow}1.1.1.1${nocolor}"
-read -p "Your dnsserver:" dnsserver
-echo -e "Your server will use ${green}${dnsserver}${nocolor} as a name server"
-
-echo "Please tell me the address of your interface (router)"
-echo -e "Usally it is something like this Example:${yellow}192.168.1.1${nocolor}"
-read -p "Your interface:" interface
-echo -e "Your server will use ${green}${interface}${nocolor} as an interface"
-
 echo "How much minimum memory would you like to grant your Server?"
-echo -e "Please enter like this: Example:${yellow}-Xms256M${nocolor}"
+echo -e "Please enter like this: Example:${yellow}256${nocolor}"
 read -p "Your amount:" mems
+mems="-Xms${mems}M"
 echo -e "Your Server will will have ${green}${mems}${nocolor} of minimum memory allocated"
 
 echo "How much maximum memory would you like to grant your Server?"
-echo -e "Please enter like this: Example:${yellow}-Xmx2048M${nocolor}"
+echo -e "Please enter like this: Example:${yellow}2048${nocolor}"
 read -p "Your amount:" memx
+memx="-Xms${memx}M"
 echo -e "Your Server will will have ${green}${memx}${nocolor} of maximum memory allocated"
 
 echo "How many threads would you like your Server to use?"
-echo -e "Please enter like this. Example:${yellow}-XX:ParallelGCThreads=2${nocolor}"
+echo -e "Please enter like this. Example:${yellow}4${nocolor}"
 read -p "Your amount:" threadcount
+threadcount="-XX:ParallelGCThreads=${threadcount}"
 echo -e "Your Server will will have ${green}${threadcount}${nocolor} of threads to work with"
 
-echo "Please enter the location of your serverfile (executable)."
-echo -e "Please enter like this. Example:${yellow}${serverdirectory}/minecraft_server.1.16.3.jar${nocolor}"
-read -p "Your location:" serverfile
-echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
-
 echo "Please specifie your desired view-distance"
-echo -e "Please enter like this. Example:${yellow}view-distance=16${nocolor}"
+echo -e "Please enter like this. Example:${yellow}16${nocolor}"
 read -p "Your view-distance:" viewdistance
+viewdistance="view-distance=${viewdistance}"
 echo -e "Your Server will have ${green}${viewdistance}${nocolor}"
 
 echo "Please specifie your desired spawn-protection"
-echo -e "Please enter like this. Example:${yellow}spawn-protection=16${nocolor}"
+echo -e "Please enter like this. Example:${yellow}16${nocolor}"
 read -p "Your spawn-protection:" spawnprotection
+spawnprotection="spawn-protection=${spawnprotection}"
 echo -e "Your Server will have ${green}${spawnprotection}${nocolor}"
 
 echo "Please tell me the max-players amount"
-echo -e "Please enter like this. Example:${yellow}max-players=8${nocolor}"
+echo -e "Please enter like this. Example:${yellow}8${nocolor}"
 read -p "Your spawn-protection:" maxplayers
+maxplayers="max-players=${maxplayers}"
 echo -e "Your Server will have ${green}${maxplayers}${nocolor}"
 
 echo "Please specifie your desired server-port"
-echo -e "Please enter like this. Example:${yellow}server-port=25565${nocolor}"
+echo -e "Please enter like this. Example:${yellow}25565${nocolor}"
 read -p "Your server-port:" serverport
+serverport="server-port=${serverport}"
 echo -e "Your Server will be on ${green}${serverport}${nocolor}"
 
 echo "Which gamemode would you like to play?"
-echo -e "Please enter like this. Example:${yellow}gamemode=survival${nocolor}"
+echo -e "Please enter like this. Example:${yellow}survival${nocolor}"
 read -p "Your gamemode:" gamemode
+gamemode="gamemode=${gamemode}"
 echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
 
 echo "Which difficulty would you like to have?"
-echo -e "Please enter like this. Example:${yellow}difficulty=easy${nocolor}"
+echo -e "Please enter like this. Example:${yellow}normal${nocolor}"
 read -p "Your difficulty:" difficulty
+difficulty="difficulty=${difficulty}"
 echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
 
 echo "Would you like to turn on pvp?"
-echo -e "Please enter like this. Example:${yellow}pvp=true${nocolor}"
+echo -e "Please enter like this. Example:${yellow}true${nocolor}"
 read -p "Your choice:" pvp
+pvp="pvp=${pvp}"
 echo -e "Your Server will be on ${green}${pvp}${nocolor}"
 
 echo "Please chose your server message"
-echo -e "Please enter like this. Example:${yellow}motd=Hello World${nocolor}"
+echo -e "Please enter like this. Example:${yellow}Hello World${nocolor}"
 read -p "Your message:" motd
+motd="motd=${motd}"
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
 # eula question
@@ -164,58 +206,47 @@ fi
 
 # store all the userinput
 echo "storing variables in server.settings..."
-    for var in dnsserver; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in interface; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in mems; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in memx; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in threadcount; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in serverfile; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in servername; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in homedirectory; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in serverdirectory; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
-    for var in backupdirectory; do
-    	declare -p $var | cut -d ' ' -f 3- >> server.settings
-    done
+	echo "# memory and threads" >> server.settings
+	for var in mems; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in memx; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in threadcount; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	
+	echo "# files and directorys" >> server.settings
+	for var in servername; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in homedirectory; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in serverdirectory; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in backupdirectory; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in serverfile; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
 
 echo "storing variables in server.properties..."
-
-	echo "${viewdistance}" >> server.properties
-	
-	echo "${spawnprotection}" >> server.properties
-	
-	echo "${maxplayers}" >> server.properties
-	
-	echo "${serverport}" >> server.properties
-	
-	echo "${gamemode}" >> server.properties
-	
-	echo "${difficulty}" >> server.properties
-	
-	echo "${pvp}" >> server.properties
-	
+	echo "${viewdistance}" >> server.properties	
+	echo "${spawnprotection}" >> server.properties	
+	echo "${maxplayers}" >> server.properties	
+	echo "${serverport}" >> server.properties	
+	echo "${gamemode}" >> server.properties	
+	echo "${difficulty}" >> server.properties	
+	echo "${pvp}" >> server.properties	
 	echo "${motd}" >> server.properties
 
 # finish messages
-echo -e "${blue}setup is complete!${nocolor}"
+echo -e "${green}setup is complete!${nocolor}"
 echo "If you would like to start your Server:"
 echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
 echo -e "execute like this: ${green}./start.sh${nocolor}"
-echo -e "God Luck and Have Fun! ${blue};^)${nocolor}"
+echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
