@@ -206,7 +206,8 @@ fi
 
 # store all the userinput
 echo "storing variables in server.settings..."
-	echo "# memory and threads" >> server.settings
+echo "" >> server.settings
+echo "# memory and threads" >> server.settings
 	for var in mems; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
@@ -216,8 +217,8 @@ echo "storing variables in server.settings..."
 	for var in threadcount; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
-	
-	echo "# files and directorys" >> server.settings
+echo "" >> server.settings
+echo "# files and directorys" >> server.settings
 	for var in servername; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
