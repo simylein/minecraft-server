@@ -107,6 +107,30 @@ select version in "${versions[@]}"; do
 				serverfile="${serverdirectory}/minecraft-server.1.11.2.jar"
 			break
 			;;
+		"1.10.2")
+			echo "downloading minecraft-server.1.10.2.jar..."
+				wget -q -O minecraft-server.1.10.2.jar https://launcher.mojang.com/v1/objects/3d501b23df53c548254f5e3f66492d178a48db63/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.10.2.jar"
+			break
+			;;
+		"1.9.4")
+			echo "downloading minecraft-server.1.9.4.jar..."
+				wget -q -O minecraft-server.1.9.4.jar https://launcher.mojang.com/v1/objects/edbb7b1758af33d365bf835eb9d13de005b1e274/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.9.4.jar"
+			break
+			;;
+		"1.8.9")
+			echo "downloading minecraft-server.1.8.9.jar..."
+				wget -q -O minecraft-server.1.8.9.jar https://launcher.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.8.9.jar"
+			break
+			;;
+		"1.7.10")
+			echo "downloading minecraft-server.1.7.10.jar..."
+				wget -q -O minecraft-server.1.7.10.jar https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.7.10.jar"
+			break
+			;;
 		*) echo "Please choose an option from the list 1 - 10 ";;
 	esac
 done
