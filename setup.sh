@@ -268,6 +268,17 @@ echo "storing variables in server.properties..."
 	echo "${difficulty}" >> server.properties	
 	echo "${pvp}" >> server.properties	
 	echo "${motd}" >> server.properties
+	
+# crontab automatization
+read -p "Would you like to automate backups? [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then echo -e "${green}automating backups...${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly"; } | crontab -
+		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
+		crontab -l | { cat; echo "0 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+	else echo -e "${red}no automated backups...${nocolor}"
+fi
 
 # finish messages
 echo -e "${green}setup is complete!${nocolor}"
