@@ -142,7 +142,7 @@ echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
 	cd ${homedirectory}
 	
 # set up backupdirectory
-echo "setting up a Backupdirectory..."		
+echo "setting up a backupdirectory..."		
 mkdir ${servername}-backups
 	cd ${servername}-backups
 		mkdir hourly
