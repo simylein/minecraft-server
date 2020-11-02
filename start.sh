@@ -13,19 +13,6 @@ if screen -list | grep -q "${servername}";then
 	exit 1
 fi
 
-# check if dnsserver is online
-networkchecks="0"
-while
-	[ $networkchecks -lt 4 ]; do
-		if ping -c 1 ${dnsserver} &> /dev/null
-			then echo -e "${green}Success: Nameserver is online${nocolor}"
-			break
-			else echo -e "${red}Warning: Nameserver is offline${nocolor}"
-		fi
-	sleep 1s;
-	networkchecks=$((networkchecks+1))
-done
-
 # check if interface is online
 interfacechecks="0"
 while
@@ -37,6 +24,19 @@ while
 		 fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
+done
+
+# check if dnsserver is online
+networkchecks="0"
+while
+	[ $networkchecks -lt 4 ]; do
+		if ping -c 1 ${dnsserver} &> /dev/null
+			then echo -e "${green}Success: Nameserver is online${nocolor}"
+			break
+			else echo -e "${red}Warning: Nameserver is offline${nocolor}"
+		fi
+	sleep 1s;
+	networkchecks=$((networkchecks+1))
 done
 
 # user information
