@@ -1,13 +1,14 @@
-# MinecraftServer
+MinecraftServer
+===============
 Scripts for a Minecraft Server on Linux Debian using screen. 
 
 This tutorial contains important steps if you would like to host a minecarft server from the command line. 
-# software
+## software
 In order for the Server to run we will need to install some packages: (please note: some of them could be installed already)
 ```
 sudo apt install openjdk-16-jre-headless iputils-ping dnsutils screen grep nano wget cat
 ```
-# setup
+## setup
 Then, you can download and execute the setup script.
 
 downloading setup script:
@@ -29,12 +30,12 @@ Now you got two directorys.
 One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
 
 Like you can imagine ${servername} holds your live server and ${servername}-backups stores your backups. 
-# serverstart
+## serverstart
 Start your Server for the first time:
 ```
 ./start.sh
 ```
-# server.settings
+## server.settings
 This is your file that holds the variables you have chosen with the setup script.
 
 If you know what your are doing feel free to edit it to suit your needs.
@@ -57,7 +58,7 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 ```
-# server.properties
+## server.properties
 If you would like to costumize your server further have a look at your server.properties file. 
 ```
 nano server.properties
@@ -81,7 +82,7 @@ gamemode=               (default survival. Defines your game mode. For creative 
 sync-chunk-writes=      (stores your changes) [I would strongely recomment to set this to true]
 spawn-protection=       (the number of block at the worldspawn only operators can touch)
 ```
-# scripts
+## scripts
 The following scripts automate the start, stop, restart and backup procedure. 
 
 each one can be executed with:
@@ -124,7 +125,7 @@ There is also a reset script. Warning it will reset your world!
 ```
 ./reset.sh
 ```
-# crontab
+## crontab
 If you would like to automate some of those task on your server you can create a crontab.
 ```
 crontab -e
@@ -166,7 +167,7 @@ Start at Boot Example: (In order to work, please replace the variables with your
 @reboot cd ${serverdirectory} && ${serverdirectory}/start.sh
 ```
 Close and save your crontab. 
-# ending
+## ending
 I hope you learned something and that those scripts I provide may help you and your minecraft server experience. 
 
 Have fun and enjoy the Game ;^)
