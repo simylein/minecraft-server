@@ -9,8 +9,8 @@ cd ${serverdirectory}
 
 # check if server is already running
 if screen -list | grep -q "${servername}";then
-        echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
-        exit 1
+	echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
+	exit 1
 fi
 
 # check if dnsserver is online
@@ -53,8 +53,8 @@ sleep 4s
 
 # check if screen is avaible
 if ! screen -list | grep -q "${servername}"; then
-        echo -e "${red}Something went wrong - Server failed to start!${nocolor}"
-        exit 1
+	echo -e "${red}Something went wrong - Server failed to start!${nocolor}"
+	exit 1
 fi
 
 # succesful startup
