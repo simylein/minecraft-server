@@ -45,9 +45,14 @@ if screen -list | grep -q "${servername}"; then
         screen -S ${servername} -X quit
 fi
 
-# update to newest version
-echo "downloading newest server version..."
-wget -q -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+# Test internet connectivity and update on success
+wget --spider --quiet -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+if [ "$?" != 0 ]; then
+    echo -e "${red}Unable to connect to update website. Skipping update ...${nocolor}"
+    else
+    echo -e "${green}downloading newest server version...${nocolor}"
+    wget -q -O minecraft_server.1.16.3.jar https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+fi
 
 # restart the server
 echo -e "${green}restarting server...${nocolor}"
