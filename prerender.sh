@@ -9,8 +9,8 @@ cd ${serverdirectory}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Server is not currently running!${nocolor}"
-        exit 1
+	echo -e "${yellow}Server is not currently running!${nocolor}"
+	exit 1
 fi
 
 # explain to user
