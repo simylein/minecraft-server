@@ -24,8 +24,9 @@ echo -e "The player will be ${green}${playername}${nocolor}"
 # ask for interval in seconds
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 secounds"
-echo "Please enter an interval in secounds. Example: sleep 60s"
+echo "Please enter an interval in secounds. Example: ${yellow}60${nocolor}"
 read -p "interval:" interval
+interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
 
 echo "I will now start to teleport the selected player through the world"
@@ -39,6 +40,7 @@ fi
 # prerender start
 echo "Prerendering started"
 echo "Progress: [000/000]"
+sleep 2s
 
 # teleport script with progress
 progress="1"
