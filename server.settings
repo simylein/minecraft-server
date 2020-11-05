@@ -31,10 +31,12 @@ player15="playername15"
 player16="playername16"
 
 # admins
-admin1="adminname1"
-admin2="adminname2"
-admin3="adminname3"
-admin4="adminname4"
+admins=(
+	"adminname1"
+	"adminname2"
+	"adminname3"
+	"adminname4"
+)
 
 # all possible death messages
 deaths=(
