@@ -36,9 +36,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		exit 1
 fi
 
-# grid settings
-cords=( 2048 1792 1536 1280 1024 0768 0512 0256 0000 -0256 -0512 -0768 -1024 -1280 -1536 -1792 -2048 )
-
 # prerender start
 echo "Prerendering started"
 echo "Progress: [000/000]"
