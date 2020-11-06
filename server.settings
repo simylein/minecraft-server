@@ -12,32 +12,6 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 
-# players
-player01="playername01"
-player02="playername02"
-palyer03="playername03"
-player04="playername04"
-player05="playername05"
-player06="playername06"
-player07="playername07"
-player08="playername08"
-player09="playername09"
-player10="playername10"
-player11="playername11"
-player12="playername12"
-player13="playername13"
-player14="playername14"
-player15="playername15"
-player16="playername16"
-
-# admins
-admins=(
-	"adminname1"
-	"adminname2"
-	"adminname3"
-	"adminname4"
-)
-
 # all possible death messages
 deaths=(
 	"was shot by"
