@@ -105,7 +105,7 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		screen -Rd ${servername} -X stuff "You reached the End!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
 	fi
-	if [[ ! -z $(grep "${deaths}" "${tmpscreenlog}") ]]; then # if a player dies output time and reset server
+	if [[ ! -z $(grep "${deaths[*]}" "${tmpscreenlog}") ]]; then # if a player dies output time and reset server
 		echo "You died! Challange stopped at ${hours}:${minutes}:${seconds}!"
 		screen -Rd ${servername} -X stuff "say You died! Challange stopped at ${hours}:${minutes}:${seconds}!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
