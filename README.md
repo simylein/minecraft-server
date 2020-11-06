@@ -98,21 +98,6 @@ each one can be executed with:
 ```
 ./backup.sh
 ```
-The varo and speedrun scripts can be used if you wish for some varo and speedrun functionality. 
-
-They can be executed with:
-```
-./speedrun.sh
-```
-```
-./varo.sh
-```
-The prerender script is for pregenerating your world if you so desire. 
-
-It will require at least one player on the server. 
-```
-./prerender.sh
-```
 The maintenance script is there to let people know you take their server offline while you perform maintenance. 
 ```
 ./maintenance.sh
