@@ -1,5 +1,7 @@
 #!/bin/bash
 # mincraft server prerender script
+# WARNING
+# this script might not work
 
 # read the settings
 . ./server.settings

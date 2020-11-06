@@ -1,5 +1,7 @@
 #!/bin/bash
 # minecraft server varo script
+# WARNING
+# this script is broken
 
 # read the settings
 . ./server.settings
@@ -84,77 +86,77 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		screen -Rd ${servername} -X stuff "ban ${player01} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player01} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player02}\|${deaths[*]}" "$tmpscreenlog") ]]; then
+	if [[ ! -z $(grep "${player02} ${deaths[*]}" "$tmpscreenlog") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player02} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player02} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player02} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player03}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player03} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player03} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player03} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player03} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player04}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player04} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player04} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player04} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player04} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player05}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player05} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player05} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player05} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player05} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player06}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player06} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player06} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player06} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player06} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player07}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player07} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player07} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player07} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player07} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player08}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player08} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player08} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player08} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player08} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player09}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player09} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player09} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player09} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player09} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player10}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player10} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player10} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player10} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player10} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player11}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player11} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player11} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player11} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player11} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player12}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player12} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player12} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player12} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player12} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player13}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player13} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player13} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player13} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player13} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player14}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player14} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player14} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player14} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player14} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player15}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player15} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player15} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player15} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player15} died!${nocolor}"
 	fi
-	if [[ ! -z $(grep "${player16}\|${deaths[*]}" "${tmpscreenlog}") ]]; then
+	if [[ ! -z $(grep "${player16} ${deaths[*]}" "${tmpscreenlog}") ]]; then
 		screen -Rd ${servername} -X stuff "say ${player16} has left varo due to death$(printf '\r')"
 		screen -Rd ${servername} -X stuff "ban ${player16} You died! Thank you for participating in Varo$(printf '\r')"
 		echo -e "${red}${player16} died!${nocolor}"
