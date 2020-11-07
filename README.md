@@ -30,7 +30,7 @@ Start your Server for the first time:
 ```
 ## screen
 Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal. <br>
-You can view all your screen by typing
+You can view all your active screens by typing
 ```
 screen -list
 ```
