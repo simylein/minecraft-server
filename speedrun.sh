@@ -1,7 +1,7 @@
 #!/bin/bash
 # minecraft server speedrun script
-# WARNING
-# this script is broken
+
+# WARNING this script is broken
 
 # read the settings
 . ./server.settings
