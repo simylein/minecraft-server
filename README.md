@@ -152,15 +152,13 @@ Stop and Start Example: (In order to work, please replace the variables with you
 # minecraft ${servername} server start at 06:30
 30 06 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh
 ```
-If you  like to restart your minecraft server:
-
+If you  like to restart your minecraft server: <br>
 Restart Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server restart at 23:00
 00 23 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh
 ```
-If you want to start up your minecraft server at boot of your Linux server:
-
+If you want to start up your minecraft server at boot of your Linux server: <br>
 Start at Boot Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server start at boot
@@ -169,6 +167,7 @@ Start at Boot Example: (In order to work, please replace the variables with your
 Close and save your crontab. 
 ## ending
 I hope you learned something and that those scripts I provide may help you and your minecraft server experience. <br>
-Have fun and enjoy the Game ;^) <br>
+Have fun and enjoy the Game ;^)
+
 Best regards, <br>
 Simylein
