@@ -35,6 +35,32 @@ Start your Server for the first time:
 ```
 ./start.sh
 ```
+## screen
+Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal. 
+
+You can view all your screen by typing
+```
+screen -list
+```
+If you want to resume a certain screen session just type
+```
+screen -list ${servername}
+```
+To exit the screen terminal type Ctrl+A and Ctrl+D
+## server commands
+Your minecraft server can understand certain commands. 
+I will explain some of them to you. 
+
+adding someone to your whitelist so he/she can join your server. 
+```
+whitelist add ${playername}
+```
+remove someone to your whitelist so he/she can no longer join your server. 
+```
+whitelist remove ${playername}
+```
+Important: If you do these commands ingame you will need to put a / before each command. 
+In the screen terminal you don't need a / before your command. 
 ## server.settings
 This is your file that holds the variables you have chosen with the setup script.
 
