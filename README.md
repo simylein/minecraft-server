@@ -129,16 +129,7 @@ crontab -e
 ```
 A new file will open (If you got one already the existing one will open) <br>
 In this file, you can automate things as follows: <br>
-Side note: if you chose to automate backups in the setup script you got that already in your crontab <br>
-Suggestion: <br>
-Backup Example: (In order to work, please replace the variables with your own ones)
-```
-# minecraft ${servername} server backup hourly
-00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh
 
-# minecraft ${servername} server backup daily at 22:00
-00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh
-```
 Stop and Start Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server stop at 22:30
