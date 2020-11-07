@@ -38,7 +38,7 @@ screen -list
 ```
 If you want to resume a certain screen session just type
 ```
-screen -list ${servername}
+screen -r ${servername}
 ```
 To exit the screen terminal type Ctrl+A and Ctrl+D
 ## server commands
