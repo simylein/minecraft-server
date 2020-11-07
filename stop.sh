@@ -7,8 +7,12 @@
 # change to server directory
 cd ${serverdirectory}
 
+# write date to logfile
+echo "executing stop script at" >> ${screenlog} && date >> ${screenlog}
+
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
+	echo "server is not currently running!" >> ${screenlog}
 	echo -e "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
@@ -46,4 +50,5 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # output confirmed stop
+echo "server successfully stopped!" >> ${screenlog}
 echo -e "${green}server successfully stopped!${nocolor}"

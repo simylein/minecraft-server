@@ -7,6 +7,9 @@
 # change to server directory
 cd ${serverdirectory}
 
+# write date to logfile
+echo "executing backuphourly script at" >> ${screenlog} && date >> ${screenlog}
+
 # ingame output
 screen -Rd ${servername} -X stuff "say backing up files...$(printf '\r')"
 

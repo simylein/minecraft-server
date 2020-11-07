@@ -7,6 +7,9 @@
 # change to server directory
 cd ${serverdirectory}
 
+# write date to logfile
+echo "executing reset script at" >> ${screenlog} && date >> ${screenlog}
+
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
 	echo -e "${yellow}server is not currently running!${nocolor}"
