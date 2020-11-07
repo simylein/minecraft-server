@@ -99,7 +99,7 @@ sync-chunk-writes=      (stores your changes) [I would strongely recomment to se
 spawn-protection=       (the number of block at the worldspawn only operators can touch)
 ```
 ## scripts
-The following scripts automate the start, stop, restart and backup procedure. <br>
+The following scripts automate the start, stop and restart procedure. <br>
 each one can be executed with:
 ```
 ./start.sh
@@ -109,9 +109,6 @@ each one can be executed with:
 ```
 ```
 ./restart.sh
-```
-```
-./backup.sh
 ```
 The maintenance script is there to let people know you take their server offline while you perform maintenance. 
 ```
@@ -132,8 +129,8 @@ crontab -e
 ```
 A new file will open (If you got one already the existing one will open) <br>
 In this file, you can automate things as follows: <br>
-Suggestion: <br>
 Side note: if you chose to automate backups in the setup script you got that already in your crontab <br>
+Suggestion: <br>
 Backup Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server backup hourly
