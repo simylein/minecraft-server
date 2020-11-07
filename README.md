@@ -1,7 +1,6 @@
 MinecraftServer
 ===============
-Scripts for a Minecraft Server on Linux Debian using screen. 
-
+Scripts for a Minecraft Server on Linux Debian using screen. <br>
 This tutorial contains important steps if you would like to host a minecarft server from the command line. 
 ## software
 In order for the Server to run we will need to install some packages: (please note: some of them could be installed already)
@@ -9,8 +8,7 @@ In order for the Server to run we will need to install some packages: (please no
 sudo apt install openjdk-16-jre-headless iputils-ping dnsutils screen grep nano wget cat
 ```
 ## setup
-Then, you can download and execute the setup script.
-
+Then, you can download and execute the setup script. <br>
 downloading setup script:
 ```
 wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
@@ -23,12 +21,9 @@ executing setup script:
 ```
 ./setup.sh
 ```
-The Script will ask you some Questions. Please answer them in order for the Server to work. 
-
-Now you got two directorys. 
-
-One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. 
-
+The Script will ask you some Questions. Please answer them in order for the Server to work. <br>
+Now you got two directorys. <br>
+One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. <br>
 Like you can imagine ${servername} holds your live server and ${servername}-backups stores your backups. 
 ## serverstart
 Start your Server for the first time:
@@ -36,8 +31,7 @@ Start your Server for the first time:
 ./start.sh
 ```
 ## screen
-Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal. 
-
+Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal. <br>
 You can view all your screen by typing
 ```
 screen -list
@@ -48,9 +42,8 @@ screen -list ${servername}
 ```
 To exit the screen terminal type Ctrl+A and Ctrl+D
 ## server commands
-Your minecraft server can understand certain commands. 
-I will explain some of them to you. 
-
+Your minecraft server can understand certain commands. <br>
+I will explain some of them to you. <br>
 adding someone to your whitelist so he/she can join your server. 
 ```
 whitelist add ${playername}
@@ -59,11 +52,10 @@ remove someone to your whitelist so he/she can no longer join your server.
 ```
 whitelist remove ${playername}
 ```
-Important: If you do these commands ingame you will need to put a / before each command. 
+Important: If you do these commands ingame you will need to put a / before each command. <br>
 In the screen terminal you don't need a / before your command. 
 ## server.settings
-This is your file that holds the variables you have chosen with the setup script.
-
+This is your file that holds the variables you have chosen with the setup script. <br>
 If you know what your are doing feel free to edit it to suit your needs.
 ```
 nano server.settings
@@ -109,8 +101,7 @@ sync-chunk-writes=      (stores your changes) [I would strongely recomment to se
 spawn-protection=       (the number of block at the worldspawn only operators can touch)
 ```
 ## scripts
-The following scripts automate the start, stop, restart and backup procedure. 
-
+The following scripts automate the start, stop, restart and backup procedure. <br>
 each one can be executed with:
 ```
 ./start.sh
@@ -141,12 +132,10 @@ If you would like to automate some of those task on your server you can create a
 ```
 crontab -e
 ```
-A new file will open (If you got one already the existing one will open)
-
-In this file, you can automate things as follows:
-
-Suggestion:
-
+A new file will open (If you got one already the existing one will open) <br>
+In this file, you can automate things as follows: <br>
+Suggestion: <br>
+Side note: if you chose to automate backups in the setup script you got that already in your crontab <br>
 Backup Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server backup hourly
@@ -179,10 +168,7 @@ Start at Boot Example: (In order to work, please replace the variables with your
 ```
 Close and save your crontab. 
 ## ending
-I hope you learned something and that those scripts I provide may help you and your minecraft server experience. 
-
-Have fun and enjoy the Game ;^)
-
-Best regards,
-
+I hope you learned something and that those scripts I provide may help you and your minecraft server experience. <br>
+Have fun and enjoy the Game ;^) <br>
+Best regards, <br>
 Simylein
