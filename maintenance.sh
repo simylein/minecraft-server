@@ -39,7 +39,7 @@ while [ $stopchecks -lt 30 ]; do
 		break
 	fi
 stopchecks=$((stopchecks+1))
-sleep 1;
+sleep 1s
 done
 
 # force quit server if not stopped
