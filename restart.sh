@@ -8,7 +8,7 @@
 cd ${serverdirectory}
 
 # write date to logfile
-echo "executing restart script at" >> ${screenlog} && date >> ${screenlog}
+echo "${date} executing restart script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then

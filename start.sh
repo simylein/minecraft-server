@@ -8,7 +8,7 @@
 cd ${serverdirectory}
 
 # write date to logfile
-echo "executing start script at" >> ${screenlog} && date >> ${screenlog}
+echo "${date} executing start script" >> ${screenlog}
 
 # check if server is already running
 if screen -list | grep -q "${servername}";then

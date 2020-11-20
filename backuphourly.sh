@@ -8,7 +8,7 @@
 cd ${serverdirectory}
 
 # write date to logfile
-echo "executing backuphourly script at" >> ${screenlog} && date >> ${screenlog}
+echo "${date} executing backup-hourly script" >> ${screenlog}
 
 # ingame output
 screen -Rd ${servername} -X stuff "say backing up files...$(printf '\r')"
