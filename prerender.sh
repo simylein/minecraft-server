@@ -1,10 +1,10 @@
 #!/bin/bash
 # mincraft server prerender script
 
-# WARNING this script is broken
-
 # read the settings
 . ./server.settings
+
+cords=( 2048 1792 1536 1280 1024 768 512 256 0 -256 -512 -768 -1024 -1280 -1536 -1792 -2048)
 
 # change to server directory
 cd ${serverdirectory}
