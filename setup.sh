@@ -266,7 +266,7 @@ echo "storing variables in server.properties..."
 	echo "${pvp}" >> server.properties	
 	echo "${motd}" >> server.properties
 	
-# crontab automatization
+# crontab automatization backups
 read -p "Would you like to automate backups? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating backups...${nocolor}"
@@ -274,16 +274,47 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
 		crontab -l | { cat; echo "00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
-	else echo -e "${red}no automated backups...${nocolor}"
+	else echo -e "${red}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
 		crontab -l | { cat; echo "#00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
 fi
 
-# finish messages
-echo -e "${green}setup is complete!${nocolor}"
-echo "If you would like to start your Server:"
-echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
-echo -e "execute like this: ${green}./start.sh${nocolor}"
-echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
+# crontab automatization startup
+read -p "Would you like to start your server at boot? [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then echo -e "${green}atomatic startup at boot...${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+		crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+	else echo -e "${red}no startup at boot${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+fi
+
+# crontab automatization restart
+read -p "Would you like to restart your server at 02:00? [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then echo -e "${green}atomatic restarts at 02:00${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+		crontab -l | { cat; echo "00 02 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+	else echo -e "${red}no restarts${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+		crontab -l | { cat; echo "#00 02 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+fi
+
+# ask user to start now
+read -p "Would you like to start your server now?? [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then
+		# server startup
+		echo -e "${green}starting server...${nocolor}"
+		./start.sh
+	else
+		# finish messages
+		echo -e "${green}setup is complete!${nocolor}"
+		echo "If you would like to start your Server:"
+		echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
+		echo -e "execute like this: ${green}./start.sh${nocolor}"
+		echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
+fi
