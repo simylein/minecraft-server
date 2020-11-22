@@ -270,11 +270,15 @@ echo "storing variables in server.properties..."
 read -p "Would you like to automate backups? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating backups...${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-		crontab -l | { cat; echo "00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
-		crontab -l | { cat; echo "00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		(crontab -l 2>/dev/null; echo "# minecraft ${servername} server backup hourly at **:00") | crontab -
+		(crontab -l 2>/dev/null; echo "00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh") | crontab -
+		(crontab -l 2>/dev/null; echo "# minecraft ${servername} server backup daily at 22:00") | crontab -
+		(crontab -l 2>/dev/null; echo "00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh") | crontab -
 	else echo -e "${red}no automated backups...${nocolor}"
+		(crontab -l 2>/dev/null; echo "# minecraft ${servername} server backup hourly at **:00") | crontab -
+		(crontab -l 2>/dev/null; echo "#00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh") | crontab -
+		(crontab -l 2>/dev/null; echo "# minecraft ${servername} server backup daily at 22:00") | crontab -
+		(crontab -l 2>/dev/null; echo "#00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh") | crontab -
 fi
 
 # finish messages
