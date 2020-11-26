@@ -18,7 +18,7 @@ echo "creating new backup..." >> ${backuplog}
 echo -e "${blue}creating new backup...${nocolor}"
 
 # cp command
-cp -r -f ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
+cp -r ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
 
 # output file location of new daily backup and write to logfile
 echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
@@ -29,7 +29,7 @@ echo "deleting old backup..." >> ${backuplog}
 echo -e "${red}deleting old backup...${nocolor}"
 
 # rm command
-rm -r -f ${backupdirectory}/daily/${servername}-${olddaily}
+rm -r ${backupdirectory}/daily/${servername}-${olddaily}
 
 # output file location of old daily backup and write to logfile
 echo "deleted ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog}

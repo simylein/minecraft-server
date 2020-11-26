@@ -18,7 +18,7 @@ echo "creating new backup..." >> ${backuplog}
 echo -e "${blue}creating new backup...${nocolor}"
 
 # cp command
-cp -r -f ${serverdirectory}/world ${backupdirectory}/hourly/${servername}-${newhourly}
+cp -r ${serverdirectory}/world ${backupdirectory}/hourly/${servername}-${newhourly}
 
 # output file location of new hourly backup and write to logfile
 echo "file available under ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
@@ -29,7 +29,7 @@ echo "deleting old backup..." >> ${backuplog}
 echo -e "${red}deleting old backup...${nocolor}"
 
 # rm command
-rm -r -f ${backupdirectory}/hourly/${servername}-${oldhourly}
+rm -r ${backupdirectory}/hourly/${servername}-${oldhourly}
 
 # output file location of old hourly backup and write to logfile
 echo "deleted ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
