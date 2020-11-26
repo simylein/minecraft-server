@@ -97,10 +97,11 @@ read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 then echo -e "${green}restoring backup...${nocolor}"
 	cd ${homedirectory}
-	rm -r ${serverdirectory}
-	cp -r ${backupdirectory}/${dailyhourly}/${backup} ${homedirectory}
+	rm -r ${serverdirectory}/world
+	cp -r ${backupdirectory}/${dailyhourly}/${backup} ${serverdirectory}
 	mv ${backup} ${servername}
 	echo -e "${blue}restarting server with restored backup...${nocolor}"
+	sleep 8s
 	./start.sh
 else echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"
