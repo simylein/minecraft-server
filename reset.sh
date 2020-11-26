@@ -54,7 +54,7 @@ echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory} ${backupdirectory}/reset-${newdaily}
+cp -r ${serverdirectory}/world ${backupdirectory}/reset-${newdaily}
 
 # remove log and world
 echo -e "${red}removing world directory...${nocolor}"

@@ -18,7 +18,7 @@ echo "creating new backup..." >> ${backuplog}
 echo -e "${blue}creating new backup...${nocolor}"
 
 # cp command
-cp -r -f ${serverdirectory} ${backupdirectory}/daily/${servername}-${newdaily}
+cp -r -f ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
 
 # output file location of new daily backup and write to logfile
 echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
