@@ -106,5 +106,6 @@ then echo -e "${green}restoring backup...${nocolor}"
 	./start.sh
 else echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"
+	cd ${serverdirectory}
 	./start.sh
 fi
