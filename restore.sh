@@ -101,7 +101,8 @@ then echo -e "${green}restoring backup...${nocolor}"
 	cp -r ${backupdirectory}/${dailyhourly}/${backup} ${serverdirectory}
 	mv ${backup} ${servername}
 	echo -e "${blue}restarting server with restored backup...${nocolor}"
-	sleep 8s
+	cd ${serverdirectory}
+	echo "${date} The backup ${backupdirectory}/${dailyhourly}/${backup} has been restored" >> ${screenlog}
 	./start.sh
 else echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"
