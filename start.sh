@@ -52,7 +52,6 @@ echo "starting ${servername} server..." && echo "starting ${servername} server..
 # main start commmand
 ${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
 ${screen} -r ${servername} -X colon "logfile flush 1^M"
-
 sleep 4s
 
 # check if screen is avaible
@@ -65,7 +64,6 @@ fi
 # succesful startup
 echo "server startup successfull!" >> ${screenlog}
 echo -e "${green}server startup successfull! - changing to server console...${nocolor}"
-
 sleep 4s
 
 # change to server console
