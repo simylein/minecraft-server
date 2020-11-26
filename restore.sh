@@ -59,77 +59,50 @@ cd daily
 backupsdaily=($(ls))
 cd ../
 
-# ask user which backup shall be restored
-PS3="Would you like to restore a daily or hourly backup? "
-select opt in "${backups[@]}"
+# ask for daily or hourly backup to restore
+PS3='Would you like to restore a daily or hourly backup? '
+select dailyhourly in "${backups[@]}"
 do
-	case $opt in
-		"${backups[0]}")
-			echo "you chose ${backups[0]}"
-			
-			# if user chose daily ask for which daily backup
-			PS3="Which ${backups[0]} backup would you like to restore? "
-			select opt in "${backupsdaily[@]}"
-			do
-				case $opt in
-					"${backupsdaily[0]}")
-						echo "you chose ${backupsdaily[0]}"
-						break
-					;;
-					"${backupsdaily[1]}")
-						echo "you chose ${backupsdaily[1]}"
-						break
-					;;
-					"${backupsdaily[2]}")
-						echo "you chose ${backupsdaily[2]}"
-						break
-					;;
-					"${backupsdaily[3]}")
-						echo "you chose ${backupsdaily[3]}"
-						break
-					;;
-					*) 
-						echo "invalid answer - please chose from the list"
-					;;
-				esac
-			done
-					
-			break
-		;;
-		"${backups[1]}")
-			echo "you chose ${backups[1]}"
-				
-			# if user chose hourly ask for which daily backup
-			PS3="Which ${backups[1]} backup would you like to restore? "
-			select opt in "${backupshourly[@]}"
-			do
-				case $opt in
-					"${backupshourly[0]}")
-						echo "you chose ${backupshourly[0]}"
-						break
-					;;
-					"${backupshourly[1]}")
-						echo "you chose ${backupshourly[1]}"
-						break
-					;;
-					"${backupshourly[2]}")
-						echo "you chose ${backupshourly[2]}"
-						break
-					;;
-					"${backupshourly[3]}")
-						echo "you chose ${backupshourly[3]}"
-						break
-					;;
-					*) 
-						echo "invalid answer - please chose from the list"
-					;;
-				esac
-			done
-			
-			break
-		;;
-		*) 
-			echo "invalid answer - please chose from the list"
-		;;
-	esac
+	echo "You chose: ${dailyhourly}"
+	break
 done
+
+# select specific backup out of daily or hourly
+if [[ "${dailyhourly}" == "${backups[0]}" ]]
+then
+	# ask for daily backup
+	PS3="Which ${backups[0]} backup would you like to restore? "
+	select backup in "${backupsdaily[@]}"
+	do 
+		echo "You chose: ${backup}"
+		break
+	done
+else
+	# ask for hourly backup
+	PS3="Which ${backups[1]} backup would you like to restore? "
+	select backup in "${backupshourly[@]}"
+	do
+		echo "You chose: ${backup}"
+		break
+	done
+fi
+
+# echo selected backup
+echo "selected backup to restore: ${backupdirectory}/${dailyhourly}/${backup}"
+
+# ask for permission to proceed
+echo "I will now delete the current serverdirectory and replace it with your chosen backup"
+echo "You have chosen: ${backupdirectory}/${dailyhourly}/${backup} as a backup to restore"
+read -p "Continue? [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+then echo -e "${green}restoring backup...${nocolor}"
+	cd ${homedirectory}
+	rm -r ${serverdirectory}
+	cp -r ${backupdirectory}/${dailyhourly}/${backup} ${homedirectory}
+	mv ${backup} ${servername}
+	echo -e "${blue}restarting server with restored backup...${nocolor}"
+	./start.sh
+else echo -e "${yellow}canceling backup restore...${nocolor}"
+	echo -e "${blue}restarting server...${nocolor}"
+	./start.sh
+fi
