@@ -128,8 +128,17 @@ If you would like to automate some of those task on your server you can create a
 crontab -e
 ```
 A new file will open (If you got one already the existing one will open) <br>
+Side note: the setup script will already put these lines in your crontab if you chose to do so <br>
 In this file, you can automate things as follows: <br>
 
+Backup Example: (In order to work, please replace the variables with your own ones)
+```
+# minecraft ${servername} server hourly backup at **:00
+00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh
+
+# minecraft ${servername} server daily backup at 22:00
+00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh
+```
 Stop and Start Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server stop at 22:30
