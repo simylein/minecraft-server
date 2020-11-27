@@ -39,6 +39,8 @@ mkdir ${servername}
 # donwload all the github scripts
 echo "downloading scripts from GitHub..."
 	cd ${servername}
+		wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
+		wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
 		wget -q -O server.settings https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.settings
 		wget -q -O server.properties https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.properties
 		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
