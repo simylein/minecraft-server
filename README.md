@@ -50,6 +50,22 @@ remove someone to your whitelist so he/she can no longer join your server.
 ```
 whitelist remove ${playername}
 ```
+ban someone from your server so he/she can no longer join your server. 
+```
+ban ${playername}
+```
+pardon someone from your server so he/she can join your server. 
+```
+pardon ${playername}
+```
+teleporting a player to cords.
+```
+tp ${playername} ${x} ${y} ${z}
+```
+teleporting a player to another player
+```
+tp ${playername} ${playername}
+```
 Important: If you do these commands ingame you will need to put a / before each command. <br>
 In the screen terminal you don't need a / before your command. 
 ## server.settings
@@ -73,6 +89,12 @@ green="\033[0;32m"
 blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
+
+# backup stuff
+newhourly=$(date +"%H"-00)
+oldhourly=$(date -d "-23 hours" +"%H"-00)
+newdaily=$(date +"%Y-%m-%d")
+olddaily=$(date -d "-24 days" +"%Y-%m-%d")
 ```
 ## server.properties
 If you would like to costumize your server further have a look at your server.properties file. 
@@ -81,22 +103,29 @@ nano server.properties
 ```
 Important settings are:
 ```
-max-players=            (limuts the maximumg amount of players on the server at the same time
-                        [Warning large numbers may impact performance])
+max-players=            (limuts the maximumg amount of players on the server at the same time)
+                        [Warning large numbers may impact performance]
+                        
 difficulty=             (defines ingame difficulty) [peaceful, easy, normal, hard]
+
 view-distance=          (defines number of ingame chnuks to be rendered)
                         [Warning large numbers may impact performance]
-enforce-whitelist=      (enforces the whitelist) [I would strongely recomment to set this to true]
+                        
 white-list=             (turns on the whitelist) [I would strongely recomment to set this to true]
-online-mode=            (runs server in online mode with Mojang authentication)
-                        [I would strongely recomment to set this to true]
+
 motd=                   (this will be displayed in the menu below your server - chose what you like)
+
 server-port=            (default by 25565. Only importent if you are dealing with multiple server)
                         [if you run multiple servers each server wants to have its own port]
-max-tick-time=          (default by 60000. Time in millisecound until the server considers itself as crashed)
+                        
 gamemode=               (default survival. Defines your game mode. For creative server replace with creative)
-sync-chunk-writes=      (stores your changes) [I would strongely recomment to set this to true]
+                        [survival/creative/adventure/spectator]
+                        
 spawn-protection=       (the number of block at the worldspawn only operators can touch)
+
+pvp=                    (ability for player to do damage to oneanother) [true/false]
+
+enable-command-block    (enables command blocks to tinker with) [true/false]
 ```
 ## scripts
 The following scripts automate the start, stop and restart procedure. <br>
@@ -114,11 +143,15 @@ The maintenance script is there to let people know you take their server offline
 ```
 ./maintenance.sh
 ```
-The update script will update your server to the newest java version avaible. 
+The restore script is for restoring a backup (daily - last 24 days) (hourly - last 24 hours)
+```
+./restore.sh
+```
+The update script will update your server to the newest java version avaible.
 ```
 ./update.sh
 ```
-There is also a reset script. Warning it will reset your world! 
+There is also a reset script. Warning it will reset your world! (it will performe a backup before doing so
 ```
 ./reset.sh
 ```
