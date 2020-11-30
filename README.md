@@ -38,7 +38,7 @@ If you want to resume a certain screen session just type
 ```
 screen -r ${servername}
 ```
-To exit the screen terminal type Ctrl+A and Ctrl+D
+To exit the screen terminal press Ctrl+A and Ctrl+D
 ## server commands
 Your minecraft server can understand certain commands. <br>
 I will explain some of them to you. <br>
