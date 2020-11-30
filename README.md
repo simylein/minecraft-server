@@ -38,6 +38,9 @@ If you want to resume a certain screen session just type
 ```
 screen -r ${servername}
 ```
+If you would like to scroll inside a screen session press Ctrl+A and Esc (enter copy mode). <br>
+For returning back to normal press Esc.
+
 To exit the screen terminal press Ctrl+A and Ctrl+D
 ## server commands
 Your minecraft server can understand certain commands. <br>
