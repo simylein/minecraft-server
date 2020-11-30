@@ -143,7 +143,7 @@ echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
 	cd ${homedirectory}
 	
 # set up backupdirectory
-echo "setting up a backupdirectory..."		
+echo "setting up a backupdirectory..."
 mkdir ${servername}-backups
 	cd ${servername}-backups
 		mkdir hourly
@@ -154,67 +154,79 @@ mkdir ${servername}-backups
 # ask all the importatnt user input
 echo "How much minimum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}256${nocolor}"
-read -p "Your amount:" mems
+read -p "Your amount: " mems
 mems="-Xms${mems}M"
 echo -e "Your Server will will have ${green}${mems}${nocolor} of minimum memory allocated"
 
 echo "How much maximum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}2048${nocolor}"
-read -p "Your amount:" memx
+read -p "Your amount: " memx
 memx="-Xms${memx}M"
 echo -e "Your Server will will have ${green}${memx}${nocolor} of maximum memory allocated"
 
 echo "How many threads would you like your Server to use?"
 echo -e "Please enter like this. Example:${yellow}4${nocolor}"
-read -p "Your amount:" threadcount
+read -p "Your amount: " threadcount
 threadcount="-XX:ParallelGCThreads=${threadcount}"
 echo -e "Your Server will will have ${green}${threadcount}${nocolor} of threads to work with"
 
-echo "Please specifie your desired view-distance"
+echo "Please specify your desired view-distance"
 echo -e "Please enter like this. Example:${yellow}16${nocolor}"
-read -p "Your view-distance:" viewdistance
+read -p "Your view-distance: " viewdistance
 viewdistance="view-distance=${viewdistance}"
 echo -e "Your Server will have ${green}${viewdistance}${nocolor}"
 
-echo "Please specifie your desired spawn-protection"
+echo "Please specify your desired spawn-protection"
 echo -e "Please enter like this. Example:${yellow}16${nocolor}"
-read -p "Your spawn-protection:" spawnprotection
+read -p "Your spawn-protection: " spawnprotection
 spawnprotection="spawn-protection=${spawnprotection}"
 echo -e "Your Server will have ${green}${spawnprotection}${nocolor}"
 
 echo "Please tell me the max-players amount"
 echo -e "Please enter like this. Example:${yellow}8${nocolor}"
-read -p "Your spawn-protection:" maxplayers
+read -p "Your spawn-protection: " maxplayers
 maxplayers="max-players=${maxplayers}"
 echo -e "Your Server will have ${green}${maxplayers}${nocolor}"
 
-echo "Please specifie your desired server-port"
+echo "Please specify your desired server-port"
 echo -e "Please enter like this. Example:${yellow}25565${nocolor}"
-read -p "Your server-port:" serverport
+read -p "Your server-port: " serverport
 serverport="server-port=${serverport}"
 echo -e "Your Server will be on ${green}${serverport}${nocolor}"
 
+echo "Please specify your desired query-port"
+echo -e "Please enter like this. Example:${yellow}25565${nocolor}"
+read -p "Your query-port: " queryport
+queryport="query.port=${queryport}"
+echo -e "Your Server will be on ${green}${queryport}${nocolor}"
+
 echo "Which gamemode would you like to play?"
 echo -e "Please enter like this. Example:${yellow}survival${nocolor}"
-read -p "Your gamemode:" gamemode
+read -p "Your gamemode: " gamemode
 gamemode="gamemode=${gamemode}"
 echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
 
 echo "Which difficulty would you like to have?"
 echo -e "Please enter like this. Example:${yellow}normal${nocolor}"
-read -p "Your difficulty:" difficulty
+read -p "Your difficulty: " difficulty
 difficulty="difficulty=${difficulty}"
 echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
 
 echo "Would you like to turn on pvp?"
 echo -e "Please enter like this. Example:${yellow}true${nocolor}"
-read -p "Your choice:" pvp
+read -p "Your choice: " pvp
 pvp="pvp=${pvp}"
 echo -e "Your Server will be on ${green}${pvp}${nocolor}"
 
+echo "Would you like to turn on command-blocks??"
+echo -e "Please enter like this. Example:${yellow}true${nocolor}"
+read -p "Your choice: " cmdblock
+cmdblock="enable-command-block=${cmdblock}"
+echo -e "Your Server will be on ${green}${cmdblock}${nocolor}"
+
 echo "Please chose your server message"
 echo -e "Please enter like this. Example:${yellow}Hello World${nocolor}"
-read -p "Your message:" motd
+read -p "Your message: " motd
 motd="motd=${motd}"
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
@@ -261,39 +273,47 @@ echo "# files and directorys" >> server.settings
 	done
 
 echo "storing variables in server.properties..."
-	echo "${viewdistance}" >> server.properties	
-	echo "${spawnprotection}" >> server.properties	
-	echo "${maxplayers}" >> server.properties	
-	echo "${serverport}" >> server.properties	
-	echo "${gamemode}" >> server.properties	
-	echo "${difficulty}" >> server.properties	
-	echo "${pvp}" >> server.properties	
+	echo "${viewdistance}" >> server.properties
+	echo "${spawnprotection}" >> server.properties
+	echo "${maxplayers}" >> server.properties
+	echo "${serverport}" >> server.properties
+	echo "${queryport}" >> server.properties
+	echo "${gamemode}" >> server.properties
+	echo "${difficulty}" >> server.properties
+	echo "${pvp}" >> server.properties
+	echo "${cmdblock}" >> server.properties
 	echo "${motd}" >> server.properties
 	
+# write servername and date into crontab
+date=$(date +"%Y-%m-%d %H:%M:%S")
+crontab -l | { cat; echo "Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
+crontab -l | { cat; echo ""; } | crontab -
+
 # crontab automatization backups
 read -p "Would you like to automate backups? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating backups...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
 		crontab -l | { cat; echo "00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
-	else echo -e "${red}no automated backups${nocolor}"
+	else echo -e "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
 		crontab -l | { cat; echo "#00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
 fi
 
-# crontab automatization startup
-read -p "Would you like to start your server at boot? [Y/N]:"
+# crontab automated start and stop
+read -p "Would you like to start and stop your server at a certain time?"
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo -e "${green}atomatic startup at boot...${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-		crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
-	else echo -e "${red}no startup at boot${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+	then echo -e "${green}automating start and stop...${nocolor}"
+		read -p "Your start time: " starttime
+		read -p "Your stop time: " stoptime
+	else echo -e "${yellow}no automated  start and stop${nocolor}"
+		
 fi
 
 # crontab automatization restart
@@ -302,23 +322,37 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}atomatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "00 02 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
-	else echo -e "${red}no restarts${nocolor}"
+		crontab -l | { cat; echo ""; } | crontab -
+	else echo -e "${yellow}no restarts${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "#00 02 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
 fi
 
-# ask user to start now
+# crontab automatization startup
+read -p "Would you like to start your server at boot? [Y/N]:"
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then echo -e "${green}automatic startup at boot...${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+		crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+	else echo -e "${yellow}no startup at boot${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+fi
+
+# finish messages
+echo -e "${green}setup is complete!${nocolor}"
+echo "If you would like to start your Server:"
+echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
+echo -e "execute like this: ${green}./start.sh${nocolor}"
+echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
+
+# ask user to start server now
 read -p "Would you like to start your server now?? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then
-		# server startup
 		echo -e "${green}starting server...${nocolor}"
 		./start.sh
-	else
-		# finish messages
-		echo -e "${green}setup is complete!${nocolor}"
-		echo "If you would like to start your Server:"
-		echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
-		echo -e "execute like this: ${green}./start.sh${nocolor}"
-		echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
 fi
