@@ -196,6 +196,25 @@ Start at Boot Example: (In order to work, please replace the variables with your
 @reboot cd ${serverdirectory} && ${serverdirectory}/start.sh
 ```
 Close and save your crontab. 
+## logfiles
+Your server will write two growing logfiles (located in your ${serverdirectory}) <br>
+
+screen.log and backup.log <br>
+
+to view them:
+```
+less screen.log
+```
+```
+less backup.log
+```
+to edit them:
+```
+nano screen.log
+```
+```
+nano backup.log
+```
 ## ending
 I hope you learned something and that those scripts I provide may help you and your minecraft server experience. <br>
 Have fun and enjoy the Game ;^)
