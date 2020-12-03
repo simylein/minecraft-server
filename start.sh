@@ -45,7 +45,7 @@ done
 
 # user information
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
-echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
+echo "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 echo "starting ${servername} server..." && echo "starting ${servername} server..." >> ${screenlog}
 
 
@@ -71,8 +71,8 @@ if ! screen -list | grep -q "${servername}"; then
 fi
 
 # succesful startup
-echo "server startup successfull!" >> ${screenlog}
-echo -e "${green}server startup successfull! - changing to server console...${nocolor}"
+echo "server startup successful!" >> ${screenlog}
+echo -e "${green}server startup successful! - changing to server console...${nocolor}"
 
 # change to server console
 screen -r ${servername}
