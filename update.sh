@@ -55,6 +55,9 @@ if [ "$?" != 0 ]; then
 	else
 	echo -e "${green}downloading newest server version...${nocolor}"
 	wget -q -O minecraft-server.1.16.4.jar https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+	# replace old server variable with new one
+	newserverfile=${serverdirectory}"/minecraft-server.1.16.4.jar"
+	sed -i "s|$serverfile|$newserverfile|g" server.settings
 fi
 
 # restart the server
