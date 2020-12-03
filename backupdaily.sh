@@ -10,6 +10,13 @@ cd ${serverdirectory}
 # write date to logfile
 echo "${date} executing backup-daily script" >> ${screenlog}
 
+# check if server is running
+if ! screen -list | grep -q "${servername}"; then
+	echo -e "${yellow}Server is not currently running!${nocolor}"
+	echo "Server is not currently running!" >> ${screenlog}
+	exit 1
+fi
+
 # ingame output
 screen -Rd ${servername} -X stuff "say backing up files...$(printf '\r')"
 
