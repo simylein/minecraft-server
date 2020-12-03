@@ -13,6 +13,9 @@ echo "${date} executing restart script" >> ${screenlog}
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
         echo -e "${yellow}Server is not currently running!${nocolor}"
+        echo -e "${yellow}server not running - starting server now!${nocolor}"
+        echo "server not running - starting server now!" >> ${screenlog}
+        ./start.sh
         exit 1
 fi
 
