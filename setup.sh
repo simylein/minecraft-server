@@ -286,7 +286,7 @@ echo "storing variables in server.properties..."
 	
 # write servername and date into crontab
 date=$(date +"%Y-%m-%d %H:%M:%S")
-crontab -l | { cat; echo "Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
+crontab -l | { cat; echo "#Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
 crontab -l | { cat; echo ""; } | crontab -
 
 # crontab automatization backups
