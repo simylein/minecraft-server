@@ -43,6 +43,12 @@ while
 	networkchecks=$((networkchecks+1))
 done
 
+# check for executable
+if ! ls ${serverfile}* 1> /dev/null 2>&1; then
+	echo -e "${red}Warning: no executable found!${nocolor}"
+	echo "Warning: no executable found!" >> ${screenlog}
+fi
+
 # user information
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
