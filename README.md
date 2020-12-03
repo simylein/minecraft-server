@@ -154,7 +154,7 @@ The update script will update your server to the newest java version avaible.
 ```
 ./update.sh
 ```
-There is also a reset script. Warning it will reset your world! (it will performe a backup before doing so
+There is also a reset script. Warning it will reset your world! (it will performe a backup before doing so)
 ```
 ./reset.sh
 ```
