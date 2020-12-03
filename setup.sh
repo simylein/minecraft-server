@@ -344,6 +344,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo ""; } | crontab -
 fi
 
+# let user select desired crontab
+crontab -e
+
 # finish messages
 echo -e "${green}setup is complete!${nocolor}"
 echo "If you would like to start your Server:"
