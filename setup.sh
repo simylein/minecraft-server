@@ -165,8 +165,8 @@ memx="-Xms${memx}M"
 echo -e "Your Server will will have ${green}${memx}${nocolor} of maximum memory allocated"
 
 echo "How many threads would you like your Server to use?"
-echo -e "Please enter like this. Example:${yellow}4${nocolor}"
-read -re -i "4" -p "Your amount: " threadcount
+echo -e "Please enter like this. Example:${yellow}2${nocolor}"
+read -re -i "2" -p "Your amount: " threadcount
 threadcount="-XX:ParallelGCThreads=${threadcount}"
 echo -e "Your Server will will have ${green}${threadcount}${nocolor} of threads to work with"
 
