@@ -48,15 +48,18 @@ echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 echo "starting ${servername} server..." && echo "starting ${servername} server..." >> ${screenlog}
 
-
 # main start commmand
 ${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
 ${screen} -r ${servername} -X colon "logfile flush 1^M"
 
 # check if screen is avaible
+counter="0"
 startchecks="0"
 while [ $startchecks -lt 10 ]; do
 	if screen -list | grep -q "${servername}"; then
+		counter=$((counter+1))
+	fi
+	if [ $counter -eq 5 ]; then
 		break
 	fi
 	startchecks=$((startchecks+1))
