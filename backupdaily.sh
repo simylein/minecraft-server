@@ -7,8 +7,9 @@
 # change to server directory
 cd ${serverdirectory}
 
-# write date to logfile
+# write date to logfiles
 echo "${date} executing backup-daily script" >> ${screenlog}
+echo "${date} executing backup-daily script" >> ${backuplog}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
