@@ -1,10 +1,49 @@
 #!/bin/bash
 # minecraft server speedrun script
 
-# WARNING this script is broken
-
 # read the settings
 . ./server.settings
+
+# all possible death messages
+deaths=(
+	"was shot by"
+	"was pummeled by"
+	"was pricked to death"
+	"walked into a cactus whilst trying to escape"
+	"drowned"
+	"experienced kinetic energy"
+	"blew up"
+	"was blown up by"
+	"was killed by"
+	"hit the ground too hard"
+	"fell from a high place"
+	"fell off"
+	"fell while climbing"
+	"was squashed by a falling"
+	"went up in flames"
+	"walked into fire"
+	"burned to death"
+	"was burnt to a crisp"
+	"went off with a bang"
+	"tried to swim in lava"
+	"was struck by lightning"
+	"discovered the floor was lava"
+	"walked into danger zone"
+	"was killed by"
+	"was slain by"
+	"was fireballed by"
+	"was stung to death"
+	"starved to death"
+	"suffocated in a wall"
+	"was squished too much"
+	"was squashed by"
+	"was poked to death by a sweet berry bush"
+	"was killed trying to hurt"
+	"was impaled by"
+	"fell out of the world"
+	"didn't want to live in the same world as"
+	"withered away"
+)
 
 # change to server directory
 cd ${serverdirectory}
@@ -48,8 +87,8 @@ echo "starting countdown..."
 counter="60"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "Speedrun Challange starts in ${counter} seconds!"
-		screen -Rd ${servername} -X stuff "say Speedrun Challange starts in ${counter} seconds!$(printf '\r')"
+		echo "Speedrun Challenge starts in ${counter} seconds!"
+		screen -Rd ${servername} -X stuff "say Speedrun Challenge starts in ${counter} seconds!$(printf '\r')"
 	fi
 counter=$((counter-1))
 sleep 1s
@@ -64,7 +103,7 @@ screen -Rd ${servername} -X stuff "time set day$(printf '\r')"
 screen -Rd ${servername} -X stuff "difficulty hard$(printf '\r')"
 
 # challange start
-echo "Speedrun Challange has started"
+echo "Speedrun Challenge has started"
 screen -Rd ${servername} -X stuff "say Speedrun Challange has startet$(printf '\r')"
 screen -Rd ${servername} -X stuff "say God Luck and Have Fun :PogChamp:,:ZickZackSmiley:$(printf '\r')"
 
@@ -108,8 +147,8 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 		screen -Rd ${servername} -X stuff "say Time elapsed: ${hours}:${minutes}:${seconds}$(printf '\r')"
 	fi
 	if [[ ! -z $(grep "${deaths[*]}" "${tmpscreenlog}") ]]; then # if a player dies output time and reset server
-		echo "You died! Challange stopped at ${hours}:${minutes}:${seconds}!"
-		screen -Rd ${servername} -X stuff "say You died! Challange stopped at ${hours}:${minutes}:${seconds}!$(printf '\r')"
+		echo "You died! Challenge stopped at ${hours}:${minutes}:${seconds}!"
+		screen -Rd ${servername} -X stuff "say You died! Challenge stopped at ${hours}:${minutes}:${seconds}!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh
 		break
@@ -117,15 +156,15 @@ tail -n1 ${screenlog} >> ${tmpscreenlog}
 	if [[ ! -z $(grep "${reset}" "${tmpscreenlog}") ]]; then
 		echo "A server reset has been requested"
 		screen -Rd ${servername} -X stuff "say A server reset has been requested$(printf '\r')"
-		echo "Challange stopped at ${hours}:${minutes}:${seconds}"
-		screen -Rd ${servername} -X stuff "say Challange stopped at ${hours}:${minutes}:${seconds}$(printf '\r')"
+		echo "Challenge stopped at ${hours}:${minutes}:${seconds}"
+		screen -Rd ${servername} -X stuff "say Challenge stopped at ${hours}:${minutes}:${seconds}$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		./reset.sh
 		break
 	fi
 	if [[ ! -z $(grep "${dragondeath}" "${tmpscreenlog}") ]]; then
-		echo "Challange has been completed in ${hours}:${minutes}:${seconds}"
-		screen -Rd ${servername} -X stuff "say Challange has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')"
+		echo "Challenge has been completed in ${hours}:${minutes}:${seconds}"
+		screen -Rd ${servername} -X stuff "say Challenge has been completed in ${hours}:${minutes}:${seconds}$(printf '\r')"
 		echo "Congratulations! You did it!"
 		screen -Rd ${servername} -X stuff "say Congratulations! You did it!$(printf '\r')"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
