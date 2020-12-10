@@ -6,6 +6,60 @@
 # read the settings
 . ./server.settings
 
+# array of possible death messages
+deaths=(
+	"was shot by"
+	"was pummeled by"
+	"was pricked to death"
+	"walked into a cactus whilst trying to escape"
+	"drowned"
+	"experienced kinetic energy"
+	"blew up"
+	"was blown up by"
+	"was killed by"
+	"hit the ground too hard"
+	"fell from a high place"
+	"fell off"
+	"fell while climbing"
+	"was squashed by a falling"
+	"went up in flames"
+	"walked into fire"
+	"burned to death"
+	"was burnt to a crisp"
+	"went off with a bang"
+	"tried to swim in lava"
+	"was struck by lightning"
+	"discovered the floor was lava"
+	"walked into danger zone"
+	"was killed by"
+	"was slain by"
+	"was fireballed by"
+	"was stung to death"
+	"starved to death"
+	"suffocated in a wall"
+	"was squished too much"
+	"was squashed by"
+	"was poked to death by a sweet berry bush"
+	"was killed trying to hurt"
+	"was impaled by"
+	"fell out of the world"
+	"didn't want to live in the same world as"
+	"withered away"
+)
+
+# all participating playernames
+playername01="player01"
+playername02="player02"
+playername03="player03"
+playername04="player04"
+playername05="player05"
+playername06="player06"
+playername07="player07"
+playername08="player08"
+playername09="player09"
+playername10="player10"
+playername11="player11"
+
 # change to server directory
 cd ${serverdirectory}
 
@@ -22,22 +76,22 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 	then
 		# collect all playernames
 		echo "Please put in all participating Varo Players"
-		read -p "playername1:" player01
-		read -p "playername2:" player02
-		read -p "playername3:" player03
-		read -p "playername4:" player04
-		read -p "playername5:" player05
-		read -p "playername6:" player06
-		read -p "playername7:" player07
-		read -p "playername8:" player08
-		read -p "playername1:" player09
-		read -p "playername2:" player10
-		read -p "playername3:" player11
-		read -p "playername4:" player12
-		read -p "playername5:" player13
-		read -p "playername6:" player14
-		read -p "playername7:" player15
-		read -p "playername8:" player16
+		read -p "playername01:" player01
+		read -p "playername02:" player02
+		read -p "playername03:" player03
+		read -p "playername04:" player04
+		read -p "playername05:" player05
+		read -p "playername06:" player06
+		read -p "playername07:" player07
+		read -p "playername08:" player08
+		read -p "playername09:" player09
+		read -p "playername10:" player10
+		read -p "playername11:" player11
+		read -p "playername12:" player12
+		read -p "playername13:" player13
+		read -p "playername14:" player14
+		read -p "playername15:" player15
+		read -p "playername16:" player16
 
 		# list all participating players
 		echo "All participating Varo Players:"
