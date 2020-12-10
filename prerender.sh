@@ -16,7 +16,7 @@ if ! screen -list | grep -q "${servername}"; then
 fi
 
 # explain to user
-echo -e "${blue}I will prerender your minecraft world by teleporting a selcted player through it${nocolor}"
+echo -e "${blue}I will prerender your minecraft world by teleporting a selected player through it${nocolor}"
 echo -e "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
 
 # ask for playername
@@ -25,8 +25,8 @@ echo -e "The player will be ${green}${playername}${nocolor}"
 
 # ask for interval in seconds
 echo "I would like to know how fast you want to scan your world"
-echo "I would recommend an interval of 30 to 60 secounds"
-echo "Please enter an interval in secounds. Example: ${yellow}60${nocolor}"
+echo "I would recommend an interval of 30 to 60 seconds"
+echo "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 read -p "interval:" interval
 interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
