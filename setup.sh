@@ -255,7 +255,7 @@ echo "# memory and threads" >> server.settings
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
 echo "" >> server.settings
-echo "# files and directorys" >> server.settings
+echo "# files and directories" >> server.settings
 	for var in servername; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
