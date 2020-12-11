@@ -91,7 +91,7 @@ fi
 echo "selected backup to restore: ${backupdirectory}/${dailyhourly}/${backup}"
 
 # ask for permission to proceed
-echo "I will now delete the current serverdirectory and replace it with your chosen backup"
+echo "I will now delete the current world-directory and replace it with your chosen backup"
 echo "You have chosen: ${backupdirectory}/${dailyhourly}/${backup} as a backup to restore"
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
