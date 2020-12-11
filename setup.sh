@@ -225,8 +225,8 @@ cmdblock="enable-command-block=${cmdblock}"
 echo -e "Your Server will be on ${green}${cmdblock}${nocolor}"
 
 echo "Please chose your server message"
-echo -e "Please enter like this. Example:${yellow}Hello World${nocolor}"
-read -re -i "Hello World" -p "Your message: " motd
+echo -e "Please enter like this. Example:${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
+read -re -i "Hello World, I am your new Minecraft Server ;^)" -p "Your message: " motd
 motd="motd=${motd}"
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
