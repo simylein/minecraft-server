@@ -18,30 +18,41 @@ if ! screen -list | grep -q "${servername}"; then
 	exit 1
 fi
 
-# ingame output
-screen -Rd ${servername} -X stuff "say backing up files...$(printf '\r')"
+# check if there is no backup from today
+if ! [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
+	cp -r ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
+else
+	echo "warning backup already exists!" >> ${backuplog}
+	exit 1
+fi
 
-# adding new daily backup
-echo "creating new backup..." >> ${backuplog}
-echo -e "${blue}creating new backup...${nocolor}"
+# ingame and logfile success and error output
+if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
+	screen -Rd ${servername} -X stuff "say newest backup has been successfully created!$(printf '\r')"
+	echo "newest backup has been successfully created!" >> ${backuplog}
+	echo "added ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
+else
+	screen -Rd ${servername} -X stuff "say fatal could not backup world - please tell your server admin!$(printf '\r')"
+	echo "fatal could not backup world!" >> ${backuplog}
+fi
 
-# cp command
-cp -r ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
+# check if there is a backup from today
+if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
+	rm -r ${backupdirectory}/daily/${servername}-${olddaily}
+else
+	echo "warning cannot remove old backup because new backup is missing" >> ${backuplog}
+	exit 1
+fi
 
-# output file location of new daily backup and write to logfile
-echo "file available under ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
-echo -e "${blue}file available under ${backupdirectory}/daily/${servername}-${newdaily}${nocolor}"
+# ingame and logfile success and error output
+if ! [ -d "${backupdirectory}/daily/${servername}-${olddaily}" ]; then
+	screen -Rd ${servername} -X stuff "say oldest backup has been successfully removed!$(printf '\r')"
+	echo "oldest backup has been successfully removed!" >> ${backuplog}
+	echo "removed ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog}
+else
+	screen -Rd ${servername} -X stuff "say warning could not remove old backup - please tell your server admin!$(printf '\r')"
+	echo "warning could not remove old backup!" >> ${backuplog}
+fi
 
-# deleting old daily backup
-echo "deleting old backup..." >> ${backuplog}
-echo -e "${red}deleting old backup...${nocolor}"
-
-# rm command
-rm -r ${backupdirectory}/daily/${servername}-${olddaily}
-
-# output file location of old daily backup and write to logfile
-echo "deleted ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog}
-echo -e "${red}deleted ${backupdirectory}/daily/${servername}-${olddaily}${nocolor}"
-
-# ingame output
-screen -Rd ${servername} -X stuff "say backup has successfully finished!$(printf '\r')"
+# write one padding line to backuplog
+echo "" >> ${backuplog}

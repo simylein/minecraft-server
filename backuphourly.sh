@@ -18,30 +18,41 @@ if ! screen -list | grep -q "${servername}"; then
 	exit 1
 fi
 
-# ingame output
-screen -Rd ${servername} -X stuff "say backing up files...$(printf '\r')"
+# check if there is no backup from today
+if ! [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
+	cp -r ${serverdirectory}/world ${backupdirectory}/hourly/${servername}-${newhourly}
+else
+	echo "warning backup already exists!" >> ${backuplog}
+	exit 1
+fi
 
-# adding new hourly backup
-echo "creating new backup..." >> ${backuplog}
-echo -e "${blue}creating new backup...${nocolor}"
+# ingame and logfile success and error output
+if [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
+	screen -Rd ${servername} -X stuff "say newest backup has been successfully created!$(printf '\r')"
+	echo "newest backup has been successfully created!" >> ${backuplog}
+	echo "added ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
+else
+	screen -Rd ${servername} -X stuff "say fatal could not backup world - please tell your server admin!$(printf '\r')"
+	echo "fatal could not backup world!" >> ${backuplog}
+fi
 
-# cp command
-cp -r ${serverdirectory}/world ${backupdirectory}/hourly/${servername}-${newhourly}
+# check if there is a backup from today
+if [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
+	rm -r ${backupdirectory}/hourly/${servername}-${oldhourly}
+else
+	echo "warning cannot remove old backup because new backup is missing" >> ${backuplog}
+	exit 1
+fi
 
-# output file location of new hourly backup and write to logfile
-echo "file available under ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
-echo -e "${blue}file available under ${backupdirectory}/hourly/${servername}-${newhourly}${nocolor}"
+# ingame and logfile success and error output
+if ! [ -d "${backupdirectory}/hourly/${servername}-${oldhourly}" ]; then
+	screen -Rd ${servername} -X stuff "say oldest backup has been successfully removed!$(printf '\r')"
+	echo "oldest backup has been successfully removed!" >> ${backuplog}
+	echo "removed ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
+else
+	screen -Rd ${servername} -X stuff "say warning could not remove old backup - please tell your server admin!$(printf '\r')"
+	echo "warning could not remove old backup!" >> ${backuplog}
+fi
 
-# deleting old hourly backup
-echo "deleting old backup..." >> ${backuplog}
-echo -e "${red}deleting old backup...${nocolor}"
-
-# rm command
-rm -r ${backupdirectory}/hourly/${servername}-${oldhourly}
-
-# output file location of old hourly backup and write to logfile
-echo "deleted ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
-echo -e "${red}deleted ${backupdirectory}/hourly/${servername}-${oldhourly}${nocolor}"
-
-# ingame output
-screen -Rd ${servername} -X stuff "say backup has successfully finished!$(printf '\r')"
+# write one padding line to backuplog
+echo "" >> ${backuplog}
