@@ -312,10 +312,21 @@ fi
 read -p "Would you like to start and stop your server at a certain time? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating start and stop...${nocolor}"
-		read -p "Your start time: " starttime
-		read -p "Your stop time: " stoptime
+		read -p "Your start time [00 - 23]: " starttime
+		read -p "Your stop time [00 - 23]: " stoptime
+		crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
+		crontab -l | { cat; echo "00 ${starttime} * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
+		crontab -l | { cat; echo "00 ${stoptime} * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
 	else echo -e "${yellow}no automated  start and stop${nocolor}"
-		
+		crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
+		crontab -l | { cat; echo "#00 06 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
+		crontab -l | { cat; echo "#00 22 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
 fi
 
 # crontab automatization restart
