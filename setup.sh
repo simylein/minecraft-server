@@ -30,7 +30,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # set up directorys
-echo "I will now setup a server and backup directory. "
+echo "I will now setup a server and backup directory."
 
 # set up server directory
 echo "setting up a serverdirectory..."
