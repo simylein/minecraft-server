@@ -48,6 +48,11 @@ if screen -list | grep -q "${servername}"; then
 		screen -S ${servername} -X quit
 fi
 
+# create backup
+echo -e "${blue}backing up...${nocolor}"
+cp -r ${serverdirectory}/world ${backupdirectory}/update-${newdaily}-${newhourly}
+
+
 # Test internet connectivity and update on success
 wget --spider --quiet https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
 if [ "$?" != 0 ]; then
