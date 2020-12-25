@@ -332,13 +332,26 @@ fi
 # crontab automatization restart
 read -p "Would you like to restart your server at 02:00? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo -e "${green}atomatic restarts at 02:00${nocolor}"
+	then echo -e "${green}automatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "00 02 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 	else echo -e "${yellow}no restarts${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "#00 02 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+fi
+
+# crontab automatization restart
+read -p "Would you like to update your server every Sunday? [Y/N]: "
+if [[ $REPLY =~ ^[Yy]$ ]]
+	then echo -e "${green}automatic update at Sunday${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+		crontab -l | { cat; echo "30 23 * * 00 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+	else echo -e "${yellow}no updates${nocolor}"
+		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+		crontab -l | { cat; echo "#30 23 * * 00 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 fi
 
@@ -354,6 +367,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 fi
+
+# padd crontab with empty line
+crontab -l | { cat; echo ""; } | crontab -
 
 # finish messages
 echo -e "${green}setup is complete!${nocolor}"
