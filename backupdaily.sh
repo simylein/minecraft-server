@@ -32,7 +32,7 @@ fi
 # check if there is a new daily backup and output colorful success and error messages to ingame chat
 if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
 	rm -r ${backupdirectory}/daily/${servername}-${olddaily}
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newdaily}, removed file: ${servername}-${olddaily, current world size: ${worldsize}\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newdaily}, removed file: ${servername}-${olddaily}, current world size: ${worldsize}\"}]}}}]$(printf '\r')"
 	echo "newest backup has been successfully created!" >> ${backuplog}
 	echo "added ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
 	echo "oldest backup has been successfully removed!" >> ${backuplog}
