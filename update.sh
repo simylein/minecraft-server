@@ -19,10 +19,10 @@ fi
 # countdown
 counter="60"
 while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-				echo "server is updating in ${counter} seconds!"
-				screen -Rd ${servername} -X stuff "say server is updating in ${counter} seconds!$(printf '\r')"
-		fi
+	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+		echo -e "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
+		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
+	fi
 counter=$((counter-1))
 sleep 1s
 done

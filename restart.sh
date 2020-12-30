@@ -12,22 +12,22 @@ echo "${date} executing restart script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Server is not currently running!${nocolor}"
-        echo -e "${yellow}server not running - starting server now!${nocolor}"
-        echo "server not running - starting server now!" >> ${screenlog}
-        ./start.sh
-        exit 1
+	echo -e "${yellow}Server is not currently running!${nocolor}"
+	echo -e "${yellow}server not running - starting server now!${nocolor}"
+	echo "server not running - starting server now!" >> ${screenlog}
+	./start.sh
+	exit 1
 fi
 
 # countdown
 counter="60"
 while [ ${counter} -gt 0 ]; do
-        if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-                echo "server is restarting in ${counter} seconds!"
-                screen -Rd ${servername} -X stuff "say server is restarting in ${counter} seconds!$(printf '\r')"
-        fi
-counter=$((counter-1))
-sleep 1s
+	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+		echo -e "${blue}[Script]${nocolor} server is restarting in ${counter} seconds"
+		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is restarting in ${counter} seconds\"}]$(printf '\r')"
+	fi
+	counter=$((counter-1))
+	sleep 1s
 done
 
 # server stop
@@ -38,17 +38,17 @@ screen -Rd ${servername} -X stuff "stop$(printf '\r')"
 # check if server stopped
 stopchecks="0"
 while [ $stopchecks -lt 30 ]; do
-        if ! screen -list | grep -q "${servername}"; then
-                break
-        fi
-stopchecks=$((stopchecks+1))
-sleep 1;
+	if ! screen -list | grep -q "${servername}"; then
+		break
+	fi
+	stopchecks=$((stopchecks+1))
+	sleep 1;
 done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-        echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
-        screen -S ${servername} -X quit
+	echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	screen -S ${servername} -X quit
 fi
 
 # restart the server
