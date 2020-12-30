@@ -23,8 +23,8 @@ while [ ${counter} -gt 0 ]; do
 		echo -e "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
 	fi
-counter=$((counter-1))
-sleep 1s
+	counter=$((counter-1))
+	sleep 1s
 done
 
 # server stop
