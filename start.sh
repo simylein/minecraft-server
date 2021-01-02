@@ -11,7 +11,7 @@ cd ${serverdirectory}
 echo "${date} executing start script" >> ${screenlog}
 
 # check if server is already running
-if screen -list | grep -q "${servername}";then
+if screen -list | grep -q "${servername}"; then
 	echo "Server is already running!  Type screen -r ${servername} to open the console" >> ${screenlog}
 	echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
 	exit 1
