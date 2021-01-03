@@ -295,13 +295,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating backups...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
-		crontab -l | { cat; echo "0 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
+		crontab -l | { cat; echo "30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
 	else echo -e "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:00"; } | crontab -
-		crontab -l | { cat; echo "#0 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
+		crontab -l | { cat; echo "#30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
 fi
 
 # crontab automated start and stop
