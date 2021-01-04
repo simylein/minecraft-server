@@ -215,7 +215,7 @@ read -re -i "true" -p "Your choice: " pvp
 pvp="pvp=${pvp}"
 echo -e "Your Server will be on ${green}${pvp}${nocolor}"
 
-echo "Would you like to turn on command-blocks??"
+echo "Would you like to turn on command-blocks?"
 echo -e "Please enter like this. Example:${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " cmdblock
 cmdblock="enable-command-block=${cmdblock}"
