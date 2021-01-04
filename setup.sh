@@ -53,7 +53,7 @@ echo "downloading scripts from GitHub..."
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 
-# making the core scripts executable 
+# making core scripts executable 
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
@@ -138,18 +138,15 @@ done
 
 # user information
 echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
-
-# return to homedirectory
-	cd ${homedirectory}
 	
 # set up backupdirectory
 echo "setting up a backupdirectory..."
-mkdir ${servername}-backups
-	cd ${servername}-backups
+mkdir backups
+	cd backups
 		mkdir hourly
 		mkdir daily
 		backupdirectory=`pwd`
-	cd ${homedirectory}
+	cd ../
 
 # ask all the importatnt user input
 echo "How much minimum memory would you like to grant your Server?"
