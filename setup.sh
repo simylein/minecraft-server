@@ -297,11 +297,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
 		crontab -l | { cat; echo "30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		backupchoice=true
 	else echo -e "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
 		crontab -l | { cat; echo "#30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		backupchoice=false
 fi
 
 # crontab automated start and stop
@@ -314,11 +316,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "0 ${starttime} * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
 		crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+		startstopchoice=true
 	else echo -e "${yellow}no automated  start and stop${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
 		crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
 		crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+		startstopchoice=false
 fi
 
 # crontab automatization restart
@@ -327,9 +331,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "0 12 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+		restartchoice=true
 	else echo -e "${yellow}no restarts${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "#0 12 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+		restartchoice=false
 fi
 
 # crontab automatization restart
@@ -338,9 +344,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic update at Sunday${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
 		crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+		updatechoice=true
 	else echo -e "${yellow}no updates${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
 		crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+		updatechoice=false
 fi
 
 # crontab automatization startup
@@ -349,14 +357,39 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic startup at boot...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
 		crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+		startatbootchoice=true
 	else echo -e "${yellow}no startup at boot${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
 		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+		startatbootchoice=false
 fi
 
 # padd crontab with two empty lines
 crontab -l | { cat; echo ""; } | crontab -
 crontab -l | { cat; echo ""; } | crontab -
+
+# inform user of automated crontab choices
+echo "You have chosen the following config of your server:"
+if [[ $backupchoice == true ]]; 
+	then echo -e "automated backups = ${blue}true${nocolor}"
+	else echo -e "automated backups = ${red}false${nocolor}"
+fi
+if [[ $startstopchoice == true ]]; 
+	then echo -e "automated start and stop = ${blue}true${nocolor}"
+	else echo -e "automated start and stop = ${red}false${nocolor}"
+fi
+if [[ $restartchoice == true ]]; 
+	then echo -e "automated restart = ${blue}true${nocolor}"
+	else echo -e "automated restart = ${red}false${nocolor}"
+fi
+if [[ $updatechoice == true ]]; 
+	then echo -e "automated update = ${blue}true${nocolor}"
+	else echo -e "automated update = ${red}false${nocolor}"
+fi
+if [[ $startatbootchoice == true ]]; 
+	then echo -e "automated start at boot = ${blue}true${nocolor}"
+	else echo -e "automated start at boot = ${red}false${nocolor}"
+fi
 
 # finish messages
 echo -e "${green}setup is complete!${nocolor}"
