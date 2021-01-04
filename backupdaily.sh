@@ -9,7 +9,7 @@ cd ${serverdirectory}
 
 # get current world and backup size
 worldsize=$(du -sh world | cut -f1)
-backupsize=$(du -sh backups | cut f1)
+backupsize=$(du -sh backups | cut -f1)
 
 # write date to logfiles
 echo "${date} executing backup-daily script" >> ${screenlog}
