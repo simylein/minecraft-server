@@ -40,6 +40,7 @@ if [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
 	echo "added ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
 	echo "oldest backup has been successfully removed!" >> ${backuplog}
 	echo "removed ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
+	echo "current world size: ${worldsize}, current backup size: ${backupsize}" >> ${backuplog}
 else
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newhourly}, could not remove file: ${servername}-${oldhourly}, current world size: ${worldsize}, current backup size: ${backupsize}\"}]}}}]$(printf '\r')"
 	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
