@@ -284,7 +284,7 @@ echo "storing variables in server.properties..."
 	echo "${pvp}" >> server.properties
 	echo "${cmdblock}" >> server.properties
 	echo "${motd}" >> server.properties
-	
+
 # write servername and date into crontab
 date=$(date +"%Y-%m-%d %H:%M:%S")
 crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
