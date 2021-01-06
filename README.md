@@ -22,7 +22,7 @@ executing setup script:
 ```
 ./setup.sh
 ```
-The Script will ask you some Questions. Please answer them in order for the Server to work. Now you got two directorys. One is called ${servername} (it's the name you have chosen for your server) and one is called ${servername}-backups. Like you can imagine ${servername} holds your live server and ${servername}-backups stores your backups. 
+The Script will ask you some Questions. Please answer them in order for the Server to work. Now you a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
 ## serverstart
 Start your Server for the first time:
 ```
