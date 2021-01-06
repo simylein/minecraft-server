@@ -55,7 +55,7 @@ echo "downloading scripts from GitHub..."
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 
-# making core scripts executable 
+# making core scripts executable
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
@@ -379,23 +379,23 @@ crontab -l | { cat; echo ""; } | crontab -
 
 # inform user of automated crontab choices
 echo "You have chosen the following configuration of your server:"
-if [[ $backupchoice == true ]]; 
+if [[ $backupchoice == true ]];
 	then echo -e "automated backups = ${blue}true${nocolor}"
 	else echo -e "automated backups = ${red}false${nocolor}"
 fi
-if [[ $startstopchoice == true ]]; 
+if [[ $startstopchoice == true ]];
 	then echo -e "automated start and stop = ${blue}true${nocolor}"
 	else echo -e "automated start and stop = ${red}false${nocolor}"
 fi
-if [[ $restartchoice == true ]]; 
+if [[ $restartchoice == true ]];
 	then echo -e "automated restart = ${blue}true${nocolor}"
 	else echo -e "automated restart = ${red}false${nocolor}"
 fi
-if [[ $updatechoice == true ]]; 
+if [[ $updatechoice == true ]];
 	then echo -e "automated update = ${blue}true${nocolor}"
 	else echo -e "automated update = ${red}false${nocolor}"
 fi
-if [[ $startatbootchoice == true ]]; 
+if [[ $startatbootchoice == true ]];
 	then echo -e "automated start at boot = ${blue}true${nocolor}"
 	else echo -e "automated start at boot = ${red}false${nocolor}"
 fi
