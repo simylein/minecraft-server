@@ -414,4 +414,3 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		echo -e "${green}starting server...${nocolor}"
 		./start.sh
 fi
-	
