@@ -10,6 +10,7 @@ cd ${serverdirectory}
 # get current world and backup size
 worldsize=$(du -sh world | cut -f1)
 backupsize=$(du -sh backups | cut -f1)
+diskspace=$(df -m / | tail -1 | awk '{print $4}')
 
 # write date to logfiles
 echo "${date} executing backup-weekly script" >> ${screenlog}
