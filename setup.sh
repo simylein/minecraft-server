@@ -59,6 +59,7 @@ echo "downloading scripts from GitHub..."
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
+		chmod +x reset.sh
 		chmod +x restore.sh
 		chmod +x stop.sh
 		chmod +x update.sh
