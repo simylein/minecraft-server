@@ -1,7 +1,7 @@
 #!/bin/bash
 # script for setting up a minecraft server on linux debian
 
-# command line colours 
+# command line colours
 red="\033[0;31m"
 yellow="\033[1;33m"
 green="\033[0;32m"
