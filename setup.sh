@@ -50,6 +50,8 @@ echo "downloading scripts from GitHub..."
 		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
 		wget -q -O backuphourly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backuphourly.sh
 		wget -q -O backupdaily.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupdaily.sh
+		wget -q -O backupmonthly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupmonthly.sh
+		wget -q -O backupweekly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupweekly.sh
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 
@@ -412,3 +414,4 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		echo -e "${green}starting server...${nocolor}"
 		./start.sh
 fi
+	
