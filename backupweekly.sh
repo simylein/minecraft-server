@@ -10,7 +10,7 @@ cd ${serverdirectory}
 # get current world and backup size
 worldsize=$(du -sh world | cut -f1)
 backupsize=$(du -sh backups | cut -f1)
-diskspace=$(df -m / | tail -1 | awk '{print $4}')
+diskspace=$(df -h / | tail -1 | awk '{print $4}')
 
 # write date to logfiles
 echo "${date} executing backup-weekly script" >> ${screenlog}
@@ -36,12 +36,12 @@ if [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
 	if [ -d "${backupdirectory}/weekly/${servername}-${oldweekly}" ]; then
 		rm -r ${backupdirectory}/weekly/${servername}-${oldweekly}
 	fi
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newweekly}, removed file: ${servername}-${oldweekly}, current world size: ${worldsize}, current backup size: ${backupsize}\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newdaily}, removed file: ${servername}-${olddaily}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 	echo "newest backup has been successfully created!" >> ${backuplog}
 	echo "added ${backupdirectory}/weekly/${servername}-${newweekly}" >> ${backuplog}
 	echo "oldest backup has been successfully removed!" >> ${backuplog}
 	echo "removed ${backupdirectory}/weekly/${servername}-${oldweekly}" >> ${backuplog}
-	echo "current world size: ${worldsize}, current backup size: ${backupsize}" >> ${backuplog}
+	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
 else
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newweekly}, could not remove file: ${servername}-${oldweekly}, current world size: ${worldsize}, current backup size: ${backupsize}\"}]}}}]$(printf '\r')"
 	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
