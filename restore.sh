@@ -58,17 +58,35 @@ cd ../
 cd daily
 backupsdaily=($(ls))
 cd ../
+cd weekly
+backupsweekly=($(ls))
+cd ../
+cd monthly
+backupsmonthly=($(ls))
+cd ../
+cd cached
+backupscached=($(ls))
+cd ../
 
 # ask for daily or hourly backup to restore
-PS3='Would you like to restore a daily or hourly backup? '
-select dailyhourly in "${backups[@]}"
+PS3='Would you like to restore a ${backups[0]}, ${backups[1]}, ${backups[2]}, ${backups[3]}, ${backups[4]}? '
+select dailyhourlyweeklymonthly in "${backups[@]}"
 do
-	echo "You chose: ${dailyhourly}"
+	echo "You chose: ${dailyhourlyweeklymonthly}"
 	break
 done
 
-# select specific backup out of daily or hourly
-if [[ "${dailyhourly}" == "${backups[0]}" ]]
+# select specific backup out of daily, hourly, monthly, weekly or a special backup
+if [[ "${dailyhourlyweeklymonthly}" == "${backups[0]}" ]]
+then
+	# ask for cached backup
+	PS3="Which ${backups[4]} backup would you like to restore?"
+	select backup in "${backupscached[@]}"
+	do
+		echo "You chose: ${backup}"
+		break
+	done
+elif [[ "${dailyhourlyweeklymonthly}" == "${backups[1]}" ]]
 then
 	# ask for daily backup
 	PS3="Which ${backups[0]} backup would you like to restore? "
@@ -77,7 +95,8 @@ then
 		echo "You chose: ${backup}"
 		break
 	done
-else
+elif [[ "${dailyhourlyweeklymonthly}" == "${backups[2]}" ]]
+then
 	# ask for hourly backup
 	PS3="Which ${backups[1]} backup would you like to restore? "
 	select backup in "${backupshourly[@]}"
@@ -85,24 +104,42 @@ else
 		echo "You chose: ${backup}"
 		break
 	done
+elif [[ "${dailyhourlyweeklymonthly}" == "${backups[3]}" ]]
+then
+	# ask for monthly backup
+	PS3="Which ${backups[2]} backup would you like to restore? "
+	select backup in "${backupsmonthly[@]}"
+	do
+		echo "You chose: ${backup}"
+		break
+	done
+elif [[ "${dailyhourlyweeklymonthly}" == "${backups[4]}" ]]
+then
+	# ask for weekly backup
+	PS3="Which ${backups[3]} backup would you like to restore? "
+	select backup in "${backupsweekly[@]}"
+	do
+		echo "You chose: ${backup}"
+		break
+	done
 fi
 
 # echo selected backup
-echo "selected backup to restore: ${backupdirectory}/${dailyhourly}/${backup}"
+echo "selected backup to restore: ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup}"
 
 # ask for permission to proceed
 echo "I will now delete the current world-directory and replace it with your chosen backup"
-echo "You have chosen: ${backupdirectory}/${dailyhourly}/${backup} as a backup to restore"
+echo "You have chosen: ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} as a backup to restore"
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 then echo -e "${green}restoring backup...${nocolor}"
 	cd ${homedirectory}
 	rm -r ${serverdirectory}/world
-	cp -r ${backupdirectory}/${dailyhourly}/${backup} ${serverdirectory}
+	cp -r ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
 	mv ${backup} ${servername}
 	echo -e "${blue}restarting server with restored backup...${nocolor}"
 	cd ${serverdirectory}
-	echo "${date} The backup ${backupdirectory}/${dailyhourly}/${backup} has been restored" >> ${screenlog}
+	echo "${date} The backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
 	./start.sh
 else echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"

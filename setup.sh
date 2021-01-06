@@ -145,6 +145,9 @@ mkdir backups
 	cd backups
 		mkdir hourly
 		mkdir daily
+		mkdir weekly
+		mkdir monthly
+		mkdir cached
 		backupdirectory=`pwd`
 	cd ../
 
@@ -228,7 +231,6 @@ motd="motd=${motd}"
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
 # eula question
-cd ${servername}
 echo "Would you like to accept the End User License Agreement from Mojang?"
 read -p "If you say yes you must abide by their terms and conditions! [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -294,12 +296,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
 		crontab -l | { cat; echo "30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup weekly at Sundays 22:40"; } | crontab -
+		crontab -l | { cat; echo "40 22 * * 0 cd ${serverdirectory} && ${serverdirectory}/backupweekly.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup monthly at first of month at 22:50"; } | crontab -
+		crontab -l | { cat; echo "50 22 1 * * cd ${serverdirectory} && ${serverdirectory}/backupmonthly.sh"; } | crontab -
 		backupchoice=true
 	else echo -e "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
 		crontab -l | { cat; echo "#30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup weekly at Sundays 22:40"; } | crontab -
+		crontab -l | { cat; echo "#40 22 * * 0 cd ${serverdirectory} && ${serverdirectory}/backupweekly.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup monthly at first of month at 22:50"; } | crontab -
+		crontab -l | { cat; echo "#50 22 1 * * cd ${serverdirectory} && ${serverdirectory}/backupmonthly.sh"; } | crontab -
 		backupchoice=false
 fi
 
@@ -366,7 +376,7 @@ crontab -l | { cat; echo ""; } | crontab -
 crontab -l | { cat; echo ""; } | crontab -
 
 # inform user of automated crontab choices
-echo "You have chosen the following config of your server:"
+echo "You have chosen the following configuration of your server:"
 if [[ $backupchoice == true ]]; 
 	then echo -e "automated backups = ${blue}true${nocolor}"
 	else echo -e "automated backups = ${red}false${nocolor}"

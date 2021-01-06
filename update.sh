@@ -50,7 +50,7 @@ fi
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory}/world ${backupdirectory}/update-${newdaily}-${newhourly}
+cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}-${newhourly}
 
 
 # Test internet connectivity and update on success
