@@ -408,7 +408,7 @@ echo -e "execute like this: ${green}./start.sh${nocolor}"
 echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
 
 # ask user to start server now
-read -p "Would you like to start your server now?? [Y/N]: "
+read -p "Would you like to start your server now? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then
 		echo -e "${green}starting server...${nocolor}"
