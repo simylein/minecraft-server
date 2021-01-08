@@ -15,6 +15,7 @@ echo "${date} executing backup-weekly script" >> ${backuplog}
 if ! screen -list | grep -q "${servername}"; then
 	echo -e "${yellow}server is not currently running!${nocolor}"
 	echo "server is not currently running!" >> ${screenlog}
+	echo "server is not currently running!" >> ${backuplog}
 	exit 1
 fi
 
