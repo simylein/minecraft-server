@@ -14,7 +14,7 @@ nocolor="\033[0m"
 
 # backup stuff
 newhourly=$(date +"%H"-00)
-oldhourly=$(date -d "-23 hours" +"%H"-00)
+oldhourly=$(date -d "-23 hours" +"%H-00")
 newdaily=$(date +"%Y-%m-%d")
 olddaily=$(date -d "-32 days" +"%Y-%m-%d")
 newweekly=$(date +"%U")
