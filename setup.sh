@@ -66,8 +66,8 @@ echo "making Scripts executable..."
 		chmod +x maintenance.sh
 		chmod +x backuphourly.sh
 		chmod +x backupdaily.sh
-		chmod +x backupweekly
-		chmod +x backupmonthly
+		chmod +x backupweekly.sh
+		chmod +x backupmonthly.sh
 
 # store serverdirectory
 serverdirectory=`pwd`
