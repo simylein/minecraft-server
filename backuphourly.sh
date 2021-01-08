@@ -7,10 +7,6 @@
 # change to server directory
 cd ${serverdirectory}
 
-# get current world and backup size
-worldsize=$(du -sh world | cut -f1)
-backupsize=$(du -sh backups | cut -f1)
-
 # write date to logfiles
 echo "${date} executing backup-hourly script" >> ${screenlog}
 echo "${date} executing backup-hourly script" >> ${backuplog}
@@ -35,14 +31,19 @@ if [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
 	if [ -d "${backupdirectory}/hourly/${servername}-${oldhourly}" ]; then
 		rm -r ${backupdirectory}/hourly/${servername}-${oldhourly}
 	fi
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newhourly}, removed file: ${servername}-${oldhourly}, current world size: ${worldsize}, current backup size: ${backupsize}\"}]}}}]$(printf '\r')"
+	# get current world, backup and diskspace
+	worldsize=$(du -sh world | cut -f1)
+	backupsize=$(du -sh backups | cut -f1)
+	diskspace=$(df -h / | tail -1 | awk '{print $4}')
+	# ingame and logfile success output
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newdaily}, removed file: ${servername}-${olddaily}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 	echo "newest backup has been successfully created!" >> ${backuplog}
 	echo "added ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
 	echo "oldest backup has been successfully removed!" >> ${backuplog}
 	echo "removed ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
-	echo "current world size: ${worldsize}, current backup size: ${backupsize}" >> ${backuplog}
+	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
 else
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newhourly}, could not remove file: ${servername}-${oldhourly}, current world size: ${worldsize}, current backup size: ${backupsize}\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newhourly}, could not remove file: ${servername}-${oldhourly}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
 	echo "warning: could not remove old backup!" >> ${backuplog}
 	echo "fatal: could not backup world!" >> ${backuplog}

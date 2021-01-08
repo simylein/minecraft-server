@@ -1,7 +1,7 @@
 #!/bin/bash
 # script for setting up a minecraft server on linux debian
 
-# command line colours 
+# command line colours
 red="\033[0;31m"
 yellow="\033[1;33m"
 green="\033[0;32m"
@@ -50,19 +50,24 @@ echo "downloading scripts from GitHub..."
 		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
 		wget -q -O backuphourly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backuphourly.sh
 		wget -q -O backupdaily.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupdaily.sh
+		wget -q -O backupmonthly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupmonthly.sh
+		wget -q -O backupweekly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupweekly.sh
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 
-# making core scripts executable 
+# making core scripts executable
 echo "making Scripts executable..."
 		chmod +x start.sh
 		chmod +x restart.sh
+		chmod +x reset.sh
 		chmod +x restore.sh
 		chmod +x stop.sh
 		chmod +x update.sh
 		chmod +x maintenance.sh
 		chmod +x backuphourly.sh
 		chmod +x backupdaily.sh
+		chmod +x backupweekly
+		chmod +x backupmonthly
 
 # store serverdirectory
 serverdirectory=`pwd`
@@ -138,13 +143,16 @@ done
 
 # user information
 echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
-	
+
 # set up backupdirectory
 echo "setting up a backupdirectory..."
 mkdir backups
 	cd backups
 		mkdir hourly
 		mkdir daily
+		mkdir weekly
+		mkdir monthly
+		mkdir cached
 		backupdirectory=`pwd`
 	cd ../
 
@@ -228,7 +236,6 @@ motd="motd=${motd}"
 echo -e "Your server message will be ${green}${motd}${nocolor}"
 
 # eula question
-cd ${servername}
 echo "Would you like to accept the End User License Agreement from Mojang?"
 read -p "If you say yes you must abide by their terms and conditions! [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -280,7 +287,7 @@ echo "storing variables in server.properties..."
 	echo "${pvp}" >> server.properties
 	echo "${cmdblock}" >> server.properties
 	echo "${motd}" >> server.properties
-	
+
 # write servername and date into crontab
 date=$(date +"%Y-%m-%d %H:%M:%S")
 crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
@@ -294,12 +301,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
 		crontab -l | { cat; echo "30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup weekly at Sundays 22:40"; } | crontab -
+		crontab -l | { cat; echo "40 22 * * 0 cd ${serverdirectory} && ${serverdirectory}/backupweekly.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup monthly at first of month at 22:50"; } | crontab -
+		crontab -l | { cat; echo "50 22 1 * * cd ${serverdirectory} && ${serverdirectory}/backupmonthly.sh"; } | crontab -
 		backupchoice=true
 	else echo -e "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
 		crontab -l | { cat; echo "#30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup weekly at Sundays 22:40"; } | crontab -
+		crontab -l | { cat; echo "#40 22 * * 0 cd ${serverdirectory} && ${serverdirectory}/backupweekly.sh"; } | crontab -
+		crontab -l | { cat; echo "# minecraft ${servername} server backup monthly at first of month at 22:50"; } | crontab -
+		crontab -l | { cat; echo "#50 22 1 * * cd ${serverdirectory} && ${serverdirectory}/backupmonthly.sh"; } | crontab -
 		backupchoice=false
 fi
 
@@ -366,24 +381,24 @@ crontab -l | { cat; echo ""; } | crontab -
 crontab -l | { cat; echo ""; } | crontab -
 
 # inform user of automated crontab choices
-echo "You have chosen the following config of your server:"
-if [[ $backupchoice == true ]]; 
+echo "You have chosen the following configuration of your server:"
+if [[ $backupchoice == true ]];
 	then echo -e "automated backups = ${blue}true${nocolor}"
 	else echo -e "automated backups = ${red}false${nocolor}"
 fi
-if [[ $startstopchoice == true ]]; 
+if [[ $startstopchoice == true ]];
 	then echo -e "automated start and stop = ${blue}true${nocolor}"
 	else echo -e "automated start and stop = ${red}false${nocolor}"
 fi
-if [[ $restartchoice == true ]]; 
+if [[ $restartchoice == true ]];
 	then echo -e "automated restart = ${blue}true${nocolor}"
 	else echo -e "automated restart = ${red}false${nocolor}"
 fi
-if [[ $updatechoice == true ]]; 
+if [[ $updatechoice == true ]];
 	then echo -e "automated update = ${blue}true${nocolor}"
 	else echo -e "automated update = ${red}false${nocolor}"
 fi
-if [[ $startatbootchoice == true ]]; 
+if [[ $startatbootchoice == true ]];
 	then echo -e "automated start at boot = ${blue}true${nocolor}"
 	else echo -e "automated start at boot = ${red}false${nocolor}"
 fi
@@ -396,7 +411,7 @@ echo -e "execute like this: ${green}./start.sh${nocolor}"
 echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
 
 # ask user to start server now
-read -p "Would you like to start your server now?? [Y/N]: "
+read -p "Would you like to start your server now? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then
 		echo -e "${green}starting server...${nocolor}"
