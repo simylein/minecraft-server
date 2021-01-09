@@ -26,7 +26,7 @@ if (( (${worldsize} + 65536) > ${diskspace} )); then
 	echo -e "${red}fatal: not enough disk-space to perform backup${nocolor}"
 	echo "fatal: not enough disk-space to perform backup" >> ${backuplog}
 	# ingame logfile error output
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newdaily}, could not remove file: ${servername}-${olddaily}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newdaily}, could not remove file: ${servername}-${olddaily}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
 	echo "removed ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog}
 	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
 else
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newdaily}, could not remove file: ${servername}-${olddaily}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newdaily}, could not remove file: ${servername}-${olddaily}, reason: missing directorys\"}]}}}]$(printf '\r')"
 	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
 	echo "warning: could not remove old backup!" >> ${backuplog}
 	echo "fatal: could not backup world!" >> ${backuplog}
