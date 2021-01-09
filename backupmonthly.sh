@@ -26,7 +26,7 @@ if (( (${worldsize} + 65536) > ${diskspace} )); then
 	echo -e "${red}fatal: not enough disk-space to perform backup${nocolor}"
 	echo "fatal: not enough disk-space to perform backup" >> ${backuplog}
 	# ingame logfile error output
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newdaily}, could not remove file: ${servername}-${olddaily}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newmonthly}, could not remove file: ${servername}-${oldmonthly}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 	exit 1
 fi
 
@@ -48,7 +48,7 @@ if [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
 	backupsize=$(du -sh backups | cut -f1)
 	diskspace=$(df -h / | tail -1 | awk '{print $4}')
 	# ingame and logfile success output
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newdaily}, removed file: ${servername}-${olddaily}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${newmonthly}, removed file: ${servername}-${oldmonthly}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 	echo "newest backup has been successfully created!" >> ${backuplog}
 	echo "added ${backupdirectory}/monthly/${servername}-${newmonthly}" >> ${backuplog}
 	echo "oldest backup has been successfully removed!" >> ${backuplog}
