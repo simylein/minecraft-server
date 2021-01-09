@@ -52,6 +52,11 @@ fi
 echo -e "${blue}backing up...${nocolor}"
 cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}-${newhourly}
 
+# check if safety backup exists
+if ! [ -d "${backupdirectory}/cached/reset-${newdaily}-${newhourly}" ]; then
+	echo -e "${red}warning: safety backup failed - proceeding to server update"
+	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
+fi
 
 # Test internet connectivity and update on success
 wget --spider --quiet https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
