@@ -22,7 +22,7 @@ fi
 # check if world is bigger than diskspace
 worldsize=$(du -s world | cut -f1)
 diskspace=$(df / | tail -1 | awk '{print $4}')
-if [[ ${worldsize} > ${diskspace} ]]; then
+if (( (${worldsize} + 65536) > ${diskspace} )); then
 	echo -e "${red}fatal: not enough disk-space to perform backup${nocolor}"
 	echo "fatal: not enough disk-space to perform backup" >> ${backuplog}
 	# ingame logfile error output
