@@ -19,6 +19,17 @@ if ! screen -list | grep -q "${servername}"; then
 	exit 1
 fi
 
+# check if world is bigger than diskspace
+worldsize=$(du world | cut -f1)
+diskspace=$(df / | tail -1 | awk '{print $4')
+if [[ ${worldsize} > ${diskspace} ]]; then
+	echo -e "${red}fatal: not enough disk-space to perform backup${nocolor}"
+	echo "fatal: not enough disk-space to perform backup" >> ${backuplog}
+	# ingame logfile error output
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newdaily}, could not remove file: ${servername}-${olddaily}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
+	exit 1
+fi
+
 # check if there is no backup from the current week
 if ! [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
 	cp -r ${serverdirectory}/world ${backupdirectory}/weekly/${servername}-${newweekly}
