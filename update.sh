@@ -54,7 +54,7 @@ cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}-${ne
 
 # check if safety backup exists
 if ! [ -d "${backupdirectory}/cached/reset-${newdaily}-${newhourly}" ]; then
-	echo -e "${red}warning: safety backup failed - proceeding to server update"
+	echo -e "${red}warning: safety backup failed - proceeding to server update${nocolor}"
 	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 fi
 
