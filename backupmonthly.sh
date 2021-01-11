@@ -25,6 +25,7 @@ diskspace=$(df / | tail -1 | awk '{print $4}')
 if (( (${worldsize} + 65536) > ${diskspace} )); then
 	echo -e "${red}fatal: not enough disk-space to perform backup${nocolor}"
 	echo "fatal: not enough disk-space to perform backup" >> ${backuplog}
+	echo "" >> ${backuplog}
 	# ingame logfile error output
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newmonthly}, could not remove file: ${servername}-${oldmonthly}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 	exit 1
@@ -54,12 +55,11 @@ if [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
 	echo "oldest backup has been successfully removed!" >> ${backuplog}
 	echo "removed ${backupdirectory}/monthly/${servername}-${oldmonthly}" >> ${backuplog}
 	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
+	echo "" >> ${backuplog}
 else
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newmonthly}, could not remove file: ${servername}-${oldmonthly}, reason: missing directorys\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${newmonthly}, could not remove file: ${servername}-${oldmonthly}, reason: missing directories\"}]}}}]$(printf '\r')"
 	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
 	echo "warning: could not remove old backup!" >> ${backuplog}
 	echo "fatal: could not backup world!" >> ${backuplog}
+	echo "" >> ${backuplog}
 fi
-
-# write one padding line to backuplog
-echo "" >> ${backuplog}
