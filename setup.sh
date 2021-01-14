@@ -293,7 +293,7 @@ date=$(date +"%Y-%m-%d %H:%M:%S")
 	crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
 
 # crontab e-mail config
-echo -re -i "N" -p "Would you like to receive emails from your crontab? [Y/N]: "
+read -re -i "N" -p "Would you like to receive emails from your crontab? [Y/N]: "
 if [[  $REPLY =~ [Yy]$ ]]
 	then read -p "Please enter your email address: " emailaddress
 		crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
