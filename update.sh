@@ -50,10 +50,10 @@ fi
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}-${newhourly}
+cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}
 
 # check if safety backup exists
-if ! [ -d "${backupdirectory}/cached/reset-${newdaily}-${newhourly}" ]; then
+if ! [ -d "${backupdirectory}/cached/reset-${newdaily}" ]; then
 	echo -e "${red}warning: safety backup failed - proceeding to server update${nocolor}"
 	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 fi

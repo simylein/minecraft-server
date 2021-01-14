@@ -54,10 +54,10 @@ echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory}/world ${backupdirectory}/cached/reset-${newdaily}-${newhourly}
+cp -r ${serverdirectory}/world ${backupdirectory}/cached/reset-${newdaily}
 
 # check if safety backup exists
-if ! [ -d "${backupdirectory}/cached/reset-${newdaily}-${newhourly}" ]; then
+if ! [ -d "${backupdirectory}/cached/reset-${newdaily}" ]; then
 	echo -e "${red}fatal: safety backup failed - can not proceed to remove world"
 	echo "fatal: safety backup failed - can not proceed to remove world" >> ${screenlog}
 	exit 1
