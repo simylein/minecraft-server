@@ -290,11 +290,23 @@ echo "storing variables in server.properties..."
 
 # write servername and date into crontab
 date=$(date +"%Y-%m-%d %H:%M:%S")
-crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
-crontab -l | { cat; echo ""; } | crontab -
+	crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
+
+# crontab e-mail config
+echo -re -i "N" -p "Would you like to receive emails from your crontab? [Y/N]: "
+if [[  $REPLY =~ [Yy]$ ]]
+	then read -p "Please enter your email address: " emailaddress
+		crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+		emailchoice=true
+	else echo "${yellow}no emails${nocolor}"
+		crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
+		crontab -l | { cat; echo ""; } | crontab -
+		emailchoice=false
+fi
 
 # crontab automatization backups
-read -p "Would you like to automate backups? [Y/N]: "
+read -re -i "Y" -p "Would you like to automate backups? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating backups...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
@@ -319,7 +331,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # crontab automated start and stop
-read -p "Would you like to start and stop your server at a certain time? [Y/N]: "
+read -re -i "N" -p "Would you like to start and stop your server at a certain time? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating start and stop...${nocolor}"
 		read -p "Your start time [0 - 23]: " starttime
@@ -338,7 +350,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # crontab automatization restart
-read -p "Would you like to restart your server at 12:00? [Y/N]: "
+read -re -i "N" -p "Would you like to restart your server at 12:00? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
@@ -351,7 +363,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # crontab automatization restart
-read -p "Would you like to update your server every Sunday at 18:00? [Y/N]: "
+read -re -i "Y" -p "Would you like to update your server every Sunday at 18:00? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic update at Sunday${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
@@ -364,7 +376,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # crontab automatization startup
-read -p "Would you like to start your server at boot? [Y/N]: "
+read -re -i "Y" -p "Would you like to start your server at boot? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic startup at boot...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
@@ -382,6 +394,10 @@ crontab -l | { cat; echo ""; } | crontab -
 
 # inform user of automated crontab choices
 echo "You have chosen the following configuration of your server:"
+if [[ $emailchoice == true ]];
+	then echo -e "crontab email output = ${blue}true${nocolor}"
+	else echo -e "crontab email output = ${red}false${nocolor}"
+fi
 if [[ $backupchoice == true ]];
 	then echo -e "automated backups = ${blue}true${nocolor}"
 	else echo -e "automated backups = ${red}false${nocolor}"
