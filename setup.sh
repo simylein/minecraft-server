@@ -337,11 +337,11 @@ read -re -i "Y" -p "Would you like to restart your server at 12:00? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
-		crontab -l | { cat; echo "0 12 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+		crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 		restartchoice=true
 	else echo -e "${yellow}no restarts${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
-		crontab -l | { cat; echo "#0 12 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+		crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 		restartchoice=false
 fi
 
