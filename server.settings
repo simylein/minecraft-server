@@ -22,6 +22,13 @@ oldweekly=$(date -d "-12 weeks" +"week-%U")
 newmonthly=$(date +"%B")
 odlmonthly=$(date -d "-6 months" +"%B")
 
+# world stuff
+absoluteworldsize=$(du -s world | cut -f1)
+absolutediskspace=$(df / | tail -1 | awk '{print $4}')
+worldsize=$(du -sh world | cut -f1)
+backupsize=$(du -sh backups | cut -f1)
+diskspace=$(df -h / | tail -1 | awk '{print $4}')
+
 # logfiles
 screenlog="screen.log"
 backuplog="backup.log"
