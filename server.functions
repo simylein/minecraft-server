@@ -1,5 +1,8 @@
 #!/bin/bash
-# minecraft server backup script
+# minecraft server settings
+
+# this file stores all the functions for the server.
+# if you know what you are doing, feel free to tinker with them ;^)
 
 # read server.settings and server.functions
 function ReadFiles {
@@ -20,6 +23,15 @@ function CheckIfServerIsRunning {
 		echo "server is not currently running!" >> ${screenlog}
 		echo "server is not currently running!" >> ${backuplog}
 		echo "" >> ${backuplog}
+		exit 1
+	fi
+}
+
+# checks for the existence of a screen terminal
+function CheckIfServerIsNotRunning {
+	if screen -list | grep -q "${servername}"; then
+		echo "Server is already running!  Type screen -r ${servername} to open the console" >> ${screenlog}
+		echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
 		exit 1
 	fi
 }
