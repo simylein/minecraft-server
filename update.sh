@@ -88,10 +88,7 @@ if [ "$?" != 0 ]; then
 		rm reset.sh
 		rm restart.sh
 		rm stop.sh
-		rm backuphourly.sh
-		rm backupdaily.sh
-		rm backupmonthly.sh
-		rm backupweekly.sh
+		rm backup.sh
 		rm update.sh
 		rm maintenance.sh
 		# download all scripts
@@ -102,10 +99,7 @@ if [ "$?" != 0 ]; then
 		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh
 		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
 		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
-		wget -q -O backuphourly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backuphourly.sh
-		wget -q -O backupdaily.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupdaily.sh
-		wget -q -O backupmonthly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupmonthly.sh
-		wget -q -O backupweekly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupweekly.sh
+		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 		# make scripts executable
@@ -115,10 +109,7 @@ if [ "$?" != 0 ]; then
 		chmod +x stop.sh
 		chmod +x update.sh
 		chmod +x maintenance.sh
-		chmod +x backuphourly.sh
-		chmod +x backupdaily.sh
-		chmod +x backupmonthly.sh
-		chmod +x backupweekly.sh
+		chmod +x backup.sh
 fi
 
 # restart the server
