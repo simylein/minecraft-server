@@ -243,7 +243,7 @@ fi
 # store all the userinput
 echo "storing variables in server.settings..."
 echo "" >> server.settings
-echo "# network stuff"
+echo "# network stuff" >> server.settings
 	for var in dnsserver; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
