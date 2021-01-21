@@ -294,7 +294,7 @@ if [[  $REPLY =~ [Yy]$ ]]
 		crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 		emailchoice=true
-	else echo "${yellow}no emails${nocolor}"
+	else echo -e "${yellow}no emails${nocolor}"
 		crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 		emailchoice=false
