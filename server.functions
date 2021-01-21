@@ -13,6 +13,7 @@ function CheckIfServerIsRunning {
 		echo -e "${yellow}server is not currently running!${nocolor}"
 		echo "server is not currently running!" >> ${screenlog}
 		echo "server is not currently running!" >> ${backuplog}
+		echo "" >> ${backuplog}
 		exit 1
 	fi
 }
