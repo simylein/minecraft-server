@@ -9,7 +9,7 @@ function WriteDateToLogFiles {
 
 # checks for the existence of a screen terminal
 function CheckIfServerIsRunning {
-	if screen -list | grep -q "${servername}"; then
+	if ! screen -list | grep -q "${servername}"; then
 		echo -e "${yellow}server is not currently running!${nocolor}"
 		echo "server is not currently running!" >> ${screenlog}
 		echo "server is not currently running!" >> ${backuplog}
