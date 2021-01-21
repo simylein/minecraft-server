@@ -130,6 +130,7 @@ echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
 
 # set up backupdirectory
 echo "setting up a backupdirectory..."
+mkdir world
 mkdir backups
 	cd backups
 		mkdir hourly
