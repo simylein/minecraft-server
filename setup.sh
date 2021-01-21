@@ -142,6 +142,16 @@ mkdir backups
 	cd ../
 
 # ask all the importatnt user input
+echo "Please tell me which dnsserver you would like to use"
+echo -e "Please enter like this: Example:${yellow}1.1.1.1${nocolor}"
+read -re -i "1.1.1.1" -p "Your dnsserver: " dnsserver
+echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start"
+
+echo "Please tell me which interface you would like to use"
+echo -e "Please enter like this: Example:${yellow}192.168.1.1${nocolor}"
+read -re -i "192.168.1.1" -p "Your dnsserver: " dnsserver
+echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start"
+
 echo "How much minimum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}256${nocolor}"
 read -re -i "256" -p "Your amount: " mems
@@ -233,6 +243,14 @@ fi
 # store all the userinput
 echo "storing variables in server.settings..."
 echo "" >> server.settings
+echo "# network stuff"
+	for var in dnsserver; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	for var in interface; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+echo "" >> server.settings
 echo "# memory and threads" >> server.settings
 	for var in mems; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
@@ -278,6 +296,8 @@ echo "storing variables in server.properties..."
 . ./server.functions
 echo "Hello World, this server was created on ${date}" >> ${screenlog}
 echo "Hello World, this server was created on ${date}" >> ${backuplog}
+echo "" >> ${backuplog}
+echo "" >> ${backuplog}
 
 # write servername and date into crontab
 date=$(date +"%Y-%m-%d %H:%M:%S")
