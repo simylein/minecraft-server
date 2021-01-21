@@ -7,6 +7,10 @@
 # change to server directory
 cd ${serverdirectory}
 
+# padd logfile for visibility
+echo "" >> ${screenlog}
+echo "" >> ${screenlog}
+
 # write date to logfile
 echo "${date} executing start script" >> ${screenlog}
 
