@@ -149,7 +149,7 @@ echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start"
 
 echo "Please tell me which interface you would like to use"
 echo -e "Please enter like this: Example:${yellow}192.168.1.1${nocolor}"
-read -re -i "192.168.1.1" -p "Your dnsserver: " dnsserver
+read -re -i "192.168.1.1" -p "Your interface: " interface
 echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start"
 
 echo "How much minimum memory would you like to grant your Server?"
