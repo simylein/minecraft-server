@@ -273,6 +273,12 @@ echo "storing variables in server.properties..."
 	echo "${cmdblock}" >> server.properties
 	echo "${motd}" >> server.properties
 
+# create logfiles with Welcome message
+. ./server.settings
+. ./server.functions
+echo "Hello World, this server was created on ${date}" >> ${screenlog}
+echo "Hello World, this server was created on ${date}" >> ${backuplog}
+
 # write servername and date into crontab
 date=$(date +"%Y-%m-%d %H:%M:%S")
 	crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
