@@ -43,15 +43,13 @@ echo "downloading scripts from GitHub..."
 		wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
 		wget -q -O server.settings https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.settings
 		wget -q -O server.properties https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.properties
+		wget -q -O server.functions https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.functions
 		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
 		wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh
 		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh
 		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
 		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
-		wget -q -O backuphourly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backuphourly.sh
-		wget -q -O backupdaily.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupdaily.sh
-		wget -q -O backupmonthly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupmonthly.sh
-		wget -q -O backupweekly.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backupweekly.sh
+		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
 
@@ -64,10 +62,7 @@ echo "making Scripts executable..."
 		chmod +x stop.sh
 		chmod +x update.sh
 		chmod +x maintenance.sh
-		chmod +x backuphourly.sh
-		chmod +x backupdaily.sh
-		chmod +x backupweekly.sh
-		chmod +x backupmonthly.sh
+		chmod +x backup.sh
 
 # store serverdirectory
 serverdirectory=`pwd`
