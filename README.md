@@ -170,24 +170,27 @@ In this file, you can automate things as follows: <br>
 Backup Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} server hourly backup at **:00
-00 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh
-
-# minecraft ${servername} server daily backup at 22:00
-00 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh
+0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh
 ```
 Stop and Start Example: (In order to work, please replace the variables with your own ones)
 ```
-# minecraft ${servername} server stop at 22:30
-30 22 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh
+# minecraft ${servername} server stop at 23:00
+0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh
 
-# minecraft ${servername} server start at 06:30
-30 06 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh
+# minecraft ${servername} server start at 07:00
+0 7 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh
 ```
-If you  like to restart your minecraft server: <br>
+If you would like to restart your minecraft server: <br>
 Restart Example: (In order to work, please replace the variables with your own ones)
 ```
-# minecraft ${servername} server restart at 23:00
-00 23 * * * cd ${serverdirectory} && ${serverdirectory}/restart.sh
+# minecraft ${servername} server restart at 12:00 on Sundays
+0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh
+```
+If you would like to update your minecraft server: <br>
+Restart Example: (In order to work, please replace the variables with your own ones)
+```
+# minecraft ${servername} server update at 18:00 on Sundays
+0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh
 ```
 If you want to start up your minecraft server at boot of your Linux server: <br>
 Start at Boot Example: (In order to work, please replace the variables with your own ones)
@@ -200,6 +203,8 @@ Close and save your crontab.
 Your server will write two growing logfiles (located in your ${serverdirectory}) <br>
 
 screen.log and backup.log <br>
+
+screen.log contains everything that get's written inside your screen terminal while backup.log logs all action of the backup script. 
 
 to view them:
 ```
