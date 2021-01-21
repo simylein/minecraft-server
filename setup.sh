@@ -305,23 +305,11 @@ read -re -i "Y" -p "Would you like to automate backups? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automating backups...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
-		crontab -l | { cat; echo "30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup weekly at Sundays 22:40"; } | crontab -
-		crontab -l | { cat; echo "40 22 * * 0 cd ${serverdirectory} && ${serverdirectory}/backupweekly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup monthly at first of month at 22:50"; } | crontab -
-		crontab -l | { cat; echo "50 22 1 * * cd ${serverdirectory} && ${serverdirectory}/backupmonthly.sh"; } | crontab -
+		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
 		backupchoice=true
 	else echo -e "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backuphourly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup daily at 22:30"; } | crontab -
-		crontab -l | { cat; echo "#30 22 * * * cd ${serverdirectory} && ${serverdirectory}/backupdaily.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup weekly at Sundays 22:40"; } | crontab -
-		crontab -l | { cat; echo "#40 22 * * 0 cd ${serverdirectory} && ${serverdirectory}/backupweekly.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server backup monthly at first of month at 22:50"; } | crontab -
-		crontab -l | { cat; echo "#50 22 1 * * cd ${serverdirectory} && ${serverdirectory}/backupmonthly.sh"; } | crontab -
+		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
 		backupchoice=false
 fi
 
