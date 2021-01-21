@@ -1,6 +1,12 @@
 #!/bin/bash
 # minecraft server backup script
 
+# read server.settings and server.functions
+function ReadFiles {
+	. ./server.settings
+	. ./server.functions
+}
+
 # write date and execute into logfiles
 function WriteDateToLogFiles {
 	echo "${date} executing backup-${1} script" >> ${screenlog}
@@ -79,6 +85,7 @@ function PerformHourlyBackup {
 	CheckIfServerIsRunning
 	CheckWorldSize "hourly" "${newhourly}" "${oldhourly}"
 	PerformBackup "hourly" "${newhourly}"
+	ReadFiles
 	CheckBackupIntegrity "hourly" "${newhourly}" "${oldhourly}"
 }
 
@@ -88,6 +95,7 @@ function PerformDailyBackup {
 	CheckIfServerIsRunning
 	CheckWorldSize "daily" "${newdaily}" "${olddaily}"
 	PerformBackup "daily" "${newdaily}"
+	ReadFiles
 	CheckBackupIntegrity "daily" "${newdaily}" "${olddaily}"
 }
 
@@ -97,6 +105,7 @@ function PerformWeeklyBackup {
 	CheckIfServerIsRunning
 	CheckWorldSize "weekly" "${newweekly}" "${oldweekly}"
 	PerformBackup "weekly" "${newweekly}"
+	ReadFiles
 	CheckBackupIntegrity "weekly" "${newweekly}" "${oldweekly}"
 }
 
@@ -106,5 +115,6 @@ function PerformMonthlyBackup {
 	CheckIfServerIsRunning
 	CheckWorldSize "monthly" "${newmonthly}" "${oldmonthly}"
 	PerformBackup "monthly" "${newmonthly}"
+	ReadFiles
 	CheckBackupIntegrity "monthly" "${newmonthly}" "${oldmonthly}"
 }
