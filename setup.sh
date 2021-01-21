@@ -333,7 +333,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # crontab automatization restart
-read -re -i "N" -p "Would you like to restart your server at 12:00? [Y/N]: "
+read -re -i "Y" -p "Would you like to restart your server at 12:00? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
@@ -345,7 +345,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 		restartchoice=false
 fi
 
-# crontab automatization restart
+# crontab automatization updates
 read -re -i "Y" -p "Would you like to update your server every Sunday at 18:00? [Y/N]: "
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}automatic update at Sunday${nocolor}"
