@@ -80,36 +80,17 @@ if [ "$?" != 0 ]; then
 	else
 	echo -e "${green}downloading newest scripts version...${nocolor}"
 	echo "downloading newest scripts version..." >> ${screenlog}
-		# remove all scripts
-		rm LICENSE
-		rm README.md
-		rm start.sh
-		rm restore.sh
-		rm reset.sh
-		rm restart.sh
-		rm stop.sh
-		rm backup.sh
-		rm update.sh
-		rm maintenance.sh
-		# download all scripts
-		wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-		wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
-		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
-		wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh
-		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh
-		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
-		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
-		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
-		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
-		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
-		# make scripts executable
-		chmod +x start.sh
-		chmod +x restart.sh
-		chmod +x restore.sh
-		chmod +x stop.sh
-		chmod +x update.sh
-		chmod +x maintenance.sh
-		chmod +x backup.sh
+		# remove all scripts then download all the scripts then make the scripts executable
+		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
+		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
+		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
+		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
+		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
+		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
+		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
+		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
+		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
+		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
 fi
 
 # restart the server

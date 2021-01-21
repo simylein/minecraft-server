@@ -36,7 +36,7 @@ echo "I will now setup a server and backup directory."
 echo "setting up a serverdirectory..."
 mkdir ${servername}
 
-# donwload all the github scripts
+# donwload all the github scripts and make them exectuable
 echo "downloading scripts from GitHub..."
 	cd ${servername}
 		wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
@@ -44,25 +44,14 @@ echo "downloading scripts from GitHub..."
 		wget -q -O server.settings https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.settings
 		wget -q -O server.properties https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.properties
 		wget -q -O server.functions https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.functions
-		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh
-		wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh
-		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh
-		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh
-		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh
-		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh
-		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh
-		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh
-
-# making core scripts executable
-echo "making Scripts executable..."
-		chmod +x start.sh
-		chmod +x restart.sh
-		chmod +x reset.sh
-		chmod +x restore.sh
-		chmod +x stop.sh
-		chmod +x update.sh
-		chmod +x maintenance.sh
-		chmod +x backup.sh
+		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
+		wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
+		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
+		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
+		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
+		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
+		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
+		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
 
 # store serverdirectory
 serverdirectory=`pwd`
