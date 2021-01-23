@@ -17,8 +17,7 @@ else
 fi
 
 # read server.properties file with error checking
-if [[ -f "server.properties" ]]; then
-else
+if ! [[ -f "server.properties" ]]; then
 	echo "fatal: server.properties is missing" >> fatalerror.log
 	echo "fatal: server.properties is missing"
 	exit 1
