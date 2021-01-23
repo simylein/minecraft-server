@@ -1,11 +1,40 @@
 #!/bin/bash
 # minecraft server restore script
 
-# read the settings
-. ./server.settings
+# read server.functions file with error checking
+if [[ -f "server.functions" ]]; then
+	. ./server.functions
+else
+	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "fatal: server.functions is missing"
+	exit 1
+fi
 
-# change to server directory
-cd ${serverdirectory}
+# read server.properties file with error checking
+if [[ -f "server.properties" ]]; then
+else
+	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "fatal: server.properties is missing"
+	exit 1
+fi
+
+# read server.settings file with error checking
+if [[ -f "server.settings" ]]; then
+	. ./server.settings
+else
+	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "fatal: server.settings is missing"
+	exit 1
+fi
+
+# change to server directory with error checking
+if [ -d "${serverdirectory}" ]; then
+	cd ${serverdirectory}
+else
+	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "fatal: serverdirectory is missing"
+	exit 1
+fi
 
 # write date to logfile
 echo "${date} executing restore script" >> ${screenlog}
@@ -45,7 +74,7 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
@@ -69,7 +98,7 @@ backupscached=($(ls))
 cd ../
 
 # ask for daily or hourly backup to restore
-PS3='Would you like to restore a ${backups[0]}, ${backups[1]}, ${backups[2]}, ${backups[3]}, ${backups[4]}? '
+PS3="Would you like to restore a ${backups[0]}, ${backups[1]}, ${backups[2]}, ${backups[3]}, ${backups[4]}? "
 select dailyhourlyweeklymonthly in "${backups[@]}"
 do
 	echo "You chose: ${dailyhourlyweeklymonthly}"
@@ -130,19 +159,24 @@ echo "selected backup to restore: ${backupdirectory}/${dailyhourlyweeklymonthly}
 # ask for permission to proceed
 echo "I will now delete the current world-directory and replace it with your chosen backup"
 echo "You have chosen: ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} as a backup to restore"
-read -p "Continue? [Y/N]:"
-if [[ $REPLY =~ ^[Yy]$ ]]
-then echo -e "${green}restoring backup...${nocolor}"
+read -p "Continue? [Y/N]: "
+
+# if user replys yes perform restore
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	echo -e "${green}restoring backup...${nocolor}"
 	cd ${homedirectory}
 	rm -r ${serverdirectory}/world
 	cp -r ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
 	mv ${backup} ${servername}
 	echo -e "${blue}restarting server with restored backup...${nocolor}"
 	cd ${serverdirectory}
-	echo "${date} The backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
+	echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
 	./start.sh
+# user replys no cancel and restart server
 else echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"
+	echo "backup restore has been canceled" >> ${screenlog}
+	echo "resuming to current live world" >> ${screenlog}
 	cd ${serverdirectory}
 	./start.sh
 fi
