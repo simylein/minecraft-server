@@ -79,6 +79,9 @@ fi
 # warning
 screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"WARNING: venting startet!\",\"color\":\"red\"}]$(printf '\r')"
 
+# sleep for 2 seconds
+sleep 2s
+
 # countdown
 counter="120"
 while [ ${counter} -gt 0 ]; do
