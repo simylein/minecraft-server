@@ -106,7 +106,24 @@ echo "stopping server..."
 screen -Rd ${servername} -X stuff "say deleting server...$(printf '\r')"
 screen -Rd ${servername} -X stuff "stop$(printf '\r')"
 
+# check if server stopped
+stopchecks="0"
+while [ $stopchecks -lt 30 ]; do
+	if ! screen -list | grep -q "${servername}"; then
+		break
+	fi
+	stopchecks=$((stopchecks+1))
+	sleep 1;
+done
+
+# force quit server if not stopped
+if screen -list | grep -q "${servername}"; then
+	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	screen -S ${servername} -X quit
+fi
+
 # sleep 2 seconds
+sleep 2s
 
 cd ../
 # remove serverdirectory
