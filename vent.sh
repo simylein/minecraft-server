@@ -77,6 +77,7 @@ if ! screen -list | grep -q "${servername}"; then
 fi
 
 # warning
+echo -e "${blue}[Script]${nocolor} ${red}WARNING: venting startet!${nocolor}"
 screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"WARNING: venting startet!\",\"color\":\"red\"}]$(printf '\r')"
 
 # sleep for 2 seconds
@@ -94,6 +95,7 @@ while [ ${counter} -gt 0 ]; do
 done
 
 # game over
+echo -e "${blue}[Script]${nocolor} ${red}GAME OVER${nocolor}"
 screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"GAME OVER\",\"color\":\"red\"}]$(printf '\r')"
 
 # sleep 2 seconds
