@@ -73,7 +73,7 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-		echo -e "${yellow}Minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+		echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 		screen -S ${servername} -X quit
 fi
 
