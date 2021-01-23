@@ -51,7 +51,7 @@ while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
 		echo -e "${blue}[Script]${nocolor} server is resetting in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is resetting in ${counter} seconds\"}]$(printf '\r')"
+		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is resetting in ${counter} seconds\"}]$(printf '\r')"
 	fi
 	counter=$((counter-1))
 	sleep 1s
