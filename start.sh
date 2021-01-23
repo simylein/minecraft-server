@@ -1,11 +1,47 @@
 #!/bin/bash
 # minecraft server start script
 
-# read the settings
-. ./server.settings
+# read server.functions file with error checking
+if [[ -f "server.functions" ]]; then
+	. ./server.functions
+else
+	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "fatal: server.functions is missing"
+	exit 1
+fi
 
-# change to server directory
-cd ${serverdirectory}
+# read server.properties file with error checking
+if [[ -f "server.properties" ]]; then
+else
+	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "fatal: server.properties is missing"
+	exit 1
+fi
+
+# read server.settings file with error checking
+if [[ -f "server.settings" ]]; then
+	. ./server.settings
+else
+	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "fatal: server.settings is missing"
+	exit 1
+fi
+
+# change to server directory with error checking
+if [ -d "${serverdirectory}" ]; then
+	cd ${serverdirectory}
+else
+	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "fatal: serverdirectory is missing"
+	exit 1
+fi
+
+# check for executable
+if ! ls ${serverfile}* 1> /dev/null 2>&1; then
+	echo -e "${red}Warning: no executable found!${nocolor}"
+	echo "Warning: no executable found!" >> ${screenlog}
+	exit 1
+fi
 
 # padd logfile for visibility
 echo "" >> ${screenlog}
@@ -23,40 +59,33 @@ fi
 
 # check if interface is online
 interfacechecks="0"
-while
-	[ $interfacechecks -lt 8 ]; do
-		 if ping -c 1 ${interface} &> /dev/null
-				then echo -e "${green}Success: Interface is online${nocolor}" && echo "Success: Interface is online" >> ${screenlog}
-				break
-				else echo -e "${red}Warning: Interface is offline${nocolor}" && echo "Warning: Interface is offline" >> ${screenlog}
-		 fi
+while [ $interfacechecks -lt 8 ]; do
+	if ping -c 1 ${interface} &> /dev/null
+	then echo -e "${green}Success: Interface is online${nocolor}" && echo "Success: Interface is online" >> ${screenlog}
+		break
+	else echo -e "${red}Warning: Interface is offline${nocolor}" && echo "Warning: Interface is offline" >> ${screenlog}
+	fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
 done
 
 # check if dnsserver is online
 networkchecks="0"
-while
-	[ $networkchecks -lt 8 ]; do
-		if ping -c 1 ${dnsserver} &> /dev/null
-			then echo -e "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
-			break
-			else echo -e "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
-		fi
+while [ $networkchecks -lt 8 ]; do
+	if ping -c 1 ${dnsserver} &> /dev/null
+	then echo -e "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
+		break
+	else echo -e "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
+	fi
 	sleep 1s;
 	networkchecks=$((networkchecks+1))
 done
 
-# check for executable
-if ! ls ${serverfile}* 1> /dev/null 2>&1; then
-	echo -e "${red}Warning: no executable found!${nocolor}"
-	echo "Warning: no executable found!" >> ${screenlog}
-fi
-
 # user information
 echo "Starting Minecraft server.  To view window type screen -r ${servername}."
 echo "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
-echo "starting ${servername} server..." && echo "starting ${servername} server..." >> ${screenlog}
+echo "starting ${servername} server..." >> ${screenlog}
+echo "starting ${servername} server..."	
 
 # main start commmand
 ${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
@@ -85,7 +114,5 @@ fi
 
 # succesful startup
 echo "server startup successful!" >> ${screenlog}
-echo -e "${green}server startup successful! - changing to server console...${nocolor}"
-
-# change to server console
-screen -r ${servername}
+echo -e "${green}server startup successful!${nocolor}"
+echo "If you would like to change to server console - type screen -r ${servername}"
