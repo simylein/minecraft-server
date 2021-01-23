@@ -1,0 +1,131 @@
+#!/bin/bash
+# minecraft server selft-destruct script
+
+# WARNING do not execute unless you want to delete your server
+
+# read server.functions file with error checking
+if [[ -f "server.functions" ]]; then
+	. ./server.functions
+else
+	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "fatal: server.functions is missing"
+fi
+
+# read server.properties file with error checking
+if ! [[ -f "server.properties" ]]; then
+	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "fatal: server.properties is missing"
+fi
+
+# read server.settings file with error checking
+if [[ -f "server.settings" ]]; then
+	. ./server.settings
+else
+	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "fatal: server.settings is missing"
+fi
+
+# change to server directory with error checking
+if [ -d "${serverdirectory}" ]; then
+	cd ${serverdirectory}
+else
+	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "fatal: serverdirectory is missing"
+	exit 1
+fi
+
+# write date to logfile
+echo "${date} executing self-destruct script" >> ${screenlog}
+
+# check if server is running
+if ! screen -list | grep -q "${servername}"; then
+	echo "server is not currently running!" >> ${screenlog}
+	echo -e "${yellow}server is not currently running!${nocolor}"
+	counter="10"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(10|9|8|7|6|5|4|3|2|1)$ ]]; then
+			echo -e "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+	cd ../
+	# remove serverdirectory
+	rm -rf ${servername}
+	# check if vent was successful
+	if ! [ -d "${serverdirectory}" ]; then
+		# game over terminal screen
+		echo -e "${red}                                            ${nocolor}"
+		echo -e "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
+		echo -e "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
+		echo -e "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
+		echo -e "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
+		echo -e "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
+		echo -e "${red}                                            ${nocolor}"
+		echo -e "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
+		echo -e "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
+		echo -e "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
+		echo -e "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
+		echo -e "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
+		echo -e "${red}                                            ${nocolor}"
+		exit 1
+	else
+		# error if serverdirectory still exists
+		echo -e "${red}venting failed!${nocolor}"
+		exit 1
+	fi
+fi
+
+# warning
+screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"WARNING: venting startet!\",\"color\":\"red\"}]$(printf '\r')"
+
+# countdown
+counter="120"
+while [ ${counter} -gt 0 ]; do
+	if [[ "${counter}" =~ ^(120|60|40|20|10|5|4|3|2|1)$ ]]; then
+		echo -e "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
+		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is self-destructing in ${counter} seconds\",\"color\":\"red\"}]$(printf '\r')"
+	fi
+	counter=$((counter-1))
+	sleep 1s
+done
+
+# game over
+screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"GAME OVER\",\"color\":\"red\"}]$(printf '\r')"
+
+# sleep 2 seconds
+sleep 2s
+
+# stop command
+echo "stopping server..."
+screen -Rd ${servername} -X stuff "say deleting server...$(printf '\r')"
+screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+
+# sleep 2 seconds
+
+cd ../
+# remove serverdirectory
+echo "deleting server..."
+rm -rf ${servername}
+# check if vent was successful
+if ! [ -d "${serverdirectory}" ]; then
+	# game over terminal screen
+	echo -e "${red}                                            ${nocolor}"
+	echo -e "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
+	echo -e "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
+	echo -e "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
+	echo -e "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
+	echo -e "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
+	echo -e "${red}                                            ${nocolor}"
+	echo -e "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
+	echo -e "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
+	echo -e "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
+	echo -e "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
+	echo -e "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
+	echo -e "${red}                                            ${nocolor}"
+	exit 1
+else
+	# error if serverdirectory still exists
+	echo -e "${red}venting failed!${nocolor}"
+	exit 1
+fi
