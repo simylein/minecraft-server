@@ -1,17 +1,47 @@
 #!/bin/bash
 # minecraft server reset script
 
-# read the settings
-. ./server.settings
+# read server.functions file with error checking
+if [[ -f "server.functions" ]]; then
+	. ./server.functions
+else
+	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "fatal: server.functions is missing"
+	exit 1
+fi
 
-# change to server directory
-cd ${serverdirectory}
+# read server.properties file with error checking
+if [[ -f "server.properties" ]]; then
+else
+	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "fatal: server.properties is missing"
+	exit 1
+fi
+
+# read server.settings file with error checking
+if [[ -f "server.settings" ]]; then
+	. ./server.settings
+else
+	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "fatal: server.settings is missing"
+	exit 1
+fi
+
+# change to server directory with error checking
+if [ -d "${serverdirectory}" ]; then
+	cd ${serverdirectory}
+else
+	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "fatal: serverdirectory is missing"
+	exit 1
+fi
 
 # write date to logfile
 echo "${date} executing reset script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
+	echo "server is not currently running!" >> ${screenlog}
 	echo -e "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
@@ -61,6 +91,8 @@ if ! [ -d "${backupdirectory}/cached/reset-${newdaily}" ]; then
 	echo -e "${red}fatal: safety backup failed - can not proceed to remove world"
 	echo "fatal: safety backup failed - can not proceed to remove world" >> ${screenlog}
 	exit 1
+else
+	echo "created ${backupdirectory}/cached/reset-${newdaily} as a safety backup" >> ${backuplog}
 fi
 
 # remove log and world
