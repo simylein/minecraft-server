@@ -4,129 +4,18 @@
 # this file stores all the functions for the server.
 # if you know what you are doing, feel free to tinker with them ;^)
 
-# read server.settings and server.functions
-function ReadFiles {
-	. ./server.settings
-	. ./server.functions
+function PrintToScreen {
+	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
 }
 
-# write date and execute into logfiles
-function WriteDateToLogFiles {
-	echo "${date} executing backup-${1} script" >> ${screenlog}
-	echo "${date} executing backup-${1} script" >> ${backuplog}
+function PrintToScreenBackupError {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: missing directories\"}]}}}]$(printf '\r')"
 }
 
-# checks for the existence of a screen terminal
-function CheckIfServerIsRunning {
-	if ! screen -list | grep -q "${servername}"; then
-		echo -e "${yellow}server is not currently running!${nocolor}"
-		echo "server is not currently running!" >> ${screenlog}
-		echo "server is not currently running!" >> ${backuplog}
-		echo "" >> ${backuplog}
-		exit 1
-	fi
+function PrintToScreenBackupSuccess {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}, removed file: ${servername}-${2}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 }
 
-# checks for the existence of a screen terminal
-function CheckIfServerIsNotRunning {
-	if screen -list | grep -q "${servername}"; then
-		echo "Server is already running!  Type screen -r ${servername} to open the console" >> ${screenlog}
-		echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
-		exit 1
-	fi
-}
-
-# check if world is bigger than diskspace
-function CheckWorldSize {
-	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
-		echo -e "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
-		echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
-		echo "" >> ${backuplog}
-		# ingame logfile error output
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${2}, could not remove file: ${servername}-${3}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
-		exit 1
-	fi
-}
-
-# check if there is no backup from the current day
-function PerformBackup {
-	if ! [ -d "${backupdirectory}/${1}/${servername}-${2}" ]; then
-		cp -r ${serverdirectory}/world ${backupdirectory}/${1}/${servername}-${2}
-	else
-		echo "warning: backup already exists!" >> ${backuplog}
-		echo "" >> ${backuplog}
-		exit 1
-	fi
-}
-
-# ingame and logfile success output
-function BackupSuccessOutput {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${2}, removed file: ${servername}-${3}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
-	echo "newest backup has been successfully created!" >> ${backuplog}
-	echo "added ${backupdirectory}/${1}/${servername}-${2}" >> ${backuplog}
-	echo "oldest backup has been successfully removed!" >> ${backuplog}
-	echo "removed ${backupdirectory}/${1}/${servername}-${3}" >> ${backuplog}
-	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
-
-# ingame and logfile error output
-function BackupErrorOutput {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${2}, could not remove file: ${servername}-${3}, reason: missing directories\"}]}}}]$(printf '\r')"
-	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-	echo "warning: could not remove old backup!" >> ${backuplog}
-	echo "fatal: could not backup world!" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
-
-# check if there is a new backup
-function CheckBackupIntegrity {
-	if [ -d "${backupdirectory}/${1}/${servername}-${2}" ]; then
-		if [ -d "${backupdirectory}/${1}/${servername}-${3}" ]; then
-			rm -r ${backupdirectory}/${1}/${servername}-${3}
-		fi
-		BackupSuccessOutput "${1}" "${2}" "${3}"
-	else
-		BackupErrorOutput "${1}" "${2}" "${3}"
-	fi
-}
-
-# complete function for hourly backup
-function PerformHourlyBackup {
-	WriteDateToLogFiles "hourly"
-	CheckIfServerIsRunning
-	CheckWorldSize "hourly" "${newhourly}" "${oldhourly}"
-	PerformBackup "hourly" "${newhourly}"
-	ReadFiles
-	CheckBackupIntegrity "hourly" "${newhourly}" "${oldhourly}"
-}
-
-# complete function for daily backup
-function PerformDailyBackup {
-	WriteDateToLogFiles "daily"
-	CheckIfServerIsRunning
-	CheckWorldSize "daily" "${newdaily}" "${olddaily}"
-	PerformBackup "daily" "${newdaily}"
-	ReadFiles
-	CheckBackupIntegrity "daily" "${newdaily}" "${olddaily}"
-}
-
-# complete function for weekly backup
-function PerformWeeklyBackup {
-	WriteDateToLogFiles "weekly"
-	CheckIfServerIsRunning
-	CheckWorldSize "weekly" "${newweekly}" "${oldweekly}"
-	PerformBackup "weekly" "${newweekly}"
-	ReadFiles
-	CheckBackupIntegrity "weekly" "${newweekly}" "${oldweekly}"
-}
-
-# complete function for monthly backup
-function PerformMonthlyBackup {
-	WriteDateToLogFiles "monthly"
-	CheckIfServerIsRunning
-	CheckWorldSize "monthly" "${newmonthly}" "${oldmonthly}"
-	PerformBackup "monthly" "${newmonthly}"
-	ReadFiles
-	CheckBackupIntegrity "monthly" "${newmonthly}" "${oldmonthly}"
+function PrintToScreenNotEnoughtDiskSpace {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 }
