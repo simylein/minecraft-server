@@ -3,8 +3,8 @@
 
 # this script is meant to be executed every hour by crontab
 
-# for the sake of integrety of your backups, 
-# I would recommend not ot mess with this file. 
+# for the sake of integrety of your backups,
+# I would recommend not ot mess with this file.
 # if you know what you are doing feel free to go ahead ;^)
 
 # read server.functions file with error checking
