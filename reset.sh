@@ -92,6 +92,7 @@ if ! [ -d "${backupdirectory}/cached/reset-${newdaily}" ]; then
 	exit 1
 else
 	echo "created ${backupdirectory}/cached/reset-${newdaily} as a safety backup" >> ${backuplog}
+	echo "" >> ${backuplog}
 fi
 
 # remove log and world
