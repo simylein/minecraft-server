@@ -113,7 +113,7 @@ fi
 
 # check if it is 22:??
 hours=$(date +"%H")
-if [[ ${hours} -eq 22 ]]; then
+if [ ${hours} -eq 22 ]; then
 	
 	# write date and execute into logfiles
 	echo "${date} executing backup-daily script" >> ${screenlog}
@@ -186,7 +186,7 @@ fi
 # check if it is 22:?? and Sunday
 hours=$(date +"%H")
 weekday=$(date +"%u")
-if [[ ${hours} -eq 22 && ${weekday} -eq 7 ]]; then
+if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 	
 	# write date and execute into logfiles
 	echo "${date} executing backup-weekly script" >> ${screenlog}
@@ -259,7 +259,7 @@ fi
 # check if it is 22:?? and the first day of month
 hours=$(date +"%H")
 dayofmonth=$(date +"%d")
-if [[ ${hours} -eq 22 && ${dayofmonth} -eq 1 ]]; then
+if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 	# write date and execute into logfiles
 	echo "${date} executing backup-monthly script" >> ${screenlog}
 	echo "${date} executing backup-monthly script" >> ${backuplog}
