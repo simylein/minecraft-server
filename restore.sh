@@ -162,20 +162,19 @@ read -p "Continue? [Y/N]: "
 
 # if user replys yes perform restore
 if [[ $REPLY =~ ^[Yy]$ ]]; then
+	cd ${serverdirectory}
 	echo -e "${green}restoring backup...${nocolor}"
-	cd ${homedirectory}
 	rm -r ${serverdirectory}/world
 	cp -r ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
 	mv ${backup} ${servername}
 	echo -e "${blue}restarting server with restored backup...${nocolor}"
-	cd ${serverdirectory}
 	echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
 	./start.sh
 # user replys no cancel and restart server
-else echo -e "${yellow}canceling backup restore...${nocolor}"
+else cd ${serverdirectory}
+	echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"
 	echo "backup restore has been canceled" >> ${screenlog}
 	echo "resuming to current live world" >> ${screenlog}
-	cd ${serverdirectory}
 	./start.sh
 fi
