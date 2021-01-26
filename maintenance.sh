@@ -81,7 +81,9 @@ echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-rm -r ${backupdirectory}/cached/maintenance-*
+if [ -d "${backupdirectory}/cached/maintenance-*" ]; then
+	rm -r ${backupdirectory}/cached/maintenance-*
+fi
 cp -r ${serverdirectory}/world ${backupdirectory}/cached/maintenance-${newdaily}
 
 # check if safety backup exists
