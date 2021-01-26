@@ -78,3 +78,18 @@ fi
 
 # output confirmed stop
 echo -e "${green}server successfully stopped!${nocolor}"
+
+# create backup
+echo -e "${blue}backing up...${nocolor}"
+rm -r ${backupdirectory}/cached/maintenance-*
+cp -r ${serverdirectory}/world ${backupdirectory}/cached/maintenance-${newdaily}
+
+# check if safety backup exists
+if ! [ -d "${backupdirectory}/cached/maintenance-${newdaily}" ]; then
+	echo -e "${red}warning: safety backup failed - proceeding to server maintenance${nocolor}"
+	echo "warning: safety backup failed - proceeding to server maintenance" >> ${screenlog}
+else
+	echo "created ${backupdirectory}/cached/maintenance-${newdaily} as a safety backup" >> ${backuplog}
+	echo "" >> ${backuplog}
+	echo "have fun with maintenance ;^)"
+fi
