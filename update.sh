@@ -79,6 +79,7 @@ fi
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
+rm -r ${backupdirectory}/cached/update-*
 cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}
 
 # check if safety backup exists

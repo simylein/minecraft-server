@@ -83,6 +83,7 @@ echo -e "${green}server successfully stopped!${nocolor}"
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
+rm -r ${backupdirectory}/cached/reset-*
 cp -r ${serverdirectory}/world ${backupdirectory}/cached/reset-${newdaily}
 
 # check if safety backup exists
