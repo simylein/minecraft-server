@@ -33,7 +33,6 @@ diskspacepadding="2097152"
 # logfiles
 screenlog="screen.log"
 backuplog="backup.log"
-tmpscreenlog="tmpscreen.log"
 
 # binarys
 java="/usr/bin/java"
