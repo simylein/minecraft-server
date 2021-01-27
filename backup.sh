@@ -114,11 +114,11 @@ fi
 # check if it is 22:??
 hours=$(date +"%H")
 if [ ${hours} -eq 22 ]; then
-	
+
 	# write date and execute into logfiles
 	echo "${date} executing backup-daily script" >> ${screenlog}
 	echo "${date} executing backup-daily script" >> ${backuplog}
-	
+
 	# checks for the existence of a screen terminal
 	if ! screen -list | grep -q "${servername}"; then
 		echo -e "${yellow}server is not currently running!${nocolor}"
@@ -127,7 +127,7 @@ if [ ${hours} -eq 22 ]; then
 		echo "" >> ${backuplog}
 		exit 1
 	fi
-	
+
 	# check if world is bigger than diskspace
 	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		echo -e "${red}fatal: not enough disk-space to perform backup-daily${nocolor}"
@@ -137,7 +137,7 @@ if [ ${hours} -eq 22 ]; then
 		PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
 		exit 1
 	fi
-	
+
 	# check if there is no backup from the current day
 	if ! [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
 		cp -r ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
@@ -146,7 +146,7 @@ if [ ${hours} -eq 22 ]; then
 		echo "" >> ${backuplog}
 		exit 1
 	fi
-	
+
 	# read server.settings file again with error checking
 	if [[ -f "server.settings" ]]; then
 		. ./server.settings
@@ -155,7 +155,7 @@ if [ ${hours} -eq 22 ]; then
 		echo "fatal: server.settings is missing"
 		exit 1
 	fi
-	
+
 	# check if there is a new backup
 	if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
 		# check if an old backup exists an remove it
@@ -187,11 +187,11 @@ fi
 hours=$(date +"%H")
 weekday=$(date +"%u")
 if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
-	
+
 	# write date and execute into logfiles
 	echo "${date} executing backup-weekly script" >> ${screenlog}
 	echo "${date} executing backup-weekly script" >> ${backuplog}
-	
+
 	# checks for the existence of a screen terminal
 	if ! screen -list | grep -q "${servername}"; then
 		echo -e "${yellow}server is not currently running!${nocolor}"
@@ -200,7 +200,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		echo "" >> ${backuplog}
 		exit 1
 	fi
-	
+
 	# check if world is bigger than diskspace
 	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		echo -e "${red}fatal: not enough disk-space to perform backup-weekly${nocolor}"
@@ -210,7 +210,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		PrintToScreenNotEnoughtDiskSpace "${newweekly}" "${oldweekly}"
 		exit 1
 	fi
-	
+
 	# check if there is no backup from the current week
 	if ! [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
 		cp -r ${serverdirectory}/world ${backupdirectory}/weekly/${servername}-${newweekly}
@@ -219,7 +219,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		echo "" >> ${backuplog}
 		exit 1
 	fi
-	
+
 	# read server.settings file again with error checking
 	if [[ -f "server.settings" ]]; then
 		. ./server.settings
@@ -228,7 +228,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		echo "fatal: server.settings is missing"
 		exit 1
 	fi
-	
+
 	# check if there is a new backup
 	if [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
 		# check if an old backup exists an remove it
@@ -263,7 +263,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 	# write date and execute into logfiles
 	echo "${date} executing backup-monthly script" >> ${screenlog}
 	echo "${date} executing backup-monthly script" >> ${backuplog}
-	
+
 	# checks for the existence of a screen terminal
 	if ! screen -list | grep -q "${servername}"; then
 		echo -e "${yellow}server is not currently running!${nocolor}"
@@ -272,7 +272,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		echo "" >> ${backuplog}
 		exit 1
 	fi
-	
+
 	# check if world is bigger than diskspace
 	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		echo -e "${red}fatal: not enough disk-space to perform backup-monthly${nocolor}"
@@ -282,7 +282,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
 		exit 1
 	fi
-	
+
 	# check if there is no backup from the current month
 	if ! [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
 		cp -r ${serverdirectory}/world ${backupdirectory}/monthly/${servername}-${newmonthly}
@@ -291,7 +291,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		echo "" >> ${backuplog}
 		exit 1
 	fi
-	
+
 	# read server.settings file again with error checking
 	if [[ -f "server.settings" ]]; then
 		. ./server.settings
@@ -300,7 +300,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		echo "fatal: server.settings is missing"
 		exit 1
 	fi
-	
+
 	# check if there is a new backup
 	if [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
 		# check if an old backup exists an remove it
