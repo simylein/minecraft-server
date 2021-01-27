@@ -129,7 +129,7 @@ if [ ${hours} -eq 22 ]; then
 	fi
 	
 	# check if world is bigger than diskspace
-	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
+	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		echo -e "${red}fatal: not enough disk-space to perform backup-daily${nocolor}"
 		echo "fatal: not enough disk-space to perform backup-daily" >> ${backuplog}
 		echo "" >> ${backuplog}
@@ -202,7 +202,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 	fi
 	
 	# check if world is bigger than diskspace
-	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
+	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		echo -e "${red}fatal: not enough disk-space to perform backup-weekly${nocolor}"
 		echo "fatal: not enough disk-space to perform backup-weekly" >> ${backuplog}
 		echo "" >> ${backuplog}
@@ -274,7 +274,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 	fi
 	
 	# check if world is bigger than diskspace
-	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
+	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		echo -e "${red}fatal: not enough disk-space to perform backup-monthly${nocolor}"
 		echo "fatal: not enough disk-space to perform backup-monthly" >> ${backuplog}
 		echo "" >> ${backuplog}
