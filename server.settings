@@ -28,6 +28,7 @@ absolutediskspace=$(df / | tail -1 | awk '{print $4}')
 worldsize=$(du -sh world | cut -f1)
 backupsize=$(du -sh backups | cut -f1)
 diskspace=$(df -h / | tail -1 | awk '{print $4}')
+diskspacepadding="2097152"
 
 # logfiles
 screenlog="screen.log"
