@@ -128,7 +128,7 @@ while [ ${startupchecks} -lt 60 ]; do
 		counter=$((counter+1))
 	fi
 	if [ ${counter} -ge 10 ]; then
-		echo -e "${green}server is preparing spawn area...${nocolor}"
+		echo -e "server is preparing spawn area..."
 		counter="0"
 	fi
 	startupchecks=$((startupchecks+1))
