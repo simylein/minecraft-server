@@ -76,7 +76,7 @@ while [ $networkchecks -lt 8 ]; do
 		break
 	else echo -e "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
 	fi
-	sleep 1s;
+	sleep 1s
 	networkchecks=$((networkchecks+1))
 done
 
@@ -93,15 +93,15 @@ ${screen} -r ${servername} -X colon "logfile flush 1^M"
 # check if screen is avaible
 counter="0"
 startchecks="0"
-while [ $startchecks -lt 10 ]; do
+while [ ${startchecks} -lt 10 ]; do
 	if screen -list | grep -q "${servername}"; then
 		counter=$((counter+1))
 	fi
-	if [ $counter -eq 5 ]; then
+	if [ ${counter} -eq 2 ]; then
 		break
 	fi
 	startchecks=$((startchecks+1))
-	sleep 1;
+	sleep 1s
 done
 
 # if no screen output error
@@ -111,7 +111,35 @@ if ! screen -list | grep -q "${servername}"; then
 	exit 1
 fi
 
-# succesful startup
-echo "server startup successful!" >> ${screenlog}
-echo -e "${green}server startup successful!${nocolor}"
+# succesful start sequence
+echo "server is on startup..." >> ${screenlog}
+echo -e "${green}server is on startup...${nocolor}"
+
+# check if screenlog contains start comfirmation
+counter="0"
+startupchecks="0"
+while [ ${startupchecks} -lt 60 ]; do
+	if tail ${screenlog} | grep -q "Query running on"; then
+		echo "server startup successful - query up and running" >> ${screenlog}
+		echo -e "${green}server startup successful - query up and running${nocolor}"
+		break
+	fi
+	if tail ${screenlog} | grep -q "Preparing spawn area"; then
+		counter=$((counter+1))
+	fi
+	if [ ${counter} -ge 10 ]; then
+		echo -e "${green}server is preparing spawn area...${nocolor}"
+		counter="0"
+	fi
+	startupchecks=$((startupchecks+1))
+	sleep 1s
+done
+
+# check if screenlog does not contain startup confirmation
+if ! tail ${screenlog} | grep -q "Query running on"; then
+	echo "server startup unsuccessful - perhaps query is disabled" >> ${screenlog}
+	echo -e "${yellow}server startup unsuccessful - perhaps query is disabled${nocolor}"
+fi
+
+# user information
 echo "If you would like to change to server console - type screen -r ${servername}"
