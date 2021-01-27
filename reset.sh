@@ -101,6 +101,7 @@ fi
 # remove log and world
 echo -e "${red}removing world directory...${nocolor}"
 rm -r world
+mkdir world
 
 # restart the server
 echo -e "${blue}restarting server...${nocolor}"
