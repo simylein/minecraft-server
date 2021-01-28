@@ -82,7 +82,7 @@ fi
 echo -e "${green}server successfully stopped!${nocolor}"
 
 # remove al older safety backups
-if [ -d "${backupdirectory}/cached/reset-*" ]; then
+if [ -d "${backupdirectory}/cached/reset-"* ]; then
 	rm -r ${backupdirectory}/cached/reset-*
 fi
 

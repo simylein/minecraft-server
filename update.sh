@@ -78,7 +78,7 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # remove all older safety backups
-if [ -d "${backupdirectory}/cached/update-*" ]; then
+if [ -d "${backupdirectory}/cached/update-"* ]; then
 	rm -r ${backupdirectory}/cached/update-*
 fi
 

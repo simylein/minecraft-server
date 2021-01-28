@@ -80,7 +80,7 @@ fi
 echo -e "${green}server successfully stopped!${nocolor}"
 
 # remove all older safety backups
-if [ -d "${backupdirectory}/cached/maintenance-*" ]; then
+if [ -d "${backupdirectory}/cached/maintenance-"* ]; then
 	rm -r ${backupdirectory}/cached/maintenance-*
 fi
 
