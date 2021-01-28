@@ -128,7 +128,7 @@ spawn-protection=       (the number of block at the worldspawn only operators ca
 
 pvp=                    (ability for player to do damage to oneanother) [true/false]
 
-enable-command-block    (enables command blocks to tinker with) [true/false]
+enable-command-block=   (enables command blocks to tinker with) [true/false]
 ```
 ## scripts
 The following scripts automate the start, stop and restart procedure. <br>
