@@ -81,11 +81,13 @@ fi
 # output confirmed stop
 echo -e "${green}server successfully stopped!${nocolor}"
 
-# create backup
-echo -e "${blue}backing up...${nocolor}"
+# remove al older safety backups
 if [ -d "${backupdirectory}/cached/reset-*" ]; then
 	rm -r ${backupdirectory}/cached/reset-*
 fi
+
+# create backup
+echo -e "${blue}backing up...${nocolor}"
 cp -r ${serverdirectory}/world ${backupdirectory}/cached/reset-${newdaily}
 
 # check if safety backup exists

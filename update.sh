@@ -77,11 +77,13 @@ if screen -list | grep -q "${servername}"; then
 		screen -S ${servername} -X quit
 fi
 
-# create backup
-echo -e "${blue}backing up...${nocolor}"
+# remove all older safety backups
 if [ -d "${backupdirectory}/cached/update-*" ]; then
 	rm -r ${backupdirectory}/cached/update-*
 fi
+
+# create backup
+echo -e "${blue}backing up...${nocolor}"
 cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}
 
 # check if safety backup exists
@@ -103,7 +105,7 @@ if [ "$?" != 0 ]; then
 	echo "downloading newest server version..." >> ${screenlog}
 		wget -q -O minecraft-server.1.16.4.jar https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
 		# update serverfile variable in server.settings
-		newserverfile=${serverdirectory}"/minecraft-server.1.16.4.jar"
+		newserverfile="${serverdirectory}/minecraft-server.1.16.4.jar"
 		sed -i "s|$serverfile|$newserverfile|g" server.settings
 fi
 
