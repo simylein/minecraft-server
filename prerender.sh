@@ -77,20 +77,20 @@ progress="1"
 counter="1"
 y="128"
 for x in "${cords[@]}"; do
-		for z in "${cords[@]}"; do
-			echo "tp ${playername} ${x} ${y} ${z}"
-			let "progress=counter"
-			if (( ${progress} < 10 )); then
-				progress=00${progress}
-			elif (( ${progress} > 99 )); then
-				progress=${progress}
-			else
-				progress=0${progress}
-			fi
-			counter=$((counter+1))
-			echo "Progress: [${progress}/289]"
-			${interval}
-		done
+	for z in "${cords[@]}"; do
+		echo "tp ${playername} ${x} ${y} ${z}"
+		let "progress=counter"
+		if (( ${progress} < 10 )); then
+			progress=00${progress}
+		elif (( ${progress} > 99 )); then
+			progress=${progress}
+		else
+			progress=0${progress}
+		fi
+		counter=$((counter+1))
+		echo "Progress: [${progress}/289]"
+		${interval}
+	done
 	${interval}
 done
 
