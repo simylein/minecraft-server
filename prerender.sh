@@ -90,7 +90,7 @@ done
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 20 to 80 seconds depending on your server recources"
 echo -e "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
-read -p "interval:" interval
+read -p "interval: " interval
 
 # calculate some internal intervals
 between=$((${interval} / 4))
