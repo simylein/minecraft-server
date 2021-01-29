@@ -57,16 +57,16 @@ echo "I would recommend an interval of 30 to 60 seconds"
 echo -e "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 
 # calculate some internal intervals
-between=$(${interval} / 4)
+between=$((${interval} / 4))
 between="sleep ${between}"
-time=$(${interval} * 17 * 17)
+estimated=$((${interval} * 17 * 17))
 read -p "interval:" interval
 interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
 echo -e "The selected between will be ${green}${between}${nocolor}"
 
 echo "I will now start to teleport the selected player through the world"
-echo "It will take about ${time} seconds"
+echo "It will take about ${estimated} seconds"
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo -e "${green}starting prerenderer...${nocolor}"
