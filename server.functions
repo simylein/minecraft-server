@@ -4,18 +4,32 @@
 # this file stores all the functions for the server.
 # if you know what you are doing, feel free to tinker with them ;^)
 
+# prints all input to screen terminal
 function PrintToScreen {
 	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
 }
 
+# prints colorful error messages into screen
 function PrintToScreenBackupError {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: missing directories\"}]}}}]$(printf '\r')"
 }
 
+# prints colorful success messages into screen
 function PrintToScreenBackupSuccess {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}, removed file: ${servername}-${2}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 }
 
+# prints colorful not enough disk space message into screen
 function PrintToScreenNotEnoughtDiskSpace {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
+}
+
+# creates an archive from a directory with progress bar
+function ArchiveDirectory {
+	tar cf - ${1} -P | pv -s $(du -sb ${1} | awk '{print $1}') | gzip > ${1}.tar.gz
+}
+
+# extracts a directory from an archive with progress bar
+function ExtractDirectory {
+	pv ${1}.tar.gz | tar -xz
 }
