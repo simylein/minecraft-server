@@ -94,7 +94,7 @@ for x in "${cords[@]}"; do
 			progress=0${progress}
 		fi
 		counter=$((counter+1))
-		echo "${blue}[Script]${nocolor} Progress: [${progress}/289]"
+		echo -e "${blue}[Script]${nocolor} Progress: [${progress}/289]"
 		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
 		${between}
 		PrintToScreen "tp ${playername} ${x} ${y} ${z} 90 0"
