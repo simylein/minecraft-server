@@ -85,13 +85,6 @@ counter="1"
 y="128"
 for x in "${cords[@]}"; do
 	for z in "${cords[@]}"; do
-		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
-		${between}
-		PrintToScreen "tp ${playername} ${x} ${y} ${z} 90 0"
-		${between}
-		PrintToScreen "tp ${playername} ${x} ${y} ${z} 180 0"
-		${between}
-		PrintToScreen "tp ${playername} ${x} ${y} ${z} 270 0"
 		let "progress=counter"
 		if (( ${progress} < 10 )); then
 			progress=00${progress}
@@ -102,6 +95,13 @@ for x in "${cords[@]}"; do
 		fi
 		counter=$((counter+1))
 		echo "${blue}[Script]${nocolor} Progress: [${progress}/289]"
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
+		${between}
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 90 0"
+		${between}
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 180 0"
+		${between}
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 270 0"
 		${between}
 	done
 	${interval}
