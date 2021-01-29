@@ -98,7 +98,7 @@ for x in "${cords[@]}"; do
 			progress=0${progress}
 		fi
 		counter=$((counter+1))
-		echo "Progress: [${progress}/289]"
+		echo "${blue}[Script]${nocolor} Progress: [${progress}/289]"
 		${interval}
 	done
 	${interval}
