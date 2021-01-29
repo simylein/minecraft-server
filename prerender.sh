@@ -54,7 +54,7 @@ echo -e "The player will be ${green}${playername}${nocolor}"
 # ask for interval in seconds
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 seconds"
-echo "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
+echo -e "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 read -p "interval:" interval
 interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
@@ -78,7 +78,7 @@ counter="1"
 y="128"
 for x in "${cords[@]}"; do
 	for z in "${cords[@]}"; do
-		echo "tp ${playername} ${x} ${y} ${z}"
+		PrintToScreen "tp ${playername} ${x} ${y} ${z}"
 		let "progress=counter"
 		if (( ${progress} < 10 )); then
 			progress=00${progress}
