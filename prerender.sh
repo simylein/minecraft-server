@@ -59,7 +59,7 @@ read -p "interval:" interval
 
 # calculate some internal intervals
 between=$((${interval} / 4))
-between="sleep ${between}"
+between="sleep ${between}s"
 estimated=$((${interval} * 17 * 17))
 interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
