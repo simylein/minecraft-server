@@ -124,7 +124,7 @@ for x in "${cords[@]}"; do
 	for z in "${cords[@]}"; do
 		let "progress=counter"
 		# progress counter
-		echo -e "${blue}[Script]${nocolor} Progress: [${progress}/${amount}]"
+		echo -e "${blue}[Script]${nocolor} Progress: [${progress}/$((${amount} * ${amount}))]"
 		# teleporting with facing directions
 		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
 		${between}
