@@ -35,8 +35,6 @@ else
 	exit 1
 fi
 
-cords=( 2048 1792 1536 1280 1024 768 512 256 0 -256 -512 -768 -1024 -1280 -1536 -1792 -2048)
-
 # check if server is running
 if ! screen -list | grep -q "${servername}"; then
 	echo -e "${yellow}Server is not currently running!${nocolor}"
@@ -51,6 +49,35 @@ echo -e "${blue}I will scan so to speak in a grid with the spacing of 256 blocks
 read -p "Please enter a playername: " playername
 echo -e "The player will be ${green}${playername}${nocolor}"
 
+# ask for cords
+PS3="Which radius would you like to prerender? "
+grid=("1024-1024" "2048-2048" "4096-4096" "8196-8196")
+select version in "${versions[@]}"; do
+	case $version in
+		"1024-1024")
+			cords=( 1024 768 512 256 0 -256 -512 -768 -1024 )
+			amount="9"
+			break
+		;;
+		"2048-2048")
+			cords=( 2048 1792 1536 1280 1024 768 512 256 0 -256 -512 -768 -1024 -1280 -1536 -1792 -2048 )
+			amount="17"
+			break
+		;;
+		"4096-4096")
+			cords=( 4096 2048 1792 1536 1280 1024 768 512 256 0 -256 -512 -768 -1024 -1280 -1536 -1792 -2048 -4096 )
+			amount="33"
+			break
+		;;
+		"8196-8196")
+			cords=( 8196 6144 4096 2048 1792 1536 1280 1024 768 512 256 0 -256 -512 -768 -1024 -1280 -1536 -1792 -2048 -4096 -6144 -8196 )
+			amount="65"
+			break
+		;;
+		*) echo "Please choose an option from the list: ";;
+	esac
+done
+
 # ask for interval in seconds
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 seconds"
@@ -60,11 +87,12 @@ read -p "interval:" interval
 # calculate some internal intervals
 between=$((${interval} / 4))
 between="sleep ${between}s"
-estimated=$((${interval} * 17 * 17))
+estimated=$((${interval} * ${amount} * ${amount}))
 interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
 echo -e "The selected between will be ${green}${between}${nocolor}"
 
+# ask for permission to proceed
 echo "I will now start to teleport the selected player through the world"
 echo "It will take about ${estimated} seconds"
 read -p "Continue? [Y/N]:"
@@ -76,7 +104,7 @@ fi
 
 # prerender start
 echo "Prerendering started"
-echo "Progress: [000/000]"
+echo "Progress: [0/${amount}]"
 sleep 2s
 
 # teleport script with progress
@@ -94,7 +122,7 @@ for x in "${cords[@]}"; do
 			progress=0${progress}
 		fi
 		counter=$((counter+1))
-		echo -e "${blue}[Script]${nocolor} Progress: [${progress}/289]"
+		echo -e "${blue}[Script]${nocolor} Progress: [${progress}/${amount}]"
 		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
 		${between}
 		PrintToScreen "tp ${playername} ${x} ${y} ${z} 90 0"
@@ -109,9 +137,9 @@ done
 
 # command line finished message
 screen -Rd ${servername} -X stuff "Prerendering of your world has finished$(printf '\r')"
-echo -e "${green}Prerendering of your world has finished${nocolor}"
+echo -e "${blue}[Script]${nocolor} ${green}Prerendering of your world has finished${nocolor}"
 screen -Rd ${servername} -X stuff "Rendered 4096 blocks of area$(printf '\r')"
-echo -e "${green}Rendered 16777216 [4096 times 4096] blocks of area${nocolor}"
+echo -e "${blue}[Script]${nocolor} ${green}Rendered 16777216 [4096 times 4096] blocks of area${nocolor}"
 
 # kick player with finished message
 screen -Rd ${servername} -X stuff "kick ${playername} prerendering of your world has finished$(printf '\r')"

@@ -59,7 +59,7 @@ echo "downloading scripts from GitHub..."
 serverdirectory=`pwd`
 
 # download java executable from mojang.com
-PS3='Which server version would you like to install? '
+PS3="Which server version would you like to install? "
 versions=("1.16.4" "1.15.2" "1.14.4" "1.13.2" "1.12.2" "1.11.2" "1.10.2" "1.9.4" "1.8.9" "1.7.10")
 select version in "${versions[@]}"; do
 	case $version in
@@ -123,7 +123,7 @@ select version in "${versions[@]}"; do
 				serverfile="${serverdirectory}/minecraft-server.1.7.10.jar"
 			break
 			;;
-		*) echo "Please choose an option from the list 1 - 10 ";;
+		*) echo "Please choose an option from the list: ";;
 	esac
 done
 
