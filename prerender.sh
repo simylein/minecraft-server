@@ -55,10 +55,15 @@ echo -e "The player will be ${green}${playername}${nocolor}"
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 30 to 60 seconds"
 echo -e "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
+
+# calculate some internal intervals
+between=$(${interval} / 4)
+between="sleep ${between}"
 time=$(${interval} * 17 * 17)
 read -p "interval:" interval
 interval="sleep ${interval}s"
 echo -e "The selected interval will be ${green}${interval}${nocolor}"
+echo -e "The selected between will be ${green}${between}${nocolor}"
 
 echo "I will now start to teleport the selected player through the world"
 echo "It will take about ${time} seconds"
@@ -80,7 +85,10 @@ counter="1"
 y="128"
 for x in "${cords[@]}"; do
 	for z in "${cords[@]}"; do
-		PrintToScreen "tp ${playername} ${x} ${y} ${z}"
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 90 0"
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 180 0"
+		PrintToScreen "tp ${playername} ${x} ${y} ${z} 270 0"
 		let "progress=counter"
 		if (( ${progress} < 10 )); then
 			progress=00${progress}
