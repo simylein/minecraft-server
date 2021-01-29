@@ -52,8 +52,8 @@ echo -e "The player will be ${green}${playername}${nocolor}"
 # ask for cords
 PS3="Which radius would you like to prerender? "
 grid=("1024-1024" "2048-2048" "4096-4096" "8196-8196")
-select version in "${versions[@]}"; do
-	case $version in
+select grid in "${grid[@]}"; do
+	case $grid in
 		"1024-1024")
 			cords=( 1024 768 512 256 0 -256 -512 -768 -1024 )
 			amount="9"
