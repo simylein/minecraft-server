@@ -60,13 +60,13 @@ serverdirectory=`pwd`
 
 # download java executable from mojang.com
 PS3="Which server version would you like to install? "
-versions=("1.16.4" "1.15.2" "1.14.4" "1.13.2" "1.12.2" "1.11.2" "1.10.2" "1.9.4" "1.8.9" "1.7.10")
+versions=("1.16.5" "1.15.2" "1.14.4" "1.13.2" "1.12.2" "1.11.2" "1.10.2" "1.9.4" "1.8.9" "1.7.10")
 select version in "${versions[@]}"; do
 	case $version in
-		"1.16.4")
-			echo "downloading minecraft-server.1.16.4.jar..."
-				wget -q -O minecraft-server.1.16.4.jar https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.16.4.jar"
+		"1.16.5")
+			echo "downloading minecraft-server.1.16.5.jar..."
+				wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
+				serverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 			break
 			;;
 		"1.15.2")
