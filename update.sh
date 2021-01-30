@@ -115,6 +115,7 @@ else
 		if [ -f "${newserverfile}" ]; then
 			echo -e "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
+			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
 				rm ${serverfile}
 			fi
