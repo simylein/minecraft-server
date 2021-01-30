@@ -104,7 +104,7 @@ else
 	echo -e "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
 	# check if already on newest version
-	if [[ "${serverfile}" = *"minecraft-server.1.16.5" ]]; then
+	if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
 		echo "You are running the newest server version - skipping update"
 		echo "You are running the newest server version - skipping update" >> ${screenlog}
 	else
