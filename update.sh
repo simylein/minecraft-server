@@ -96,16 +96,16 @@ else
 fi
 
 # Test internet connectivity and update on success
-wget --spider --quiet https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 if [ "$?" != 0 ]; then
 	echo -e "${red}Warning: Unable to connect to Mojang API. Skipping update ...${nocolor}"
 	echo "Warning: Unable to connect to Mojang API. Skipping update ..." >> ${screenlog}
 	else
 	echo -e "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
-		wget -q -O minecraft-server.1.16.4.jar https://launcher.mojang.com/v1/objects/35139deedbd5182953cf1caa23835da59ca3d7cd/server.jar
+		wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 		# update serverfile variable in server.settings
-		newserverfile="${serverdirectory}/minecraft-server.1.16.4.jar"
+		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 		sed -i "s|$serverfile|$newserverfile|g" server.settings
 fi
 
