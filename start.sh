@@ -37,8 +37,9 @@ fi
 
 # check for executable
 if ! ls ${serverfile}* 1> /dev/null 2>&1; then
-	echo -e "${red}Warning: no executable found!${nocolor}"
-	echo "Warning: no executable found!" >> ${screenlog}
+	echo -e "${red}Fatal: no executable found!${nocolor}"
+	echo "Fatal: no executable found!" >> ${screenlog}
+	echo "Fatal: no executable found!" >> fatalerror.log
 	exit 1
 fi
 
