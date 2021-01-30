@@ -100,13 +100,21 @@ wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f
 if [ "$?" != 0 ]; then
 	echo -e "${red}Warning: Unable to connect to Mojang API. Skipping update ...${nocolor}"
 	echo "Warning: Unable to connect to Mojang API. Skipping update ..." >> ${screenlog}
-	else
+else
 	echo -e "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
 		wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 		# update serverfile variable in server.settings
 		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
-		sed -i "s|$serverfile|$newserverfile|g" server.settings
+		# if new serverfile exists remove oldserverfile
+		if [ -f "${newserverfile}" ]; then
+			echo -e "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
+			rm ${serverfile}
+		else
+			echo -e "${red}Warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
+			echo -e "${yellow}Server will startup with old serverfile ${serverfile}${nocolor}"
+		fi
 fi
 
 # Test internet connectivity and update on success
@@ -114,7 +122,7 @@ wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer
 if [ "$?" != 0 ]; then
 	echo -e "${red}Warning: Unable to connect to GitHub API. Skipping update ...${nocolor}"
 	echo "Warning: Unable to connect to GitHub API. Skipping update ..." >> ${screenlog}
-	else
+else
 	echo -e "${green}downloading newest scripts version...${nocolor}"
 	echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
