@@ -103,6 +103,11 @@ if [ "$?" != 0 ]; then
 else
 	echo -e "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
+	# check if already on newest version
+	if [ "${serverfile}" -eq *"minecraft-server.1.16.5" ]; then
+		echo "You are running the newest server version - skipping update"
+		echo "You are running the newest server version - skipping update" >> ${screenlog}
+	else
 		wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 		# update serverfile variable in server.settings
 		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
@@ -117,6 +122,7 @@ else
 			echo -e "${yellow}Warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
 			echo -e "Server will startup with old serverfile ${serverfile}"
 		fi
+	fi
 fi
 
 # Test internet connectivity and update on success
