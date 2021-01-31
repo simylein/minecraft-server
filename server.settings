@@ -23,8 +23,8 @@ newmonthly=$(date +"%B")
 odlmonthly=$(date -d "-6 months" +"%B")
 
 # backup config
-dohourly="false"
-dodaily="false"
+dohourly="true"
+dodaily="true"
 doweekly="true"
 domonthly="true"
 
