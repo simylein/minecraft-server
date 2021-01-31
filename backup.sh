@@ -123,17 +123,17 @@ fi
 
 # performs backup daily if it is 22:??
 
-# check if daily backups are anabled
-if [ ${dodaily} = true ]; then
-
-	# check if it is 22:??
-	hours=$(date +"%H")
-	if [ ${hours} -eq 22 ]; then
+# check if it is 22:??
+hours=$(date +"%H")
+if [ ${hours} -eq 22 ]; then
+	
+	# check if daily backups are anabled
+	if [ ${dodaily} = true ]; then
 
 		# write date and execute into logfiles
 		echo "${date} executing backup-daily script" >> ${screenlog}
 		echo "${date} executing backup-daily script" >> ${backuplog}
-
+		
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "${servername}"; then
 			echo -e "${yellow}server is not currently running!${nocolor}"
@@ -142,7 +142,7 @@ if [ ${dodaily} = true ]; then
 			echo "" >> ${backuplog}
 			exit 1
 		fi
-
+		
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 			echo -e "${red}fatal: not enough disk-space to perform backup-daily${nocolor}"
@@ -152,7 +152,7 @@ if [ ${dodaily} = true ]; then
 			PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
 			exit 1
 		fi
-
+		
 		# check if there is no backup from the current day
 		if ! [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
 			cp -r ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
@@ -161,7 +161,7 @@ if [ ${dodaily} = true ]; then
 			echo "" >> ${backuplog}
 			exit 1
 		fi
-
+		
 		# read server.settings file again with error checking
 		if [[ -f "server.settings" ]]; then
 			. ./server.settings
@@ -170,7 +170,7 @@ if [ ${dodaily} = true ]; then
 			echo "fatal: server.settings is missing"
 			exit 1
 		fi
-
+		
 		# check if there is a new backup
 		if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
 			# check if an old backup exists an remove it
@@ -193,32 +193,33 @@ if [ ${dodaily} = true ]; then
 			echo "fatal: could not backup world!" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
-	fi
-else
-	# write date and execute into logfiles
-	echo "${date} executing backup-daily script" >> ${screenlog}
-	echo "${date} executing backup-daily script" >> ${backuplog}
 
-	# write to logfiles that it's disabled
-	echo "backup-daily is disabled" >> ${backuplog}
-	echo "" >> ${backuplog}
+	else
+		# write date and execute into logfiles
+		echo "${date} executing backup-daily script" >> ${screenlog}
+		echo "${date} executing backup-daily script" >> ${backuplog}
+
+		# write to logfiles that it's disabled
+		echo "backup-daily is disabled" >> ${backuplog}
+		echo "" >> ${backuplog}
+	fi
 fi
 
 
 # performs backup weekly if it is 22:?? and Sunday
 
-# check if weekly backups are enabled
-if [ ${doweekly} = true ]; then
-
-	# check if it is 22:?? and Sunday
-	hours=$(date +"%H")
-	weekday=$(date +"%u")
-	if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
+# check if it is 22:?? and Sunday
+hours=$(date +"%H")
+weekday=$(date +"%u")
+if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
+	
+	# check if weekly backups are enabled
+	if [ ${doweekly} = true ]; then
 
 		# write date and execute into logfiles
 		echo "${date} executing backup-weekly script" >> ${screenlog}
 		echo "${date} executing backup-weekly script" >> ${backuplog}
-
+		
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "${servername}"; then
 			echo -e "${yellow}server is not currently running!${nocolor}"
@@ -227,7 +228,7 @@ if [ ${doweekly} = true ]; then
 			echo "" >> ${backuplog}
 			exit 1
 		fi
-
+		
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 			echo -e "${red}fatal: not enough disk-space to perform backup-weekly${nocolor}"
@@ -237,7 +238,7 @@ if [ ${doweekly} = true ]; then
 			PrintToScreenNotEnoughtDiskSpace "${newweekly}" "${oldweekly}"
 			exit 1
 		fi
-
+		
 		# check if there is no backup from the current week
 		if ! [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
 			cp -r ${serverdirectory}/world ${backupdirectory}/weekly/${servername}-${newweekly}
@@ -246,7 +247,7 @@ if [ ${doweekly} = true ]; then
 			echo "" >> ${backuplog}
 			exit 1
 		fi
-
+		
 		# read server.settings file again with error checking
 		if [[ -f "server.settings" ]]; then
 			. ./server.settings
@@ -255,7 +256,7 @@ if [ ${doweekly} = true ]; then
 			echo "fatal: server.settings is missing"
 			exit 1
 		fi
-
+		
 		# check if there is a new backup
 		if [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
 			# check if an old backup exists an remove it
@@ -278,32 +279,33 @@ if [ ${doweekly} = true ]; then
 			echo "fatal: could not backup world!" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
-	fi
-else
-	# write date and execute into logfiles
-	echo "${date} executing backup-weekly script" >> ${screenlog}
-	echo "${date} executing backup-weekly script" >> ${backuplog}
 
-	# write to logfiles that it's disabled
-	echo "backup-weekly is disabled" >> ${backuplog}
-	echo "" >> ${backuplog}
+	else
+		# write date and execute into logfiles
+		echo "${date} executing backup-weekly script" >> ${screenlog}
+		echo "${date} executing backup-weekly script" >> ${backuplog}
+
+		# write to logfiles that it's disabled
+		echo "backup-weekly is disabled" >> ${backuplog}
+		echo "" >> ${backuplog}
+	fi
 fi
 
 
 # performs backup monthly if it is 22:?? and the first day of a month
 
-# check if monthly backups are enabled
-if [ ${domonthly} = true ]; then
-
-	# check if it is 22:?? and the first day of month
-	hours=$(date +"%H")
-	dayofmonth=$(date +"%d")
-	if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
+# check if it is 22:?? and the first day of month
+hours=$(date +"%H")
+dayofmonth=$(date +"%d")
+if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
+	
+	# check if monthly backups are enabled
+	if [ ${domonthly} = true ]; then
 
 		# write date and execute into logfiles
 		echo "${date} executing backup-monthly script" >> ${screenlog}
 		echo "${date} executing backup-monthly script" >> ${backuplog}
-
+		
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "${servername}"; then
 			echo -e "${yellow}server is not currently running!${nocolor}"
@@ -312,7 +314,7 @@ if [ ${domonthly} = true ]; then
 			echo "" >> ${backuplog}
 			exit 1
 		fi
-
+		
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 			echo -e "${red}fatal: not enough disk-space to perform backup-monthly${nocolor}"
@@ -322,7 +324,7 @@ if [ ${domonthly} = true ]; then
 			PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
 			exit 1
 		fi
-
+		
 		# check if there is no backup from the current month
 		if ! [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
 			cp -r ${serverdirectory}/world ${backupdirectory}/monthly/${servername}-${newmonthly}
@@ -331,7 +333,7 @@ if [ ${domonthly} = true ]; then
 			echo "" >> ${backuplog}
 			exit 1
 		fi
-
+		
 		# read server.settings file again with error checking
 		if [[ -f "server.settings" ]]; then
 			. ./server.settings
@@ -340,7 +342,7 @@ if [ ${domonthly} = true ]; then
 			echo "fatal: server.settings is missing"
 			exit 1
 		fi
-
+		
 		# check if there is a new backup
 		if [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
 			# check if an old backup exists an remove it
@@ -363,13 +365,14 @@ if [ ${domonthly} = true ]; then
 			echo "fatal: could not backup world!" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
-	fi
-else
-	# write date and execute into logfiles
-	echo "${date} executing backup-weekly script" >> ${screenlog}
-	echo "${date} executing backup-weekly script" >> ${backuplog}
 
-	# write to logfiles that it's disabled
-	echo "backup-weekly is disabled" >> ${backuplog}
-	echo "" >> ${backuplog}
+	else
+		# write date and execute into logfiles
+		echo "${date} executing backup-weekly script" >> ${screenlog}
+		echo "${date} executing backup-weekly script" >> ${backuplog}
+
+		# write to logfiles that it's disabled
+		echo "backup-weekly is disabled" >> ${backuplog}
+		echo "" >> ${backuplog}
+	fi
 fi
