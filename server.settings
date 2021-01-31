@@ -22,6 +22,12 @@ oldweekly=$(date -d "-12 weeks" +"week-%U")
 newmonthly=$(date +"%B")
 odlmonthly=$(date -d "-6 months" +"%B")
 
+# backup config
+dohourly="false"
+dodaily="false"
+doweekly="true"
+domonthly="true"
+
 # world stuff
 absoluteworldsize=$(du -s world | cut -f1)
 absolutediskspace=$(df / | tail -1 | awk '{print $4}')
