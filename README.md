@@ -18,19 +18,23 @@ wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/mast
 The Script will ask you some Questions. Please answer them in order for the Server to work. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
 ## serverstart
 Start your Server for the first time:
-```
+`
 ./start.sh
-```
+`
+
 ## screen
-Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal. <br>
+Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal.
+
 You can view all your active screens by typing
-```
+`
 screen -list
-```
+`
+<br>
 If you want to resume a certain screen session just type
-```
+`
 screen -r ${servername}
-```
+`
+
 If you would like to scroll inside a screen session press Ctrl+A and Esc (enter copy mode). <br>
 For returning back to normal press Esc.
 
@@ -148,6 +152,7 @@ Secound star: Hours [0 - 23] <br>
 Third star: Day of Month [0 - 31] <br>
 Forth star: Month [0 - 12] <br>
 Fifth star: Day of Week [0 - 6]
+
 Generic Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} your description of command here
