@@ -51,7 +51,7 @@ echo "" >> ${screenlog}
 echo "${date} executing start script" >> ${screenlog}
 
 # check if server is already running
-if screen -list | grep -q "${servername}"; then
+if screen -list | grep -q "\.${servername}"; then
 	echo "Server is already running!  Type screen -r ${servername} to open the console" >> ${screenlog}
 	echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
 	exit 1
@@ -95,7 +95,7 @@ ${screen} -r ${servername} -X colon "logfile flush 1^M"
 counter="0"
 startchecks="0"
 while [ ${startchecks} -lt 10 ]; do
-	if screen -list | grep -q "${servername}"; then
+	if screen -list | grep -q "\.${servername}"; then
 		counter=$((counter+1))
 	fi
 	if [ ${counter} -eq 2 ]; then

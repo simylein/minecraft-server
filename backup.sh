@@ -52,7 +52,7 @@ if [ ${dohourly} = true ]; then
 	echo "${date} executing backup-hourly script" >> ${backuplog}
 
 	# checks for the existence of a screen terminal
-	if ! screen -list | grep -q "${servername}"; then
+	if ! screen -list | grep -q "\.${servername}"; then
 		echo -e "${yellow}server is not currently running!${nocolor}"
 		echo "server is not currently running!" >> ${screenlog}
 		echo "server is not currently running!" >> ${backuplog}
@@ -135,7 +135,7 @@ if [ ${hours} -eq 22 ]; then
 		echo "${date} executing backup-daily script" >> ${backuplog}
 		
 		# checks for the existence of a screen terminal
-		if ! screen -list | grep -q "${servername}"; then
+		if ! screen -list | grep -q "\.${servername}"; then
 			echo -e "${yellow}server is not currently running!${nocolor}"
 			echo "server is not currently running!" >> ${screenlog}
 			echo "server is not currently running!" >> ${backuplog}
@@ -221,7 +221,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		echo "${date} executing backup-weekly script" >> ${backuplog}
 		
 		# checks for the existence of a screen terminal
-		if ! screen -list | grep -q "${servername}"; then
+		if ! screen -list | grep -q "\.${servername}"; then
 			echo -e "${yellow}server is not currently running!${nocolor}"
 			echo "server is not currently running!" >> ${screenlog}
 			echo "server is not currently running!" >> ${backuplog}
@@ -307,7 +307,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		echo "${date} executing backup-monthly script" >> ${backuplog}
 		
 		# checks for the existence of a screen terminal
-		if ! screen -list | grep -q "${servername}"; then
+		if ! screen -list | grep -q "\.${servername}"; then
 			echo -e "${yellow}server is not currently running!${nocolor}"
 			echo "server is not currently running!" >> ${screenlog}
 			echo "server is not currently running!" >> ${backuplog}

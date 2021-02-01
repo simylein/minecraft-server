@@ -36,7 +36,7 @@ else
 fi
 
 # check if server is running
-if ! screen -list | grep -q "${servername}"; then
+if ! screen -list | grep -q "\.${servername}"; then
 	echo -e "${yellow}Server is not currently running!${nocolor}"
 	exit 1
 fi
