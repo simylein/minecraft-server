@@ -17,14 +17,14 @@ wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/mast
 ```
 The Script will ask you some Questions. Please answer them in order for the Server to work. If you do not know what you like right now you can edit all answers later in the server.* files and going with the prefilled answer works for most people. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
 ## serverstart
-Start your Server for the first time:`./start.sh`
+Start your Server for the first time: `./start.sh`
 
 ## screen
 Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal.
 
-You can view all your active screens by typing`screen -list`
+You can view all your active screens by typing: `screen -list`
 <br>
-If you want to resume a certain screen session just type`screen -r ${servername}`
+If you want to resume a certain screen session just type: `screen -r ${servername}`
 
 If you would like to scroll inside a screen session press Ctrl+A and Esc (enter copy mode). <br>
 For returning back to normal press Esc.
@@ -34,14 +34,14 @@ To exit the screen terminal press Ctrl+A and Ctrl+D
 Your minecraft server can understand certain commands. <br>
 I will explain some of them to you.
 
-`whitelist add ${playername}`adding someone to your whitelist so he/she can join your server. <br>
-`whitelist remove ${playername}`remove someone to your whitelist so he/she can no longer join your server. <br>
-`op ${playername}`make someone admin on. your server so he/she can execute commands. <br>
-`deop ${playername}`remove admin permissions for a player so he/she can no longer execute commands. <br>
-`ban ${playername}`ban someone from your server so he/she can no longer join your server. <br>
-`pardon ${playername}`pardon someone from your server so he/she can join your server. <br>
-`tp ${playername} ${x} ${y} ${z}`teleporting a player to cords. <br>
-`tp ${playername} ${playername}`teleporting a player to another player.
+`whitelist add ${playername}` adding someone to your whitelist so he/she can join your server. <br>
+`whitelist remove ${playername}` remove someone to your whitelist so he/she can no longer join your server. <br>
+`op ${playername}` make someone admin on. your server so he/she can execute commands. <br>
+`deop ${playername}` remove admin permissions for a player so he/she can no longer execute commands. <br>
+`ban ${playername}` ban someone from your server so he/she can no longer join your server. <br>
+`pardon ${playername}` pardon someone from your server so he/she can join your server. <br>
+`tp ${playername} ${x} ${y} ${z}` teleporting a player to cords. <br>
+`tp ${playername} ${playername}` teleporting a player to another player.
 
 Important: If you do these commands ingame you will need to put a / before each command. <br>
 In the screen terminal you don't need a / before your command. 
