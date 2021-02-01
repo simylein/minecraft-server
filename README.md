@@ -37,39 +37,41 @@ For returning back to normal press Esc.
 To exit the screen terminal press Ctrl+A and Ctrl+D
 ## server commands
 Your minecraft server can understand certain commands. <br>
-I will explain some of them to you. <br>
-adding someone to your whitelist so he/she can join your server.
-```
+I will explain some of them to you.
+
+`
 whitelist add ${playername}
-```
-remove someone to your whitelist so he/she can no longer join your server.
-```
+`
+adding someone to your whitelist so he/she can join your server. <br>
+`
 whitelist remove ${playername}
-```
-make someone admin on. your server so he/she can execute commands.
-```
+`
+remove someone to your whitelist so he/she can no longer join your server. <br>
+`
 op ${playername}
-```
-remove admin permissions for a player so he/she can no longer execute commands.
-```
+`
+make someone admin on. your server so he/she can execute commands. <br>
+`
 deop ${playername}
-```
-ban someone from your server so he/she can no longer join your server.
-```
+`
+remove admin permissions for a player so he/she can no longer execute commands. <br>
+`
 ban ${playername}
-```
-pardon someone from your server so he/she can join your server.
-```
+`
+ban someone from your server so he/she can no longer join your server. <br>
+`
 pardon ${playername}
-```
-teleporting a player to cords.
-```
+`
+pardon someone from your server so he/she can join your server. <br>
+`
 tp ${playername} ${x} ${y} ${z}
-```
-teleporting a player to another player.
-```
+`
+teleporting a player to cords. <br>
+`
 tp ${playername} ${playername}
-```
+`
+teleporting a player to another player.
+
 Important: If you do these commands ingame you will need to put a / before each command. <br>
 In the screen terminal you don't need a / before your command. 
 ## server.settings
