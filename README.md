@@ -22,7 +22,7 @@ executing setup script:
 ```
 ./setup.sh
 ```
-The Script will ask you some Questions. Please answer them in order for the Server to work. Now you a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
+The Script will ask you some Questions. Please answer them in order for the Server to work. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
 ## serverstart
 Start your Server for the first time:
 ```
@@ -45,19 +45,27 @@ To exit the screen terminal press Ctrl+A and Ctrl+D
 ## server commands
 Your minecraft server can understand certain commands. <br>
 I will explain some of them to you. <br>
-adding someone to your whitelist so he/she can join your server. 
+adding someone to your whitelist so he/she can join your server.
 ```
 whitelist add ${playername}
 ```
-remove someone to your whitelist so he/she can no longer join your server. 
+remove someone to your whitelist so he/she can no longer join your server.
 ```
 whitelist remove ${playername}
 ```
-ban someone from your server so he/she can no longer join your server. 
+make someone admin on. your server so he/she can execute commands.
+```
+op ${playername}
+```
+remove admin permissions for a player so he/she can no longer execute commands.
+```
+deop ${playername}
+```
+ban someone from your server so he/she can no longer join your server.
 ```
 ban ${playername}
 ```
-pardon someone from your server so he/she can join your server. 
+pardon someone from your server so he/she can join your server.
 ```
 pardon ${playername}
 ```
@@ -65,7 +73,7 @@ teleporting a player to cords.
 ```
 tp ${playername} ${x} ${y} ${z}
 ```
-teleporting a player to another player
+teleporting a player to another player.
 ```
 tp ${playername} ${playername}
 ```
