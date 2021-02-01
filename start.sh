@@ -125,6 +125,11 @@ while [ ${startupchecks} -lt 60 ]; do
 		echo -e "${green}server startup successful - query up and running${nocolor}"
 		break
 	fi
+	if ! screen -list | grep -q "${servername}"; then
+		echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
+		echo -e "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
+		exit 1
+	fi
 	if tail ${screenlog} | grep -q "Preparing spawn area"; then
 		counter=$((counter+1))
 	fi
