@@ -12,15 +12,7 @@ sudo apt install openjdk-11-jre-headless iputils-ping mailutils coreutils dnsuti
 Then, you can download and execute the setup script. <br>
 downloading setup script:
 ```
-wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh
-```
-making setup script executable:
-```
-chmod +x setup.sh
-```
-executing setup script:
-```
-./setup.sh
+wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
 The Script will ask you some Questions. Please answer them in order for the Server to work. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
 ## serverstart
