@@ -93,12 +93,7 @@ green="\033[0;32m"
 blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
-
-# backup stuff
-newhourly=$(date +"%H"-00)
-oldhourly=$(date -d "-23 hours" +"%H"-00)
-newdaily=$(date +"%Y-%m-%d")
-olddaily=$(date -d "-24 days" +"%Y-%m-%d")
+...
 ```
 ## server.properties
 If you would like to costumize your server further have a look at your server.properties file. 
@@ -132,74 +127,31 @@ pvp=                    (ability for player to do damage to oneanother) [true/fa
 enable-command-block=   (enables command blocks to tinker with) [true/false]
 ```
 ## scripts
-The following scripts automate the start, stop and restart procedure. <br>
-each one can be executed with:
+There are lots of script in your ${serverdirectory}. Normally, the executable ones are green and can be executed with: <br>
 ```
-./start.sh
+./NameOfScript.sh
 ```
-```
-./stop.sh
-```
-```
-./restart.sh
-```
-The maintenance script is there to let people know you take their server offline while you perform maintenance. 
-```
-./maintenance.sh
-```
-The restore script is for restoring a backup (daily - last 24 days) (hourly - last 24 hours)
-```
-./restore.sh
-```
-The update script will update your server to the newest java version avaible.
-```
-./update.sh
-```
-There is also a reset script. Warning it will reset your world! (it will performe a backup before doing so)
-```
-./reset.sh
-```
+
 ## crontab
 If you would like to automate some of those task on your server you can create a crontab.
 ```
 crontab -e
 ```
 A new file will open (If you got one already the existing one will open) <br>
-Side note: the setup script will already put these lines in your crontab if you chose to do so <br>
+Side note: the setup script will already put these lines in your crontab if you chose to do so. <br>
 In this file, you can automate things as follows: <br>
 
-Backup Example: (In order to work, please replace the variables with your own ones)
+First star: Minutes [0 - 59] <br>
+Secound star: Hours [0 - 23] <br>
+Third star: Day of Month [0 - 31] <br>
+Forth star: Month [0 - 12] <br>
+Fifth star: Day of Week [0 - 6]
+Generic Example: (In order to work, please replace the variables with your own ones)
 ```
-# minecraft ${servername} server hourly backup at **:00
-0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh
+# minecraft ${servername} your description of command here
+* * * * * cd ${serverdirectory} && ${serverdirectory}/NameOfScript.sh
 ```
-Stop and Start Example: (In order to work, please replace the variables with your own ones)
-```
-# minecraft ${servername} server stop at 23:00
-0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh
-
-# minecraft ${servername} server start at 07:00
-0 7 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh
-```
-If you would like to restart your minecraft server: <br>
-Restart Example: (In order to work, please replace the variables with your own ones)
-```
-# minecraft ${servername} server restart at 12:00 on Sundays
-0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh
-```
-If you would like to update your minecraft server: <br>
-Restart Example: (In order to work, please replace the variables with your own ones)
-```
-# minecraft ${servername} server update at 18:00 on Sundays
-0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh
-```
-If you want to start up your minecraft server at boot of your Linux server: <br>
-Start at Boot Example: (In order to work, please replace the variables with your own ones)
-```
-# minecraft ${servername} server start at boot
-@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh
-```
-Close and save your crontab. 
+Close and save your crontab. (Press Ctrl X and Y)
 ## logfiles
 Your server will write two growing logfiles (located in your ${serverdirectory}) <br>
 
@@ -213,13 +165,6 @@ less screen.log
 ```
 ```
 less backup.log
-```
-to edit them:
-```
-nano screen.log
-```
-```
-nano backup.log
 ```
 ## ending
 I hope you learned something and that those scripts I provide may help you and your minecraft server experience. <br>
