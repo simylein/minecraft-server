@@ -4,13 +4,14 @@ Scripts for a Minecraft Server on Linux Debian using screen.
 
 This tutorial contains important steps if you would like to host a minecraft server from the command line. 
 ## software
-In order for the Server to run we will need to install some packages: (please note: some of them could be installed already)
+In order for the Server to run we will need to install some packages: (please note: some of them could be installed already) <br>
+This command installs all packages you will need to run your server.
 ```
 sudo apt install openjdk-11-jre-headless iputils-ping mailutils coreutils dnsutils sendmail screen date grep nano wget less cron awk sed pv
 ```
 ## setup
 Then, you can download and execute the setup script. <br>
-downloading setup script:
+This command downloads, makes exectable and executes the setup script. 
 ```
 wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
