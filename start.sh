@@ -119,7 +119,7 @@ echo -e "${green}server is on startup...${nocolor}"
 # check if screenlog contains start comfirmation
 counter="0"
 startupchecks="0"
-while [ ${startupchecks} -lt 60 ]; do
+while [ ${startupchecks} -lt 120 ]; do
 	if tail ${screenlog} | grep -q "Query running on"; then
 		echo "server startup successful - query up and running" >> ${screenlog}
 		echo -e "${green}server startup successful - query up and running${nocolor}"
@@ -136,6 +136,11 @@ while [ ${startupchecks} -lt 60 ]; do
 	if [ ${counter} -ge 10 ]; then
 		echo -e "server is preparing spawn area..."
 		counter="0"
+	fi
+	if [ ${counter} -eq 0 ] && [ ${startupchecks} -eq 40 ]; then
+		echo "Warning: the server could be crashed" >> ${screenlog}
+		echo -e "${yellow}Warning: the server could be crashed${nocolor}"
+		exit 1
 	fi
 	startupchecks=$((startupchecks+1))
 	sleep 1s
