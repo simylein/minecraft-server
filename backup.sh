@@ -7,6 +7,12 @@
 # I would recommend not ot mess with this file.
 # if you know what you are doing feel free to go ahead ;^)
 
+# root safety check
+if [ $(id -u) = 0 ]; then
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	exit 1
+fi
+
 # read server.functions file with error checking
 if [[ -f "server.functions" ]]; then
 	. ./server.functions
@@ -143,7 +149,7 @@ if [ ${hours} -eq 22 ]; then
 
 		# check if there is no backup from the current day
 		if ! [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
-			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newdaily}.tar.gz
+			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/daily/${servername}-${newdaily}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -218,7 +224,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 
 		# check if there is no backup from the current week
 		if ! [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
-			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newweekly}.tar.gz
+			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -293,7 +299,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 
 		# check if there is no backup from the current month
 		if ! [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
-			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newmonthly}.tar.gz
+			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
 			echo "" >> ${backuplog}
