@@ -51,7 +51,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	done
 	cd ../
 	# remove serverdirectory
-	rm -rf ${servername}
+	rm -r ${servername}
 	# check if vent was successful
 	if ! [ -d "${serverdirectory}" ]; then
 		# game over terminal screen
@@ -128,7 +128,7 @@ sleep 2s
 cd ../
 # remove serverdirectory
 echo "deleting server..."
-rm -rf ${servername}
+rm -r ${servername}
 # check if vent was successful
 if ! [ -d "${serverdirectory}" ]; then
 	# game over terminal screen

@@ -1,6 +1,9 @@
 #!/bin/bash
 # script for setting up a minecraft server on linux debian
 
+# this script has been tested on debian and runs only if all packages are installed
+# however you are welcome to try it on any other distribution you like ;^)
+
 # command line colours
 red="\033[0;31m"
 yellow="\033[1;33m"

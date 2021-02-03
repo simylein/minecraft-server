@@ -82,21 +82,21 @@ fi
 echo -e "${green}server successfully stopped!${nocolor}"
 
 # remove al older safety backups
-if [ -d "${backupdirectory}/cached/reset-"* ]; then
-	rm -r ${backupdirectory}/cached/reset-*
+if [[ -s "${backupdirectory}/cached/reset-"* ]]; then
+	rm ${backupdirectory}/cached/reset-*
 fi
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory}/world ${backupdirectory}/cached/reset-${newdaily}
+tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/reset-${newdaily}.tar.gz
 
 # check if safety backup exists
-if ! [ -d "${backupdirectory}/cached/reset-${newdaily}" ]; then
+if ! [[ -s "${backupdirectory}/cached/reset-${newdaily}.tar.gz" ]]; then
 	echo -e "${red}fatal: safety backup failed - can not proceed to remove world"
 	echo "fatal: safety backup failed - can not proceed to remove world" >> ${screenlog}
 	exit 1
 else
-	echo "created ${backupdirectory}/cached/reset-${newdaily} as a safety backup" >> ${backuplog}
+	echo "created ${backupdirectory}/cached/reset-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
 	echo "" >> ${backuplog}
 fi
 

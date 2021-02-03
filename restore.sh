@@ -77,6 +77,27 @@ if screen -list | grep -q "${servername}"; then
 	screen -S ${servername} -X quit
 fi
 
+# output confirmed stop
+echo -e "${green}server successfully stopped!${nocolor}"
+
+# remove all older safety backups
+if [[ -s "${backupdirectory}/cached/restore-"* ]]; then
+	rm ${backupdirectory}/cached/restore-*
+fi
+
+# create backup
+echo -e "${blue}backing up...${nocolor}"
+tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/restore-${newdaily}.tar.gz
+
+# check if safety backup exists
+if ! [[ -s "${backupdirectory}/cached/restore-${newdaily}.tar.gz" ]]; then
+	echo -e "${red}warning: safety backup failed - proceeding to server restore${nocolor}"
+	echo "warning: safety backup failed - proceeding to server restore" >> ${screenlog}
+else
+	echo "created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
+	echo "" >> ${backuplog}
+fi
+
 # create arrays with backupdirectorys
 cd ${backupdirectory}
 backups=($(ls))
@@ -161,16 +182,26 @@ echo "You have chosen: ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} 
 read -p "Continue? [Y/N]: "
 
 # if user replys yes perform restore
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	cd ${serverdirectory}
 	echo -e "${green}restoring backup...${nocolor}"
-	rm -r ${serverdirectory}/world
-	cp -r ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
-	mv ${backup} ${servername}
-	echo -e "${blue}restarting server with restored backup...${nocolor}"
-	echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
+	mv ${serverdirectory}/world ${serverdirectory}/old-world
+	cp ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
+	mv ${backup} world.tar.gz
+	tar -xf world.tar.gz
+	rm world.tar.gz
+	if [ -d "world" ]; then
+		echo -e "${green}restore successful${nocolor}"
+		echo -e "${blue}restarting server with restored backup...${nocolor}"
+		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
+		rm -r ${serverdirectory}/old-world
+	else
+		echo -e "${red}something went wrong - could not restore backup${nocolor}"
+		echo "something went wrong - could not restore backup" >> ${screenlog}
+		mv ${serverdirectory}/old-world ${serverdirectory}/world
+	fi
 	./start.sh
-# user replys no cancel and restart server
+# if user replys no cancel and restart server
 else cd ${serverdirectory}
 	echo -e "${yellow}canceling backup restore...${nocolor}"
 	echo -e "${blue}restarting server...${nocolor}"
