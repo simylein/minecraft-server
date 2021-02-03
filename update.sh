@@ -127,7 +127,7 @@ else
 fi
 
 # Test internet connectivity and update on success
-wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/LICENSE
+wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
 if [ "$?" != 0 ]; then
 	echo -e "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
 	echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
@@ -135,18 +135,18 @@ else
 	echo -e "${green}downloading newest scripts version...${nocolor}"
 	echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
-		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/LICENSE
-		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/README.md
-		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/start.sh && chmod +x start.sh
-		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/restore.sh && chmod +x restore.sh
-		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/reset.sh && chmod +x reset.sh
-		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/restart.sh && chmod +x restart.sh
-		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/stop.sh && chmod +x stop.sh
-		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/backup.sh && chmod +x backup.sh
-		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/update.sh && chmod +x update.sh
-		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/maintenance.sh && chmod +x maintenance.sh
-		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/prerender.sh && chmod +x prerender.sh
-		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/testing-backups-with-compression/vent.sh
+		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
+		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
+		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
+		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
+		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
+		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
+		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
+		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
+		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
+		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
+		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
+		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
 fi
 
 # restart the server
