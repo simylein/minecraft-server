@@ -69,7 +69,7 @@ if [ ${dohourly} = true ]; then
 	fi
 
 	# check if there is no backup from the current hour
-	if ! [  -sw "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]; then
+	if ! [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
 		tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz
 	else
 		echo "warning: backup already exists!" >> ${backuplog}
@@ -78,9 +78,9 @@ if [ ${dohourly} = true ]; then
 	fi
 
 	# check if there is a new backup
-	if [ -sw "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]; then
+	if [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
 		# check if an old backup exists an remove it
-		if [ -sw "${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz" ]; then
+		if [[ -s "${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz" ]]; then
 			rm ${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz
 		fi
 		# read server.settings file again with error checking
@@ -142,7 +142,7 @@ if [ ${hours} -eq 22 ]; then
 		fi
 
 		# check if there is no backup from the current day
-		if ! [ -sw "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]; then
+		if ! [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newdaily}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
@@ -151,9 +151,9 @@ if [ ${hours} -eq 22 ]; then
 		fi
 
 		# check if there is a new backup
-		if [ -sw "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]; then
+		if [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
 			# check if an old backup exists an remove it
-			if [ -sw "${backupdirectory}/daily/${servername}-${olddaily}.tar.gz" ]; then
+			if [[ -s "${backupdirectory}/daily/${servername}-${olddaily}.tar.gz" ]]; then
 				rm ${backupdirectory}/daily/${servername}-${olddaily}.tar.gz
 			fi
 			# read server.settings file again with error checking
@@ -217,7 +217,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		fi
 
 		# check if there is no backup from the current week
-		if ! [ -sw "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]; then
+		if ! [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newweekly}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
@@ -226,9 +226,9 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		fi
 
 		# check if there is a new backup
-		if [ -sw "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]; then
+		if [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
 			# check if an old backup exists an remove it
-			if [ -sw "${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz" ]; then
+			if [[ -s "${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz" ]]; then
 				rm ${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz
 			fi
 			# read server.settings file again with error checking
@@ -292,7 +292,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		fi
 
 		# check if there is no backup from the current month
-		if ! [ -sw "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]; then
+		if ! [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newmonthly}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
@@ -301,9 +301,9 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		fi
 
 		# check if there is a new backup
-		if [ -sw "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]; then
+		if [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
 			# check if an old backup exists an remove it
-			if [ -sw "${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz" ]; then
+			if [[ -s "${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz" ]]; then
 				rm ${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz
 			fi
 			# read server.settings file again with error checking
