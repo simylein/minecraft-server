@@ -165,10 +165,18 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	cd ${serverdirectory}
 	echo -e "${green}restoring backup...${nocolor}"
 	rm -r ${serverdirectory}/world
-	cp -r ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
-	mv ${backup} ${servername}
-	echo -e "${blue}restarting server with restored backup...${nocolor}"
-	echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
+	cp ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
+	mv ${backup} world.tar.gz
+	tar -xf world.tar.gz
+	rm world.tar.gz
+	if [ -d "world" ]; then
+		echo -e "${green}restore successful${nocolor}"
+		echo -e "${blue}restarting server with restored backup...${nocolor}"
+		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
+	else
+		echo -e "${red}something went wrong - could not restore backup${nocolor}"
+		echo "something went wrong - could not restore backup" >> ${screenlog}
+	fi
 	./start.sh
 # user replys no cancel and restart server
 else cd ${serverdirectory}
