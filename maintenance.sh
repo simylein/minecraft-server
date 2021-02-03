@@ -80,20 +80,20 @@ fi
 echo -e "${green}server successfully stopped!${nocolor}"
 
 # remove all older safety backups
-if [ -d "${backupdirectory}/cached/maintenance-"* ]; then
-	rm -r ${backupdirectory}/cached/maintenance-*
+if [[ -s "${backupdirectory}/cached/maintenance-"* ]]; then
+	rm ${backupdirectory}/cached/maintenance-*
 fi
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory}/world ${backupdirectory}/cached/maintenance-${newdaily}
+tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz
 
 # check if safety backup exists
-if ! [ -d "${backupdirectory}/cached/maintenance-${newdaily}" ]; then
+if ! [[ -s "${backupdirectory}/cached/maintenance-${newdaily}.tar.gz" ]]; then
 	echo -e "${red}warning: safety backup failed - proceeding to server maintenance${nocolor}"
 	echo "warning: safety backup failed - proceeding to server maintenance" >> ${screenlog}
 else
-	echo "created ${backupdirectory}/cached/maintenance-${newdaily} as a safety backup" >> ${backuplog}
+	echo "created ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
 	echo "" >> ${backuplog}
 	echo "have fun with maintenance ;^)"
 fi

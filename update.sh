@@ -78,20 +78,20 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # remove all older safety backups
-if [ -d "${backupdirectory}/cached/update-"* ]; then
-	rm -r ${backupdirectory}/cached/update-*
+if [[ -s "${backupdirectory}/cached/update-"* ]]; then
+	rm ${backupdirectory}/cached/update-*
 fi
 
 # create backup
 echo -e "${blue}backing up...${nocolor}"
-cp -r ${serverdirectory}/world ${backupdirectory}/cached/update-${newdaily}
+tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
 
 # check if safety backup exists
-if ! [ -d "${backupdirectory}/cached/update-${newdaily}" ]; then
+if ! [[ -s "${backupdirectory}/cached/update-${newdaily}.tar.gz" ]]; then
 	echo -e "${red}warning: safety backup failed - proceeding to server update${nocolor}"
 	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 else
-	echo "created ${backupdirectory}/cached/update-${newdaily} as a safety backup" >> ${backuplog}
+	echo "created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
 	echo "" >> ${backuplog}
 fi
 
