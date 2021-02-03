@@ -53,6 +53,9 @@ fi
 # check if hourly backups are anabled
 if [ ${dohourly} = true ]; then
 
+	# start milliseconds timer
+	before=$(date +%s%3N)
+
 	# write date and execute into logfiles
 	echo "${date} executing backup-hourly script" >> ${screenlog}
 	echo "${date} executing backup-hourly script" >> ${backuplog}
@@ -89,6 +92,10 @@ if [ ${dohourly} = true ]; then
 		if [[ -s "${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz" ]]; then
 			rm ${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz
 		fi
+		# stop milliseconds timer
+		after=$(date +%s%3N)
+		# calculate time soent on backup process
+		timespent=$((${after}-${before}))
 		# read server.settings file again with error checking
 		if [[ -f "server.settings" ]]; then
 			. ./server.settings
