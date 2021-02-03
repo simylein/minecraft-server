@@ -4,6 +4,12 @@
 # this script has been tested on debian and runs only if all packages are installed
 # however you are welcome to try it on any other distribution you like ;^)
 
+# root safety check
+if [ $(id -u) = 0 ]; then
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	exit 1
+fi
+
 # command line colours
 red="\033[0;31m"
 yellow="\033[1;33m"
