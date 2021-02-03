@@ -133,6 +133,9 @@ if [ ${hours} -eq 22 ]; then
 	# check if daily backups are anabled
 	if [ ${dodaily} = true ]; then
 
+		# start milliseconds timer
+		before=$(date +%s%3N)
+
 		# write date and execute into logfiles
 		echo "${date} executing backup-daily script" >> ${screenlog}
 		echo "${date} executing backup-daily script" >> ${backuplog}
@@ -169,6 +172,10 @@ if [ ${hours} -eq 22 ]; then
 			if [[ -s "${backupdirectory}/daily/${servername}-${olddaily}.tar.gz" ]]; then
 				rm ${backupdirectory}/daily/${servername}-${olddaily}.tar.gz
 			fi
+			# stop milliseconds timer
+			after=$(date +%s%3N)
+			# calculate time soent on backup process
+			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
 			if [[ -f "server.settings" ]]; then
 				. ./server.settings
@@ -208,6 +215,9 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 	# check if weekly backups are enabled
 	if [ ${doweekly} = true ]; then
 
+		# start milliseconds timer
+		before=$(date +%s%3N)
+
 		# write date and execute into logfiles
 		echo "${date} executing backup-weekly script" >> ${screenlog}
 		echo "${date} executing backup-weekly script" >> ${backuplog}
@@ -244,6 +254,10 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			if [[ -s "${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz" ]]; then
 				rm ${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz
 			fi
+			# stop milliseconds timer
+			after=$(date +%s%3N)
+			# calculate time soent on backup process
+			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
 			if [[ -f "server.settings" ]]; then
 				. ./server.settings
@@ -283,6 +297,9 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 	# check if monthly backups are enabled
 	if [ ${domonthly} = true ]; then
 
+		# start milliseconds timer
+		before=$(date +%s%3N)
+
 		# write date and execute into logfiles
 		echo "${date} executing backup-monthly script" >> ${screenlog}
 		echo "${date} executing backup-monthly script" >> ${backuplog}
@@ -319,6 +336,10 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			if [[ -s "${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz" ]]; then
 				rm ${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz
 			fi
+			# stop milliseconds timer
+			after=$(date +%s%3N)
+			# calculate time soent on backup process
+			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
 			if [[ -f "server.settings" ]]; then
 				. ./server.settings
