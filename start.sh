@@ -59,7 +59,7 @@ fi
 
 # check if interface is online
 interfacechecks="0"
-while [ $interfacechecks -lt 8 ]; do
+while [ ${interfacechecks} -lt 8 ]; do
 	if ping -c 1 ${interface} &> /dev/null
 	then echo -e "${green}Success: Interface is online${nocolor}" && echo "Success: Interface is online" >> ${screenlog}
 		break
@@ -71,7 +71,7 @@ done
 
 # check if dnsserver is online
 networkchecks="0"
-while [ $networkchecks -lt 8 ]; do
+while [ ${networkchecks} -lt 8 ]; do
 	if ping -c 1 ${dnsserver} &> /dev/null
 	then echo -e "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
 		break
@@ -154,3 +154,8 @@ fi
 
 # user information
 echo "If you would like to change to server console - type screen -r ${servername}"
+
+# if set to true change automatically to server console
+if [ ${changetoconsole} = true ]; then
+	screen -r ${servername}
+fi

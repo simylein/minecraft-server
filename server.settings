@@ -46,3 +46,6 @@ screen="/usr/bin/screen"
 
 # script time logging
 date=$(date +"%Y-%m-%d %H:%M:%S")
+
+# change to server console after startup
+changetoconsole="false"
