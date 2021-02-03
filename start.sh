@@ -65,6 +65,9 @@ while [ ${interfacechecks} -lt 8 ]; do
 		break
 	else echo -e "${red}Warning: Interface is offline${nocolor}" && echo "Warning: Interface is offline" >> ${screenlog}
 	fi
+	if [ ${interfacechecks} -eq 7 ]; then
+		echo -e "${red}Fatal: Interface timed out${nocolor}" && echo "Fatal: Interface timed out" >> ${screenlog}
+	fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
 done
@@ -76,6 +79,9 @@ while [ ${networkchecks} -lt 8 ]; do
 	then echo -e "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
 		break
 	else echo -e "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
+	fi
+	if [ ${networkchecks} -eq 7 ]; then
+		echo -e "${red}Fatal: Nameserver timed out${nocolor}" && echo "Fatal: Nameserver timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	networkchecks=$((networkchecks+1))
