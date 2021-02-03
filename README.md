@@ -43,8 +43,8 @@ I will explain some of them to you.
 `tp ${playername} ${x} ${y} ${z}` teleporting a player to cords. <br>
 `tp ${playername} ${playername}` teleporting a player to another player.
 
-Important: If you do these commands ingame you will need to put a / before each command. <br>
-In the screen terminal you don't need a / before your command. 
+Important: If you do these commands ingame you will need to put a `/` before each command. <br>
+In the screen terminal you don't need a `/` before your command. 
 ## server.settings
 This is your file that holds the variables you have chosen with the setup script. <br>
 If you know what your are doing feel free to edit it to suit your needs.
