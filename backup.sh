@@ -62,17 +62,15 @@ if [ ${dohourly} = true ]; then
 
 	# check if world is bigger than diskspace
 	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
-		echo -e "${red}fatal: not enough disk-space to perform backup-hourly${nocolor}"
-		echo "fatal: not enough disk-space to perform backup-hourly" >> ${backuplog}
-		echo "" >> ${backuplog}
-		# ingame logfile error output
+		# ingame and logfile error output
+		PrintToLogNotEnoughDiskSpace "hourly"
 		PrintToScreenNotEnoughtDiskSpace "${newhourly}" "${oldhourly}"
 		exit 1
 	fi
 
 	# check if there is no backup from the current hour
-	if ! [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
-		cp -r ${serverdirectory}/world ${backupdirectory}/hourly/${servername}-${newhourly}
+	if ! [  -sw "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]; then
+		tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz
 	else
 		echo "warning: backup already exists!" >> ${backuplog}
 		echo "" >> ${backuplog}
@@ -80,10 +78,10 @@ if [ ${dohourly} = true ]; then
 	fi
 
 	# check if there is a new backup
-	if [ -d "${backupdirectory}/hourly/${servername}-${newhourly}" ]; then
+	if [ -sw "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]; then
 		# check if an old backup exists an remove it
-		if [ -d "${backupdirectory}/hourly/${servername}-${oldhourly}" ]; then
-			rm -r ${backupdirectory}/hourly/${servername}-${oldhourly}
+		if [ -sw "${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz" ]; then
+			rm ${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz
 		fi
 		# read server.settings file again with error checking
 		if [[ -f "server.settings" ]]; then
@@ -95,19 +93,11 @@ if [ ${dohourly} = true ]; then
 		fi
 		# ingame and logfile success output
 		PrintToScreenBackupSuccess "${newhourly}" "${oldhourly}"
-		echo "newest backup has been successfully created!" >> ${backuplog}
-		echo "added ${backupdirectory}/hourly/${servername}-${newhourly}" >> ${backuplog}
-		echo "oldest backup has been successfully removed!" >> ${backuplog}
-		echo "removed ${backupdirectory}/hourly/${servername}-${oldhourly}" >> ${backuplog}
-		echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-		echo "" >> ${backuplog}
+		PrintToLogBackupSuccess "${newhourly}" "${oldhourly}"
 	else
 		# ingame and logfile error output
 		PrintToScreenBackupError "${newhourly}" "${oldhourly}"
-		echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-		echo "warning: could not remove old backup!" >> ${backuplog}
-		echo "fatal: could not backup world!" >> ${backuplog}
-		echo "" >> ${backuplog}
+		PrintToLogBackupError
 	fi
 
 else
@@ -145,17 +135,15 @@ if [ ${hours} -eq 22 ]; then
 
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-			echo -e "${red}fatal: not enough disk-space to perform backup-daily${nocolor}"
-			echo "fatal: not enough disk-space to perform backup-daily" >> ${backuplog}
-			echo "" >> ${backuplog}
-			# ingame logfile error output
+			# ingame and logfile error output
+			PrintToLogNotEnoughDiskSpace "daily"
 			PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
 			exit 1
 		fi
 
 		# check if there is no backup from the current day
-		if ! [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
-			cp -r ${serverdirectory}/world ${backupdirectory}/daily/${servername}-${newdaily}
+		if ! [ -sw "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]; then
+			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newdaily}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -163,10 +151,10 @@ if [ ${hours} -eq 22 ]; then
 		fi
 
 		# check if there is a new backup
-		if [ -d "${backupdirectory}/daily/${servername}-${newdaily}" ]; then
+		if [ -sw "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]; then
 			# check if an old backup exists an remove it
-			if [ -d "${backupdirectory}/daily/${servername}-${olddaily}" ]; then
-				rm -r ${backupdirectory}/daily/${servername}-${olddaily}
+			if [ -sw "${backupdirectory}/daily/${servername}-${olddaily}.tar.gz" ]; then
+				rm ${backupdirectory}/daily/${servername}-${olddaily}.tar.gz
 			fi
 			# read server.settings file again with error checking
 			if [[ -f "server.settings" ]]; then
@@ -178,19 +166,11 @@ if [ ${hours} -eq 22 ]; then
 			fi
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newdaily}" "${olddaily}"
-			echo "newest backup has been successfully created!" >> ${backuplog}
-			echo "added ${backupdirectory}/daily/${servername}-${newdaily}" >> ${backuplog}
-			echo "oldest backup has been successfully removed!" >> ${backuplog}
-			echo "removed ${backupdirectory}/daily/${servername}-${olddaily}" >> ${backuplog}
-			echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToLogBackupSuccess "${newdaily}" "${olddaily}"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newdaily}" "${olddaily}"
-			echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-			echo "warning: could not remove old backup!" >> ${backuplog}
-			echo "fatal: could not backup world!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToLogBackupError
 		fi
 
 	else
@@ -230,17 +210,15 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-			echo -e "${red}fatal: not enough disk-space to perform backup-weekly${nocolor}"
-			echo "fatal: not enough disk-space to perform backup-weekly" >> ${backuplog}
-			echo "" >> ${backuplog}
-			# ingame logfile error output
+			# ingame and logfile error output
+			PrintToLogNotEnoughDiskSpace "weekly"
 			PrintToScreenNotEnoughtDiskSpace "${newweekly}" "${oldweekly}"
 			exit 1
 		fi
 
 		# check if there is no backup from the current week
-		if ! [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
-			cp -r ${serverdirectory}/world ${backupdirectory}/weekly/${servername}-${newweekly}
+		if ! [ -sw "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]; then
+			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newweekly}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -248,10 +226,10 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		fi
 
 		# check if there is a new backup
-		if [ -d "${backupdirectory}/weekly/${servername}-${newweekly}" ]; then
+		if [ -sw "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]; then
 			# check if an old backup exists an remove it
-			if [ -d "${backupdirectory}/weekly/${servername}-${oldweekly}" ]; then
-				rm -r ${backupdirectory}/weekly/${servername}-${oldweekly}
+			if [ -sw "${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz" ]; then
+				rm ${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz
 			fi
 			# read server.settings file again with error checking
 			if [[ -f "server.settings" ]]; then
@@ -263,19 +241,11 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			fi
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newweekly}" "${oldweekly}"
-			echo "newest backup has been successfully created!" >> ${backuplog}
-			echo "added ${backupdirectory}/weekly/${servername}-${newweekly}" >> ${backuplog}
-			echo "oldest backup has been successfully removed!" >> ${backuplog}
-			echo "removed ${backupdirectory}/weekly/${servername}-${oldweekly}" >> ${backuplog}
-			echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToLogBackupSuccess "${newweekly}" "${oldweekly}"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newweekly}" "${oldweekly}"
-			echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-			echo "warning: could not remove old backup!" >> ${backuplog}
-			echo "fatal: could not backup world!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToLogBackupError
 		fi
 
 	else
@@ -315,17 +285,15 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-			echo -e "${red}fatal: not enough disk-space to perform backup-monthly${nocolor}"
-			echo "fatal: not enough disk-space to perform backup-monthly" >> ${backuplog}
-			echo "" >> ${backuplog}
-			# ingame logfile error output
+			# ingame and logfile error output
+			PrintToLogNotEnoughDiskSpace "monthly"
 			PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
 			exit 1
 		fi
 
 		# check if there is no backup from the current month
-		if ! [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
-			cp -r ${serverdirectory}/world ${backupdirectory}/monthly/${servername}-${newmonthly}
+		if ! [ -sw "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]; then
+			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newmonthly}.tar.gz
 		else
 			echo "warning: backup already exists!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -333,10 +301,10 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		fi
 
 		# check if there is a new backup
-		if [ -d "${backupdirectory}/monthly/${servername}-${newmonthly}" ]; then
+		if [ -sw "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]; then
 			# check if an old backup exists an remove it
-			if [ -d "${backupdirectory}/monthly/${servername}-${oldmonthly}" ]; then
-				rm -r ${backupdirectory}/monthly/${servername}-${oldmonthly}
+			if [ -sw "${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz" ]; then
+				rm ${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz
 			fi
 			# read server.settings file again with error checking
 			if [[ -f "server.settings" ]]; then
@@ -348,19 +316,11 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			fi
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newmonthly}" "${oldmonthly}"
-			echo "newest backup has been successfully created!" >> ${backuplog}
-			echo "added ${backupdirectory}/monthly/${servername}-${newmonthly}" >> ${backuplog}
-			echo "oldest backup has been successfully removed!" >> ${backuplog}
-			echo "removed ${backupdirectory}/monthly/${servername}-${oldmonthly}" >> ${backuplog}
-			echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToLogBackupSuccess "${newmonthly}" "${oldmonthly}"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newmonthly}" "${oldmonthly}"
-			echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-			echo "warning: could not remove old backup!" >> ${backuplog}
-			echo "fatal: could not backup world!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToLogBackupError
 		fi
 
 	else

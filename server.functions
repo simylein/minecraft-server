@@ -11,7 +11,15 @@ function PrintToScreen {
 
 # prints colorful error messages into screen
 function PrintToScreenBackupError {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: missing directories\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: missing directories, empty filepaths or empty files\"}]}}}]$(printf '\r')"
+}
+
+# prints backup error to backup log
+function PrintToLogBackupError {
+	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
+	echo "warning: could not remove old backup!" >> ${backuplog}
+	echo "fatal: could not backup world!" >> ${backuplog}
+	echo "" >> ${backuplog}
 }
 
 # prints colorful success messages into screen
@@ -19,17 +27,34 @@ function PrintToScreenBackupSuccess {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}, removed file: ${servername}-${2}, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}\"}]}}}]$(printf '\r')"
 }
 
+# prints backup success to backup log
+function PrintToLogBackupSuccess {
+	echo "newest backup has been successfully created!" >> ${backuplog}
+	echo "added ${backupdirectory}/hourly/${servername}-${1}" >> ${backuplog}
+	echo "oldest backup has been successfully removed!" >> ${backuplog}
+	echo "removed ${backupdirectory}/hourly/${servername}-${2}" >> ${backuplog}
+	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+
 # prints colorful not enough disk space message into screen
 function PrintToScreenNotEnoughtDiskSpace {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}, could not remove file: ${servername}-${2}, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 }
 
+# prints not enough disk space to backup log
+function PrintToLogNotEnoughDiskSpace {
+	echo -e "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
+	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+
 # creates an archive from a directory with progress bar
-function ArchiveDirectory {
+function ArchiveDirectoryWithProgress {
 	tar cf - ${1} -P | pv -s $(du -sb ${1} | awk '{print $1}') | gzip > ${1}.tar.gz
 }
 
 # extracts a directory from an archive with progress bar
-function ExtractDirectory {
+function ExtractDirectoryWithProgress {
 	pv ${1}.tar.gz | tar -xz
 }
