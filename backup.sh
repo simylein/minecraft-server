@@ -14,7 +14,7 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # read server.functions file with error checking
-if [[ -f "server.functions" ]]; then
+if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
 	echo "fatal: server.functions is missing" >> fatalerror.log
@@ -23,14 +23,14 @@ else
 fi
 
 # read server.properties file with error checking
-if ! [[ -f "server.properties" ]]; then
+if ! [[ -s "server.properties" ]]; then
 	echo "fatal: server.properties is missing" >> fatalerror.log
 	echo "fatal: server.properties is missing"
 	exit 1
 fi
 
 # read server.settings file with error checking
-if [[ -f "server.settings" ]]; then
+if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
 	echo "fatal: server.settings is missing" >> fatalerror.log
@@ -97,7 +97,7 @@ if [ ${dohourly} = true ]; then
 		# calculate time soent on backup process
 		timespent=$((${after}-${before}))
 		# read server.settings file again with error checking
-		if [[ -f "server.settings" ]]; then
+		if [[ -s "server.settings" ]]; then
 			. ./server.settings
 		else
 			echo "fatal: server.settings is missing" >> fatalerror.log
@@ -177,7 +177,7 @@ if [ ${hours} -eq 22 ]; then
 			# calculate time soent on backup process
 			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
-			if [[ -f "server.settings" ]]; then
+			if [[ -s "server.settings" ]]; then
 				. ./server.settings
 			else
 				echo "fatal: server.settings is missing" >> fatalerror.log
@@ -259,7 +259,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			# calculate time soent on backup process
 			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
-			if [[ -f "server.settings" ]]; then
+			if [[ -s "server.settings" ]]; then
 				. ./server.settings
 			else
 				echo "fatal: server.settings is missing" >> fatalerror.log
@@ -341,7 +341,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			# calculate time soent on backup process
 			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
-			if [[ -f "server.settings" ]]; then
+			if [[ -s "server.settings" ]]; then
 				. ./server.settings
 			else
 				echo "fatal: server.settings is missing" >> fatalerror.log
