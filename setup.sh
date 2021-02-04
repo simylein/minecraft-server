@@ -18,11 +18,16 @@ blue="\033[0;34m"
 purple="\033[0;35m"
 nocolor="\033[0m"
 
-# initial question
+# iuser info about script
 echo -e "${purple}I will setup a minecraft server for you${nocolor} ${nocolor} ${blue};^)${nocolor}"
+
+# initial question
 echo "How should I call your server?"
-echo -e "Please enter a servername: Example:${yellow}minecraft${nocolor}"
+echo -e "Please enter a servername: Example: ${yellow}minecraft${nocolor}"
 read -re -i "minecraft" -p "Your name: " servername
+while [[ ! ${servername} =~ ^[a-zA-Z0-9]+$ ]]; do
+	read -re -i "minecraft" -p "Please enter a servername which only contains letters and numbers: " servername
+done
 echo -e "Your Server will be called ${green}${servername}${nocolor}"
 
 # store homedirectory
@@ -154,72 +159,108 @@ mkdir backups
 
 # ask all the importatnt user input
 echo "Please tell me which dnsserver you would like to use"
-echo -e "Please enter like this: Example:${yellow}1.1.1.1${nocolor}"
+echo -e "Please enter like this: Example: ${yellow}1.1.1.1${nocolor}"
 read -re -i "1.1.1.1" -p "Your dnsserver: " dnsserver
+while [[ ! ${dnsserver} =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; do
+	read -re -i "1.1.1.1" -p "Please enter a valid ip address: " dnsserver
+done
 echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start"
 
 echo "Please tell me which interface you would like to use"
 echo -e "Please enter like this: Example:${yellow}192.168.1.1${nocolor}"
 read -re -i "192.168.1.1" -p "Your interface: " interface
-echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start"
+while [[ ! ${interface} =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; do
+	read -re -i "192.168.1.1" -p "Please enter a valid ip address: " interface
+done
+echo -e "Your server will ping ${green}${interface}${nocolor} at start"
 
 echo "How much minimum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}256${nocolor}"
 read -re -i "256" -p "Your amount: " mems
+while [[ ! ${mems} =~ ^[0-9]+$ ]]; do
+	read -re -i "256" -p "Please enter in numbers only: " mems
+done
 mems="-Xms${mems}M"
 echo -e "Your Server will will have ${green}${mems}${nocolor} of minimum memory allocated"
 
 echo "How much maximum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}2048${nocolor}"
 read -re -i "2048" -p "Your amount: " memx
+while [[ ! ${memx} =~ ^[0-9]+$ ]]; do
+	read -re -i "2048" -p "Please enter in numbers only: " mems
+done
 memx="-Xms${memx}M"
 echo -e "Your Server will will have ${green}${memx}${nocolor} of maximum memory allocated"
 
 echo "How many threads would you like your Server to use?"
 echo -e "Please enter like this. Example:${yellow}2${nocolor}"
 read -re -i "2" -p "Your amount: " threadcount
+while [[ ! ${threadcount} =~ ^[0-9]+$ ]]; do
+	read -re -i "2" -p "Please enter in numbers only: " threadcount
+done
 threadcount="-XX:ParallelGCThreads=${threadcount}"
 echo -e "Your Server will will have ${green}${threadcount}${nocolor} of threads to work with"
 
 echo "Please specify your desired view-distance"
 echo -e "Please enter like this. Example:${yellow}16${nocolor}"
 read -re -i "16" -p "Your view-distance: " viewdistance
+while [[ ! ${viewdistance} =~ ^[0-9]+$ ]]; do
+	read -re -i "16" -p "Please enter in numbers only: " viewdistance
+done
 viewdistance="view-distance=${viewdistance}"
 echo -e "Your Server will have ${green}${viewdistance}${nocolor}"
 
 echo "Please specify your desired spawn-protection"
 echo -e "Please enter like this. Example:${yellow}16${nocolor}"
 read -re -i "16" -p "Your spawn-protection: " spawnprotection
+while [[ ! ${spawnprotection} =~ ^[0-9]+$ ]]; do
+	read -re -i "16" -p "Please enter in numbers only: " spawnprotection
+done
 spawnprotection="spawn-protection=${spawnprotection}"
 echo -e "Your Server will have ${green}${spawnprotection}${nocolor}"
 
 echo "Please tell me the max-players amount"
 echo -e "Please enter like this. Example:${yellow}8${nocolor}"
 read -re -i "8" -p "Your spawn-protection: " maxplayers
+while [[ ! ${maxplayers} =~ ^[0-9]+$ ]]; do
+	read -re -i "8" -p "Please enter in numbers only: " maxplayers
+done
 maxplayers="max-players=${maxplayers}"
 echo -e "Your Server will have ${green}${maxplayers}${nocolor}"
 
 echo "Please specify your desired server-port"
 echo -e "Please enter like this. Example:${yellow}25565${nocolor}"
 read -re -i "25565" -p "Your server-port: " serverport
+while [[ ! ${serverport} =~ ^[0-9]+$ ]]; do
+	read -re -i "25565" -p "Please enter in numbers only: " serverport
+done
 serverport="server-port=${serverport}"
 echo -e "Your Server will be on ${green}${serverport}${nocolor}"
 
 echo "Please specify your desired query-port"
 echo -e "Please enter like this. Example:${yellow}25565${nocolor}"
 read -re -i "25565" -p "Your query-port: " queryport
+while [[ ! ${queryport} =~ ^[0-9]+$ ]]; do
+	read -re -i "25565" -p "Please enter in numbers only: " queryport
+done
 queryport="query.port=${queryport}"
 echo -e "Your Server will be on ${green}${queryport}${nocolor}"
 
 echo "Which gamemode would you like to play?"
 echo -e "Please enter like this. Example:${yellow}survival${nocolor}"
 read -re -i "survival" -p "Your gamemode: " gamemode
+while [[ ! ${gamemode} =~ ^[survival]+$ ]]; do
+	read -re -i "survival" -p "Please enter a valid gamemode: " gamemode
+done
 gamemode="gamemode=${gamemode}"
 echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
 
 echo "Which difficulty would you like to have?"
 echo -e "Please enter like this. Example:${yellow}normal${nocolor}"
 read -re -i "normal" -p "Your difficulty: " difficulty
+	while [[ ! ${difficulty} =~ ^[normal]+$ ]]; do
+	read -re -i "normal" -p "Please enter a valid difficulty: " difficulty
+	done
 difficulty="difficulty=${difficulty}"
 echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
 
