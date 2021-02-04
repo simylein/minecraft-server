@@ -1,6 +1,12 @@
 #!/bin/bash
 # minecraft server stop script
 
+# root safety check
+if [ $(id -u) = 0 ]; then
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	exit 1
+fi
+
 # read server.functions file with error checking
 if [[ -f "server.functions" ]]; then
 	. ./server.functions
