@@ -187,7 +187,7 @@ echo "How much maximum memory would you like to grant your Server?"
 echo -e "Please enter like this: Example:${yellow}2048${nocolor}"
 read -re -i "2048" -p "Your amount: " memx
 while [[ ! ${memx} =~ ^[0-9]+$ ]]; do
-	read -re -i "2048" -p "Please enter in numbers only: " mems
+	read -re -i "2048" -p "Please enter in numbers only: " memx
 done
 memx="-Xms${memx}M"
 echo -e "Your Server will will have ${green}${memx}${nocolor} of maximum memory allocated"
@@ -247,32 +247,38 @@ queryport="query.port=${queryport}"
 echo -e "Your Server will be on ${green}${queryport}${nocolor}"
 
 echo "Which gamemode would you like to play?"
-echo -e "Please enter like this. Example:${yellow}survival${nocolor}"
+echo -e "Please enter like this. Example: ${yellow}survival${nocolor}"
 read -re -i "survival" -p "Your gamemode: " gamemode
-while [[ ! ${gamemode} =~ ^[survival]+$ ]]; do
+while [[ ! ${gamemode} =~ ^(survival|creative|adventure)$ ]]; do
 	read -re -i "survival" -p "Please enter a valid gamemode: " gamemode
 done
 gamemode="gamemode=${gamemode}"
 echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
 
 echo "Which difficulty would you like to have?"
-echo -e "Please enter like this. Example:${yellow}normal${nocolor}"
+echo -e "Please enter like this. Example: ${yellow}normal${nocolor}"
 read -re -i "normal" -p "Your difficulty: " difficulty
-	while [[ ! ${difficulty} =~ ^[normal]+$ ]]; do
+while [[ ! ${difficulty} =~ ^(peaceful|easy|normal|hard)$ ]]; do
 	read -re -i "normal" -p "Please enter a valid difficulty: " difficulty
-	done
+done
 difficulty="difficulty=${difficulty}"
 echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
 
 echo "Would you like to turn on pvp?"
-echo -e "Please enter like this. Example:${yellow}true${nocolor}"
+echo -e "Please enter like this. Example: ${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " pvp
+while [[ ! ${pvp} =~ ^(true|false)$ ]]; do
+	read -re -i "true" -p "Please enter true or false: " pvp
+done
 pvp="pvp=${pvp}"
 echo -e "Your Server will be on ${green}${pvp}${nocolor}"
 
 echo "Would you like to turn on command-blocks?"
-echo -e "Please enter like this. Example:${yellow}true${nocolor}"
+echo -e "Please enter like this. Example: ${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " cmdblock
+while [[ ! ${cmdblock} =~ true$ ]]; do
+	read -re -i "true" -p "Please enter true or false: " cmdblock
+done
 cmdblock="enable-command-block=${cmdblock}"
 echo -e "Your Server will be on ${green}${cmdblock}${nocolor}"
 
