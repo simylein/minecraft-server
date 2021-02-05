@@ -129,6 +129,7 @@ echo "server is on startup..." >> ${screenlog}
 echo -e "${green}server is on startup...${nocolor}"
 
 # check if screenlog contains start comfirmation
+count="0"
 counter="0"
 startupchecks="0"
 while [ ${startupchecks} -lt 120 ]; do
