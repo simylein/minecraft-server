@@ -145,11 +145,20 @@ while [ ${startupchecks} -lt 120 ]; do
 	if tail ${screenlog} | grep -q "Preparing spawn area"; then
 		counter=$((counter+1))
 	fi
+	if tail ${screenlog} | grep -q "Environment"; then
+		count=$((counter+1))
+	fi
+	if tail ${screenlog} | grep -q "Reloading ResourceManager"; then
+		count=$((counter+1))
+	fi
+	if tail ${screenlog} | grep -q "Starting minecraft server"; then
+		count=$((counter+1))
+	fi
 	if [ ${counter} -ge 10 ]; then
 		echo -e "server is preparing spawn area..."
 		counter="0"
 	fi
-	if [ ${counter} -eq 0 ] && [ ${startupchecks} -eq 80 ]; then
+	if [ ${count} -eq 0 ] && [ ${startupchecks} -eq 20 ]; then
 		echo "Warning: the server could be crashed" >> ${screenlog}
 		echo -e "${yellow}Warning: the server could be crashed${nocolor}"
 		exit 1
