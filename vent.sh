@@ -56,6 +56,8 @@ if ! screen -list | grep -q "\.${servername}"; then
 		sleep 1s
 	done
 	cd ../
+	# remove crontab
+	crontab -r
 	# remove serverdirectory
 	rm -r ${servername}
 	# check if vent was successful
@@ -132,6 +134,8 @@ fi
 sleep 2s
 
 cd ../
+# remove crontab
+crontab -r
 # remove serverdirectory
 echo "deleting server..."
 rm -r ${servername}
