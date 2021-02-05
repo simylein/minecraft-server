@@ -149,7 +149,7 @@ while [ ${startupchecks} -lt 120 ]; do
 		echo -e "server is preparing spawn area..."
 		counter="0"
 	fi
-	if [ ${counter} -eq 0 ] && [ ${startupchecks} -eq 40 ]; then
+	if [ ${counter} -eq 0 ] && [ ${startupchecks} -eq 80 ]; then
 		echo "Warning: the server could be crashed" >> ${screenlog}
 		echo -e "${yellow}Warning: the server could be crashed${nocolor}"
 		exit 1
