@@ -94,7 +94,7 @@ sleep 2s
 # countdown
 counter="120"
 while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(120|60|40|20|10|5|4|3|2|1)$ ]]; then
+	if [[ "${counter}" =~ ^(120|60|40|20|10|9|8|7|6|5|4|3|2|1)$ ]]; then
 		echo -e "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is self-destructing in ${counter} seconds\",\"color\":\"red\"}]$(printf '\r')"
 	fi
