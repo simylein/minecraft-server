@@ -147,13 +147,16 @@ while [ ${startupchecks} -lt 120 ]; do
 		counter=$((counter+1))
 	fi
 	if tail ${screenlog} | grep -q "Environment"; then
-		count=$((counter+1))
+		if [ ${count} -eq 0 ]; then
+			echo "server is loading the environment..."
+		fi
+		count=$((count+1))
 	fi
 	if tail ${screenlog} | grep -q "Reloading ResourceManager"; then
-		count=$((counter+1))
+		count=$((count+1))
 	fi
 	if tail ${screenlog} | grep -q "Starting minecraft server"; then
-		count=$((counter+1))
+		count=$((count+1))
 	fi
 	if [ ${counter} -ge 10 ]; then
 		echo -e "server is preparing spawn area..."
