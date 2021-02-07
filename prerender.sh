@@ -97,6 +97,10 @@ echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 20 to 80 seconds depending on your server recources"
 echo "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 read -p "interval: " interval
+regex="^([8-9]|[1-9][0-9]|1[0-2][0-8])$"
+while [[ ! ${interval} =~ ${regex} ]]; do
+	read -p "Please enter an interval between 8 and 128 seconds: " interval
+done
 
 # calculate some internal intervals
 between=$((${interval} / 4))
@@ -109,7 +113,7 @@ echo "The selected between will be ${green}${between}${nocolor}"
 
 # ask for permission to proceed
 echo "I will now start to teleport the selected player through the world"
-echo "It will take about ${estimated} seconds"
+echo "It will take about ${estimated} seconds to finish prerendering"
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
 	then echo "${green}starting prerenderer...${nocolor}"
