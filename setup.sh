@@ -6,30 +6,33 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
 # command line colours
-red="\033[0;31m"
-yellow="\033[1;33m"
-green="\033[0;32m"
-blue="\033[0;34m"
-purple="\033[0;35m"
-nocolor="\033[0m"
+black="$(tput setaf 0)"
+red="$(tput setaf 1)"
+green="$(tput setaf 2)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+magenta="$(tput setaf 5)"
+cyan="$(tput setaf 6)"
+white="$(tput setaf 7)"
+nocolor="$(tput sgr0)"
 
 # iuser info about script
-echo -e "${purple}I will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
+echo "${magenta}I will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
 
 # initial question
 echo "How should I call your server?"
-echo -e "Please enter a servername: Example: ${yellow}minecraft${nocolor}"
+echo "Please enter a servername: Example: ${yellow}minecraft${nocolor}"
 read -re -i "minecraft" -p "Your name: " servername
 regex="^[a-zA-Z0-9]+$"
 while [[ ! ${servername} =~ ${regex} ]]; do
 	read -p "Please enter a servername which only contains letters and numbers: " servername
 done
-echo -e "Your Server will be called ${green}${servername}${nocolor}"
+echo "Your Server will be called ${green}${servername}${nocolor}"
 
 # store homedirectory
 homedirectory=`pwd`
@@ -43,8 +46,8 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo -e "${green}starting setup...${nocolor}"
-	else echo -e "${red}exiting...${nocolor}"
+	then echo "${green}starting setup...${nocolor}"
+	else echo "${red}exiting...${nocolor}"
 		exit 1
 fi
 
@@ -147,7 +150,7 @@ select version in "${versions[@]}"; do
 done
 
 # user information about execute at start
-echo -e "Your Server will execute ${green}${serverfile}${nocolor} at start"
+echo "Your Server will execute ${green}${serverfile}${nocolor} at start"
 
 # set up backupdirectory with child directories
 echo "setting up a backupdirectory..."
@@ -165,157 +168,157 @@ mkdir backups
 # ask all the importatnt user input
 	
 # ask for a valid dnsserver
-echo -e "Please tell me which dnsserver you would like to use. Example: ${yellow}1.1.1.1${nocolor}"
+echo "Please tell me which dnsserver you would like to use. Example: ${yellow}1.1.1.1${nocolor}"
 read -re -i "1.1.1.1" -p "Your dnsserver: " dnsserver
 regex="^(0*(1?[0-9]{1,2}|2([0-4][0-9]|5[0-5]))\.){3}"
 while [[ ! ${dnsserver} =~ ${regex} ]]; do
 	read -p "Please enter a valid ip address: " dnsserver
 done
-echo -e "Your server will ping ${green}${dnsserver}${nocolor} at start."
+echo "Your server will ping ${green}${dnsserver}${nocolor} at start."
 
 # ask for a valid interface
-echo -e "Please tell me which interface you would like to use. Example: ${yellow}192.168.1.1${nocolor}"
+echo "Please tell me which interface you would like to use. Example: ${yellow}192.168.1.1${nocolor}"
 read -re -i "192.168.1.1" -p "Your interface: " interface
 regex="^(0*(1?[0-9]{1,2}|2([0-4][0-9]|5[0-5]))\.){3}"
 while [[ ! ${interface} =~ ${regex} ]]; do
 	read -p "Please enter a valid ip address: " interface
 done
-echo -e "Your server will ping ${green}${interface}${nocolor} at start."
+echo "Your server will ping ${green}${interface}${nocolor} at start."
 
 # ask for minimum memory
-echo -e "How much minimum memory would you like to grant your Server? Example: ${yellow}256${nocolor}"
+echo "How much minimum memory would you like to grant your Server? Example: ${yellow}256${nocolor}"
 read -re -i "256" -p "Your amount: " mems
 regex="^([2-9][5-9][6-9]|[1-4][0-9][0-9][0-9])$"
 while [[ ! ${mems} =~ ${regex} ]]; do
 	read -p "Please enter a number between 256 and 4096: " mems
 done
-echo -e "Your Server will will have ${green}${mems}${nocolor} MB of minimum memory allocated."
+echo "Your Server will will have ${green}${mems}${nocolor} MB of minimum memory allocated."
 mems="-Xms${mems}M"
 
 # ask for maximum memory
-echo -e "How much maximum memory would you like to grant your Server? Example: ${yellow}2048${nocolor}"
+echo "How much maximum memory would you like to grant your Server? Example: ${yellow}2048${nocolor}"
 read -re -i "2048" -p "Your amount: " memx
 regex="^([2-9][0-9][4-9][8-9]|[0-3][0-2][0-7][0-6][0-8])$"
 while [[ ! ${memx} =~ ${regex} ]]; do
 	read -p "Please enter a number between 2048 and 32768: " memx
 done
-echo -e "Your Server will will have ${green}${memx}${nocolor} MB of maximum memory allocated."
+echo "Your Server will will have ${green}${memx}${nocolor} MB of maximum memory allocated."
 memx="-Xms${memx}M"
 
 # ask for amount of threads
-echo -e "How many threads would you like your Server to use? Example: ${yellow}2${nocolor}"
+echo "How many threads would you like your Server to use? Example: ${yellow}2${nocolor}"
 read -re -i "2" -p "Your amount: " threadcount
 regex="^(0?[1-9]|[1-2][0-9]|3[0-2])$"
 while [[ ! ${threadcount} =~ ${regex} ]]; do
 	read -p "Please enter a number between 1 and 32: " threadcount
 done
-echo -e "Your Server will will have ${green}${threadcount}${nocolor} threads to work with."
+echo "Your Server will will have ${green}${threadcount}${nocolor} threads to work with."
 threadcount="-XX:ParallelGCThreads=${threadcount}"
 
 # ask for view distance
-echo -e "Please specify your desired view-distance. Example: ${yellow}16${nocolor}"
+echo "Please specify your desired view-distance. Example: ${yellow}16${nocolor}"
 read -re -i "16" -p "Your view-distance: " viewdistance
 regex="^([2-9]|[1-5][0-9]|6[0-4])$"
 while [[ ! ${viewdistance} =~ ${regex} ]]; do
 	read -p "Please enter a number between 2 and 64: " viewdistance
 done
-echo -e "Your Server will have ${green}${viewdistance}${nocolor} chunks view-distance."
+echo "Your Server will have ${green}${viewdistance}${nocolor} chunks view-distance."
 viewdistance="view-distance=${viewdistance}"
 
 # ask for spawn protection
-echo -e "Please specify your desired spawn-protection. Example: ${yellow}16${nocolor}"
+echo "Please specify your desired spawn-protection. Example: ${yellow}16${nocolor}"
 read -re -i "16" -p "Your spawn-protection: " spawnprotection
 regex="^([2-9]|[1-5][0-9]|6[0-4])$"
 while [[ ! ${spawnprotection} =~ ${regex} ]]; do
 	read -p "Please enter a number between 2 and 64: " spawnprotection
 done
-echo -e "Your Server will have ${green}${spawnprotection}${nocolor} blocks spawn-protection."
+echo "Your Server will have ${green}${spawnprotection}${nocolor} blocks spawn-protection."
 spawnprotection="spawn-protection=${spawnprotection}"
 
 # ask for max player count
-echo -e "Please tell me the max-players amount. Example: ${yellow}8${nocolor}"
+echo "Please tell me the max-players amount. Example: ${yellow}8${nocolor}"
 read -re -i "8" -p "Your max-players: " maxplayers
 regex="^([2-9]|[0-9][0-9]|1[0-9][0-9]|200)$"
 while [[ ! ${maxplayers} =~ ${regex} ]]; do
 	read -p "Please enter a number between 2 and 200: " maxplayers
 done
-echo -e "Your Server will have ${green}${maxplayers}${nocolor} max-players."
+echo "Your Server will have ${green}${maxplayers}${nocolor} max-players."
 maxplayers="max-players=${maxplayers}"
 
 # ask for server port
-echo -e "Please specify your desired server-port. Example: ${yellow}25565${nocolor}"
+echo "Please specify your desired server-port. Example: ${yellow}25565${nocolor}"
 read -re -i "25565" -p "Your server-port: " serverport
 regex="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
 while [[ ! ${serverport} =~ ${regex} ]]; do
 	read -p "Please enter a valid port between 0 and 65535: " serverport
 done
-echo -e "Your Server will be on ${green}${serverport}${nocolor}"
+echo "Your Server will be on ${green}${serverport}${nocolor}"
 serverport="server-port=${serverport}"
 
 # ask for query port
-echo -e "Please specify your desired query-port. Example: ${yellow}25565${nocolor}"
+echo "Please specify your desired query-port. Example: ${yellow}25565${nocolor}"
 read -re -i "25565" -p "Your query-port: " queryport
 regex="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
 while [[ ! ${queryport} =~ ^${regex} ]]; do
 	read -p "Please enter a valid port between 0 and 65535: " queryport
 done
-echo -e "Your Server will be on ${green}${queryport}${nocolor}"
+echo "Your Server will be on ${green}${queryport}${nocolor}"
 queryport="query.port=${queryport}"
 
 # ask for gamemode
-echo -e "Which gamemode would you like to play? Example: ${yellow}survival${nocolor}"
+echo "Which gamemode would you like to play? Example: ${yellow}survival${nocolor}"
 read -re -i "survival" -p "Your gamemode: " gamemode
 regex="^(survival|creative|adventure|spectator)$"
 while [[ ! ${gamemode} =~ ${regex} ]]; do
 	read -p "Please enter a valid gamemode: " gamemode
 done
-echo -e "Your Server will be on ${green}${gamemode}${nocolor}"
+echo "Your Server will be on ${green}${gamemode}${nocolor}"
 gamemode="gamemode=${gamemode}"
 
 # ask for difficulty
-echo -e "Which difficulty would you like to have? Example: ${yellow}normal${nocolor}"
+echo "Which difficulty would you like to have? Example: ${yellow}normal${nocolor}"
 read -re -i "normal" -p "Your difficulty: " difficulty
 regex="^(peaceful|easy|normal|hard)$"
 while [[ ! ${difficulty} =~ ${regex} ]]; do
 	read -p "Please enter a valid difficulty: " difficulty
 done
-echo -e "Your Server will be on ${green}${difficulty}${nocolor}"
+echo "Your Server will be on ${green}${difficulty}${nocolor}"
 difficulty="difficulty=${difficulty}"
 
 # ask for whitelist
-echo -e "Would you like to turn on the whitelist? Example: ${yellow}true${nocolor}"
+echo "Would you like to turn on the whitelist? Example: ${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " whitelist
 regex="^(true|false)$"
 while [[ ! ${whitelist} =~ ${regex} ]]; do
 	read -p "Please enter true or false: " whitelist
 done
-echo -e "Your Server will be on whitelist ${green}${whitelist}${nocolor}"
+echo "Your Server will be on whitelist ${green}${whitelist}${nocolor}"
 whitelist="white-list=${whitelist}"
 
 # ask for pvp
-echo -e "Would you like to turn on pvp? Example: ${yellow}true${nocolor}"
+echo "Would you like to turn on pvp? Example: ${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " pvp
 regex="^(true|false)$"
 while [[ ! ${pvp} =~ ${regex} ]]; do
 	read -p "Please enter true or false: " pvp
 done
-echo -e "Your Server will be on pvp ${green}${pvp}${nocolor}"
+echo "Your Server will be on pvp ${green}${pvp}${nocolor}"
 pvp="pvp=${pvp}"
 
 # ask for command blocks
-echo -e "Would you like to turn on command-blocks? Example: ${yellow}true${nocolor}"
+echo "Would you like to turn on command-blocks? Example: ${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " cmdblock
 regex="^(true|false)$"
 while [[ ! ${cmdblock} =~ true$ ]]; do
 	read -p "Please enter true or false: " cmdblock
 done
-echo -e "Your Server will be on ${green}${cmdblock}${nocolor}"
+echo "Your Server will be on ${green}${cmdblock}${nocolor}"
 cmdblock="enable-command-block=${cmdblock}"
 
 # ask for server message
-echo -e "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
+echo "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
 read -re -i "Hello World, I am your new Minecraft Server ;^)" -p "Your message: " motd
-echo -e "Your server message will be: ${green}${motd}${nocolor}"
+echo "Your server message will be: ${green}${motd}${nocolor}"
 motd="motd=${motd}"
 
 # eula question
@@ -326,9 +329,9 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo -e "${green}accepting eula...${nocolor}"
+	then echo "${green}accepting eula...${nocolor}"
 	echo "eula=true" >> eula.txt
-	else echo -e "${red}declining eula...${nocolor}"
+	else echo "${red}declining eula...${nocolor}"
 	echo "eula=false" >> eula.txt
 fi
 
@@ -407,7 +410,7 @@ if [[ ${REPLY} =~ [Yy]$ ]]
 		crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 		emailchoice=true
-	else echo -e "${yellow}no emails${nocolor}"
+	else echo "${yellow}no emails${nocolor}"
 		crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
 		crontab -l | { cat; echo ""; } | crontab -
 		emailchoice=false
@@ -420,11 +423,11 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo -e "${green}automating backups...${nocolor}"
+	then echo "${green}automating backups...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
 		backupchoice=true
-	else echo -e "${yellow}no automated backups${nocolor}"
+	else echo "${yellow}no automated backups${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
 		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
 		backupchoice=false
@@ -437,7 +440,7 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo -e "${green}automating start and stop...${nocolor}"
+	then echo "${green}automating start and stop...${nocolor}"
 		read -p "Your start time [0 - 23]: " starttime
 		read -p "Your stop time [0 - 23]: " stoptime
 		crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
@@ -445,7 +448,7 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]
 		crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
 		crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
 		startstopchoice=true
-	else echo -e "${yellow}no automated  start and stop${nocolor}"
+	else echo "${yellow}no automated  start and stop${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
 		crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 		crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
@@ -460,11 +463,11 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo -e "${green}automatic restarts at 02:00${nocolor}"
+	then echo "${green}automatic restarts at 02:00${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 		restartchoice=true
-	else echo -e "${yellow}no restarts${nocolor}"
+	else echo "${yellow}no restarts${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
 		crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 		restartchoice=false
@@ -477,11 +480,11 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo -e "${green}automatic update at Sunday${nocolor}"
+	then echo "${green}automatic update at Sunday${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
 		crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 		updatechoice=true
-	else echo -e "${yellow}no updates${nocolor}"
+	else echo "${yellow}no updates${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
 		crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 		updatechoice=false
@@ -494,11 +497,11 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo -e "${green}automatic startup at boot...${nocolor}"
+	then echo "${green}automatic startup at boot...${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
 		crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 		startatbootchoice=true
-	else echo -e "${yellow}no startup at boot${nocolor}"
+	else echo "${yellow}no startup at boot${nocolor}"
 		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
 		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 		startatbootchoice=false
@@ -511,36 +514,36 @@ crontab -l | { cat; echo ""; } | crontab -
 # inform user of automated crontab choices
 echo "You have chosen the following configuration of your server:"
 if [[ ${emailchoice} == true ]];
-	then echo -e "crontab email output = ${blue}true${nocolor}"
-	else echo -e "crontab email output = ${red}false${nocolor}"
+	then echo "crontab email output = ${blue}true${nocolor}"
+	else echo "crontab email output = ${red}false${nocolor}"
 fi
 if [[ ${backupchoice} == true ]];
-	then echo -e "automated backups = ${blue}true${nocolor}"
-	else echo -e "automated backups = ${red}false${nocolor}"
+	then echo "automated backups = ${blue}true${nocolor}"
+	else echo "automated backups = ${red}false${nocolor}"
 fi
 if [[ ${startstopchoice} == true ]];
-	then echo -e "automated start and stop = ${blue}true${nocolor}"
-	else echo -e "automated start and stop = ${red}false${nocolor}"
+	then echo "automated start and stop = ${blue}true${nocolor}"
+	else echo "automated start and stop = ${red}false${nocolor}"
 fi
 if [[ ${restartchoice} == true ]];
-	then echo -e "automated restart = ${blue}true${nocolor}"
-	else echo -e "automated restart = ${red}false${nocolor}"
+	then echo "automated restart = ${blue}true${nocolor}"
+	else echo "automated restart = ${red}false${nocolor}"
 fi
 if [[ ${updatechoice} == true ]];
-	then echo -e "automated update = ${blue}true${nocolor}"
-	else echo -e "automated update = ${red}false${nocolor}"
+	then echo "automated update = ${blue}true${nocolor}"
+	else echo "automated update = ${red}false${nocolor}"
 fi
 if [[ ${startatbootchoice} == true ]];
-	then echo -e "automated start at boot = ${blue}true${nocolor}"
-	else echo -e "automated start at boot = ${red}false${nocolor}"
+	then echo "automated start at boot = ${blue}true${nocolor}"
+	else echo "automated start at boot = ${red}false${nocolor}"
 fi
 
 # finish messages
-echo -e "${green}setup is complete!${nocolor}"
+echo "${green}setup is complete!${nocolor}"
 echo "If you would like to start your Server:"
-echo -e "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
-echo -e "execute like this: ${green}./start.sh${nocolor}"
-echo -e "${purple}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
+echo "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
+echo "execute like this: ${green}./start.sh${nocolor}"
+echo "${magenta}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
 
 # ask user to start server now
 read -p "Would you like to start your server now? [Y/N]: "
@@ -549,8 +552,8 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
-	echo -e "${green}starting up server...${nocolor}"
+	echo "${green}starting up server...${nocolor}"
 	./start.sh
 else
-	echo -e "${purple}script has finished!${nocolor}"
+	echo "${magenta}script has finished!${nocolor}"
 fi

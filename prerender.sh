@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -43,17 +43,17 @@ fi
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
-	echo -e "${yellow}Server is not currently running!${nocolor}"
+	echo "${yellow}Server is not currently running!${nocolor}"
 	exit 1
 fi
 
 # explain to user
-echo -e "${blue}I will prerender your minecraft world by teleporting a selected player through it${nocolor}"
-echo -e "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
+echo "${blue}I will prerender your minecraft world by teleporting a selected player through it${nocolor}"
+echo "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
 
 # ask for playername
 read -p "Please enter a playername: " playername
-echo -e "The player will be ${green}${playername}${nocolor}"
+echo "The player will be ${green}${playername}${nocolor}"
 
 # ask for cords
 PS3="Which radius would you like to prerender? "
@@ -95,7 +95,7 @@ done
 # ask for interval in seconds
 echo "I would like to know how fast you want to scan your world"
 echo "I would recommend an interval of 20 to 80 seconds depending on your server recources"
-echo -e "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
+echo "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 read -p "interval: " interval
 
 # calculate some internal intervals
@@ -103,17 +103,17 @@ between=$((${interval} / 4))
 between="sleep ${between}s"
 estimated=$((${interval} * ${amount} * ${amount}))
 interval="sleep ${interval}s"
-echo -e "The selected grid will be ${green}${area}${nocolor}"
-echo -e "The selected interval will be ${green}${interval}${nocolor}"
-echo -e "The selected between will be ${green}${between}${nocolor}"
+echo "The selected grid will be ${green}${area}${nocolor}"
+echo "The selected interval will be ${green}${interval}${nocolor}"
+echo "The selected between will be ${green}${between}${nocolor}"
 
 # ask for permission to proceed
 echo "I will now start to teleport the selected player through the world"
 echo "It will take about ${estimated} seconds"
 read -p "Continue? [Y/N]:"
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo -e "${green}starting prerenderer...${nocolor}"
-	else echo -e "${red}exiting...${nocolor}"
+	then echo "${green}starting prerenderer...${nocolor}"
+	else echo "${red}exiting...${nocolor}"
 		exit 1
 fi
 
@@ -130,7 +130,7 @@ for x in "${cords[@]}"; do
 	for z in "${cords[@]}"; do
 		let "progress=counter"
 		# progress counter
-		echo -e "${blue}[Script]${nocolor} Progress: [${progress}/$((${amount} * ${amount}))]"
+		echo "${blue}[Script]${nocolor} Progress: [${progress}/$((${amount} * ${amount}))]"
 		# teleporting with facing directions
 		PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
 		${between}
@@ -147,9 +147,9 @@ done
 
 # command line finished message
 PrintToScreen "say Prerendering of your world has finished"
-echo -e "${blue}[Script]${nocolor} ${green}Prerendering of your world has finished${nocolor}"
+echo "${blue}[Script]${nocolor} ${green}Prerendering of your world has finished${nocolor}"
 
-echo -e "${blue}[Script]${nocolor} ${green}Rendered ${totalblocks} [${area}] blocks of area${nocolor}"
+echo "${blue}[Script]${nocolor} ${green}Rendered ${totalblocks} [${area}] blocks of area${nocolor}"
 
 # kick player with finished message
 screen -Rd ${servername} -X stuff "kick ${playername} prerendering of your world has finished$(printf '\r')"

@@ -5,7 +5,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -46,11 +46,11 @@ echo "${date} executing self-destruct script" >> ${screenlog}
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
-	echo -e "${yellow}server is not currently running!${nocolor}"
+	echo "${yellow}server is not currently running!${nocolor}"
 	counter="10"
 	while [ ${counter} -gt 0 ]; do
 		if [[ "${counter}" =~ ^(10|9|8|7|6|5|4|3|2|1)$ ]]; then
-			echo -e "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
+			echo "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
 		fi
 		counter=$((counter-1))
 		sleep 1s
@@ -63,29 +63,29 @@ if ! screen -list | grep -q "\.${servername}"; then
 	# check if vent was successful
 	if ! [ -d "${serverdirectory}" ]; then
 		# game over terminal screen
-		echo -e "${red}                                            ${nocolor}"
-		echo -e "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
-		echo -e "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
-		echo -e "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
-		echo -e "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
-		echo -e "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
-		echo -e "${red}                                            ${nocolor}"
-		echo -e "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
-		echo -e "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
-		echo -e "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
-		echo -e "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
-		echo -e "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
-		echo -e "${red}                                            ${nocolor}"
+		echo "${red}                                            ${nocolor}"
+		echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
+		echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
+		echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
+		echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
+		echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
+		echo "${red}                                            ${nocolor}"
+		echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
+		echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
+		echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
+		echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
+		echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
+		echo "${red}                                            ${nocolor}"
 		exit 1
 	else
 		# error if serverdirectory still exists
-		echo -e "${red}venting failed!${nocolor}"
+		echo "${red}venting failed!${nocolor}"
 		exit 1
 	fi
 fi
 
 # warning
-echo -e "${blue}[Script]${nocolor} ${red}WARNING: venting startet!${nocolor}"
+echo "${blue}[Script]${nocolor} ${red}WARNING: venting startet!${nocolor}"
 screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"WARNING: venting startet!\",\"color\":\"red\"}]$(printf '\r')"
 
 # sleep for 2 seconds
@@ -95,7 +95,7 @@ sleep 2s
 counter="120"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(120|60|40|20|10|9|8|7|6|5|4|3|2|1)$ ]]; then
-		echo -e "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
+		echo "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is self-destructing in ${counter} seconds\",\"color\":\"red\"}]$(printf '\r')"
 	fi
 	counter=$((counter-1))
@@ -103,7 +103,7 @@ while [ ${counter} -gt 0 ]; do
 done
 
 # game over
-echo -e "${blue}[Script]${nocolor} ${red}GAME OVER${nocolor}"
+echo "${blue}[Script]${nocolor} ${red}GAME OVER${nocolor}"
 screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"GAME OVER\",\"color\":\"red\"}]$(printf '\r')"
 
 # sleep 2 seconds
@@ -126,7 +126,7 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
@@ -142,22 +142,22 @@ rm -r ${servername}
 # check if vent was successful
 if ! [ -d "${serverdirectory}" ]; then
 	# game over terminal screen
-	echo -e "${red}                                            ${nocolor}"
-	echo -e "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
-	echo -e "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
-	echo -e "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
-	echo -e "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
-	echo -e "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
-	echo -e "${red}                                            ${nocolor}"
-	echo -e "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
-	echo -e "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
-	echo -e "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
-	echo -e "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
-	echo -e "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
-	echo -e "${red}                                            ${nocolor}"
+	echo "${red}                                            ${nocolor}"
+	echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
+	echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
+	echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
+	echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
+	echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
+	echo "${red}                                            ${nocolor}"
+	echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
+	echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
+	echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
+	echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
+	echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
+	echo "${red}                                            ${nocolor}"
 	exit 1
 else
 	# error if serverdirectory still exists
-	echo -e "${red}venting failed!${nocolor}"
+	echo "${red}venting failed!${nocolor}"
 	exit 1
 fi

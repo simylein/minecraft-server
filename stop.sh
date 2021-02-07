@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -47,7 +47,7 @@ echo "${date} executing stop script" >> ${screenlog}
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
-	echo -e "${yellow}server is not currently running!${nocolor}"
+	echo "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ fi
 counter="60"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo -e "${blue}[Script]${nocolor} server is stopping in ${counter} seconds"
+		echo "${blue}[Script]${nocolor} server is stopping in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is stopping in ${counter} seconds\"}]$(printf '\r')"
 	fi
 	counter=$((counter-1))
@@ -79,10 +79,10 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
 # output confirmed stop
 echo "server successfully stopped!" >> ${screenlog}
-echo -e "${green}server successfully stopped!${nocolor}"
+echo "${green}server successfully stopped!${nocolor}"

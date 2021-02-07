@@ -9,7 +9,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -62,7 +62,7 @@ if [ ${dohourly} = true ]; then
 
 	# checks for the existence of a screen terminal
 	if ! screen -list | grep -q "\.${servername}"; then
-		echo -e "${yellow}server is not currently running!${nocolor}"
+		echo "${yellow}server is not currently running!${nocolor}"
 		echo "server is not currently running!" >> ${screenlog}
 		echo "server is not currently running!" >> ${backuplog}
 		echo "" >> ${backuplog}
@@ -142,7 +142,7 @@ if [ ${hours} -eq 22 ]; then
 
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
-			echo -e "${yellow}server is not currently running!${nocolor}"
+			echo "${yellow}server is not currently running!${nocolor}"
 			echo "server is not currently running!" >> ${screenlog}
 			echo "server is not currently running!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -224,7 +224,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
-			echo -e "${yellow}server is not currently running!${nocolor}"
+			echo "${yellow}server is not currently running!${nocolor}"
 			echo "server is not currently running!" >> ${screenlog}
 			echo "server is not currently running!" >> ${backuplog}
 			echo "" >> ${backuplog}
@@ -306,7 +306,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
-			echo -e "${yellow}server is not currently running!${nocolor}"
+			echo "${yellow}server is not currently running!${nocolor}"
 			echo "server is not currently running!" >> ${screenlog}
 			echo "server is not currently running!" >> ${backuplog}
 			echo "" >> ${backuplog}

@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -47,7 +47,7 @@ echo "${date} executing update script" >> ${screenlog}
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
-	echo -e "${yellow}server is not currently running!${nocolor}"
+	echo "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ fi
 counter="60"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo -e "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
+		echo "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
 	fi
 	counter=$((counter-1))
@@ -79,7 +79,7 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-		echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+		echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 		screen -S ${servername} -X quit
 fi
 
@@ -89,12 +89,12 @@ if [[ -s "${backupdirectory}/cached/update-"* ]]; then
 fi
 
 # create backup
-echo -e "${blue}backing up...${nocolor}"
+echo "${blue}backing up...${nocolor}"
 tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/update-${newdaily}.tar.gz" ]]; then
-	echo -e "${red}warning: safety backup failed - proceeding to server update${nocolor}"
+	echo "${red}warning: safety backup failed - proceeding to server update${nocolor}"
 	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 else
 	echo "created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
@@ -104,10 +104,10 @@ fi
 # Test internet connectivity and update on success
 wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 if [ "$?" != 0 ]; then
-	echo -e "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
+	echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 	echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 else
-	echo -e "${green}downloading newest server version...${nocolor}"
+	echo "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
 	# check if already on newest version
 	if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
@@ -119,15 +119,15 @@ else
 		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			echo -e "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+			echo "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
 				rm ${serverfile}
 			fi
 		else
-			echo -e "${yellow}Warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
-			echo -e "Server will startup with old serverfile ${serverfile}"
+			echo "${yellow}Warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
+			echo "Server will startup with old serverfile ${serverfile}"
 		fi
 	fi
 fi
@@ -135,10 +135,10 @@ fi
 # Test internet connectivity and update on success
 wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
 if [ "$?" != 0 ]; then
-	echo -e "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
+	echo "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
 	echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
 else
-	echo -e "${green}downloading newest scripts version...${nocolor}"
+	echo "${green}downloading newest scripts version...${nocolor}"
 	echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
 		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
@@ -156,5 +156,5 @@ else
 fi
 
 # restart the server
-echo -e "${green}restarting server...${nocolor}"
+echo "${green}restarting server...${nocolor}"
 ./start.sh

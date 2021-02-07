@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -47,7 +47,7 @@ echo "${date} executing reset script" >> ${screenlog}
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
-	echo -e "${yellow}server is not currently running!${nocolor}"
+	echo "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ fi
 counter="60"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo -e "${blue}[Script]${nocolor} server is resetting in ${counter} seconds"
+		echo "${blue}[Script]${nocolor} server is resetting in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is resetting in ${counter} seconds\"}]$(printf '\r')"
 	fi
@@ -80,12 +80,12 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
 # output confirmed stop
-echo -e "${green}server successfully stopped!${nocolor}"
+echo "${green}server successfully stopped!${nocolor}"
 
 # remove al older safety backups
 if [[ -s "${backupdirectory}/cached/reset-"* ]]; then
@@ -93,12 +93,12 @@ if [[ -s "${backupdirectory}/cached/reset-"* ]]; then
 fi
 
 # create backup
-echo -e "${blue}backing up...${nocolor}"
+echo "${blue}backing up...${nocolor}"
 tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/reset-${newdaily}.tar.gz
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/reset-${newdaily}.tar.gz" ]]; then
-	echo -e "${red}fatal: safety backup failed - can not proceed to remove world"
+	echo "${red}fatal: safety backup failed - can not proceed to remove world"
 	echo "fatal: safety backup failed - can not proceed to remove world" >> ${screenlog}
 	exit 1
 else
@@ -107,10 +107,10 @@ else
 fi
 
 # remove log and world
-echo -e "${red}removing world directory...${nocolor}"
+echo "${red}removing world directory...${nocolor}"
 rm -r world
 mkdir world
 
 # restart the server
-echo -e "${blue}restarting server...${nocolor}"
+echo "${blue}restarting server...${nocolor}"
 ./start.sh

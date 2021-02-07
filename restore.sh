@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -47,7 +47,7 @@ echo "${date} executing restore script" >> ${screenlog}
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
-	echo -e "${yellow}server is not currently running!${nocolor}"
+	echo "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ fi
 counter="60"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo -e "${blue}[Script]${nocolor} server is restoring a backup in ${counter} seconds"
+		echo "${blue}[Script]${nocolor} server is restoring a backup in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is restoring a backup in ${counter} seconds\"}]$(printf '\r')"
 	fi
 	counter=$((counter-1))
@@ -79,12 +79,12 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
 # output confirmed stop
-echo -e "${green}server successfully stopped!${nocolor}"
+echo "${green}server successfully stopped!${nocolor}"
 
 # remove all older safety backups
 if [[ -s "${backupdirectory}/cached/restore-"* ]]; then
@@ -92,12 +92,12 @@ if [[ -s "${backupdirectory}/cached/restore-"* ]]; then
 fi
 
 # create backup
-echo -e "${blue}backing up...${nocolor}"
+echo "${blue}backing up...${nocolor}"
 tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/restore-${newdaily}.tar.gz
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/restore-${newdaily}.tar.gz" ]]; then
-	echo -e "${red}warning: safety backup failed - proceeding to server restore${nocolor}"
+	echo "${red}warning: safety backup failed - proceeding to server restore${nocolor}"
 	echo "warning: safety backup failed - proceeding to server restore" >> ${screenlog}
 else
 	echo "created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
@@ -190,27 +190,27 @@ read -p "Continue? [Y/N]: "
 # if user replys yes perform restore
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	cd ${serverdirectory}
-	echo -e "${green}restoring backup...${nocolor}"
+	echo "${green}restoring backup...${nocolor}"
 	mv ${serverdirectory}/world ${serverdirectory}/old-world
 	cp ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
 	mv ${backup} world.tar.gz
 	tar -xf world.tar.gz
 	rm world.tar.gz
 	if [ -d "world" ]; then
-		echo -e "${green}restore successful${nocolor}"
-		echo -e "${blue}restarting server with restored backup...${nocolor}"
+		echo "${green}restore successful${nocolor}"
+		echo "${blue}restarting server with restored backup...${nocolor}"
 		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
 		rm -r ${serverdirectory}/old-world
 	else
-		echo -e "${red}something went wrong - could not restore backup${nocolor}"
+		echo "${red}something went wrong - could not restore backup${nocolor}"
 		echo "something went wrong - could not restore backup" >> ${screenlog}
 		mv ${serverdirectory}/old-world ${serverdirectory}/world
 	fi
 	./start.sh
 # if user replys no cancel and restart server
 else cd ${serverdirectory}
-	echo -e "${yellow}canceling backup restore...${nocolor}"
-	echo -e "${blue}restarting server...${nocolor}"
+	echo "${yellow}canceling backup restore...${nocolor}"
+	echo "${blue}restarting server...${nocolor}"
 	echo "backup restore has been canceled" >> ${screenlog}
 	echo "resuming to current live world" >> ${screenlog}
 	./start.sh

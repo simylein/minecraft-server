@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -46,7 +46,7 @@ echo "${date} executing maintenance script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
-	echo -e "${yellow}server is not currently running!${nocolor}"
+	echo "${yellow}server is not currently running!${nocolor}"
 	exit 1
 fi
 
@@ -54,7 +54,7 @@ fi
 counter="60"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo -e "${blue}[Script]${nocolor} server is going into maintenance in ${counter} seconds"
+		echo "${blue}[Script]${nocolor} server is going into maintenance in ${counter} seconds"
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is going into maintenance in ${counter} seconds\"}]$(printf '\r')"
 	fi
 	counter=$((counter-1))
@@ -78,12 +78,12 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo -e "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
 # output confirmed stop
-echo -e "${green}server successfully stopped!${nocolor}"
+echo "${green}server successfully stopped!${nocolor}"
 
 # remove all older safety backups
 if [[ -s "${backupdirectory}/cached/maintenance-"* ]]; then
@@ -91,12 +91,12 @@ if [[ -s "${backupdirectory}/cached/maintenance-"* ]]; then
 fi
 
 # create backup
-echo -e "${blue}backing up...${nocolor}"
+echo "${blue}backing up...${nocolor}"
 tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/maintenance-${newdaily}.tar.gz" ]]; then
-	echo -e "${red}warning: safety backup failed - proceeding to server maintenance${nocolor}"
+	echo "${red}warning: safety backup failed - proceeding to server maintenance${nocolor}"
 	echo "warning: safety backup failed - proceeding to server maintenance" >> ${screenlog}
 else
 	echo "created ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz as a safety backup" >> ${backuplog}

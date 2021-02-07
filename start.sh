@@ -3,7 +3,7 @@
 
 # root safety check
 if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!"
+	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
@@ -43,7 +43,7 @@ fi
 
 # check for executable
 if ! ls ${serverfile}* 1> /dev/null 2>&1; then
-	echo -e "${red}Fatal: no executable found!${nocolor}"
+	echo "${red}Fatal: no executable found!${nocolor}"
 	echo "Fatal: no executable found!" >> ${screenlog}
 	echo "Fatal: no executable found!" >> fatalerror.log
 	exit 1
@@ -59,7 +59,7 @@ echo "${date} executing start script" >> ${screenlog}
 # check if server is already running
 if screen -list | grep -q "\.${servername}"; then
 	echo "Server is already running!  Type screen -r ${servername} to open the console" >> ${screenlog}
-	echo -e "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
+	echo "${yellow}Server is already running!  Type screen -r ${servername} to open the console${nocolor}"
 	exit 1
 fi
 
@@ -67,12 +67,12 @@ fi
 interfacechecks="0"
 while [ ${interfacechecks} -lt 8 ]; do
 	if ping -c 1 ${interface} &> /dev/null
-	then echo -e "${green}Success: Interface is online${nocolor}" && echo "Success: Interface is online" >> ${screenlog}
+	then echo "${green}Success: Interface is online${nocolor}" && echo "Success: Interface is online" >> ${screenlog}
 		break
-	else echo -e "${red}Warning: Interface is offline${nocolor}" && echo "Warning: Interface is offline" >> ${screenlog}
+	else echo "${red}Warning: Interface is offline${nocolor}" && echo "Warning: Interface is offline" >> ${screenlog}
 	fi
 	if [ ${interfacechecks} -eq 7 ]; then
-		echo -e "${red}Fatal: Interface timed out${nocolor}" && echo "Fatal: Interface timed out" >> ${screenlog}
+		echo "${red}Fatal: Interface timed out${nocolor}" && echo "Fatal: Interface timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
@@ -82,12 +82,12 @@ done
 networkchecks="0"
 while [ ${networkchecks} -lt 8 ]; do
 	if ping -c 1 ${dnsserver} &> /dev/null
-	then echo -e "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
+	then echo "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
 		break
-	else echo -e "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
+	else echo "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
 	fi
 	if [ ${networkchecks} -eq 7 ]; then
-		echo -e "${red}Fatal: Nameserver timed out${nocolor}" && echo "Fatal: Nameserver timed out" >> ${screenlog}
+		echo "${red}Fatal: Nameserver timed out${nocolor}" && echo "Fatal: Nameserver timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	networkchecks=$((networkchecks+1))
@@ -120,13 +120,13 @@ done
 # if no screen output error
 if ! screen -list | grep -q "${servername}"; then
 	echo "something went wrong - server failed to start!" >> ${screenlog}
-	echo -e "${red}something went wrong - server failed to start!${nocolor}"
+	echo "${red}something went wrong - server failed to start!${nocolor}"
 	exit 1
 fi
 
 # succesful start sequence
 echo "server is on startup..." >> ${screenlog}
-echo -e "${green}server is on startup...${nocolor}"
+echo "${green}server is on startup...${nocolor}"
 
 # check if screenlog contains start comfirmation
 count="0"
@@ -135,12 +135,12 @@ startupchecks="0"
 while [ ${startupchecks} -lt 120 ]; do
 	if tail ${screenlog} | grep -q "Query running on"; then
 		echo "server startup successful - query up and running" >> ${screenlog}
-		echo -e "${green}server startup successful - query up and running${nocolor}"
+		echo "${green}server startup successful - query up and running${nocolor}"
 		break
 	fi
 	if ! screen -list | grep -q "${servername}"; then
 		echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
-		echo -e "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
+		echo "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
 		exit 1
 	fi
 	if tail ${screenlog} | grep -q "Preparing spawn area"; then
@@ -159,12 +159,12 @@ while [ ${startupchecks} -lt 120 ]; do
 		count=$((count+1))
 	fi
 	if [ ${counter} -ge 10 ]; then
-		echo -e "server is preparing spawn area..."
+		echo "server is preparing spawn area..."
 		counter="0"
 	fi
 	if [ ${count} -eq 0 ] && [ ${startupchecks} -eq 20 ]; then
 		echo "Warning: the server could be crashed" >> ${screenlog}
-		echo -e "${yellow}Warning: the server could be crashed${nocolor}"
+		echo "${yellow}Warning: the server could be crashed${nocolor}"
 		exit 1
 	fi
 	startupchecks=$((startupchecks+1))
@@ -174,7 +174,7 @@ done
 # check if screenlog does not contain startup confirmation
 if ! tail ${screenlog} | grep -q "Query running on"; then
 	echo "server startup unsuccessful - perhaps query is disabled" >> ${screenlog}
-	echo -e "${yellow}server startup unsuccessful - perhaps query is disabled${nocolor}"
+	echo "${yellow}server startup unsuccessful - perhaps query is disabled${nocolor}"
 fi
 
 # user information
