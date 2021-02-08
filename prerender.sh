@@ -271,6 +271,7 @@ select method in "${method[@]}"; do
 					if screen -list | grep -q "${servername}"; then
 						screen -S ${servername} -X quit
 					fi
+					${interval}
 					# main start commmand
 					${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
 					${screen} -r ${servername} -X colon "logfile flush 1^M"
