@@ -9,7 +9,7 @@ function PrintToScreen {
 	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
 }
 
-# prints colorful error messages into screen
+# prints colourful error messages into screen
 function PrintToScreenBackupError {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: missing directories, empty filepath or empty files\"}]}}}]$(printf '\r')"
 }
@@ -22,7 +22,7 @@ function PrintToLogBackupError {
 	echo "" >> ${backuplog}
 }
 
-# prints colorful success messages into screen
+# prints colourful success messages into screen
 function PrintToScreenBackupSuccess {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, time spent: ${timespent} ms\"}]}}}]$(printf '\r')"
 }
@@ -38,7 +38,7 @@ function PrintToLogBackupSuccess {
 	echo "" >> ${backuplog}
 }
 
-# prints colorful not enough disk space message into screen
+# prints colourful not enough disk space message into screen
 function PrintToScreenNotEnoughtDiskSpace {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 }
@@ -49,6 +49,12 @@ function PrintToLogNotEnoughDiskSpace {
 	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
 	echo "" >> ${backuplog}
 }
+
+# prints colourful backup already exists message into screen
+function PrintToScreenBackupAlreadyExists {}
+
+# prints backup already exists to backup log
+function PrintToLogBackupAlreadyExists {}
 
 # creates an archive from a directory with progress bar
 function ArchiveDirectoryWithProgress {
