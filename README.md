@@ -36,7 +36,7 @@ I will explain some of them to you.
 
 `whitelist add ${playername}` adding someone to your whitelist so he/she can join your server. <br>
 `whitelist remove ${playername}` remove someone to your whitelist so he/she can no longer join your server. <br>
-`op ${playername}` make someone admin on. your server so he/she can execute commands. <br>
+`op ${playername}` make someone admin on your server so he/she can execute commands. <br>
 `deop ${playername}` remove admin permissions for a player so he/she can no longer execute commands. <br>
 `ban ${playername}` ban someone from your server so he/she can no longer join your server. <br>
 `pardon ${playername}` pardon someone from your server so he/she can join your server. <br>
