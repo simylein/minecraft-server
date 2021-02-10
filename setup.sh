@@ -309,11 +309,21 @@ pvp="pvp=${pvp}"
 echo "Would you like to turn on command-blocks? Example: ${yellow}true${nocolor}"
 read -re -i "true" -p "Your choice: " cmdblock
 regex="^(true|false)$"
-while [[ ! ${cmdblock} =~ true$ ]]; do
+while [[ ! ${cmdblock} =~ ${regex} ]]; do
 	read -p "Please enter true or false: " cmdblock
 done
 echo "Your Server will be on ${green}${cmdblock}${nocolor}"
 cmdblock="enable-command-block=${cmdblock}"
+
+# ask for entity broadcast range
+echo "How far would you like to be able to see entities? Example: ${yellow}250${nocolor}"
+read -re -i "250" -p "Your range: " entitybroadcast
+regex="^([1-4][0-9][0-9]|500)$"
+while [[ ! ${entitybroadcast} =~ ${regex} ]]; do
+	read -p "Please enter a number between 100 and 500: " entitybroadcast
+done
+echo "Your Server will broadcast entities ${green}${entitybroadcast}${nocolor}"
+entitybroadcast="entity-broadcast-range-percentage=${entitybroadcast}"
 
 # ask for server message
 echo "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
@@ -377,6 +387,7 @@ echo "# files and directories" >> server.settings
 echo "storing variables in server.properties..."
 	echo "${viewdistance}" >> server.properties
 	echo "${spawnprotection}" >> server.properties
+	echo "${entitybroadcast}" >> server.properties
 	echo "${maxplayers}" >> server.properties
 	echo "${serverport}" >> server.properties
 	echo "${queryport}" >> server.properties
