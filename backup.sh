@@ -17,14 +17,14 @@ fi
 if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
-	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
 	echo "fatal: server.functions is missing"
 	exit 1
 fi
 
 # read server.properties file with error checking
 if ! [[ -s "server.properties" ]]; then
-	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
 	echo "fatal: server.properties is missing"
 	exit 1
 fi
@@ -33,7 +33,7 @@ fi
 if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
-	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
 	echo "fatal: server.settings is missing"
 	exit 1
 fi
@@ -42,7 +42,7 @@ fi
 if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
-	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
 	echo "fatal: serverdirectory is missing"
 	exit 1
 fi
@@ -72,8 +72,8 @@ if [ ${dohourly} = true ]; then
 	# check if world is bigger than diskspace
 	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
 		# ingame and logfile error output
-		PrintToLogNotEnoughDiskSpace "hourly"
 		PrintToScreenNotEnoughtDiskSpace "${newhourly}" "${oldhourly}"
+		PrintToLogNotEnoughDiskSpace "hourly"
 		exit 1
 	fi
 
@@ -81,8 +81,8 @@ if [ ${dohourly} = true ]; then
 	if ! [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
 		tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz
 	else
-		echo "warning: backup already exists!" >> ${backuplog}
-		echo "" >> ${backuplog}
+		PrintToScreenBackupAlreadyExists "${newhourly}" "${oldhourly}"
+		PrintToLogBackupAlreadyExists "hourly"
 		exit 1
 	fi
 
@@ -100,7 +100,7 @@ if [ ${dohourly} = true ]; then
 		if [[ -s "server.settings" ]]; then
 			. ./server.settings
 		else
-			echo "fatal: server.settings is missing" >> fatalerror.log
+			echo "$(date) fatal: server.settings is missing" >> fatalerror.log
 			echo "fatal: server.settings is missing"
 			exit 1
 		fi
@@ -152,8 +152,8 @@ if [ ${hours} -eq 22 ]; then
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 			# ingame and logfile error output
-			PrintToLogNotEnoughDiskSpace "daily"
 			PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
+			PrintToLogNotEnoughDiskSpace "daily"
 			exit 1
 		fi
 
@@ -161,8 +161,8 @@ if [ ${hours} -eq 22 ]; then
 		if ! [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/daily/${servername}-${newdaily}.tar.gz
 		else
-			echo "warning: backup already exists!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToScreenBackupAlreadyExists "${newdaily}" "${olddaily}"
+			PrintToLogBackupAlreadyExists "daily"
 			exit 1
 		fi
 
@@ -180,7 +180,7 @@ if [ ${hours} -eq 22 ]; then
 			if [[ -s "server.settings" ]]; then
 				. ./server.settings
 			else
-				echo "fatal: server.settings is missing" >> fatalerror.log
+				echo "$(date) fatal: server.settings is missing" >> fatalerror.log
 				echo "fatal: server.settings is missing"
 				exit 1
 			fi
@@ -234,8 +234,8 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 			# ingame and logfile error output
-			PrintToLogNotEnoughDiskSpace "weekly"
 			PrintToScreenNotEnoughtDiskSpace "${newweekly}" "${oldweekly}"
+			PrintToLogNotEnoughDiskSpace "weekly"
 			exit 1
 		fi
 
@@ -243,8 +243,8 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		if ! [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz
 		else
-			echo "warning: backup already exists!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToScreenBackupAlreadyExists "${newweekly}" "${oldweekly}"
+			PrintToLogBackupAlreadyExists "weekly"
 			exit 1
 		fi
 
@@ -316,8 +316,8 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 			# ingame and logfile error output
-			PrintToLogNotEnoughDiskSpace "monthly"
 			PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
+			PrintToLogNotEnoughDiskSpace "monthly"
 			exit 1
 		fi
 
@@ -325,8 +325,8 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		if ! [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz
 		else
-			echo "warning: backup already exists!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToScreenBackupAlreadyExists "${newmonthly}" "${oldmonthly}"
+			PrintToLogBackupAlreadyExists "monthly"
 			exit 1
 		fi
 
@@ -344,7 +344,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			if [[ -s "server.settings" ]]; then
 				. ./server.settings
 			else
-				echo "fatal: server.settings is missing" >> fatalerror.log
+				echo "$(date) fatal: server.settings is missing" >> fatalerror.log
 				echo "fatal: server.settings is missing"
 				exit 1
 			fi

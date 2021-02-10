@@ -17,8 +17,8 @@ function PrintToScreenBackupError {
 # prints backup error to backup log
 function PrintToLogBackupError {
 	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-	echo "warning: could not remove old backup!" >> ${backuplog}
-	echo "fatal: could not backup world!" >> ${backuplog}
+	echo "warning: could not remove old backup" >> ${backuplog}
+	echo "fatal: could not backup world" >> ${backuplog}
 	echo "" >> ${backuplog}
 }
 
@@ -29,9 +29,9 @@ function PrintToScreenBackupSuccess {
 
 # prints backup success to backup log
 function PrintToLogBackupSuccess {
-	echo "newest backup has been successfully created!" >> ${backuplog}
+	echo "newest backup has been successfully created" >> ${backuplog}
 	echo "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz" >> ${backuplog}
-	echo "oldest backup has been successfully removed!" >> ${backuplog}
+	echo "oldest backup has been successfully removed" >> ${backuplog}
 	echo "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz" >> ${backuplog}
 	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
 	echo "time spent on backup process: ${timespent} milliseconds" >> ${backuplog}
@@ -45,16 +45,23 @@ function PrintToScreenNotEnoughtDiskSpace {
 
 # prints not enough disk space to backup log
 function PrintToLogNotEnoughDiskSpace {
-	echo -e "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
+	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
 	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
 	echo "" >> ${backuplog}
 }
 
 # prints colourful backup already exists message into screen
-function PrintToScreenBackupAlreadyExists {}
+function PrintToScreenBackupAlreadyExists {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: backup already exists\"}]}}}]$(printf '\r')"
+}
 
 # prints backup already exists to backup log
-function PrintToLogBackupAlreadyExists {}
+function PrintToLogBackupAlreadyExists {
+	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
+	echo "warning: could not create new ${1}-backup" >> ${backuplog}
+	echo "warning: backup already exists" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
 
 # creates an archive from a directory with progress bar
 function ArchiveDirectoryWithProgress {
