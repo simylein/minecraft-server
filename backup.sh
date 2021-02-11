@@ -77,6 +77,12 @@ if [ ${dohourly} = true ]; then
 		exit 1
 	fi
 
+	# check if disk space is getting low
+	if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
+		PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+		PrintToLogDiskSpaceWarning
+	fi
+
 	# check if there is no backup from the current hour
 	if ! [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
 		tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz
@@ -155,6 +161,12 @@ if [ ${hours} -eq 22 ]; then
 			PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
 			PrintToLogNotEnoughDiskSpace "daily"
 			exit 1
+		fi
+
+		# check if disk space is getting low
+		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
+			PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+			PrintToLogDiskSpaceWarning
 		fi
 
 		# check if there is no backup from the current day
@@ -239,6 +251,12 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			exit 1
 		fi
 
+		# check if disk space is getting low
+		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
+			PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+			PrintToLogDiskSpaceWarning
+		fi
+
 		# check if there is no backup from the current week
 		if ! [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz
@@ -319,6 +337,12 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
 			PrintToLogNotEnoughDiskSpace "monthly"
 			exit 1
+		fi
+
+		# check if disk space is getting low
+		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
+			PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+			PrintToLogDiskSpaceWarning
 		fi
 
 		# check if there is no backup from the current month
