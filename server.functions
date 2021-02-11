@@ -2,31 +2,20 @@
 # minecraft server settings
 
 # this file stores all the functions for the server.
+# please notice that editing functions can have devastating effects
 # if you know what you are doing, feel free to tinker with them ;^)
+
 
 # prints all input to screen terminal
 function PrintToScreen {
 	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
 }
 
-# prints colourful error messages into screen
-function PrintToScreenBackupError {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: missing directories, empty filepath or empty files\"}]}}}]$(printf '\r')"
-}
-
-# prints backup error to backup log
-function PrintToLogBackupError {
-	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-	echo "warning: could not remove old backup" >> ${backuplog}
-	echo "fatal: could not backup world" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
 
 # prints colourful success messages into screen
 function PrintToScreenBackupSuccess {
 	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, time spent: ${timespent} ms\"}]}}}]$(printf '\r')"
 }
-
 # prints backup success to backup log
 function PrintToLogBackupSuccess {
 	echo "newest backup has been successfully created" >> ${backuplog}
@@ -38,23 +27,11 @@ function PrintToLogBackupSuccess {
 	echo "" >> ${backuplog}
 }
 
-# prints colourful not enough disk space message into screen
-function PrintToScreenNotEnoughtDiskSpace {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
-}
-
-# prints not enough disk space to backup log
-function PrintToLogNotEnoughDiskSpace {
-	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
-	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
 
 # prints colourful backup already exists message into screen
 function PrintToScreenBackupAlreadyExists {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: could not create new backup - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: backup already exists\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: backup already exists - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: backup already exists\"}]}}}]$(printf '\r')"
 }
-
 # prints backup already exists to backup log
 function PrintToLogBackupAlreadyExists {
 	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
@@ -63,12 +40,50 @@ function PrintToLogBackupAlreadyExists {
 	echo "" >> ${backuplog}
 }
 
-# creates an archive from a directory with progress bar
-function ArchiveDirectoryWithProgress {
-	tar cf - ${1} -P | pv -s $(du -sb ${1} | awk '{print $1}') | gzip > ${1}.tar.gz
+
+# prints colorful disk space warning message into screen
+function PrintToScreenDiskSpaceWarning {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: free disk space is getting rare - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, warning: free disk space is getting rare\"}]}}}]$(printf '\r')"
+}
+# prints disk space warning to backup log
+function PrintToLogDiskSpaceWarning {
+	echo "${yellow}warning: free disk-space is getting rare${nocolor}"
+	echo "warning: free disk-space is getting rare" >> ${backuplog}
 }
 
+
+# prints colourful not enough disk space message into screen
+function PrintToScreenNotEnoughtDiskSpace {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
+}
+# prints not enough disk space to backup log
+function PrintToLogNotEnoughDiskSpace {
+	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
+	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+
+
+# prints colourful error messages into screen
+function PrintToScreenBackupError {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: missing directories, empty file-path or empty files\"}]}}}]$(printf '\r')"
+}
+# prints backup error to backup log
+function PrintToLogBackupError {
+	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
+	echo "warning: could not remove old backup" >> ${backuplog}
+	echo "fatal: could not backup world" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+
+
+# creates an archive from a directory with progress bar
+function ArchiveDirectoryWithProgress {
+	echo "I will create a compressed archive for ${1}"
+	tar cf - ${1} -P | pv -s $(du -sb ${1} | awk '{print $1}') | gzip > ${1}.tar.gz
+}
 # extracts a directory from an archive with progress bar
 function ExtractDirectoryWithProgress {
+	echo "I will extract the archive ${1}"
 	pv ${1}.tar.gz | tar -xz
 }
