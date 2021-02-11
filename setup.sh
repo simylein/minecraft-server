@@ -10,13 +10,13 @@ if [ $(id -u) = 0 ]; then
 	exit 1
 fi
 
+# check for operating system and for free memory
 if [ "$(uname)" == "Darwin" ]; then
 	echo "$(tput bold)$(tput setaf 3)you are running macOS as your operating system - your server may not run!$(tput sgr0)"
-	elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-	echo "$(tput bold)$(tput setaf 2)you are running Linux as your operating system :) - script will execute setup now!$(tput sgr0)"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	memory="$(free | tail -2 | head -1 | awk '{print $4}')"
 	if (( ${memory} < 2560000 )); then
-		echo "$(tput bold)$(tput setaf 3)your system has less than 2.56 GB of memory :( - your server may not run!$(tput sgr0)"
+		echo "$(tput bold)$(tput setaf 3)your system has less than 2.56 GB of memory - your server may not run!$(tput sgr0)"
 	fi
 fi
 
@@ -432,6 +432,15 @@ select setup in ${serversetup[@]}; do
 			echo "Your Server will broadcast entities ${green}${entitybroadcast}${nocolor}"
 			entitybroadcast="entity-broadcast-range-percentage=${entitybroadcast}"
 
+			# ask for server console
+			echo "Would you like to change to server console after successful startup? Example: ${yellow}false${nocolor}"
+			read -re -i "false" -p "Your choice: " changetoconsole
+			regex="^(true|false)$"
+			while [[ ! ${changetoconsole} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " changetoconsole
+			done
+			echo "Your Server will be on change-to-console ${green}${changetoconsole}${nocolor}"
+
 			# ask for server message
 			echo "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
 			read -re -i "Hello World, I am your new Minecraft Server ;^)" -p "Your message: " motd
@@ -469,6 +478,7 @@ select setup in ${serversetup[@]}; do
 			structures="generate-structures=true"
 			cmdblock="enable-command-block=true"
 			entitybroadcast="entity-broadcast-range-percentage=250"
+			changetoconsole="false"
 			motd="motd=Hello World, I am your new Minecraft Server ;^)"
 
 			break
@@ -495,6 +505,11 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]
 fi
 
 # store all the userinput
+echo "# change to server console after startup"
+	for var in changetoconsole; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+echo ""
 echo "storing variables in server.settings..."
 echo "" >> server.settings
 echo "# network stuff" >> server.settings
