@@ -10,6 +10,16 @@ if [ $(id -u) = 0 ]; then
 	exit 1
 fi
 
+if [ "$(uname)" == "Darwin" ]; then
+	echo "$(tput bold)$(tput setaf 3)you are running macOS as your operating system - your server may not run!$(tput sgr0)"
+	elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	echo "$(tput bold)$(tput setaf 2)you are running Linux as your operating system :) - script will execute setup now!$(tput sgr0)"
+	memory="$(free | tail -2 | head -1 | awk '{print $4}')"
+	if (( ${memory} < 2560000 )); then
+		echo "$(tput bold)$(tput setaf 3)your system has less than 2.56 GB of memory :( - your server may not run!$(tput sgr0)"
+	fi
+fi
+
 # command line colours
 black="$(tput setaf 0)"
 red="$(tput setaf 1)"
