@@ -84,7 +84,7 @@ serverdirectory=`pwd`
 PS3="Which server version would you like to install? "
 versions=("1.16.5" "1.15.2" "1.14.4" "1.13.2" "1.12.2" "1.11.2" "1.10.2" "1.9.4" "1.8.9" "1.7.10")
 select version in "${versions[@]}"; do
-	case $version in
+	case ${version} in
 		"1.16.5")
 			echo "downloading minecraft-server.1.16.5.jar..."
 				wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
@@ -166,170 +166,304 @@ mkdir backups
 	cd ../
 
 # ask all the importatnt user input
-	
-# ask for a valid dnsserver
-echo "Please tell me which dnsserver you would like to use. Example: ${yellow}1.1.1.1${nocolor}"
-read -re -i "1.1.1.1" -p "Your dnsserver: " dnsserver
-regex="^(0*(1?[0-9]{1,2}|2([0-4][0-9]|5[0-5]))\.){3}"
-while [[ ! ${dnsserver} =~ ${regex} ]]; do
-	read -p "Please enter a valid ip address: " dnsserver
-done
-echo "Your server will ping ${green}${dnsserver}${nocolor} at start."
 
-# ask for a valid interface
-echo "Please tell me which interface you would like to use. Example: ${yellow}192.168.1.1${nocolor}"
-read -re -i "192.168.1.1" -p "Your interface: " interface
-regex="^(0*(1?[0-9]{1,2}|2([0-4][0-9]|5[0-5]))\.){3}"
-while [[ ! ${interface} =~ ${regex} ]]; do
-	read -p "Please enter a valid ip address: " interface
-done
-echo "Your server will ping ${green}${interface}${nocolor} at start."
+PS3="How would you like to setup your server? "
+serversetup=("I'm a nerd! let me customise everything!" "I don't care! Please just make it work!")
+select setup in ${serversetup[@]}; do
+	case ${setup} in
+		"I'm a nerd! let me customise everything!")
 
-# ask for minimum memory
-echo "How much minimum memory would you like to grant your Server? Example: ${yellow}256${nocolor}"
-read -re -i "256" -p "Your amount: " mems
-regex="^([2-9][5-9][6-9]|[1-4][0-9][0-9][0-9])$"
-while [[ ! ${mems} =~ ${regex} ]]; do
-	read -p "Please enter a number between 256 and 4096: " mems
-done
-echo "Your Server will will have ${green}${mems}${nocolor} MB of minimum memory allocated."
-mems="-Xms${mems}M"
+			# ask for a valid dnsserver
+			echo "Please tell me which dnsserver you would like to use. Example: ${yellow}1.1.1.1${nocolor}"
+			read -re -i "1.1.1.1" -p "Your dnsserver: " dnsserver
+			regex="^(0*(1?[0-9]{1,2}|2([0-4][0-9]|5[0-5]))\.){3}"
+			while [[ ! ${dnsserver} =~ ${regex} ]]; do
+				read -p "Please enter a valid ip address: " dnsserver
+			done
+			echo "Your server will ping ${green}${dnsserver}${nocolor} at start."
 
-# ask for maximum memory
-echo "How much maximum memory would you like to grant your Server? Example: ${yellow}2048${nocolor}"
-read -re -i "2048" -p "Your amount: " memx
-regex="^([2-9][0-9][4-9][8-9]|[0-3][0-2][0-7][0-6][0-8])$"
-while [[ ! ${memx} =~ ${regex} ]]; do
-	read -p "Please enter a number between 2048 and 32768: " memx
-done
-echo "Your Server will will have ${green}${memx}${nocolor} MB of maximum memory allocated."
-memx="-Xms${memx}M"
+			# ask for a valid interface
+			echo "Please tell me which interface you would like to use. Example: ${yellow}192.168.1.1${nocolor}"
+			read -re -i "192.168.1.1" -p "Your interface: " interface
+			regex="^(0*(1?[0-9]{1,2}|2([0-4][0-9]|5[0-5]))\.){3}"
+			while [[ ! ${interface} =~ ${regex} ]]; do
+				read -p "Please enter a valid ip address: " interface
+			done
+			echo "Your server will ping ${green}${interface}${nocolor} at start."
 
-# ask for amount of threads
-echo "How many threads would you like your Server to use? Example: ${yellow}2${nocolor}"
-read -re -i "2" -p "Your amount: " threadcount
-regex="^(0?[1-9]|[1-2][0-9]|3[0-2])$"
-while [[ ! ${threadcount} =~ ${regex} ]]; do
-	read -p "Please enter a number between 1 and 32: " threadcount
-done
-echo "Your Server will will have ${green}${threadcount}${nocolor} threads to work with."
-threadcount="-XX:ParallelGCThreads=${threadcount}"
+			# ask for minimum memory
+			echo "How much minimum memory would you like to grant your Server? Example: ${yellow}256${nocolor}"
+			read -re -i "256" -p "Your amount: " mems
+			regex="^([2-9][5-9][6-9]|[1-4][0-9][0-9][0-9])$"
+			while [[ ! ${mems} =~ ${regex} ]]; do
+				read -p "Please enter a number between 256 and 4096: " mems
+			done
+			echo "Your Server will will have ${green}${mems}${nocolor} MB of minimum memory allocated."
+			mems="-Xms${mems}M"
 
-# ask for view distance
-echo "Please specify your desired view-distance. Example: ${yellow}16${nocolor}"
-read -re -i "16" -p "Your view-distance: " viewdistance
-regex="^([2-9]|[1-5][0-9]|6[0-4])$"
-while [[ ! ${viewdistance} =~ ${regex} ]]; do
-	read -p "Please enter a number between 2 and 64: " viewdistance
-done
-echo "Your Server will have ${green}${viewdistance}${nocolor} chunks view-distance."
-viewdistance="view-distance=${viewdistance}"
+			# ask for maximum memory
+			echo "How much maximum memory would you like to grant your Server? Example: ${yellow}2048${nocolor}"
+			read -re -i "2048" -p "Your amount: " memx
+			regex="^([2-9][0-9][4-9][8-9]|[0-3][0-2][0-7][0-6][0-8])$"
+			while [[ ! ${memx} =~ ${regex} ]]; do
+				read -p "Please enter a number between 2048 and 32768: " memx
+			done
+			echo "Your Server will will have ${green}${memx}${nocolor} MB of maximum memory allocated."
+			memx="-Xms${memx}M"
 
-# ask for spawn protection
-echo "Please specify your desired spawn-protection. Example: ${yellow}16${nocolor}"
-read -re -i "16" -p "Your spawn-protection: " spawnprotection
-regex="^([2-9]|[1-5][0-9]|6[0-4])$"
-while [[ ! ${spawnprotection} =~ ${regex} ]]; do
-	read -p "Please enter a number between 2 and 64: " spawnprotection
-done
-echo "Your Server will have ${green}${spawnprotection}${nocolor} blocks spawn-protection."
-spawnprotection="spawn-protection=${spawnprotection}"
+			# ask for amount of threads
+			echo "How many threads would you like your Server to use? Example: ${yellow}2${nocolor}"
+			read -re -i "2" -p "Your amount: " threadcount
+			regex="^(0?[1-9]|[1-2][0-9]|3[0-2])$"
+			while [[ ! ${threadcount} =~ ${regex} ]]; do
+				read -p "Please enter a number between 1 and 32: " threadcount
+			done
+			echo "Your Server will will have ${green}${threadcount}${nocolor} threads to work with."
+			threadcount="-XX:ParallelGCThreads=${threadcount}"
 
-# ask for max player count
-echo "Please tell me the max-players amount. Example: ${yellow}8${nocolor}"
-read -re -i "8" -p "Your max-players: " maxplayers
-regex="^([2-9]|[0-9][0-9]|1[0-9][0-9]|200)$"
-while [[ ! ${maxplayers} =~ ${regex} ]]; do
-	read -p "Please enter a number between 2 and 200: " maxplayers
-done
-echo "Your Server will have ${green}${maxplayers}${nocolor} max-players."
-maxplayers="max-players=${maxplayers}"
+			# ask for view distance
+			echo "Please specify your desired view-distance. Example: ${yellow}16${nocolor}"
+			read -re -i "16" -p "Your view-distance: " viewdistance
+			regex="^([2-9]|[1-5][0-9]|6[0-4])$"
+			while [[ ! ${viewdistance} =~ ${regex} ]]; do
+				read -p "Please enter a number between 2 and 64: " viewdistance
+			done
+			echo "Your Server will have ${green}${viewdistance}${nocolor} chunks view-distance."
+			viewdistance="view-distance=${viewdistance}"
 
-# ask for server port
-echo "Please specify your desired server-port. Example: ${yellow}25565${nocolor}"
-read -re -i "25565" -p "Your server-port: " serverport
-regex="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-while [[ ! ${serverport} =~ ${regex} ]]; do
-	read -p "Please enter a valid port between 0 and 65535: " serverport
-done
-echo "Your Server will be on ${green}${serverport}${nocolor}"
-serverport="server-port=${serverport}"
+			# ask for spawn protection
+			echo "Please specify your desired spawn-protection. Example: ${yellow}16${nocolor}"
+			read -re -i "16" -p "Your spawn-protection: " spawnprotection
+			regex="^([2-9]|[1-5][0-9]|6[0-4])$"
+			while [[ ! ${spawnprotection} =~ ${regex} ]]; do
+				read -p "Please enter a number between 2 and 64: " spawnprotection
+			done
+			echo "Your Server will have ${green}${spawnprotection}${nocolor} blocks spawn-protection."
+			spawnprotection="spawn-protection=${spawnprotection}"
 
-# ask for query port
-echo "Please specify your desired query-port. Example: ${yellow}25565${nocolor}"
-read -re -i "25565" -p "Your query-port: " queryport
-regex="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
-while [[ ! ${queryport} =~ ^${regex} ]]; do
-	read -p "Please enter a valid port between 0 and 65535: " queryport
-done
-echo "Your Server will be on ${green}${queryport}${nocolor}"
-queryport="query.port=${queryport}"
+			# ask for max player count
+			echo "Please tell me the max-players amount. Example: ${yellow}8${nocolor}"
+			read -re -i "8" -p "Your max-players: " maxplayers
+			regex="^([2-9]|[0-9][0-9]|1[0-9][0-9]|200)$"
+			while [[ ! ${maxplayers} =~ ${regex} ]]; do
+				read -p "Please enter a number between 2 and 200: " maxplayers
+			done
+			echo "Your Server will have ${green}${maxplayers}${nocolor} max-players."
+			maxplayers="max-players=${maxplayers}"
 
-# ask for gamemode
-echo "Which gamemode would you like to play? Example: ${yellow}survival${nocolor}"
-read -re -i "survival" -p "Your gamemode: " gamemode
-regex="^(survival|creative|adventure|spectator)$"
-while [[ ! ${gamemode} =~ ${regex} ]]; do
-	read -p "Please enter a valid gamemode: " gamemode
-done
-echo "Your Server will be on ${green}${gamemode}${nocolor}"
-gamemode="gamemode=${gamemode}"
+			# ask for server port
+			echo "Please specify your desired server-port. Example: ${yellow}25565${nocolor}"
+			read -re -i "25565" -p "Your server-port: " serverport
+			regex="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+			while [[ ! ${serverport} =~ ${regex} ]]; do
+				read -p "Please enter a valid port between 0 and 65535: " serverport
+			done
+			echo "Your Server will be on ${green}${serverport}${nocolor}"
+			serverport="server-port=${serverport}"
 
-# ask for difficulty
-echo "Which difficulty would you like to have? Example: ${yellow}normal${nocolor}"
-read -re -i "normal" -p "Your difficulty: " difficulty
-regex="^(peaceful|easy|normal|hard)$"
-while [[ ! ${difficulty} =~ ${regex} ]]; do
-	read -p "Please enter a valid difficulty: " difficulty
-done
-echo "Your Server will be on ${green}${difficulty}${nocolor}"
-difficulty="difficulty=${difficulty}"
+			# ask for query port
+			echo "Please specify your desired query-port. Example: ${yellow}25565${nocolor}"
+			read -re -i "25565" -p "Your query-port: " queryport
+			regex="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$"
+			while [[ ! ${queryport} =~ ^${regex} ]]; do
+				read -p "Please enter a valid port between 0 and 65535: " queryport
+			done
+			echo "Your Server will be on ${green}${queryport}${nocolor}"
+			queryport="query.port=${queryport}"
 
-# ask for whitelist
-echo "Would you like to turn on the whitelist? Example: ${yellow}true${nocolor}"
-read -re -i "true" -p "Your choice: " whitelist
-regex="^(true|false)$"
-while [[ ! ${whitelist} =~ ${regex} ]]; do
-	read -p "Please enter true or false: " whitelist
-done
-echo "Your Server will be on whitelist ${green}${whitelist}${nocolor}"
-whitelist="white-list=${whitelist}"
+			# ask for gamemode
+			echo "Which gamemode would you like to play? Example: ${yellow}survival${nocolor}"
+			read -re -i "survival" -p "Your gamemode: " gamemode
+			regex="^(survival|creative|adventure|spectator)$"
+			while [[ ! ${gamemode} =~ ${regex} ]]; do
+				read -p "Please enter a valid gamemode: " gamemode
+			done
+			echo "Your Server will be on ${green}${gamemode}${nocolor}"
+			gamemode="gamemode=${gamemode}"
 
-# ask for pvp
-echo "Would you like to turn on pvp? Example: ${yellow}true${nocolor}"
-read -re -i "true" -p "Your choice: " pvp
-regex="^(true|false)$"
-while [[ ! ${pvp} =~ ${regex} ]]; do
-	read -p "Please enter true or false: " pvp
-done
-echo "Your Server will be on pvp ${green}${pvp}${nocolor}"
-pvp="pvp=${pvp}"
+			# ask for forced gamemode
+			echo "Would like like to force the gamemode on your server? ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " forcegamemode
+			regex="^(true|false)$"
+			while [[ ! ${forcegamemode} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " forcegamemode
+			done
+			echo "Your Server will be on ${green}${forcegamemode}${nocolor}"
+			forcegamemode="force-gamemode=${forcegamemode}"
 
-# ask for command blocks
-echo "Would you like to turn on command-blocks? Example: ${yellow}true${nocolor}"
-read -re -i "true" -p "Your choice: " cmdblock
-regex="^(true|false)$"
-while [[ ! ${cmdblock} =~ ${regex} ]]; do
-	read -p "Please enter true or false: " cmdblock
-done
-echo "Your Server will be on ${green}${cmdblock}${nocolor}"
-cmdblock="enable-command-block=${cmdblock}"
+			# ask for difficulty
+			echo "Which difficulty would you like to have? Example: ${yellow}normal${nocolor}"
+			read -re -i "normal" -p "Your difficulty: " difficulty
+			regex="^(peaceful|easy|normal|hard)$"
+			while [[ ! ${difficulty} =~ ${regex} ]]; do
+				read -p "Please enter a valid difficulty: " difficulty
+			done
+			echo "Your Server will be on ${green}${difficulty}${nocolor}"
+			difficulty="difficulty=${difficulty}"
 
-# ask for entity broadcast range
-echo "How far would you like to be able to see entities? Example: ${yellow}250${nocolor}"
-read -re -i "250" -p "Your range: " entitybroadcast
-regex="^([1-4][0-9][0-9]|500)$"
-while [[ ! ${entitybroadcast} =~ ${regex} ]]; do
-	read -p "Please enter a number between 100 and 500: " entitybroadcast
-done
-echo "Your Server will broadcast entities ${green}${entitybroadcast}${nocolor}"
-entitybroadcast="entity-broadcast-range-percentage=${entitybroadcast}"
+			# ask for hardcore mode
+			echo "Would you like to turn on hardcore mode? Example: ${yellow}false${nocolor}"
+			read -re -i "false" -p "Your choice: " hardcore
+			regex="^(true|false)$"
+			while [[ ! ${hardcore} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " hardcore
+			done
+			echo "Your Server will be on ${green}${hardcore}${nocolor}"
+			hardcore="hardcore=${hardcore}"
 
-# ask for server message
-echo "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
-read -re -i "Hello World, I am your new Minecraft Server ;^)" -p "Your message: " motd
-echo "Your server message will be: ${green}${motd}${nocolor}"
-motd="motd=${motd}"
+			# ask for monsters
+			echo "Would you like your server to spawn monsters? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " monsters
+			regex="^(true|false)$"
+			while [[ ! ${monsters} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " monsters
+			done
+			echo "Your Server will be on monsters ${green}${monsters}${nocolor}"
+			monsters="spawn-monsters=${monsters}"
+
+			# ask for whitelist
+			echo "Would you like to turn on the whitelist? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " whitelist
+			regex="^(true|false)$"
+			while [[ ! ${whitelist} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " whitelist
+			done
+			echo "Your Server will be on whitelist ${green}${whitelist}${nocolor}"
+			whitelist="white-list=${whitelist}"
+
+			# ask for enforced whitelist
+			echo "Would you like to enforce the whitelist on your server? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " enforcewhitelist
+			regex="^(true|false)$"
+			while [[ ! ${enforcewhitelist} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " enforcewhitelist
+			done
+			echo "Your Server will be on enforcewhitelist ${green}${enforcewhitelist}${nocolor}"
+			enforcewhitelist="enforce-whitelist=${enforcewhitelist}"
+
+			# ask for online mode
+			echo "Would you like to run your server in online mode? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " onlinemode
+			regex="^(true|false)$"
+			while [[ ! ${onlinemode} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " onlinemode
+			done
+			echo "Your Server will be on onlinemode ${green}${onlinemode}${nocolor}"
+			onlinemode="online-mode=${onlinemode}"
+
+			# ask for pvp
+			echo "Would you like to turn on pvp? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " pvp
+			regex="^(true|false)$"
+			while [[ ! ${pvp} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " pvp
+			done
+			echo "Your Server will be on pvp ${green}${pvp}${nocolor}"
+			pvp="pvp=${pvp}"
+
+			# ask for animals
+			echo "Would you like to spawn animals on your server? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " animals
+			regex="^(true|false)$"
+			while [[ ! ${animals} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " animals
+			done
+			echo "Your Server will be on animals ${green}${animals}${nocolor}"
+			animals="spawn-animals=${animals}"
+
+			# ask for nether
+			echo "Would you like to activate the nether on your server? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " nether
+			regex="^(true|false)$"
+			while [[ ! ${nether} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " nether
+			done
+			echo "Your Server will be on nether ${green}${nether}${nocolor}"
+			nether="allow-nether=${nether}"
+
+			# ask for npcs
+			echo "Would you like to spawn npcs on your server? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " npcs
+			regex="^(true|false)$"
+			while [[ ! ${npcs} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " npcs
+			done
+			echo "Your Server will be on npcs ${green}${npcs}${nocolor}"
+			npcs="spawn-npcs=${npcs}"
+
+			# ask for structures
+			echo "Would you like your server to generate structures? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " structures
+			regex="^(true|false)$"
+			while [[ ! ${structures} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " structures
+			done
+			echo "Your Server will be on structures ${green}${structures}${nocolor}"
+			structures="generate-structures=${structures}"
+
+			# ask for command blocks
+			echo "Would you like to turn on command-blocks? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " cmdblock
+			regex="^(true|false)$"
+			while [[ ! ${cmdblock} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " cmdblock
+			done
+			echo "Your Server will be on ${green}${cmdblock}${nocolor}"
+			cmdblock="enable-command-block=${cmdblock}"
+
+			# ask for entity broadcast range
+			echo "How far would you like to be able to see entities? Example: ${yellow}250${nocolor}"
+			read -re -i "250" -p "Your range: " entitybroadcast
+			regex="^([1-4][0-9][0-9]|500)$"
+			while [[ ! ${entitybroadcast} =~ ${regex} ]]; do
+				read -p "Please enter a number between 100 and 500: " entitybroadcast
+			done
+			echo "Your Server will broadcast entities ${green}${entitybroadcast}${nocolor}"
+			entitybroadcast="entity-broadcast-range-percentage=${entitybroadcast}"
+
+			# ask for server message
+			echo "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
+			read -re -i "Hello World, I am your new Minecraft Server ;^)" -p "Your message: " motd
+			echo "Your server message will be: ${green}${motd}${nocolor}"
+			motd="motd=${motd}"
+
+			;;
+
+		"I don't care! Please just make it work!")
+
+			dnsserver="1.1.1.1"
+			interface="192.168.1.1"
+			mems="-Xms256M"
+			memx="-Xms2048M"
+			threadcount="-XX:ParallelGCThreads=2"
+			viewdistance="view-distance=16"
+			spawnprotection="spawn-protection=16"
+			maxplayers="max-players=8"
+			serverport="server-port=25565"
+			queryport="query.port=25565"
+			gamemode="gamemode=survival"
+			forcegamemode="force-gamemode=true"
+			difficulty="difficulty=normal"
+			hardcore="hardcore=false"
+			monsters="spawn-monsters=true"
+			whitelist="white-list=true"
+			enforcewhitelist="enforce-whitelist=true"
+			onlinemode="online-mode=true"
+			pvp="pvp=true"
+			animals="spawn-animals=true"
+			nether="allow-nether=true"
+			npcs="spawn-npcs=true"
+			structures="generate-structures=true"
+			cmdblock="enable-command-block=true"
+			entitybroadcast="entity-broadcast-range-percentage=250"
+			motd="motd=Hello World, I am your new Minecraft Server ;^)"
+
+			;;
+
+		*) echo "Please chose an option from the list: "
+			;;
+	esac
+done
 
 # eula question
 echo "Would you like to accept the End User License Agreement from Mojang?"
@@ -385,17 +519,25 @@ echo "# files and directories" >> server.settings
 	done
 
 echo "storing variables in server.properties..."
-	echo "${viewdistance}" >> server.properties
-	echo "${spawnprotection}" >> server.properties
-	echo "${entitybroadcast}" >> server.properties
-	echo "${maxplayers}" >> server.properties
-	echo "${serverport}" >> server.properties
-	echo "${queryport}" >> server.properties
-	echo "${gamemode}" >> server.properties
-	echo "${difficulty}" >> server.properties
 	echo "${whitelist}" >> server.properties
+	echo "${enforcewhitelist}" >> server.properties
+	echo "${animals}" >> server.properties
+	echo "${monsters}" >> server.properties
+	echo "${structures}" >> server.properties
+	echo "${npcs}" >> server.properties
+	echo "${nether}" >> server.properties
 	echo "${pvp}" >> server.properties
 	echo "${cmdblock}" >> server.properties
+	echo "${gamemode}" >> server.properties
+	echo "${forcegamemode}" >> server.properties
+	echo "${difficulty}" >> server.properties
+	echo "${hardcore}" >> server.properties
+	echo "${maxplayers}" >> server.properties
+	echo "${viewdistance}" >> server.properties
+	echo "${entitybroadcast}" >> server.properties
+	echo "${spawnprotection}" >> server.properties
+	echo "${serverport}" >> server.properties
+	echo "${queryport}" >> server.properties
 	echo "${motd}" >> server.properties
 
 # create logfiles with Welcome message
