@@ -438,6 +438,8 @@ select setup in ${serversetup[@]}; do
 			echo "Your server message will be: ${green}${motd}${nocolor}"
 			motd="motd=${motd}"
 
+			break
+
 			;;
 
 		"auto")
@@ -468,6 +470,8 @@ select setup in ${serversetup[@]}; do
 			cmdblock="enable-command-block=true"
 			entitybroadcast="entity-broadcast-range-percentage=250"
 			motd="motd=Hello World, I am your new Minecraft Server ;^)"
+
+			break
 
 			;;
 
