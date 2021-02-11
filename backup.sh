@@ -70,7 +70,7 @@ if [ ${dohourly} = true ]; then
 	fi
 
 	# check if world is bigger than diskspace
-	if (( (${absoluteworldsize} + 65536) > ${absolutediskspace} )); then
+	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
 		# ingame and logfile error output
 		PrintToScreenNotEnoughtDiskSpace "${newhourly}" "${oldhourly}"
 		PrintToLogNotEnoughDiskSpace "hourly"
