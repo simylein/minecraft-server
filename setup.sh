@@ -176,12 +176,13 @@ mkdir backups
 	cd ../
 
 # ask all the importatnt user input
-
+echo "nerdy setup means you are able to customise everything - you are able to change these settings later"
+echo "auto setup means you are asked fewer questions but there will not be as much customisation for you"
 PS3="How would you like to setup your server? "
-serversetup=("I'm a nerd! let me customise everything!" "I don't care! Please just make it work!")
+serversetup=("nerdy" "auto")
 select setup in ${serversetup[@]}; do
 	case ${setup} in
-		"I'm a nerd! let me customise everything!")
+		"nerdy")
 
 			# ask for a valid dnsserver
 			echo "Please tell me which dnsserver you would like to use. Example: ${yellow}1.1.1.1${nocolor}"
@@ -439,7 +440,7 @@ select setup in ${serversetup[@]}; do
 
 			;;
 
-		"I don't care! Please just make it work!")
+		"auto")
 
 			dnsserver="1.1.1.1"
 			interface="192.168.1.1"
