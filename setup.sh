@@ -293,8 +293,8 @@ select setup in ${serversetup[@]}; do
 			gamemode="gamemode=${gamemode}"
 
 			# ask for forced gamemode
-			echo "Would like like to force the gamemode on your server? ${yellow}true${nocolor}"
-			read -re -i "true" -p "Your choice: " forcegamemode
+			echo "Would like like to force the gamemode on your server? ${yellow}false${nocolor}"
+			read -re -i "false" -p "Your choice: " forcegamemode
 			regex="^(true|false)$"
 			while [[ ! ${forcegamemode} =~ ${regex} ]]; do
 				read -p "Please enter true or false: " forcegamemode
@@ -455,7 +455,7 @@ select setup in ${serversetup[@]}; do
 			serverport="server-port=25565"
 			queryport="query.port=25565"
 			gamemode="gamemode=survival"
-			forcegamemode="force-gamemode=true"
+			forcegamemode="force-gamemode=false"
 			difficulty="difficulty=normal"
 			hardcore="hardcore=false"
 			monsters="spawn-monsters=true"
