@@ -85,7 +85,9 @@ if [ ${dohourly} = true ]; then
 
 	# check if there is no backup from the current hour
 	if ! [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
+		PrintToScreen "save-off"
 		tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz
+		PrintToScreen "save-on"
 	else
 		PrintToScreenBackupAlreadyExists "${newhourly}" "${oldhourly}"
 		PrintToLogBackupAlreadyExists "hourly"
@@ -171,7 +173,9 @@ if [ ${hours} -eq 22 ]; then
 
 		# check if there is no backup from the current day
 		if ! [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
+			PrintToScreen "save-off"
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/daily/${servername}-${newdaily}.tar.gz
+			PrintToScreen "save-on"
 		else
 			PrintToScreenBackupAlreadyExists "${newdaily}" "${olddaily}"
 			PrintToLogBackupAlreadyExists "daily"
@@ -259,7 +263,9 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 
 		# check if there is no backup from the current week
 		if ! [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
+			PrintToScreen "save-off"
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz
+			PrintToScreen "save-on"
 		else
 			PrintToScreenBackupAlreadyExists "${newweekly}" "${oldweekly}"
 			PrintToLogBackupAlreadyExists "weekly"
@@ -347,7 +353,9 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 
 		# check if there is no backup from the current month
 		if ! [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
+			PrintToScreen "save-off"
 			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz
+			PrintToScreen "save-on"
 		else
 			PrintToScreenBackupAlreadyExists "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupAlreadyExists "monthly"
