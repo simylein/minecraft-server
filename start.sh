@@ -100,7 +100,7 @@ echo "starting ${servername} server..." >> ${screenlog}
 echo "starting ${servername} server..."	
 
 # main start commmand
-${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
+${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile} -nogui
 ${screen} -r ${servername} -X colon "logfile flush 1^M"
 
 # check if screen is avaible
