@@ -39,8 +39,23 @@ echo "How should I call your server?"
 echo "Please enter a servername: Example: ${yellow}minecraft${nocolor}"
 read -re -i "minecraft" -p "Your name: " servername
 regex="^[a-zA-Z0-9]+$"
-while [[ ! ${servername} =~ ${regex} ]]; do
-	read -p "Please enter a servername which only contains letters and numbers: " servername
+verify="false"
+while [[ ${verify} == "false" ]]; do
+	if [[ ! ${servername} =~ ${regex} ]]; then
+		read -p "Please enter a servername which only contains letters and numbers: " servername
+	else
+		check1="true"
+	fi
+	if [ -d ${servername} ]; then
+		read -p "Directory ${servername} already exists - please enter another directory: " servername
+	else
+		check2="true"
+	fi
+	if [[ ${check1} == "true" ]] && [[ ${check2} == "true" ]]; then
+		verify=true
+	else
+		verify="false"
+	fi
 done
 echo "Your Server will be called ${green}${servername}${nocolor}"
 
@@ -591,13 +606,15 @@ done
 if [[ ${REPLY} =~ [Yy]$ ]]
 	then read -p "Please enter your email address: " emailaddress
 		crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
-		crontab -l | { cat; echo ""; } | crontab -
 		emailchoice=true
 	else echo "${yellow}no emails${nocolor}"
 		crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
-		crontab -l | { cat; echo ""; } | crontab -
 		emailchoice=false
 fi
+
+# define colors for tput
+crontab -l | { cat; echo "TERM=xterm"; } | crontab -
+crontab -l | { cat; echo ""; } | crontab -
 
 # crontab automatization backups
 read -p "Would you like to automate backups? [Y/N]: "
