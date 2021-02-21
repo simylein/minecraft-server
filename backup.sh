@@ -102,7 +102,7 @@ if [ ${dohourly} = true ]; then
 		fi
 		# stop milliseconds timer
 		after=$(date +%s%3N)
-		# calculate time soent on backup process
+		# calculate time spent on backup process
 		timespent=$((${after}-${before}))
 		# read server.settings file again with error checking
 		if [[ -s "server.settings" ]]; then
@@ -190,7 +190,7 @@ if [ ${hours} -eq 22 ]; then
 			fi
 			# stop milliseconds timer
 			after=$(date +%s%3N)
-			# calculate time soent on backup process
+			# calculate time spent on backup process
 			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
 			if [[ -s "server.settings" ]]; then
@@ -280,7 +280,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			fi
 			# stop milliseconds timer
 			after=$(date +%s%3N)
-			# calculate time soent on backup process
+			# calculate time spent on backup process
 			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
 			if [[ -s "server.settings" ]]; then
@@ -370,7 +370,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			fi
 			# stop milliseconds timer
 			after=$(date +%s%3N)
-			# calculate time soent on backup process
+			# calculate time spent on backup process
 			timespent=$((${after}-${before}))
 			# read server.settings file again with error checking
 			if [[ -s "server.settings" ]]; then
