@@ -167,7 +167,7 @@ if [ ${hours} -eq 22 ]; then
 
 		# check if disk space is getting low
 		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
-			PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+			PrintToScreenDiskSpaceWarning "${newdaily}" "${olddaily}"
 			PrintToLogDiskSpaceWarning
 		fi
 
@@ -257,7 +257,7 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 
 		# check if disk space is getting low
 		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
-			PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+			PrintToScreenDiskSpaceWarning "${newweekly}" "${oldweekly}"
 			PrintToLogDiskSpaceWarning
 		fi
 
@@ -347,7 +347,7 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 
 		# check if disk space is getting low
 		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
-			PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
+			PrintToScreenDiskSpaceWarning "${newmonthly}" "${oldmonthly}"
 			PrintToLogDiskSpaceWarning
 		fi
 
