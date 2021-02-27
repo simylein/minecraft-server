@@ -59,13 +59,16 @@ It looks like this: (there will be alot of variables after setup.sh)
 # This file stores all the variables for the server. 
 # If you know what you are doing, feel free to tinker with them ;^)
 
-# command line colors
-red="\033[0;31m"
-yellow="\033[1;33m"
-green="\033[0;32m"
-blue="\033[0;34m"
-purple="\033[0;35m"
-nocolor="\033[0m"
+# command line colours
+black="$(tput setaf 0)"
+red="$(tput setaf 1)"
+green="$(tput setaf 2)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+magenta="$(tput setaf 5)"
+cyan="$(tput setaf 6)"
+white="$(tput setaf 7)"
+nocolor="$(tput sgr0)"
 ...
 ```
 ## server.properties
