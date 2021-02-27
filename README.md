@@ -74,31 +74,22 @@ If you would like to costumize your server further have a look at your server.pr
 nano server.properties
 ```
 Important settings are:
-```
-max-players=            (limuts the maximumg amount of players on the server at the same time)
-                        [Warning large numbers may impact performance]
-                        
-difficulty=             (defines ingame difficulty) [peaceful, easy, normal, hard]
 
-view-distance=          (defines number of ingame chnuks to be rendered)
-                        [Warning large numbers may impact performance]
-                        
-white-list=             (turns on the whitelist) [I would strongely recomment to set this to true]
+`max-players=`          (limuts the maximumg amount of players on the server at the same time) <br>
+                        [Warning large numbers may impact performance] <br>
+`difficulty=`           (defines ingame difficulty) [peaceful, easy, normal, hard] <br>
+`view-distance=`        (defines number of ingame chnuks to be rendered) <br>
+                        [Warning large numbers may impact performance] <br>
+`white-list=`           (turns on the whitelist) [I would strongely recomment to set this to true] <br>
+`motd=`                 (this will be displayed in the menu below your server - chose what you like) <br>
+`server-port=`          (default by 25565. Only importent if you are dealing with multiple server) <br>
+                        [if you run multiple servers each server wants to have its own port] <br>
+`gamemode=`             (default survival. Defines your game mode. For creative server replace with creative) <br>
+                        [survival/creative/adventure/spectator] <br>
+`spawn-protection=`     (the number of block at the worldspawn only operators can touch) <br>
+`pvp=`                  (ability for player to do damage to oneanother) [true/false] <br>
+`enable-command-block=` (enables command blocks to tinker with) [true/false] <br>
 
-motd=                   (this will be displayed in the menu below your server - chose what you like)
-
-server-port=            (default by 25565. Only importent if you are dealing with multiple server)
-                        [if you run multiple servers each server wants to have its own port]
-                        
-gamemode=               (default survival. Defines your game mode. For creative server replace with creative)
-                        [survival/creative/adventure/spectator]
-                        
-spawn-protection=       (the number of block at the worldspawn only operators can touch)
-
-pvp=                    (ability for player to do damage to oneanother) [true/false]
-
-enable-command-block=   (enables command blocks to tinker with) [true/false]
-```
 ## scripts
 There are lots of script in your ${serverdirectory}. Normally, the executable ones are green and can be executed with: <br>
 ```
