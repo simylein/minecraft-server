@@ -11,14 +11,14 @@ fi
 if [[ -f "server.functions" ]]; then
 	. ./server.functions
 else
-	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
 	echo "fatal: server.functions is missing"
 	exit 1
 fi
 
 # read server.properties file with error checking
 if ! [[ -f "server.properties" ]]; then
-	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
 	echo "fatal: server.properties is missing"
 	exit 1
 fi
@@ -27,7 +27,7 @@ fi
 if [[ -f "server.settings" ]]; then
 	. ./server.settings
 else
-	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
 	echo "fatal: server.settings is missing"
 	exit 1
 fi
@@ -36,7 +36,7 @@ fi
 if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
-	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
 	echo "fatal: serverdirectory is missing"
 	exit 1
 fi
@@ -152,6 +152,7 @@ else
 		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
 		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
 		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
+		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
 		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
 fi
 
