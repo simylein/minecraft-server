@@ -100,6 +100,7 @@ echo "downloading scripts from GitHub..."
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
 		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
+		wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
 		wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
 
 # store serverdirectory
@@ -447,6 +448,15 @@ select setup in ${serversetup[@]}; do
 			echo "Your Server will broadcast entities ${green}${entitybroadcast}${nocolor}"
 			entitybroadcast="entity-broadcast-range-percentage=${entitybroadcast}"
 
+			# ask for welcome message
+			echo "Would you like to print welcome messages if a player joins after successful startup? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " welcomemessage
+			regex="^(true|false)$"
+			while [[ ! ${welcomemessage} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " welcomemessage
+			done
+			echo "Your Server will be on welcome-message ${green}${welcomemessage}${nocolor}"
+
 			# ask for server console
 			echo "Would you like to change to server console after successful startup? Example: ${yellow}false${nocolor}"
 			read -re -i "false" -p "Your choice: " changetoconsole
@@ -493,6 +503,7 @@ select setup in ${serversetup[@]}; do
 			structures="generate-structures=true"
 			cmdblock="enable-command-block=true"
 			entitybroadcast="entity-broadcast-range-percentage=250"
+			welcomemessage="true"
 			changetoconsole="false"
 			motd="motd=Hello World, I am your new Minecraft Server ;^)"
 
@@ -520,12 +531,17 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]
 fi
 
 # store all the userinput
-echo "# change to server console after startup"
+echo "storing variables in server.settings..."
+	echo "# change to server console after startup"
 	for var in changetoconsole; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
-echo ""
-echo "storing variables in server.settings..."
+	echo ""
+	echo "# print welcome messages if a player joins"
+	for var in welcomemessage; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	echo ""
 echo "" >> server.settings
 echo "# network stuff" >> server.settings
 	for var in dnsserver; do
