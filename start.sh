@@ -43,8 +43,8 @@ fi
 
 # check for executable
 if ! ls ${serverfile}* 1> /dev/null 2>&1; then
-	echo "${red}Fatal: no executable found!${nocolor}"
-	echo "Fatal: no executable found!" >> ${screenlog}
+	echo "${red}fatal: no executable found!${nocolor}"
+	echo "fatal: no executable found!" >> ${screenlog}
 	echo "$(date) fatal: no executable found!" >> fatalerror.log
 	exit 1
 fi
@@ -177,10 +177,18 @@ if ! tail ${screenlog} | grep -q "Query running on"; then
 	echo "${yellow}server startup unsuccessful - perhaps query is disabled${nocolor}"
 fi
 
-# user information
-echo "If you would like to change to server console - type screen -r ${servername}"
+# check if user wants to send welcome messages
+if [ ${welcomemessage} = true ]; then
+	echo "activating welcome messages..."
+	./welcome.sh &
+fi
 
 # if set to true change automatically to server console
 if [ ${changetoconsole} = true ]; then
+	echo "changing to server console..."
 	screen -r ${servername}
+	exit 1
 fi
+
+# user information
+echo "If you would like to change to server console - type screen -r ${servername}"
