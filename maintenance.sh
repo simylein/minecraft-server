@@ -11,14 +11,14 @@ fi
 if [[ -f "server.functions" ]]; then
 	. ./server.functions
 else
-	echo "fatal: server.functions is missing" >> fatalerror.log
+	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
 	echo "fatal: server.functions is missing"
 	exit 1
 fi
 
 # read server.properties file with error checking
 if ! [[ -f "server.properties" ]]; then
-	echo "fatal: server.properties is missing" >> fatalerror.log
+	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
 	echo "fatal: server.properties is missing"
 	exit 1
 fi
@@ -27,7 +27,7 @@ fi
 if [[ -f "server.settings" ]]; then
 	. ./server.settings
 else
-	echo "fatal: server.settings is missing" >> fatalerror.log
+	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
 	echo "fatal: server.settings is missing"
 	exit 1
 fi
@@ -36,7 +36,7 @@ fi
 if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
-	echo "fatal: serverdirectory is missing" >> fatalerror.log
+	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
 	echo "fatal: serverdirectory is missing"
 	exit 1
 fi
