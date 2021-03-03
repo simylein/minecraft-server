@@ -532,16 +532,16 @@ fi
 
 # store all the userinput
 echo "storing variables in server.settings..."
-	echo "# change to server console after startup"
+	echo "# change to server console after startup" >> server.settings
 	for var in changetoconsole; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
-	echo ""
-	echo "# print welcome messages if a player joins"
+	echo "" >> server.settings
+	echo "# print welcome messages if a player joins" >> server.settings
 	for var in welcomemessage; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
-	echo ""
+	echo "" >> server.settings
 echo "" >> server.settings
 echo "# network stuff" >> server.settings
 	for var in dnsserver; do
