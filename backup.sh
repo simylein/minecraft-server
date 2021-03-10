@@ -3,9 +3,12 @@
 
 # this script is meant to be executed every hour by crontab
 
-# for the sake of integrety of your backups,
-# I would recommend not ot mess with this file.
-# if you know what you are doing feel free to go ahead ;^)
+# if you want you can change the time of day on which
+# daily backups are made as an example, but please beware:
+
+# for the sake of integrity of your backups,
+# I would strongly recommend not to mess with this file.
+# if you really know what you are doing feel free to go ahead ;^)
 
 # root safety check
 if [ $(id -u) = 0 ]; then
