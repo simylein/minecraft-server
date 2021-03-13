@@ -23,7 +23,7 @@ olddaily=$(date -d "-32 days" +"%Y-%m-%d")
 newweekly=$(date +"week-%U")
 oldweekly=$(date -d "-12 weeks" +"week-%U")
 newmonthly=$(date +"%B")
-odlmonthly=$(date -d "-6 months" +"%B")
+oldmonthly=$(date -d "-6 months" +"%B")
 
 # backup config
 dohourly="true"
