@@ -532,6 +532,7 @@ fi
 
 # store all the userinput
 echo "storing variables in server.settings..."
+	echo "" >> server.settings
 	echo "# change to server console after startup" >> server.settings
 	for var in changetoconsole; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
@@ -542,7 +543,6 @@ echo "storing variables in server.settings..."
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
 	echo "" >> server.settings
-echo "" >> server.settings
 echo "# network stuff" >> server.settings
 	for var in dnsserver; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
