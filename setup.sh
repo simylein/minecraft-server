@@ -31,7 +31,7 @@ if [ "$(uname)" == "Darwin" ]; then
 	fi
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	# get free memory on linux
-	memory="$(free | tail -2 | head -1 | awk '{print $4}')"
+	memory="$(free -b | tail -2 | head -1 | awk '{print $4}')"
 	# check memory
 	if (( ${memory} < 2560000000 )); then
 		echo "$(tput bold)$(tput setaf 3)warning: your system has less than 2.56 GB of memory - this may impact server performance!$(tput sgr0)"
