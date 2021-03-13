@@ -4,20 +4,52 @@
 # this script has been tested on debian and runs only if all packages are installed
 # however you are welcome to try it on any other distribution you like ;^)
 
+# set color enviroment
+TERM=xterm
+
 # root safety check
 if [ $(id -u) = 0 ]; then
 	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
 	exit 1
 fi
 
-# check for operating system and for free memory
+# check for operating system compatibility and for free memory
 if [ "$(uname)" == "Darwin" ]; then
-	echo "$(tput bold)$(tput setaf 3)you are running macOS as your operating system - your server may not run!$(tput sgr0)"
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-	memory="$(free | tail -2 | head -1 | awk '{print $4}')"
-	if (( ${memory} < 2560000 )); then
-		echo "$(tput bold)$(tput setaf 3)your system has less than 2.56 GB of memory - your server may not run!$(tput sgr0)"
+	# inform user about macOS
+	echo "$(tput bold)$(tput setaf 3)warning: you are running macOS as your operating system - your server may not run!$(tput sgr0)"
+	# get free memory on macOS
+	memory=$(($(vm_stat | head -2 | tail -1 | awk '{print $3}' | sed 's/.$//') + $(vm_stat | head -4 | tail -1 | awk '{print $3}' | sed 's/.$//') * 4096))
+	# check memory
+	if (( ${memory} < 2560000000 )); then
+		echo "$(tput bold)$(tput setaf 3)warning: your system has less than 2.56 GB of memory - this may impact server performance!$(tput sgr0)"
 	fi
+	# get number of threads on macOS
+	threads=$(nproc)
+	# check threads
+	if (( ${threads} < 4 )); then
+		echo "$(tput bold)$(tput setaf 3)warning: your system has less than 4 threads - this may impact server performance!$(tput sgr0)"
+	fi
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	# get free memory on linux
+	memory="$(free | tail -2 | head -1 | awk '{print $4}')"
+	# check memory
+	if (( ${memory} < 2560000000 )); then
+		echo "$(tput bold)$(tput setaf 3)warning: your system has less than 2.56 GB of memory - this may impact server performance!$(tput sgr0)"
+	fi
+	# get number of threads on Linux
+	threads=$(nproc)
+	# check threads
+	if (( ${threads} < 4 )); then
+		echo "$(tput bold)$(tput setaf 3)warning: your system has less than 4 threads - this may impact server performance!$(tput sgr0)"
+	fi
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+	# inform user about Windows
+	echo "$(tput bold)$(tput setaf 1)fatal: you are running Windows as your operating system - your server will not run!$(tput sgr0)"
+	exit 1
+else
+	# inform user about unsupported operating system
+	echo "$(tput bold)$(tput setaf 1)fatal: you are running an unsupported operating system - your server will not run!$(tput sgr0)"
+	exit 1
 fi
 
 # command line colours
@@ -31,7 +63,21 @@ cyan="$(tput setaf 6)"
 white="$(tput setaf 7)"
 nocolor="$(tput sgr0)"
 
-# iuser info about script
+# declare all packages in an array
+declare -a packages=( "apt" "java" "screen" "date" "tar" "echo" "ping" "ifconfig" "grep" "wget" "cron" "nano" "less" "sed" "pv" "awk" )
+
+# get length of package array
+packageslength=${#packages[@]}
+
+# use for loop to read all values and indexes
+for (( i = 1; i < ${packageslength} + 1; i ++ )); do
+	if ! man ${packages[$i-1]} &> /dev/null; then
+		echo "${red}fatal: the package ${packages[${i}-1]} is not installed on your system"
+		exit 1
+	fi
+done
+
+# user info about script
 echo "${magenta}I will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
 
 # initial question
