@@ -110,6 +110,8 @@ if [ ${dohourly} = true ]; then
 		after=$(date +%s%3N)
 		# calculate time spent on backup process
 		timespent=$((${after}-${before}))
+		# get compressed backup size
+		compressedbackup=$(du -sh ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz)
 		# read server.settings file again with error checking
 		if [[ -s "server.settings" ]]; then
 			. ./server.settings
@@ -201,6 +203,8 @@ if [ ${hours} -eq 22 ]; then
 			after=$(date +%s%3N)
 			# calculate time spent on backup process
 			timespent=$((${after}-${before}))
+			# get compressed backup size
+			compressedbackup=$(du -sh ${backupdirectory}/daily/${servername}-${newdaily}.tar.gz)
 			# read server.settings file again with error checking
 			if [[ -s "server.settings" ]]; then
 				. ./server.settings
@@ -294,6 +298,8 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			after=$(date +%s%3N)
 			# calculate time spent on backup process
 			timespent=$((${after}-${before}))
+			# get compressed backup size
+			compressedbackup=$(du -sh ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz)
 			# read server.settings file again with error checking
 			if [[ -s "server.settings" ]]; then
 				. ./server.settings
@@ -387,6 +393,8 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			after=$(date +%s%3N)
 			# calculate time spent on backup process
 			timespent=$((${after}-${before}))
+			# get compressed backup size
+			compressedbackup=$(du -sh ${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz)
 			# read server.settings file again with error checking
 			if [[ -s "server.settings" ]]; then
 				. ./server.settings
