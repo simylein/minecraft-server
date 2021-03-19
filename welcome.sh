@@ -66,7 +66,7 @@ while true; do
 		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${welcomemsg} ${player}\"}]$(printf '\r')"
 	fi
 	if ! screen -list | grep -q "\.${servername}"; then
-		exit 1
+		exit 0
 	fi
 	sleep 1s
 done
