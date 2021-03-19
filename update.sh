@@ -123,6 +123,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	# restart the server
 	echo "${green}restarting server...${nocolor}"
 	./start.sh
+	exit 0
 fi
 
 # countdown
