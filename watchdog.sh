@@ -57,5 +57,8 @@ fi
 # if any irregularities are detected notify via ingame or logfiles
 
 while true; do
+	if ! screen -list | grep -q "\.${servername}"; then
+		exit 0
+	fi
 	sleep 60s
 done
