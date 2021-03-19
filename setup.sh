@@ -494,6 +494,15 @@ select setup in ${serversetup[@]}; do
 			echo "Your Server will broadcast entities ${green}${entitybroadcast}${nocolor}"
 			entitybroadcast="entity-broadcast-range-percentage=${entitybroadcast}"
 
+			# ask for enable watchdog
+			echo "Would you like to check the integrity of your backups? Example: ${yellow}true${nocolor}"
+			read -re -i "true" -p "Your choice: " enablewatchdog
+			regex="^(true|false)$"
+			while [[ ! ${enablewatchdog} =~ ${regex} ]]; do
+				read -p "Please enter true or false: " enablewatchdog
+			done
+			echo "Your Server will be on enable-watchdog ${green}${enablewatchdog}${nocolor}"
+
 			# ask for welcome message
 			echo "Would you like to print welcome messages if a player joins after successful startup? Example: ${yellow}true${nocolor}"
 			read -re -i "true" -p "Your choice: " welcomemessage
@@ -549,6 +558,7 @@ select setup in ${serversetup[@]}; do
 			structures="generate-structures=true"
 			cmdblock="enable-command-block=true"
 			entitybroadcast="entity-broadcast-range-percentage=250"
+			enablewatchdog="true"
 			welcomemessage="true"
 			changetoconsole="false"
 			motd="motd=Hello World, I am your new Minecraft Server ;^)"
@@ -581,6 +591,11 @@ echo "storing variables in server.settings..."
 	echo "" >> server.settings
 	echo "# change to server console after startup" >> server.settings
 	for var in changetoconsole; do
+		declare -p $var | cut -d ' ' -f 3- >> server.settings
+	done
+	echo "" >> server.settings
+	echo "# enables watchdog integrity checks for backups"
+	for var in enablewatchdog; do
 		declare -p $var | cut -d ' ' -f 3- >> server.settings
 	done
 	echo "" >> server.settings
