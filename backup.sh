@@ -2,9 +2,10 @@
 # minecraft server backup script
 
 # this script is meant to be executed every hour by crontab
+# 0 * * * * cd ${serverdirectory} ./backup.sh
 
 # if you want you can change the time of day on which
-# daily backups are made as an example, but please beware:
+# daily backups are made as an example in server.settings, but please beware:
 
 # for the sake of integrity of your backups,
 # I would strongly recommend not to mess with this file.
@@ -21,14 +22,14 @@ if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
 	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
-	echo "fatal: server.functions is missing"
+	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.properties file with error checking
 if ! [[ -s "server.properties" ]]; then
 	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
-	echo "fatal: server.properties is missing"
+	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
 	exit 1
 fi
 
@@ -37,7 +38,7 @@ if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
 	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-	echo "fatal: server.settings is missing"
+	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
 	exit 1
 fi
 
@@ -46,28 +47,40 @@ if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
 	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
-	echo "fatal: serverdirectory is missing"
+	echo "$(tput setaf 1)fatal: serverdirectory is missing$(tput sgr0)"
 	exit 1
 fi
 
+# test if all categories for backups exists if not create them
+declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
+arraylenght=${#backupcategories[@]}
+for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
+	if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
+		echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
+		echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
+		echo ""
+		cd ${backupdirectory}
+		mkdir ${backupcategories[${i}-1]}
+		cd ${serverdirectory}
+	fi
+done
 
-# performs backup hourly every hour
 
 # check if hourly backups are anabled
 if [ ${dohourly} = true ]; then
 
-	# start milliseconds timer
-	before=$(date +%s%3N)
-
 	# write date and execute into logfiles
 	echo "${date} executing backup-hourly script" >> ${screenlog}
 	echo "${date} executing backup-hourly script" >> ${backuplog}
+	
+	# start milliseconds timer
+	before=$(date +%s%3N)
 
 	# checks for the existence of a screen terminal
 	if ! screen -list | grep -q "\.${servername}"; then
 		echo "${yellow}server is not currently running!${nocolor}"
-		echo "server is not currently running!" >> ${screenlog}
-		echo "server is not currently running!" >> ${backuplog}
+		echo "info: server is not currently running!" >> ${screenlog}
+		echo "info: server is not currently running!" >> ${backuplog}
 		echo "" >> ${backuplog}
 		exit 1
 	fi
@@ -112,14 +125,8 @@ if [ ${dohourly} = true ]; then
 		timespent=$((${after}-${before}))
 		# get compressed backup size
 		compressedbackup=$(du -sh ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz | cut -f1)
-		# read server.settings file again with error checking
-		if [[ -s "server.settings" ]]; then
-			. ./server.settings
-		else
-			echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-			echo "fatal: server.settings is missing"
-			exit 1
-		fi
+		# read server.settings file again
+		. ./server.settings
 		# ingame and logfile success output
 		PrintToScreenBackupSuccess "${newhourly}" "${oldhourly}"
 		PrintToLogBackupSuccess "${newhourly}" "${oldhourly}"
@@ -130,21 +137,18 @@ if [ ${dohourly} = true ]; then
 	fi
 
 else
-	# write date and execute into logfiles
-	echo "${date} executing backup-hourly script" >> ${screenlog}
-	echo "${date} executing backup-hourly script" >> ${backuplog}
-
 	# write to logfiles that it's disabled
-	echo "backup-hourly is disabled" >> ${backuplog}
+	echo "info: backup-hourly is disabled" >> ${backuplog}
 	echo "" >> ${backuplog}
 fi
 
 
-# performs backup daily if it is 22:??
+# check if it is the right time
+if [ ${hours} -eq ${dailybackuptime} ]; then
 
-# check if it is 22:??
-hours=$(date +"%H")
-if [ ${hours} -eq 22 ]; then
+	# write date and execute into logfiles
+	echo "${date} executing backup-daily script" >> ${screenlog}
+	echo "${date} executing backup-daily script" >> ${backuplog}
 
 	# check if daily backups are anabled
 	if [ ${dodaily} = true ]; then
@@ -152,15 +156,11 @@ if [ ${hours} -eq 22 ]; then
 		# start milliseconds timer
 		before=$(date +%s%3N)
 
-		# write date and execute into logfiles
-		echo "${date} executing backup-daily script" >> ${screenlog}
-		echo "${date} executing backup-daily script" >> ${backuplog}
-
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
 			echo "${yellow}server is not currently running!${nocolor}"
-			echo "server is not currently running!" >> ${screenlog}
-			echo "server is not currently running!" >> ${backuplog}
+			echo "info: server is not currently running!" >> ${screenlog}
+			echo "info: server is not currently running!" >> ${backuplog}
 			echo "" >> ${backuplog}
 			exit 1
 		fi
@@ -205,14 +205,8 @@ if [ ${hours} -eq 22 ]; then
 			timespent=$((${after}-${before}))
 			# get compressed backup size
 			compressedbackup=$(du -sh ${backupdirectory}/daily/${servername}-${newdaily}.tar.gz | cut -f1)
-			# read server.settings file again with error checking
-			if [[ -s "server.settings" ]]; then
-				. ./server.settings
-			else
-				echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-				echo "fatal: server.settings is missing"
-				exit 1
-			fi
+			# read server.settings file again
+			. ./server.settings
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newdaily}" "${olddaily}"
 			PrintToLogBackupSuccess "${newdaily}" "${olddaily}"
@@ -223,23 +217,19 @@ if [ ${hours} -eq 22 ]; then
 		fi
 
 	else
-		# write date and execute into logfiles
-		echo "${date} executing backup-daily script" >> ${screenlog}
-		echo "${date} executing backup-daily script" >> ${backuplog}
-
 		# write to logfiles that it's disabled
-		echo "backup-daily is disabled" >> ${backuplog}
+		echo "info: backup-daily is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
 fi
 
 
-# performs backup weekly if it is 22:?? and Sunday
+# check if it is the right time and weekday
+if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ]; then
 
-# check if it is 22:?? and Sunday
-hours=$(date +"%H")
-weekday=$(date +"%u")
-if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
+	# write date and execute into logfiles
+	echo "${date} executing backup-weekly script" >> ${screenlog}
+	echo "${date} executing backup-weekly script" >> ${backuplog}
 
 	# check if weekly backups are enabled
 	if [ ${doweekly} = true ]; then
@@ -247,15 +237,11 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		# start milliseconds timer
 		before=$(date +%s%3N)
 
-		# write date and execute into logfiles
-		echo "${date} executing backup-weekly script" >> ${screenlog}
-		echo "${date} executing backup-weekly script" >> ${backuplog}
-
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
 			echo "${yellow}server is not currently running!${nocolor}"
-			echo "server is not currently running!" >> ${screenlog}
-			echo "server is not currently running!" >> ${backuplog}
+			echo "info: server is not currently running!" >> ${screenlog}
+			echo "info: server is not currently running!" >> ${backuplog}
 			echo "" >> ${backuplog}
 			exit 1
 		fi
@@ -300,14 +286,8 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 			timespent=$((${after}-${before}))
 			# get compressed backup size
 			compressedbackup=$(du -sh ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz | cut -f1)
-			# read server.settings file again with error checking
-			if [[ -s "server.settings" ]]; then
-				. ./server.settings
-			else
-				echo "fatal: server.settings is missing" >> fatalerror.log
-				echo "fatal: server.settings is missing"
-				exit 1
-			fi
+			# read server.settings file again
+			. ./server.settings
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newweekly}" "${oldweekly}"
 			PrintToLogBackupSuccess "${newweekly}" "${oldweekly}"
@@ -318,23 +298,19 @@ if [ ${hours} -eq 22 ] && [ ${weekday} -eq 7 ]; then
 		fi
 
 	else
-		# write date and execute into logfiles
-		echo "${date} executing backup-weekly script" >> ${screenlog}
-		echo "${date} executing backup-weekly script" >> ${backuplog}
-
 		# write to logfiles that it's disabled
-		echo "backup-weekly is disabled" >> ${backuplog}
+		echo "info: backup-weekly is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
 fi
 
 
-# performs backup monthly if it is 22:?? and the first day of a month
+# check if it is the right time and day of the month
+if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday} ]; then
 
-# check if it is 22:?? and the first day of month
-hours=$(date +"%H")
-dayofmonth=$(date +"%d")
-if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
+	# write date and execute into logfiles
+	echo "${date} executing backup-monthly script" >> ${screenlog}
+	echo "${date} executing backup-monthly script" >> ${backuplog}
 
 	# check if monthly backups are enabled
 	if [ ${domonthly} = true ]; then
@@ -342,15 +318,11 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		# start milliseconds timer
 		before=$(date +%s%3N)
 
-		# write date and execute into logfiles
-		echo "${date} executing backup-monthly script" >> ${screenlog}
-		echo "${date} executing backup-monthly script" >> ${backuplog}
-
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
 			echo "${yellow}server is not currently running!${nocolor}"
-			echo "server is not currently running!" >> ${screenlog}
-			echo "server is not currently running!" >> ${backuplog}
+			echo "info: server is not currently running!" >> ${screenlog}
+			echo "info: server is not currently running!" >> ${backuplog}
 			echo "" >> ${backuplog}
 			exit 1
 		fi
@@ -395,14 +367,8 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 			timespent=$((${after}-${before}))
 			# get compressed backup size
 			compressedbackup=$(du -sh ${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz | cut -f1)
-			# read server.settings file again with error checking
-			if [[ -s "server.settings" ]]; then
-				. ./server.settings
-			else
-				echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-				echo "fatal: server.settings is missing"
-				exit 1
-			fi
+			# read server.settings file again
+			. ./server.settings
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupSuccess "${newmonthly}" "${oldmonthly}"
@@ -413,12 +379,8 @@ if [ ${hours} -eq 22 ] && [ ${dayofmonth} -eq 1 ]; then
 		fi
 
 	else
-		# write date and execute into logfiles
-		echo "${date} executing backup-weekly script" >> ${screenlog}
-		echo "${date} executing backup-weekly script" >> ${backuplog}
-
 		# write to logfiles that it's disabled
-		echo "backup-weekly is disabled" >> ${backuplog}
+		echo "info: backup-monthly is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
 fi
