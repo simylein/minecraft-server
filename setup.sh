@@ -146,6 +146,7 @@ echo "downloading scripts from GitHub..."
 		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
 		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
 		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
+		wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/watchdog.sh && chmod +x watchdog.sh
 		wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
 		wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
 
