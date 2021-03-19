@@ -87,3 +87,11 @@ function ExtractDirectoryWithProgress {
 	echo "I will extract the archive ${1}"
 	pv ${1}.tar.gz | tar -xz
 }
+
+
+# checks if debug is set to true and logs very verbose to debug.log
+function CheckIfDebugTrue {
+	if [[ ${enabledebug} -eq true ]]; then
+		echo "${date} ${1}" >> debug.log
+	fi
+}
