@@ -177,6 +177,12 @@ if ! tail ${screenlog} | grep -q "Query running on"; then
 	echo "${yellow}server startup unsuccessful - perhaps query is disabled${nocolor}"
 fi
 
+# enables the watchdog script for backup integrity
+if [ ${enablewatchdog} = true ]; then
+	echo "activating watchdog..."
+	./watchdog.sh &
+fi
+
 # check if user wants to send welcome messages
 if [ ${welcomemessage} = true ]; then
 	echo "activating welcome messages..."
