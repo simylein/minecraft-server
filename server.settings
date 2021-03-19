@@ -31,6 +31,14 @@ dodaily="true"
 doweekly="true"
 domonthly="true"
 
+# backup events
+hours=$(date +"%H")
+weekday=$(date +"%u")
+dayofmonth=$(date +"%d")
+dailybackuptime="22"
+weeklybackupday="7"
+monthlybackupday="1"
+
 # world size stuff
 absoluteworldsize=$(du -s world | cut -f1)
 absolutediskspace=$(df / | tail -1 | awk '{print $4}')
