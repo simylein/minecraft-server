@@ -55,10 +55,19 @@ fi
 
 # write a function that checks if backups are done regularly
 # if any irregularities are detected notify via ingame or logfiles
-
+lastabsoluteworldsize="0"
+counter="0"
 while true; do
+	if [[ ${counter} -eq 120 ]]; then
+		if [[ ${absoluteworldsize} < $((${lastabsoluteworldsize} - 65536)) ]]; then
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your backup-size is getting smaller - this may result in corrupted backups\"}]$(printf '\r')"
+		fi
+		lastabsoluteworldsize="${absoluteworldsize}"
+		counter="0"
+	fi
 	if ! screen -list | grep -q "\.${servername}"; then
 		exit 0
 	fi
+	counter=$((counter+1))
 	sleep 1s
 done
