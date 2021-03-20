@@ -60,5 +60,5 @@ while true; do
 	if ! screen -list | grep -q "\.${servername}"; then
 		exit 0
 	fi
-	sleep 60s
+	sleep 1s
 done
