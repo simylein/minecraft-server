@@ -58,7 +58,7 @@ for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
 	if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
 		echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
 		echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
-		echo ""
+		echo "" >> ${backuplog}
 		cd ${backupdirectory}
 		mkdir ${backupcategories[${i}-1]}
 		cd ${serverdirectory}
