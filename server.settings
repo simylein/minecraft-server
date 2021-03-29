@@ -40,8 +40,9 @@ weeklybackupday="7"
 monthlybackupday="1"
 
 # world size stuff
-absoluteworldsize=$(du -s world | cut -f1)
-absolutediskspace=$(df / | tail -1 | awk '{print $4}')
+absoluteworldsize=$(du -sb world | cut -f1)
+absolutebackupsize=$(du -sb backups | cut -f1)
+absolutediskspace=$(df -B 1 / | tail -1 | awk '{print $4}')
 worldsize=$(du -sh world | cut -f1)
 backupsize=$(du -sh backups | cut -f1)
 diskspace=$(df -h / | tail -1 | awk '{print $4}')
