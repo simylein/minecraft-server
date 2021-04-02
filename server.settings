@@ -59,5 +59,8 @@ backuplog="backup.log"
 java="/usr/bin/java"
 screen="/usr/bin/screen"
 
+# github branch
+branch="master"
+
 # script time logging
 date=$(date +"%Y-%m-%d %H:%M:%S")
