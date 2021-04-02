@@ -105,20 +105,20 @@ if ! screen -list | grep -q "\.${servername}"; then
 		echo "${green}downloading newest scripts version...${nocolor}"
 		echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
-		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
-		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
-		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
-		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
-		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
-		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
-		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
-		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
-		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
-		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
-		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/watchdog.sh && chmod +x watchdog.sh
-		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
-		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
+		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
+		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/README.md
+		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/start.sh && chmod +x start.sh
+		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restore.sh && chmod +x restore.sh
+		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/reset.sh && chmod +x reset.sh
+		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restart.sh && chmod +x restart.sh
+		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/stop.sh && chmod +x stop.sh
+		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/backup.sh && chmod +x backup.sh
+		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/update.sh && chmod +x update.sh
+		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/maintenance.sh && chmod +x maintenance.sh
+		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/prerender.sh && chmod +x prerender.sh
+		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/watchdog.sh && chmod +x watchdog.sh
+		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/welcome.sh && chmod +x welcome.sh
+		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/vent.sh
 	fi
 
 	# restart the server
@@ -217,20 +217,20 @@ else
 	echo "${green}downloading newest scripts version...${nocolor}"
 	echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
-		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
-		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
-		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
-		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
-		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
-		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
-		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
-		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
-		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
-		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
-		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/watchdog.sh && chmod +x watchdog.sh
-		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
-		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
+		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
+		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/README.md
+		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/start.sh && chmod +x start.sh
+		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restore.sh && chmod +x restore.sh
+		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/reset.sh && chmod +x reset.sh
+		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restart.sh && chmod +x restart.sh
+		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/stop.sh && chmod +x stop.sh
+		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/backup.sh && chmod +x backup.sh
+		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/update.sh && chmod +x update.sh
+		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/maintenance.sh && chmod +x maintenance.sh
+		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/prerender.sh && chmod +x prerender.sh
+		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/watchdog.sh && chmod +x watchdog.sh
+		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/welcome.sh && chmod +x welcome.sh
+		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/vent.sh
 fi
 
 # restart the server
