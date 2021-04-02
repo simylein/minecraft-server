@@ -41,6 +41,9 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments
+
 # write date to logfile
 echo "${date} executing stop script" >> ${screenlog}
 
@@ -51,21 +54,24 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# countdown
-counter="60"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "${blue}[Script]${nocolor} server is stopping in ${counter} seconds"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is stopping in ${counter} seconds\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediatly is specified
+if ! [[ ${immediatly} -eq true ]]; then
+	# countdown
+	counter="60"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+			CheckQuiet "${blue}[Script]${nocolor} server is stopping in ${counter} seconds"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is stopping in ${counter} seconds\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckVerbose "stopping server..."
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -85,4 +91,4 @@ fi
 
 # output confirmed stop
 echo "server successfully stopped!" >> ${screenlog}
-echo "${green}server successfully stopped!${nocolor}"
+CheckQuiet "${green}server successfully stopped!${nocolor}"
