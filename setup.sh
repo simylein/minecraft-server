@@ -132,23 +132,24 @@ mkdir ${servername}
 # donwload all the github scripts and make them exectuable
 echo "downloading scripts from GitHub..."
 	cd ${servername}
-		wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-		wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
-		wget -q -O server.settings https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.settings
-		wget -q -O server.properties https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.properties
-		wget -q -O server.functions https://raw.githubusercontent.com/Simylein/MinecraftServer/master/server.functions
-		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
-		wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
-		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
-		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
-		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
-		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
-		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
-		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
-		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
-		wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/watchdog.sh && chmod +x watchdog.sh
-		wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
-		wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
+		branch="master"
+		wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
+		wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/README.md
+		wget -q -O server.settings https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/server.settings
+		wget -q -O server.properties https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/server.properties
+		wget -q -O server.functions https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/server.functions
+		wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/start.sh && chmod +x start.sh
+		wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restore.sh && chmod +x restore.sh
+		wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/reset.sh && chmod +x reset.sh
+		wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restart.sh && chmod +x restart.sh
+		wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/stop.sh && chmod +x stop.sh
+		wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/backup.sh && chmod +x backup.sh
+		wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/update.sh && chmod +x update.sh
+		wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/maintenance.sh && chmod +x maintenance.sh
+		wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/prerender.sh && chmod +x prerender.sh
+		wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/watchdog.sh && chmod +x watchdog.sh
+		wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/welcome.sh && chmod +x welcome.sh
+		wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/vent.sh
 
 # store serverdirectory
 serverdirectory=`pwd`
