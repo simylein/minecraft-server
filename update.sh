@@ -74,7 +74,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 		echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 		echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 	else
-		echo "${green}downloading newest server version...${nocolor}"
+		CheckQuiet "${green}downloading newest server version...${nocolor}"
 		echo "downloading newest server version..." >> ${screenlog}
 		# check if already on newest version
 		if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
@@ -125,8 +125,8 @@ if ! screen -list | grep -q "\.${servername}"; then
 	fi
 
 	# restart the server
-	echo "${green}restarting server...${nocolor}"
-	./start.sh
+	CheckQuiet "${green}restarting server...${nocolor}"
+	./start.sh "$@"
 	exit 0
 fi
 
@@ -241,4 +241,4 @@ fi
 
 # restart the server
 CheckQuiet "${green}restarting server...${nocolor}"
-./start.sh
+./start.sh "$@"
