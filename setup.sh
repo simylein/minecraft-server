@@ -111,7 +111,7 @@ homedirectory=`pwd`
 # ask for permission to proceed
 echo "I will download the following:"
 echo "start, stop, restart, backup and many more scripts from GitHub."
-read -p "Continue? [Y/N]:"
+read -p "Continue? [Y/N]: "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
