@@ -130,6 +130,12 @@ while [ ${startchecks} -lt 10 ]; do
 	sleep 1s
 done
 
+# check for port usage
+if tail -20 ${screenlog} | grep -q "**** FAILED TO BIND TO PORT!"; then
+	echo "server port is already in use - please change to another port" >> ${screenlog}
+	echo "${red}server port is already in use - please change to another port${nocolor}"
+fi
+
 # if no screen output error
 if ! screen -list | grep -q "${servername}"; then
 	echo "something went wrong - server failed to start!" >> ${screenlog}
