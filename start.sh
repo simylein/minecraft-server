@@ -130,12 +130,6 @@ while [ ${startchecks} -lt 10 ]; do
 	sleep 1s
 done
 
-# check for port usage
-if tail -20 ${screenlog} | grep -q "**** FAILED TO BIND TO PORT!"; then
-	echo "server port is already in use - please change to another port" >> ${screenlog}
-	echo "${red}server port is already in use - please change to another port${nocolor}"
-fi
-
 # if no screen output error
 if ! screen -list | grep -q "${servername}"; then
 	echo "something went wrong - server failed to start!" >> ${screenlog}
@@ -157,6 +151,11 @@ while [ ${startupchecks} -lt 120 ]; do
 		CheckQuiet "${green}server startup successful - query up and running${nocolor}"
 		break
 	fi
+	if tail -20 ${screenlog} | grep -q "**** FAILED TO BIND TO PORT!"; then
+		echo "server port is already in use - please change to another port" >> ${screenlog}
+		echo "${red}server port is already in use - please change to another port${nocolor}"
+		exit 1
+	fi
 	if ! screen -list | grep -q "${servername}"; then
 		echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
 		echo "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
@@ -176,11 +175,6 @@ while [ ${startupchecks} -lt 120 ]; do
 	fi
 	if tail ${screenlog} | grep -q "Starting minecraft server"; then
 		count=$((count+1))
-	fi
-	if tail -20 ${screenlog} | grep -q "**** FAILED TO BIND TO PORT!"; then
-		echo "server port is already in use - please change to another port" >> ${screenlog}
-		echo "${red}server port is already in use - please change to another port${nocolor}"
-		exit 1
 	fi
 	if [ ${counter} -ge 10 ]; then
 		CheckVerbose "server is preparing spawn area..."
