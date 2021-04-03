@@ -56,7 +56,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	fi
 
 	# create backup
-	echo "${blue}backing up...${nocolor}"
+	CheckVerbose "${blue}backing up...${nocolor}"
 	tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
 
 	# check if safety backup exists
@@ -136,7 +136,7 @@ if ! [[ ${immediatly} == true ]]; then
 	counter="60"
 	while [ ${counter} -gt 0 ]; do
 		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-			echo "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
+			CheckQuiet "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
 			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
 		fi
 		counter=$((counter-1))
@@ -145,9 +145,9 @@ if ! [[ ${immediatly} == true ]]; then
 fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckVerbose "stopping server..."
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -171,7 +171,7 @@ if [[ -s "${backupdirectory}/cached/update-"* ]]; then
 fi
 
 # create backup
-echo "${blue}backing up...${nocolor}"
+CheckVerbose "${blue}backing up...${nocolor}"
 tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
 
 # check if safety backup exists
@@ -189,11 +189,11 @@ if [ "$?" != 0 ]; then
 	echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 	echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 else
-	echo "${green}downloading newest server version...${nocolor}"
+	CheckQuiet "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
 	# check if already on newest version
 	if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
-		echo "You are running the newest server version - skipping update"
+		CheckQuiet "You are running the newest server version - skipping update"
 		echo "You are running the newest server version - skipping update" >> ${screenlog}
 	else
 		wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
@@ -240,5 +240,5 @@ else
 fi
 
 # restart the server
-echo "${green}restarting server...${nocolor}"
+CheckQuiet "${green}restarting server...${nocolor}"
 ./start.sh
