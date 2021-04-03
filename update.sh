@@ -105,7 +105,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 		echo "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
 		echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
 	else
-		echo "${green}downloading newest scripts version...${nocolor}"
+		CheckQuiet "${green}downloading newest scripts version...${nocolor}"
 		echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
 		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
@@ -220,7 +220,7 @@ if [ "$?" != 0 ]; then
 	echo "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
 	echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
 else
-	echo "${green}downloading newest scripts version...${nocolor}"
+	CheckQuiet "${green}downloading newest scripts version...${nocolor}"
 	echo "downloading newest scripts version..." >> ${screenlog}
 		# remove all scripts then download all the scripts then make the scripts executable
 		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
