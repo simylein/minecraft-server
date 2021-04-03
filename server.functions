@@ -132,13 +132,13 @@ function ParseScriptArguments {
 
 # check if verbose mode is on
 function CheckVerbose {
-	if [[ ${verbose} -eq true ]]; then
+	if [[ ${verbose} == true ]]; then
 		echo "${1}"
 	fi
 }
 
 function CheckQuiet {
-	if ! [[ ${quiet} -eq true ]]; then
+	if ! [[ ${quiet} == true ]]; then
 	echo "${1}"
 	fi
 }
