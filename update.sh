@@ -78,7 +78,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 		echo "downloading newest server version..." >> ${screenlog}
 		# check if already on newest version
 		if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
-			echo "You are running the newest server version - skipping update"
+			CheckVerbose "You are running the newest server version - skipping update"
 			echo "You are running the newest server version - skipping update" >> ${screenlog}
 		else
 			wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
@@ -86,7 +86,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 			newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 			# if new serverfile exists remove oldserverfile
 			if [ -f "${newserverfile}" ]; then
-				echo "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+				CheckVerbose "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
 				sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 				# remove old serverfile if it exists
 				if [ -f "${serverfile}" ]; then
@@ -193,7 +193,7 @@ else
 	echo "downloading newest server version..." >> ${screenlog}
 	# check if already on newest version
 	if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
-		CheckQuiet "You are running the newest server version - skipping update"
+		CheckVerbose "You are running the newest server version - skipping update"
 		echo "You are running the newest server version - skipping update" >> ${screenlog}
 	else
 		wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
@@ -201,7 +201,7 @@ else
 		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			echo "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+			CheckVerbose "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
