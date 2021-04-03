@@ -94,10 +94,15 @@ Important settings are:
 `enable-command-block=` (enables command blocks to tinker with) [true/false] <br>
 
 ## scripts
-There are lots of script in your ${serverdirectory}. Normally, the executable ones are green and can be executed with: <br>
+There are lots of script in your ${serverdirectory}. Normally, the executable ones are green and can be executed with:
+
 ```
-./NameOfScript.sh
+./${scriptname}.sh ${arguments}
 ```
+
+Example: `./start.sh -v`
+
+Arguments: `-i --immediatly -q --quiet -v --verbose`
 
 ## crontab
 If you would like to automate some of those task on your server you can create a crontab.
