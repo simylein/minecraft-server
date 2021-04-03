@@ -248,6 +248,9 @@ select setup in ${serversetup[@]}; do
 	case ${setup} in
 		"nerdy")
 
+			# set nerdysetup to true
+			nerdysetup=true
+
 			# ask for a valid dnsserver
 			echo "Please tell me which dnsserver you would like to use. Example: ${yellow}1.1.1.1${nocolor}"
 			read -re -i "1.1.1.1" -p "Your dnsserver: " dnsserver
@@ -535,6 +538,9 @@ select setup in ${serversetup[@]}; do
 
 		"auto")
 
+			# set nerdysetup to false
+			nerdysetup=false
+
 			dnsserver="1.1.1.1"
 			interface="192.168.1.1"
 			mems="-Xms256M"
@@ -672,149 +678,193 @@ echo "Hello World, this server was created on ${date}" >> ${backuplog}
 echo "" >> ${backuplog}
 echo "" >> ${backuplog}
 
-# write servername and date into crontab
-date=$(date +"%Y-%m-%d %H:%M:%S")
+# check if nerdysetup is true
+if [[ ${nerdysetup} -eq true ]]; then
+
+	# write servername and date into crontab
+	date=$(date +"%Y-%m-%d %H:%M:%S")
+		crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
+
+	# crontab e-mail config
+	read -p "Would you like to receive emails from your crontab? [Y/N]: "
+	regex="^(Y|y|N|n)$"
+	while [[ ! ${REPLY} =~ ${regex} ]]; do
+		read -p "Please press Y or N: " REPLY
+	done
+	if [[ ${REPLY} =~ [Yy]$ ]]
+		then read -p "Please enter your email address: " emailaddress
+			crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
+			emailchoice=true
+		else echo "${yellow}no emails${nocolor}"
+			crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
+			emailchoice=false
+	fi
+
+	# define colors for tput
+	crontab -l | { cat; echo "TERM=xterm"; } | crontab -
+	crontab -l | { cat; echo ""; } | crontab -
+
+	# crontab automatization backups
+	read -p "Would you like to automate backups? [Y/N]: "
+	regex="^(Y|y|N|n)$"
+	while [[ ! ${REPLY} =~ ${regex} ]]; do
+		read -p "Please press Y or N: " REPLY
+	done
+	if [[ ${REPLY} =~ ^[Yy]$ ]]
+		then echo "${green}automating backups...${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
+			crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
+			backupchoice=true
+		else echo "${yellow}no automated backups${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
+			crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
+			backupchoice=false
+	fi
+
+	# crontab automated start and stop
+	read -p "Would you like to start and stop your server at a certain time? [Y/N]: "
+	regex="^(Y|y|N|n)$"
+	while [[ ! ${REPLY} =~ ${regex} ]]; do
+		read -p "Please press Y or N: " REPLY
+	done
+	if [[ ${REPLY} =~ ^[Yy]$ ]]
+		then echo "${green}automating start and stop...${nocolor}"
+			read -p "Your start time [0 - 23]: " starttime
+			read -p "Your stop time [0 - 23]: " stoptime
+			crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
+			crontab -l | { cat; echo "0 ${starttime} * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
+			crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+			startstopchoice=true
+		else echo "${yellow}no automated  start and stop${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
+			crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
+			crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+			startstopchoice=false
+	fi
+
+	# crontab automatization restart
+	read -p "Would you like to restart your server at 12:00? [Y/N]: "
+	regex="^(Y|y|N|n)$"
+	while [[ ! ${REPLY} =~ ${regex} ]]; do
+		read -p "Please press Y or N: " REPLY
+	done
+	if [[ ${REPLY} =~ ^[Yy]$ ]]
+		then echo "${green}automatic restarts at 02:00${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+			crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+			restartchoice=true
+		else echo "${yellow}no restarts${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+			crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+			restartchoice=false
+	fi
+
+	# crontab automatization updates
+	read -p "Would you like to update your server every Sunday at 18:00? [Y/N]: "
+	regex="^(Y|y|N|n)$"
+	while [[ ! ${REPLY} =~ ${regex} ]]; do
+		read -p "Please press Y or N: " REPLY
+	done
+	if [[ ${REPLY} =~ ^[Yy]$ ]]
+		then echo "${green}automatic update at Sunday${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+			crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+			updatechoice=true
+		else echo "${yellow}no updates${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+			crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+			updatechoice=false
+	fi
+
+	# crontab automatization startup
+	read -p "Would you like to start your server at boot? [Y/N]: "
+	regex="^(Y|y|N|n)$"
+	while [[ ! ${REPLY} =~ ${regex} ]]; do
+		read -p "Please press Y or N: " REPLY
+	done
+	if [[ ${REPLY} =~ ^[Yy]$ ]]
+		then echo "${green}automatic startup at boot...${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+			crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			startatbootchoice=true
+		else echo "${yellow}no startup at boot${nocolor}"
+			crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+			crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			startatbootchoice=false
+	fi
+
+	# padd crontab with two empty lines
+	crontab -l | { cat; echo ""; } | crontab -
+	crontab -l | { cat; echo ""; } | crontab -
+
+	# inform user of automated crontab choices
+	echo "You have chosen the following configuration of your server:"
+	if [[ ${emailchoice} == true ]];
+		then echo "crontab email output = ${blue}true${nocolor}"
+		else echo "crontab email output = ${red}false${nocolor}"
+	fi
+	if [[ ${backupchoice} == true ]];
+		then echo "automated backups = ${blue}true${nocolor}"
+		else echo "automated backups = ${red}false${nocolor}"
+	fi
+	if [[ ${startstopchoice} == true ]];
+		then echo "automated start and stop = ${blue}true${nocolor}"
+		else echo "automated start and stop = ${red}false${nocolor}"
+	fi
+	if [[ ${restartchoice} == true ]];
+		then echo "automated restart = ${blue}true${nocolor}"
+		else echo "automated restart = ${red}false${nocolor}"
+	fi
+	if [[ ${updatechoice} == true ]];
+		then echo "automated update = ${blue}true${nocolor}"
+		else echo "automated update = ${red}false${nocolor}"
+	fi
+	if [[ ${startatbootchoice} == true ]];
+		then echo "automated start at boot = ${blue}true${nocolor}"
+		else echo "automated start at boot = ${red}false${nocolor}"
+	fi
+
+else
+
+	# write servername and date into crontab
+	date=$(date +"%Y-%m-%d %H:%M:%S")
 	crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
 
-# crontab e-mail config
-read -p "Would you like to receive emails from your crontab? [Y/N]: "
-regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "Please press Y or N: " REPLY
-done
-if [[ ${REPLY} =~ [Yy]$ ]]
-	then read -p "Please enter your email address: " emailaddress
-		crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
-		emailchoice=true
-	else echo "${yellow}no emails${nocolor}"
-		crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
-		emailchoice=false
-fi
+	# crontab e-mail config
+	crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
 
-# define colors for tput
-crontab -l | { cat; echo "TERM=xterm"; } | crontab -
-crontab -l | { cat; echo ""; } | crontab -
+	# define colors for tput
+	crontab -l | { cat; echo "TERM=xterm"; } | crontab -
+	crontab -l | { cat; echo ""; } | crontab -
 
-# crontab automatization backups
-read -p "Would you like to automate backups? [Y/N]: "
-regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "Please press Y or N: " REPLY
-done
-if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo "${green}automating backups...${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-		crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
-		backupchoice=true
-	else echo "${yellow}no automated backups${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-		crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
-		backupchoice=false
-fi
+	# crontab automatization backups
+	crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
+	crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
 
-# crontab automated start and stop
-read -p "Would you like to start and stop your server at a certain time? [Y/N]: "
-regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "Please press Y or N: " REPLY
-done
-if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo "${green}automating start and stop...${nocolor}"
-		read -p "Your start time [0 - 23]: " starttime
-		read -p "Your stop time [0 - 23]: " stoptime
-		crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
-		crontab -l | { cat; echo "0 ${starttime} * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
-		crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
-		startstopchoice=true
-	else echo "${yellow}no automated  start and stop${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
-		crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
-		crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
-		crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
-		startstopchoice=false
-fi
+	# crontab automated start and stop
+	crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
+	crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+	crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
+	crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
 
-# crontab automatization restart
-read -p "Would you like to restart your server at 12:00? [Y/N]: "
-regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "Please press Y or N: " REPLY
-done
-if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo "${green}automatic restarts at 02:00${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
-		crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
-		restartchoice=true
-	else echo "${yellow}no restarts${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
-		crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
-		restartchoice=false
-fi
+	# crontab automatization restart
+	crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+	crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 
-# crontab automatization updates
-read -p "Would you like to update your server every Sunday at 18:00? [Y/N]: "
-regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "Please press Y or N: " REPLY
-done
-if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo "${green}automatic update at Sunday${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
-		crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
-		updatechoice=true
-	else echo "${yellow}no updates${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
-		crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
-		updatechoice=false
-fi
+	# crontab automatization updates
+	crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+	crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 
-# crontab automatization startup
-read -p "Would you like to start your server at boot? [Y/N]: "
-regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "Please press Y or N: " REPLY
-done
-if [[ ${REPLY} =~ ^[Yy]$ ]]
-	then echo "${green}automatic startup at boot...${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-		crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
-		startatbootchoice=true
-	else echo "${yellow}no startup at boot${nocolor}"
-		crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-		crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
-		startatbootchoice=false
-fi
+	# crontab automatization startup
+	crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
+	crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
 
-# padd crontab with two empty lines
-crontab -l | { cat; echo ""; } | crontab -
-crontab -l | { cat; echo ""; } | crontab -
+	# padd crontab with two empty lines
+	crontab -l | { cat; echo ""; } | crontab -
+	crontab -l | { cat; echo ""; } | crontab -
 
-# inform user of automated crontab choices
-echo "You have chosen the following configuration of your server:"
-if [[ ${emailchoice} == true ]];
-	then echo "crontab email output = ${blue}true${nocolor}"
-	else echo "crontab email output = ${red}false${nocolor}"
-fi
-if [[ ${backupchoice} == true ]];
-	then echo "automated backups = ${blue}true${nocolor}"
-	else echo "automated backups = ${red}false${nocolor}"
-fi
-if [[ ${startstopchoice} == true ]];
-	then echo "automated start and stop = ${blue}true${nocolor}"
-	else echo "automated start and stop = ${red}false${nocolor}"
-fi
-if [[ ${restartchoice} == true ]];
-	then echo "automated restart = ${blue}true${nocolor}"
-	else echo "automated restart = ${red}false${nocolor}"
-fi
-if [[ ${updatechoice} == true ]];
-	then echo "automated update = ${blue}true${nocolor}"
-	else echo "automated update = ${red}false${nocolor}"
-fi
-if [[ ${startatbootchoice} == true ]];
-	then echo "automated start at boot = ${blue}true${nocolor}"
-	else echo "automated start at boot = ${red}false${nocolor}"
 fi
 
 # finish messages
