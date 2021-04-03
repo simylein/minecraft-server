@@ -60,7 +60,7 @@ java="/usr/bin/java"
 screen="/usr/bin/screen"
 
 # github branch
-branch="master"
+branch="testing"
 
 # script time logging
 date=$(date +"%Y-%m-%d %H:%M:%S")
