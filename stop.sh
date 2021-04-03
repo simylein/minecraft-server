@@ -55,7 +55,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 fi
 
 # check if immediatly is specified
-if ! [[ ${immediatly} -eq true ]]; then
+if ! [[ ${immediatly} == true ]]; then
 	# countdown
 	counter="60"
 	while [ ${counter} -gt 0 ]; do
