@@ -50,7 +50,7 @@ if ! ls ${serverfile}* 1> /dev/null 2>&1; then
 fi
 
 # parsing script arguments
-ParseScriptArguments
+ParseScriptArguments "$@"
 
 # padd logfile for visibility
 echo "" >> ${screenlog}
@@ -170,6 +170,11 @@ while [ ${startupchecks} -lt 120 ]; do
 	fi
 	if tail ${screenlog} | grep -q "Starting minecraft server"; then
 		count=$((count+1))
+	fi
+	if tail -20 ${screenlog} | grep -q "**** FAILED TO BIND TO PORT!"; then
+		echo "server port is already in use - please change to another port" >> ${screenlog}
+		echo "${red}server port is already in use - please change to another port${nocolor}"
+		exit 1
 	fi
 	if [ ${counter} -ge 10 ]; then
 		CheckVerbose "server is preparing spawn area..."
