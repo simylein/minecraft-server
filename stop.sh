@@ -42,7 +42,7 @@ else
 fi
 
 # parsing script arguments
-ParseScriptArguments
+ParseScriptArguments "$@"
 
 # write date to logfile
 echo "${date} executing stop script" >> ${screenlog}
