@@ -127,16 +127,19 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 0
 fi
 
-# countdown
-counter="60"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediatly is specified
+if ! [[ ${immediatly} == true ]]; then
+	# countdown
+	counter="60"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+			echo "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # server stop
 echo "stopping server..."
