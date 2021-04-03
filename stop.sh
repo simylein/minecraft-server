@@ -69,7 +69,7 @@ if ! [[ ${immediatly} == true ]]; then
 fi
 
 # server stop
-CheckVerbose "stopping server..."
+CheckQuiet "stopping server..."
 PrintToScreen "say stopping server..."
 PrintToScreen "stop"
 
