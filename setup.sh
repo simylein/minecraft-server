@@ -686,7 +686,7 @@ echo "" >> ${backuplog}
 echo "" >> ${backuplog}
 
 # check if nerdysetup is true
-if [[ ${nerdysetup} -eq true ]]; then
+if [[ ${nerdysetup} == true ]]; then
 
 	# write servername and date into crontab
 	date=$(date +"%Y-%m-%d %H:%M:%S")
