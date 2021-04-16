@@ -160,9 +160,10 @@ fi
 echo "I will now setup a server and backup directory."
 
 # set up server directory
-echo "setting up a serverdirectory..."
+echo -n "setting up a serverdirectory... "
 mkdir ${servername}
 cd ${servername}
+echo "done"
 
 # check if verbose mode is on
 function CheckVerbose {
@@ -189,6 +190,9 @@ function FetchScriptFromGitHub {
 		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
 	fi
 }
+
+# user info about download
+echo "downloading scripts from GitHub..."
 
 # downloading scripts from github
 # declare all scripts in an array
@@ -223,7 +227,6 @@ function FetchServerFileFromMojan {
 	if [[ -s "minecraft-server.${version}.jar" ]]; then
 		echo "download error: downloaded server-file minecraft-server.${version}.jar is empty or not available"
 	fi
-	break
 }
 
 # download java executable from mojang.com
@@ -233,18 +236,23 @@ select version in "${versions[@]}"; do
 	case ${version} in
 		"1.16.5")
 			FetchServerFileFromMojan "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
+			break
 			;;
 		"1.16.4")
 			FetchServerFileFromMojan "35139deedbd5182953cf1caa23835da59ca3d7cd"
+			break
 		;;
 		"1.16.3")
 			FetchServerFileFromMojan "f02f4473dbf152c23d7d484952121db0b36698cb"
+			break
 		;;
 		"1.16.2")
 			FetchServerFileFromMojan "c5f6fb23c3876461d46ec380421e42b289789530"
+			break
 		;;
 		"1.16.1")
 			FetchServerFileFromMojan "a412fd69db1f81db3f511c1463fd304675244077"
+			break
 		;;
 		*) echo "Please choose an option from the list: ";;
 	esac
@@ -254,7 +262,7 @@ done
 echo "Your Server will execute ${green}${serverfile}${nocolor} at start"
 
 # set up backupdirectory with child directories
-echo "setting up a backupdirectory..."
+echo -n "setting up a backupdirectory... "
 mkdir world
 mkdir backups
 	cd backups
@@ -265,6 +273,7 @@ mkdir backups
 		mkdir cached
 		backupdirectory=`pwd`
 	cd ../
+echo "done"
 
 # ask all the importatnt user input
 echo "nerdy setup means you are able to customise everything - you are able to change these settings later"
