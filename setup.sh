@@ -590,11 +590,11 @@ fi
 if [[ ${nerdysetup} == false ]]; then
 
 	# declare standart values
-	dnsserver="1.1.1.1"
-	interface="192.168.1.1"
-	mems="-Xms256M"
-	memx="-Xms2048M"
-	threadcount="-XX:ParallelGCThreads=2"
+	dnsserver='dnsserver="1.1.1.1"'
+	interface='interface="192.168.1.1"'
+	mems='mems="-Xms256M"'
+	memx='memx="-Xms2048M"'
+	threadcount='threadcount="-XX:ParallelGCThreads=2"'
 	viewdistance="view-distance=16"
 	spawnprotection="spawn-protection=16"
 	maxplayers="max-players=8"
@@ -615,9 +615,9 @@ if [[ ${nerdysetup} == false ]]; then
 	structures="generate-structures=true"
 	cmdblock="enable-command-block=true"
 	entitybroadcast="entity-broadcast-range-percentage=100"
-	enablewatchdog="true"
-	welcomemessage="true"
-	changetoconsole="false"
+	enablewatchdog='enablewatchdog="true"'
+	welcomemessage='welcomemessage="true"'
+	changetoconsole='changetoconsole="false"'
 	motd="motd=Hello World, I am your new Minecraft Server ;^)"
 
 fi
@@ -639,102 +639,60 @@ fi
 
 # function for storing variables in server.settings
 function StoreToSettings {
-	echo
+	sed -i "s|${1}|${2}|g" server.settings
 }
 
 # function for storing settings in server.properties
 function StoreToProperties {
-	echo
+	sed -i "s|${1}|${2}|g" server.properties
 }
 
 # store all the userinput
-echo "storing variables in server.settings..."
+echo -n "storing variables in server.settings... "
+	StoreToSettings 'changetoconsole="false"' "${changetoconsole}"
+	StoreToSettings 'enablewatchdog="true"' "${enablewatchdog}"
+	StoreToSettings 'welcomemessage="true"' "${welcomemessage}"
+	StoreToSettings 'dnsserver="1.1.1.1"' "${dnsserver}"
+	StoreToSettings 'interface="192.168.1.1"' "${interface}"
+	StoreToSettings 'mems="-Xms256M"' "${mems}"
+	StoreToSettings 'memx="-Xms2048M"' "${memx}"
+	StoreToSettings 'threadcount="-XX:ParallelGCThreads=2"' "${threadcount}"
+	StoreToSettings "replaceservername" "${servername}"
+	StoreToSettings "replacehomedirectory" "${homedirectory}"
+	StoreToSettings "replaceserverdirectory" "${serverdirectory}"
+	StoreToSettings "replacebackupdirectory" "${backupdirectory}"
+	StoreToSettings "replaceserverfile" "${serverfile}"
+echo "done"
 
 # store all the userinput
-echo "storing variables in server.properties..."
-
-
-
-
-	echo "" >> server.settings
-	echo "# change to server console after startup" >> server.settings
-	for var in changetoconsole; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	echo "" >> server.settings
-	echo "# enables watchdog integrity checks for backups" >> server.settings
-	for var in enablewatchdog; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	echo "" >> server.settings
-	echo "# print welcome messages if a player joins" >> server.settings
-	for var in welcomemessage; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	echo "" >> server.settings
-echo "# network stuff" >> server.settings
-	for var in dnsserver; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in interface; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-echo "" >> server.settings
-echo "# memory and threads" >> server.settings
-	for var in mems; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in memx; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in threadcount; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-echo "" >> server.settings
-echo "# files and directories" >> server.settings
-	for var in servername; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in homedirectory; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in serverdirectory; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in backupdirectory; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-	for var in serverfile; do
-		declare -p $var | cut -d ' ' -f 3- >> server.settings
-	done
-
-
-	echo "${whitelist}" >> server.properties
-	echo "${enforcewhitelist}" >> server.properties
-	echo "${animals}" >> server.properties
-	echo "${monsters}" >> server.properties
-	echo "${structures}" >> server.properties
-	echo "${npcs}" >> server.properties
-	echo "${nether}" >> server.properties
-	echo "${pvp}" >> server.properties
-	echo "${cmdblock}" >> server.properties
-	echo "${gamemode}" >> server.properties
-	echo "${forcegamemode}" >> server.properties
-	echo "${difficulty}" >> server.properties
-	echo "${hardcore}" >> server.properties
-	echo "${maxplayers}" >> server.properties
-	echo "${viewdistance}" >> server.properties
-	echo "${entitybroadcast}" >> server.properties
-	echo "${spawnprotection}" >> server.properties
-	echo "${serverport}" >> server.properties
-	echo "${queryport}" >> server.properties
-	echo "${motd}" >> server.properties
+echo -n "storing variables in server.properties... "
+	StoreToProperties "white-list=false" "${whitelist}"
+	StoreToProperties "enforce-whitelist=false" "${enforcewhitelist}"
+	StoreToProperties "spawn-animals=true" "${animals}"
+	StoreToProperties "spawn-monsters=true" "${monsters}"
+	StoreToProperties "generate-structures=true" "${structures}"
+	StoreToProperties "spawn-npcs=true" "${npcs}"
+	StoreToProperties "allow-nether=true" "${nether}"
+	StoreToProperties "pvp=true" "${pvp}"
+	StoreToProperties "enable-command-block=false" "${cmdblock}"
+	StoreToProperties "gamemode=survival" "${gamemode}"
+	StoreToProperties "force-gamemode=false" "${forcegamemode}"
+	StoreToProperties "difficulty=easy" "${difficulty}"
+	StoreToProperties "hardcore=false" "${hardcore}"
+	StoreToProperties "max-players=20" "${maxplayers}"
+	StoreToProperties "view-distance=10" "${viewdistance}"
+	StoreToProperties "entity-broadcast-range-percentage=100" "${entitybroadcast}"
+	StoreToProperties "spawn-protection=16" "${spawnprotection}"
+	StoreToProperties "server-port=25565" "${serverport}"
+	StoreToProperties "query.port=25565" "${queryport}"
+	StoreToProperties "motd=A Minecraft Server" "${motd}"
+echo "done"
 
 # create logfiles with welcome message
 . ./server.settings
 . ./server.functions
-echo "Hello World, this server was created on ${date}" >> ${screenlog}
-echo "Hello World, this server was created on ${date}" >> ${backuplog}
+echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> ${screenlog}
+echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> ${backuplog}
 echo "" >> ${backuplog}
 echo "" >> ${backuplog}
 
@@ -812,11 +770,11 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic restarts at 02:00${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
 			crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 			restartchoice=true
 		else echo "${yellow}no restarts${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
 			crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 			restartchoice=false
 	fi
@@ -829,11 +787,11 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic update at Sunday${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+			crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
 			crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 			updatechoice=true
 		else echo "${yellow}no updates${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+			crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
 			crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 			updatechoice=false
 	fi
@@ -886,7 +844,10 @@ if [[ ${nerdysetup} == true ]]; then
 		else echo "automated start at boot = ${red}false${nocolor}"
 	fi
 
-else
+fi
+
+# check if nerdysetup is false
+if [[ ${nerdysetup} == false ]]; then
 
 	# write servername and date into crontab
 	date=$(date +"%Y-%m-%d %H:%M:%S")
@@ -910,11 +871,11 @@ else
 	crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
 
 	# crontab automatization restart
-	crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00"; } | crontab -
+	crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
 	crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
 
 	# crontab automatization updates
-	crontab -l | { cat; echo "# minecraft ${servername} server update at Sunday"; } | crontab -
+	crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
 	crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
 
 	# crontab automatization startup
