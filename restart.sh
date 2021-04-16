@@ -41,6 +41,9 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # write date to logfile
 echo "${date} executing restart script" >> ${screenlog}
 
@@ -53,21 +56,24 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# countdown
-counter="60"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "${blue}[Script]${nocolor} server is restarting in ${counter} seconds"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is restarting in ${counter} seconds\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediatly is specified
+if ! [[ ${immediatly} == true ]]; then
+	# countdown
+	counter="60"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+			CheckQuiet "${blue}[Script]${nocolor} server is restarting in ${counter} seconds"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is restarting in ${counter} seconds\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckQuiet "stopping server..."
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -86,5 +92,5 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # restart the server
-echo "${blue}restarting server...${nocolor}"
+CheckQuiet "${blue}restarting server...${nocolor}"
 ./start.sh
