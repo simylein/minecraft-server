@@ -84,8 +84,8 @@ memx="-Xms2048M" # macimum memory for java server process
 threadcount="-XX:ParallelGCThreads=2" # amount of threads which can be used by java server
 
 # files and directories
-servername="servername" # defines server name
-homedirectory="homedirectory" # defines path to home directory
-serverdirectory="serverdirectory" # defines path to server directory
-backupdirectory="backupdirectory" # defines path to backup directory
-serverfile="serverfile" # defines path to executable server file
+servername="replaceservername" # defines server name
+homedirectory="replacehomedirectory" # defines path to home directory
+serverdirectory="replaceserverdirectory" # defines path to server directory
+backupdirectory="replacebackupdirectory" # defines path to backup directory
+serverfile="replaceserverfile" # defines path to executable server file
