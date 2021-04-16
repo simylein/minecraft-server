@@ -590,11 +590,11 @@ fi
 if [[ ${nerdysetup} == false ]]; then
 
 	# declare standart values
-	dnsserver='dnsserver="1.1.1.1"'
-	interface='interface="192.168.1.1"'
-	mems='mems="-Xms256M"'
-	memx='memx="-Xms2048M"'
-	threadcount='threadcount="-XX:ParallelGCThreads=2"'
+	dnsserver="1.1.1.1"
+	interface="192.168.1.1"
+	mems="-Xms256M"
+	memx="-Xms2048M"
+	threadcount="-XX:ParallelGCThreads=2"
 	viewdistance="view-distance=16"
 	spawnprotection="spawn-protection=16"
 	maxplayers="max-players=8"
@@ -615,9 +615,9 @@ if [[ ${nerdysetup} == false ]]; then
 	structures="generate-structures=true"
 	cmdblock="enable-command-block=true"
 	entitybroadcast="entity-broadcast-range-percentage=100"
-	enablewatchdog='enablewatchdog="true"'
-	welcomemessage='welcomemessage="true"'
-	changetoconsole='changetoconsole="false"'
+	enablewatchdog="true"
+	welcomemessage="true"
+	changetoconsole="false"
 	motd="motd=Hello World, I am your new Minecraft Server ;^)"
 
 fi
