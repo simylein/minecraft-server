@@ -137,6 +137,7 @@ function CheckVerbose {
 	fi
 }
 
+# check if quiet mode is on
 function CheckQuiet {
 	if ! [[ ${quiet} == true ]]; then
 	echo "${1}"

@@ -5,7 +5,53 @@
 # however you are welcome to try it on any other distribution you like ;^)
 
 # set color enviroment
-TERM=xterm
+TERM="xterm"
+
+# branch selection from for github
+branch="testing"
+
+# command line colours
+black="$(tput setaf 0)"
+red="$(tput setaf 1)"
+green="$(tput setaf 2)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+magenta="$(tput setaf 5)"
+cyan="$(tput setaf 6)"
+white="$(tput setaf 7)"
+nocolor="$(tput sgr0)"
+
+# parse script arguments
+immediatly=false
+quiet=false
+verbose=false
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-i)
+			immediatly=true
+		;;
+		-q)
+			quiet=true
+		;;
+		-v)
+			verbose=true
+		;;
+		--immediatly)
+			immediatly=true
+		;;
+		--quiet)
+			quiet=true
+		;;
+		--verbose)
+			verbose=true
+		;;
+		*)
+			echo "bad argument: $1"
+			exit 1
+		;;
+	esac
+	shift
+done
 
 # root safety check
 if [ $(id -u) = 0 ]; then
@@ -52,23 +98,11 @@ else
 	exit 1
 fi
 
-# command line colours
-black="$(tput setaf 0)"
-red="$(tput setaf 1)"
-green="$(tput setaf 2)"
-yellow="$(tput setaf 3)"
-blue="$(tput setaf 4)"
-magenta="$(tput setaf 5)"
-cyan="$(tput setaf 6)"
-white="$(tput setaf 7)"
-nocolor="$(tput sgr0)"
-
+# check if every required package is installed
 # declare all packages in an array
 declare -a packages=( "apt" "java" "screen" "date" "tar" "echo" "ping" "ifconfig" "grep" "wget" "cron" "nano" "less" "sed" "pv" "awk" )
-
 # get length of package array
 packageslength=${#packages[@]}
-
 # use for loop to read all values and indexes
 for (( i = 1; i < ${packageslength} + 1; i ++ )); do
 	if ! man ${packages[$i-1]} &> /dev/null; then
@@ -128,35 +162,53 @@ echo "I will now setup a server and backup directory."
 # set up server directory
 echo "setting up a serverdirectory..."
 mkdir ${servername}
+cd ${servername}
 
-# Test internet connectivity and grab all scripts on success
-branch="testing"
-wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
-if [ "$?" != 0 ]; then
-	echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
-	exit 1
-else
-	# donwload all the github scripts and make them exectuable
-	echo "downloading scripts from GitHub..."
-		cd ${servername}
-			wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
-			wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/README.md
-			wget -q -O server.settings https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/server.settings
-			wget -q -O server.properties https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/server.properties
-			wget -q -O server.functions https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/server.functions
-			wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/start.sh && chmod +x start.sh
-			wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restore.sh && chmod +x restore.sh
-			wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/reset.sh && chmod +x reset.sh
-			wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restart.sh && chmod +x restart.sh
-			wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/stop.sh && chmod +x stop.sh
-			wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/backup.sh && chmod +x backup.sh
-			wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/update.sh && chmod +x update.sh
-			wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/maintenance.sh && chmod +x maintenance.sh
-			wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/prerender.sh && chmod +x prerender.sh
-			wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/watchdog.sh && chmod +x watchdog.sh
-			wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/welcome.sh && chmod +x welcome.sh
-			wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/vent.sh
-fi
+# check if verbose mode is on
+function CheckVerbose {
+	if [[ ${verbose} == true ]]; then
+		echo "${1}"
+	fi
+}
+
+# check if quiet mode is on
+function CheckQuiet {
+	if ! [[ ${quiet} == true ]]; then
+		echo "${1}"
+	fi
+}
+
+# function for fetching scripts from github with error checking
+function FetchScriptFromGitHub {
+	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+	if [ "$?" != 0 ]; then
+		echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
+		exit 1
+	else
+		CheckVerbose "Fetching file ${1} from branch ${branch} on GitHub..."
+		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+	fi
+}
+
+# downloading scripts from github
+# declare all scripts in an array
+declare -a scripts=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+# get length of script array
+scriptslength=${#scripts[@]}
+# loop through all entries in the array
+for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+	FetchScriptFromGitHub "${scripts[${i}-1]}"
+done
+
+# make selected scripts executable
+# declare all scripts in an array
+declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+# get length of script array
+scriptslength=${#scripts[@]}
+# loop through all entries in the array
+for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+	chmod +x ${scripts[${i}-1]}
+done
 
 # store serverdirectory
 serverdirectory=`pwd`
