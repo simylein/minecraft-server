@@ -151,7 +151,7 @@ while [ ${startupchecks} -lt 120 ]; do
 		CheckQuiet "${green}server startup successful - query up and running${nocolor}"
 		break
 	fi
-	if tail -20 ${screenlog} | grep -q "**** FAILED TO BIND TO PORT!"; then
+	if tail -20 ${screenlog} | grep -q "FAILED TO BIND TO PORT"; then
 		echo "server port is already in use - please change to another port" >> ${screenlog}
 		echo "${red}server port is already in use - please change to another port${nocolor}"
 		exit 1
@@ -159,6 +159,8 @@ while [ ${startupchecks} -lt 120 ]; do
 	if ! screen -list | grep -q "${servername}"; then
 		echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
 		echo "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
+		echo "crash dump - last 10 lines of ${screenlog}"
+		tail -10 ${screenlog}
 		exit 1
 	fi
 	if tail ${screenlog} | grep -q "Preparing spawn area"; then
