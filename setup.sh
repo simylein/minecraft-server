@@ -185,7 +185,7 @@ function FetchScriptFromGitHub {
 		echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
 		exit 1
 	else
-		CheckVerbose "Fetching file ${1} from branch ${branch} on GitHub..."
+		CheckVerbose "Fetching file: ${1} from branch ${branch} on GitHub..."
 		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
 	fi
 }
@@ -207,77 +207,45 @@ declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "
 scriptslength=${#scripts[@]}
 # loop through all entries in the array
 for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+	CheckVerbose "Setting script ${1} executable"
 	chmod +x ${scripts[${i}-1]}
 done
 
 # store serverdirectory
 serverdirectory=`pwd`
 
+# function for downloading serverfile from mojang api with error checking
+function FetchServerFileFromMojan {
+	echo -n "downloading minecraft-server.${version}.jar... "
+	wget -q -O minecraft-server.${version}.jar https://launcher.mojang.com/v1/objects/${1}/server.jar
+	serverfile="${serverdirectory}/minecraft-server.${version}.jar"
+	echo "done"
+	if [[ -s "minecraft-server.${version}.jar" ]]; then
+		echo "download error: downloaded server-file minecraft-server.${version}.jar is empty or not available"
+	fi
+	break
+}
+
 # download java executable from mojang.com
 PS3="Which server version would you like to install? "
-versions=("1.16.5" "1.15.2" "1.14.4" "1.13.2" "1.12.2" "1.11.2" "1.10.2" "1.9.4" "1.8.9" "1.7.10")
+versions=("1.16.5" "1.16.4" "1.16.3" "1.16.2" "1.16.1")
 select version in "${versions[@]}"; do
 	case ${version} in
 		"1.16.5")
-			echo "downloading minecraft-server.1.16.5.jar..."
-				wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
-			break
+			FetchServerFileFromMojan "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
 			;;
-		"1.15.2")
-			echo "downloading minecraft-server.1.15.2.jar..."
-				wget -q -O minecraft-server.1.15.2.jar https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.15.2.jar"
-			break
-			;;
-		"1.14.4")
-			echo "downloading minecraft-server.1.14.4.jar..."
-				wget -q -O minecraft-server.1.14.4.jar https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.14.4.jar"
-			break
-			;;
-		"1.13.2")
-			echo "downloading minecraft-server.1.13.2.jar..."
-				wget -q -O minecraft-server.1.13.2.jar https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.13.2.jar"
-			break
-			;;
-		"1.12.2")
-			echo "downloading minecraft-server.1.12.2.jar..."
-				wget -q -O minecraft-server.1.12.2.jar https://launcher.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.12.2.jar"
-			break
-			;;
-		"1.11.2")
-			echo "downloading minecraft-server.1.11.2.jar..."
-				wget -q -O minecraft-server.1.11.2.jar https://launcher.mojang.com/v1/objects/f00c294a1576e03fddcac777c3cf4c7d404c4ba4/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.11.2.jar"
-			break
-			;;
-		"1.10.2")
-			echo "downloading minecraft-server.1.10.2.jar..."
-				wget -q -O minecraft-server.1.10.2.jar https://launcher.mojang.com/v1/objects/3d501b23df53c548254f5e3f66492d178a48db63/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.10.2.jar"
-			break
-			;;
-		"1.9.4")
-			echo "downloading minecraft-server.1.9.4.jar..."
-				wget -q -O minecraft-server.1.9.4.jar https://launcher.mojang.com/v1/objects/edbb7b1758af33d365bf835eb9d13de005b1e274/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.9.4.jar"
-			break
-			;;
-		"1.8.9")
-			echo "downloading minecraft-server.1.8.9.jar..."
-				wget -q -O minecraft-server.1.8.9.jar https://launcher.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.8.9.jar"
-			break
-			;;
-		"1.7.10")
-			echo "downloading minecraft-server.1.7.10.jar..."
-				wget -q -O minecraft-server.1.7.10.jar https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar
-				serverfile="${serverdirectory}/minecraft-server.1.7.10.jar"
-			break
-			;;
+		"1.16.4")
+			FetchServerFileFromMojan "35139deedbd5182953cf1caa23835da59ca3d7cd"
+		;;
+		"1.16.3")
+			FetchServerFileFromMojan "f02f4473dbf152c23d7d484952121db0b36698cb"
+		;;
+		"1.16.2")
+			FetchServerFileFromMojan "c5f6fb23c3876461d46ec380421e42b289789530"
+		;;
+		"1.16.1")
+			FetchServerFileFromMojan "a412fd69db1f81db3f511c1463fd304675244077"
+		;;
 		*) echo "Please choose an option from the list: ";;
 	esac
 done
