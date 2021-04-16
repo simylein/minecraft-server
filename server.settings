@@ -66,22 +66,22 @@ branch="testing" # all scripts will fetch from this branch
 date=$(date +"%Y-%m-%d %H:%M:%S") # defines format of script time logging
 
 # change to server console after startup
-changetoconsole="false" # changes to server console after startup if set to true
+changetoconsole="replacechangetoconsole" # changes to server console after startup if set to true
 
 # # enables watchdog integrity checks for backups
-enablewatchdog="true" # executes watchdog script if set to true
+enablewatchdog="replaceenablewatchdog" # executes watchdog script if set to true
 
 # print welcome messages if a player joins
-welcomemessage="true" # executes welcome script if set to true
+welcomemessage="replacewelcomemessage" # executes welcome script if set to true
 
 # network stuff
-dnsserver="1.1.1.1" # server will ping it for public avalability checks
-interface="192.168.1.1" # server will ping it for private avalability checks
+dnsserver="replacednsserver" # server will ping it for public avalability checks
+interface="replaceinterface" # server will ping it for private avalability checks
 
 # memory and threads
-mems="-Xms256M" # minimun memory for java server process
-memx="-Xms2048M" # macimum memory for java server process
-threadcount="-XX:ParallelGCThreads=2" # amount of threads which can be used by java server
+mems="replacemems" # minimun memory for java server process
+memx="replacememx" # maximum memory for java server process
+threadcount="replacethreadcount" # amount of threads which can be used by java server
 
 # files and directories
 servername="replaceservername" # defines server name
