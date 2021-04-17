@@ -213,5 +213,5 @@ else cd ${serverdirectory}
 	echo "${blue}restarting server...${nocolor}"
 	echo "backup restore has been canceled" >> ${screenlog}
 	echo "resuming to current live world" >> ${screenlog}
-	./start.sh
+	./start.sh "$@"
 fi

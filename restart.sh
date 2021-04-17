@@ -93,4 +93,4 @@ fi
 
 # restart the server
 CheckQuiet "${blue}restarting server...${nocolor}"
-./start.sh
+./start.sh "$@"

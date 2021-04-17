@@ -113,4 +113,4 @@ mkdir world
 
 # restart the server
 echo "${blue}restarting server...${nocolor}"
-./start.sh
+./start.sh "$@"
