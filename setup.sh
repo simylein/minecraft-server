@@ -636,7 +636,8 @@ fi
 # eula question
 echo "Would you like to accept the End User License Agreement from Mojang?"
 echo "If you say no your server will not be able to run"
-read -p "${orange}If you say yes you must abide by their terms and conditions! [Y/N]:${nocolor} "
+echo "${orange}If you say yes you must abide by their terms and conditions!${nocolor}"
+read -p "[Y/N]: "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
@@ -696,7 +697,7 @@ echo -n "storing variables in server.properties... "
 	StoreToProperties "spawn-protection=16" "${spawnprotection}"
 	StoreToProperties "server-port=25565" "${serverport}"
 	StoreToProperties "query.port=25565" "${queryport}"
-	StoreToProperties "enable-query=true" "${enablequery}"
+	StoreToProperties "enable-query=false" "${enablequery}"
 	StoreToProperties "motd=A Minecraft Server" "${motd}"
 echo "done"
 
