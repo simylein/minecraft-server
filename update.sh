@@ -214,31 +214,52 @@ else
 	fi
 fi
 
-# Test internet connectivity and update on success
-wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-if [ "$?" != 0 ]; then
-	echo "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
-	echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
-else
-	CheckQuiet "${green}downloading newest scripts version...${nocolor}"
-	echo "downloading newest scripts version..." >> ${screenlog}
-		# remove all scripts then download all the scripts then make the scripts executable
-		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/LICENSE
-		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/README.md
-		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/start.sh && chmod +x start.sh
-		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restore.sh && chmod +x restore.sh
-		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/reset.sh && chmod +x reset.sh
-		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/restart.sh && chmod +x restart.sh
-		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/stop.sh && chmod +x stop.sh
-		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/backup.sh && chmod +x backup.sh
-		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/update.sh && chmod +x update.sh
-		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/maintenance.sh && chmod +x maintenance.sh
-		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/prerender.sh && chmod +x prerender.sh
-		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/watchdog.sh && chmod +x watchdog.sh
-		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/welcome.sh && chmod +x welcome.sh
-		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/vent.sh
-fi
+# user info
+
+# user info about download
+CheckVerbose "removing scripts in serverdirectory... "
+
+# remove scripts from serverdirectory
+# declare all scripts in an array
+declare -a scripts=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+# get length of script array
+scriptslength=${#scripts[@]}
+# loop through all entries in the array
+for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+	CheckVerbose "Removing script ${1}"
+	rm "${scripts[${i}-1]}"
+done
+
+# user info about download
+CheckVerbose "downloading scripts from GitHub... "
+
+# downloading scripts from github
+# declare all scripts in an array
+declare -a scripts=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+# get length of script array
+scriptslength=${#scripts[@]}
+# loop through all entries in the array
+for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+	FetchScriptFromGitHub "${scripts[${i}-1]}"
+done
+
+# user info
+CheckVerbose "download successful"
+
+# make selected scripts executable
+# declare all scripts in an array
+declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+# get length of script array
+scriptslength=${#scripts[@]}
+# loop through all entries in the array
+for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+	CheckVerbose "Setting script ${1} executable"
+	chmod +x ${scripts[${i}-1]}
+done
+
+# store serverdirectory
+serverdirectory=`pwd`
 
 # restart the server
-CheckQuiet "${green}restarting server...${nocolor}"
+CheckQuiet "${cyan}restarting server...${nocolor}"
 ./start.sh "$@"
