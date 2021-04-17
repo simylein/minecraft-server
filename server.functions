@@ -41,7 +41,7 @@ function ParseScriptArguments {
 }
 # checks if debug is set to true and logs very verbose to debug.log
 function CheckDebug {
-	if [[ ${enabledebug} -eq true ]]; then
+	if [[ ${enabledebug} == true ]]; then
 		echo "${date} ${1}" >> debug.log
 	fi
 }
@@ -175,6 +175,8 @@ function CheckBackupDirectoryIntegrity {
 			echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
 			echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
 			echo "" >> ${backuplog}
+			CheckVerbose "info: the backup-directory ${backupcategories[${i}-1]} is missing"
+			CheckVerbose "info: creating ${backupdirectory}/${backupcategories[${i}-1]}"
 			cd ${backupdirectory}
 			mkdir ${backupcategories[${i}-1]}
 			cd ${serverdirectory}
