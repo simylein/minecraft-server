@@ -226,7 +226,7 @@ function FetchServerFileFromMojan {
 	wget -q -O minecraft-server.${version}.jar https://launcher.mojang.com/v1/objects/${1}/server.jar
 	serverfile="${serverdirectory}/minecraft-server.${version}.jar"
 	echo "done"
-	if [[ -s "minecraft-server.${version}.jar" ]]; then
+	if ! [[ -s "minecraft-server.${version}.jar" ]]; then
 		echo "download error: downloaded server-file minecraft-server.${version}.jar is empty or not available"
 	fi
 }
