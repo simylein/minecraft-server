@@ -409,7 +409,7 @@ if [[ ${nerdysetup} == true ]]; then
 	read -p "Please enter true or false: " enablequery
 	done
 	echo "Your Server will be on ${green}${enablequery}${nocolor}"
-	enablequery="spawn-monsters=${enablequery}"
+	enablequery="enably-query=${enablequery}"
 
 	# ask for gamemode
 	echo "Which gamemode would you like to play? Example: ${yellow}survival${nocolor}"
@@ -610,7 +610,7 @@ if [[ ${nerdysetup} == false ]]; then
 	maxplayers="max-players=8"
 	serverport="server-port=25565"
 	queryport="query.port=25565"
-	enablequery="enably-query=true"
+	enablequery="enable-query=true"
 	gamemode="gamemode=survival"
 	forcegamemode="force-gamemode=false"
 	difficulty="difficulty=normal"
