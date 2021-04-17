@@ -625,7 +625,7 @@ fi
 # eula question
 echo "Would you like to accept the End User License Agreement from Mojang?"
 echo "If you say no your server will not be able to run"
-read -p "If you say yes you must abide by their terms and conditions! [Y/N]:"
+read -p "${orange}If you say yes you must abide by their terms and conditions! [Y/N]:${nocolor} "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
