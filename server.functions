@@ -6,96 +6,6 @@
 # if you know what you are doing, feel free to tinker with them ;^)
 
 
-# prints all input to screen terminal
-function PrintToScreen {
-	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
-}
-
-
-# prints colourful success messages into screen
-function PrintToScreenBackupSuccess {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, time spent: ${timespent} ms, compression: ${compressedbackup}/${worldsize}\"}]}}}]$(printf '\r')"
-}
-# prints backup success to backup log
-function PrintToLogBackupSuccess {
-	echo "newest backup has been successfully created" >> ${backuplog}
-	echo "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz" >> ${backuplog}
-	echo "oldest backup has been successfully removed" >> ${backuplog}
-	echo "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz" >> ${backuplog}
-	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-	echo "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
-
-
-# prints colourful backup already exists message into screen
-function PrintToScreenBackupAlreadyExists {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: backup already exists - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: backup already exists\"}]}}}]$(printf '\r')"
-}
-# prints backup already exists to backup log
-function PrintToLogBackupAlreadyExists {
-	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
-	echo "warning: could not create new ${1}-backup" >> ${backuplog}
-	echo "warning: backup already exists" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
-
-
-# prints colorful disk space warning message into screen
-function PrintToScreenDiskSpaceWarning {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: free disk space is getting rare - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, warning: free disk space is getting rare\"}]}}}]$(printf '\r')"
-}
-# prints disk space warning to backup log
-function PrintToLogDiskSpaceWarning {
-	echo "${yellow}warning: free disk-space is getting rare${nocolor}"
-	echo "warning: free disk-space is getting rare" >> ${backuplog}
-}
-
-
-# prints colourful not enough disk space message into screen
-function PrintToScreenNotEnoughtDiskSpace {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
-}
-# prints not enough disk space to backup log
-function PrintToLogNotEnoughDiskSpace {
-	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
-	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
-
-
-# prints colourful error messages into screen
-function PrintToScreenBackupError {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: missing directories, empty file-path or empty files\"}]}}}]$(printf '\r')"
-}
-# prints backup error to backup log
-function PrintToLogBackupError {
-	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
-	echo "warning: could not remove old backup" >> ${backuplog}
-	echo "fatal: could not backup world" >> ${backuplog}
-	echo "" >> ${backuplog}
-}
-
-
-# creates an archive from a directory with progress bar
-function ArchiveDirectoryWithProgress {
-	echo "I will create a compressed archive for ${1}"
-	tar cf - ${1} -P | pv -s $(du -sb ${1} | awk '{print $1}') | gzip > ${1}.tar.gz
-}
-# extracts a directory from an archive with progress bar
-function ExtractDirectoryWithProgress {
-	echo "I will extract the archive ${1}"
-	pv ${1}.tar.gz | tar -xz
-}
-
-
-# checks if debug is set to true and logs very verbose to debug.log
-function CheckIfDebugTrue {
-	if [[ ${enabledebug} -eq true ]]; then
-		echo "${date} ${1}" >> debug.log
-	fi
-}
-
 # function for parsing arguments for a script
 function ParseScriptArguments {
 	immediatly=false
@@ -129,17 +39,174 @@ function ParseScriptArguments {
 		shift
 	done
 }
-
+# checks if debug is set to true and logs very verbose to debug.log
+function CheckDebug {
+	if [[ ${enabledebug} -eq true ]]; then
+		echo "${date} ${1}" >> debug.log
+	fi
+}
 # check if verbose mode is on
 function CheckVerbose {
 	if [[ ${verbose} == true ]]; then
 		echo "${1}"
 	fi
 }
-
 # check if quiet mode is on
 function CheckQuiet {
 	if ! [[ ${quiet} == true ]]; then
-	echo "${1}"
+		echo "${1}"
 	fi
+}
+
+
+# prints all input to screen terminal
+function PrintToScreen {
+	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
+}
+
+
+# prints colourful success messages into screen
+function PrintToScreenBackupSuccess {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, time spent: ${timespent} ms, compression: ${compressedbackup}/${worldsize}\"}]}}}]$(printf '\r')"
+}
+# prints backup success to backup log
+function PrintToLogBackupSuccess {
+	echo "newest backup has been successfully created" >> ${backuplog}
+	echo "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz" >> ${backuplog}
+	echo "oldest backup has been successfully removed" >> ${backuplog}
+	echo "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz" >> ${backuplog}
+	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
+	echo "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+# prints success messages to terminal
+function PrintToTerminalBackupSuccess {
+	CheckQuiet "newest backup has been successfully created"
+	CheckQuiet "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz"
+	CheckQuiet "oldest backup has been successfully removed"
+	CheckQuiet "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz"
+	CheckVerbose "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}"
+	CheckVerbose "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}"
+}
+
+
+# prints colourful backup already exists message into screen
+function PrintToScreenBackupAlreadyExists {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: backup already exists - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: backup already exists\"}]}}}]$(printf '\r')"
+}
+# prints backup already exists to backup log
+function PrintToLogBackupAlreadyExists {
+	echo "warning: could not create new ${1}-backup" >> ${backuplog}
+	echo "warning: backup already exists" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+# prints backup already exists to terminal
+function PrintToTerminalBackupAlreadyExists {
+	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
+}
+
+
+# prints colorful disk space warning message into screen
+function PrintToScreenDiskSpaceWarning {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: free disk space is getting rare - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, warning: free disk space is getting rare\"}]}}}]$(printf '\r')"
+}
+# prints disk space warning to backup log
+function PrintToLogDiskSpaceWarning {
+	echo "warning: free disk-space is getting rare" >> ${backuplog}
+}
+# prints disk space warnig to terminal
+function PrintToTerminalDiskSpaceWarning {
+	echo "${yellow}warning: free disk-space is getting rare${nocolor}"
+}
+
+
+# prints colourful not enough disk space message into screen
+function PrintToScreenNotEnoughtDiskSpace {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: not enough disk space - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
+}
+# prints not enough disk space to backup log
+function PrintToLogNotEnoughDiskSpace {
+	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+# prints not enough disk space to terminal
+function PrintToTerminalNotEnoughDiskSpace {
+	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
+}
+
+
+# prints colourful error messages into screen
+function PrintToScreenBackupError {
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: missing directories, empty file-path or empty files\"}]}}}]$(printf '\r')"
+}
+# prints backup error to backup log
+function PrintToLogBackupError {
+	echo "warning: cannot remove old backup because new backup is missing" >> ${backuplog}
+	echo "warning: could not remove old backup" >> ${backuplog}
+	echo "fatal: could not backup world" >> ${backuplog}
+	echo "" >> ${backuplog}
+}
+# prints backup error to backup log
+function PrintToTerminalBackupError {
+	echo "${orange}warning: cannot remove old backup because new backup is missing${nocolor}"
+	echo "${orange}warning: could not remove old backup${nocolor}"
+	echo "${red}fatal: could not backup world${nocolor}"
+}
+
+
+# creates an archive from a directory with progress bar
+function ArchiveDirectoryWithProgress {
+	echo "I will create a compressed archive for ${1}"
+	tar cf - ${1} -P | pv -s $(du -sb ${1} | awk '{print $1}') | gzip > ${1}.tar.gz
+}
+# extracts a directory from an archive with progress bar
+function ExtractDirectoryWithProgress {
+	echo "I will extract the archive ${1}"
+	pv ${1}.tar.gz | tar -xz
+}
+
+
+# function for testing if all categories for backups exists if not create them
+function CheckBackupDirectoryIntegrity {
+	declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
+	arraylenght=${#backupcategories[@]}
+	for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
+		if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
+			echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
+			echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
+			echo "" >> ${backuplog}
+			cd ${backupdirectory}
+			mkdir ${backupcategories[${i}-1]}
+			cd ${serverdirectory}
+		fi
+	done
+}
+
+# prints game over as pixel art on terminal
+function PrintGameOver {
+		echo "${red}                                            ${nocolor}"
+		echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
+		echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
+		echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
+		echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
+		echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
+		echo "${red}                                            ${nocolor}"
+		echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
+		echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
+		echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
+		echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
+		echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
+		echo "${red}                                            ${nocolor}"
+}
+
+# function for fetching scripts from github with error checking
+function FetchScriptFromGitHub {
+	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+	if [ "$?" != 0 ]; then
+		echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
+		exit 1
+	else
+		CheckVerbose "Fetching file: ${1} from branch ${branch} on GitHub..."
+		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+fi
 }
