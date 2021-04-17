@@ -916,7 +916,7 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	echo "${green}starting up server...${nocolor}"
-	./start.sh
+	./start.sh --verbose
 else
 	echo "${magenta}script has finished!${nocolor}"
 fi
