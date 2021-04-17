@@ -54,6 +54,7 @@ diskspacewarning="8208608" # value in bytes for diskspace warning
 # logfiles
 screenlog="screen.log" # defines name of screenlog file
 backuplog="backup.log" # defines name of backuplog file
+debuglog="debug.log" # defines name of debuglog file
 
 # binarys
 java="/usr/bin/java" # defines path to java binary
@@ -61,6 +62,9 @@ screen="/usr/bin/screen" # defines path to screen binary
 
 # github branch
 branch="testing" # all scripts will fetch from this branch
+
+# enables debug logging
+enabledebug="false" # enables debug log into logfiles if set to true
 
 # script time logging
 date=$(date +"%Y-%m-%d %H:%M:%S") # defines format of script time logging
