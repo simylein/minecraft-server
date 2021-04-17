@@ -401,6 +401,16 @@ if [[ ${nerdysetup} == true ]]; then
 	echo "Your Server will be on ${green}${queryport}${nocolor}"
 	queryport="query.port=${queryport}"
 
+	# ask for query
+	echo "Would you like your server have a query? Example: ${yellow}true${nocolor}"
+	read -re -i "true" -p "Your choice: " enablequery
+	regex="^(true|false)$"
+	while [[ ! ${enablequery} =~ ${regex} ]]; do
+	read -p "Please enter true or false: " enablequery
+	done
+	echo "Your Server will be on ${green}${enablequery}${nocolor}"
+	enablequery="spawn-monsters=${enablequery}"
+
 	# ask for gamemode
 	echo "Which gamemode would you like to play? Example: ${yellow}survival${nocolor}"
 	read -re -i "survival" -p "Your gamemode: " gamemode
@@ -600,6 +610,7 @@ if [[ ${nerdysetup} == false ]]; then
 	maxplayers="max-players=8"
 	serverport="server-port=25565"
 	queryport="query.port=25565"
+	enablequery="enably-query=true"
 	gamemode="gamemode=survival"
 	forcegamemode="force-gamemode=false"
 	difficulty="difficulty=normal"
@@ -685,6 +696,7 @@ echo -n "storing variables in server.properties... "
 	StoreToProperties "spawn-protection=16" "${spawnprotection}"
 	StoreToProperties "server-port=25565" "${serverport}"
 	StoreToProperties "query.port=25565" "${queryport}"
+	StoreToProperties "enable-query=true" "${enablequery}"
 	StoreToProperties "motd=A Minecraft Server" "${motd}"
 echo "done"
 
