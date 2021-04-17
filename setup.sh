@@ -196,23 +196,23 @@ echo "downloading scripts from GitHub... "
 
 # downloading scripts from github
 # declare all scripts in an array
-declare -a scripts=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
 # get length of script array
-scriptslength=${#scripts[@]}
+scriptslength=${#scripts1[@]}
 # loop through all entries in the array
 for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-	FetchScriptFromGitHub "${scripts[${i}-1]}"
+	FetchScriptFromGitHub "${scripts1[${i}-1]}"
 done
 
 # make selected scripts executable
 # declare all scripts in an array
-declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+declare -a scripts2=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
 # get length of script array
-scriptslength=${#scripts[@]}
+scriptslength=${#scripts2[@]}
 # loop through all entries in the array
 for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-	CheckVerbose "Setting script ${1} executable"
-	chmod +x ${scripts[${i}-1]}
+	CheckVerbose "Setting script ${scripts2[${i}-1]} executable"
+	chmod +x ${scripts2[${i}-1]}
 done
 
 # store serverdirectory
