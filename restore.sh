@@ -41,6 +41,9 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # write date to logfile
 echo "${date} executing restore script" >> ${screenlog}
 
@@ -51,21 +54,24 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# countdown
-counter="60"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "${blue}[Script]${nocolor} server is restoring a backup in ${counter} seconds"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is restoring a backup in ${counter} seconds\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediatly is specified
+if ! [[ ${immediatly} == true ]]; then
+	# countdown
+	counter="60"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+			CheckQuiet "${blue}[Script]${nocolor} server is restoring a backup in ${counter} seconds"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is restoring a backup in ${counter} seconds\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckQuiet "stopping server..."
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -105,6 +111,7 @@ else
 fi
 
 # create arrays with backupdirectorys
+CheckVerbose "scanning backup directory..."
 cd ${backupdirectory}
 backups=($(ls))
 cd hourly
@@ -206,7 +213,7 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 		echo "something went wrong - could not restore backup" >> ${screenlog}
 		mv ${serverdirectory}/old-world ${serverdirectory}/world
 	fi
-	./start.sh
+	./start.sh "$@"
 # if user replys no cancel and restart server
 else cd ${serverdirectory}
 	echo "${yellow}canceling backup restore...${nocolor}"
