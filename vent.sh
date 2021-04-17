@@ -40,6 +40,9 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # user safety function for confirmation
 echo "${orange}Are you sure you want to vent your server?${nocolor}"
 read -p "If so, please type ${red}CONFIRM VENTING${nocolor} "
@@ -57,34 +60,26 @@ if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
 	echo "${yellow}server is not currently running!${nocolor}"
 	counter="10"
-	while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(10|9|8|7|6|5|4|3|2|1)$ ]]; then
-			echo "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
-		fi
-		counter=$((counter-1))
-		sleep 1s
-	done
-	cd ../
+	# check if immediatly is specified
+	if ! [[ ${immediatly} == true ]]; then
+		while [ ${counter} -gt 0 ]; do
+			if [[ "${counter}" =~ ^(10|9|8|7|6|5|4|3|2|1)$ ]]; then
+				CheckQuiet "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
+			fi
+			counter=$((counter-1))
+			sleep 1s
+		done
+	fi
+	cd ${homedirectory}
 	# remove crontab
 	crontab -r
 	# remove serverdirectory
+	echo "deleting server..."
 	rm -r ${servername}
 	# check if vent was successful
 	if ! [ -d "${serverdirectory}" ]; then
 		# game over terminal screen
-		echo "${red}                                            ${nocolor}"
-		echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
-		echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
-		echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
-		echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
-		echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
-		echo "${red}                                            ${nocolor}"
-		echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
-		echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
-		echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
-		echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
-		echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
-		echo "${red}                                            ${nocolor}"
+		PrintGameOver
 		exit 1
 	else
 		# error if serverdirectory still exists
@@ -100,16 +95,19 @@ screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"co
 # sleep for 2 seconds
 sleep 2s
 
-# countdown
-counter="120"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(120|60|40|20|10|9|8|7|6|5|4|3|2|1)$ ]]; then
-		echo "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is self-destructing in ${counter} seconds\",\"color\":\"red\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediatly is specified
+if ! [[ ${immediatly} == true ]]; then
+	# countdown
+	counter="120"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(120|60|40|20|10|9|8|7|6|5|4|3|2|1)$ ]]; then
+			CheckQuiet "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is self-destructing in ${counter} seconds\",\"color\":\"red\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # game over
 echo "${blue}[Script]${nocolor} ${red}GAME OVER${nocolor}"
@@ -142,7 +140,7 @@ fi
 # sleep 2 seconds
 sleep 2s
 
-cd ../
+cd ${homedirectory}
 # remove crontab
 crontab -r
 # remove serverdirectory
@@ -151,19 +149,7 @@ rm -r ${servername}
 # check if vent was successful
 if ! [ -d "${serverdirectory}" ]; then
 	# game over terminal screen
-	echo "${red}                                            ${nocolor}"
-	echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
-	echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
-	echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
-	echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
-	echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
-	echo "${red}                                            ${nocolor}"
-	echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
-	echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
-	echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
-	echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
-	echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
-	echo "${red}                                            ${nocolor}"
+	PrintGameOver
 	exit 1
 else
 	# error if serverdirectory still exists
