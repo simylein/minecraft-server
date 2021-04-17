@@ -51,19 +51,11 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # test if all categories for backups exists if not create them
-declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
-arraylenght=${#backupcategories[@]}
-for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
-	if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
-		echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
-		echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
-		echo "" >> ${backuplog}
-		cd ${backupdirectory}
-		mkdir ${backupcategories[${i}-1]}
-		cd ${serverdirectory}
-	fi
-done
+CheckBackupDirectoryIntegrity
 
 
 # check if hourly backups are anabled
@@ -72,6 +64,7 @@ if [ ${dohourly} = true ]; then
 	# write date and execute into logfiles
 	echo "${date} executing backup-hourly script" >> ${screenlog}
 	echo "${date} executing backup-hourly script" >> ${backuplog}
+	CheckDebug "executing backup-hourly script" >> ${debuglog}
 	
 	# start milliseconds timer
 	before=$(date +%s%3N)
@@ -87,9 +80,10 @@ if [ ${dohourly} = true ]; then
 
 	# check if world is bigger than diskspace
 	if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-		# ingame and logfile error output
+		# ingame, terminal and logfile error output
 		PrintToScreenNotEnoughtDiskSpace "${newhourly}" "${oldhourly}"
 		PrintToLogNotEnoughDiskSpace "hourly"
+		PrintToTerminalNotEnoughDiskSpace "hourly"
 		exit 1
 	fi
 
@@ -97,6 +91,7 @@ if [ ${dohourly} = true ]; then
 	if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
 		PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
 		PrintToLogDiskSpaceWarning
+		PrintToTerminalDiskSpaceWarning
 	fi
 
 	# check if there is no backup from the current hour
@@ -110,6 +105,7 @@ if [ ${dohourly} = true ]; then
 	else
 		PrintToScreenBackupAlreadyExists "${newhourly}" "${oldhourly}"
 		PrintToLogBackupAlreadyExists "hourly"
+		PrintToTerminalBackupAlreadyExists "hourly"
 		exit 1
 	fi
 
@@ -130,14 +126,17 @@ if [ ${dohourly} = true ]; then
 		# ingame and logfile success output
 		PrintToScreenBackupSuccess "${newhourly}" "${oldhourly}"
 		PrintToLogBackupSuccess "${newhourly}" "${oldhourly}"
+		PrintToTerminalBackupSuccess "${newhourly}" "${oldhourly}"
 	else
 		# ingame and logfile error output
 		PrintToScreenBackupError "${newhourly}" "${oldhourly}"
 		PrintToLogBackupError
+		PrintToTerminalBackupError
 	fi
 
 else
 	# write to logfiles that it's disabled
+	CheckDebug "info: backup-hourly is disabled" >> ${debuglog}
 	echo "info: backup-hourly is disabled" >> ${backuplog}
 	echo "" >> ${backuplog}
 fi
@@ -149,6 +148,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 	# write date and execute into logfiles
 	echo "${date} executing backup-daily script" >> ${screenlog}
 	echo "${date} executing backup-daily script" >> ${backuplog}
+	CheckDebug "executing backup-daily script" >> ${debuglog}
 
 	# check if daily backups are anabled
 	if [ ${dodaily} = true ]; then
@@ -167,9 +167,10 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-			# ingame and logfile error output
+			# ingame, terminal and logfile error output
 			PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
 			PrintToLogNotEnoughDiskSpace "daily"
+			PrintToTerminalNotEnoughDiskSpace "daily"
 			exit 1
 		fi
 
@@ -177,6 +178,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
 			PrintToScreenDiskSpaceWarning "${newdaily}" "${olddaily}"
 			PrintToLogDiskSpaceWarning
+			PrintToTerminalDiskSpaceWarning
 		fi
 
 		# check if there is no backup from the current day
@@ -190,6 +192,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 		else
 			PrintToScreenBackupAlreadyExists "${newdaily}" "${olddaily}"
 			PrintToLogBackupAlreadyExists "daily"
+			PrintToTerminalBackupAlreadyExists "daily"
 			exit 1
 		fi
 
@@ -210,14 +213,17 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newdaily}" "${olddaily}"
 			PrintToLogBackupSuccess "${newdaily}" "${olddaily}"
+			PrintToTerminalBackupSuccess "${newdaily}" "${olddaily}"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newdaily}" "${olddaily}"
 			PrintToLogBackupError
+			PrintToTerminalBackupError
 		fi
 
 	else
 		# write to logfiles that it's disabled
+		CheckDebug "info: backup-daily is disabled" >> ${debuglog}
 		echo "info: backup-daily is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
@@ -230,6 +236,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 	# write date and execute into logfiles
 	echo "${date} executing backup-weekly script" >> ${screenlog}
 	echo "${date} executing backup-weekly script" >> ${backuplog}
+	CheckDebug "executing backup-weekly script" >> ${debuglog}
 
 	# check if weekly backups are enabled
 	if [ ${doweekly} = true ]; then
@@ -248,9 +255,10 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-			# ingame and logfile error output
+			# ingame, terminal  and logfile error output
 			PrintToScreenNotEnoughtDiskSpace "${newweekly}" "${oldweekly}"
 			PrintToLogNotEnoughDiskSpace "weekly"
+			PrintToTerminalNotEnoughDiskSpace "weekly"
 			exit 1
 		fi
 
@@ -258,6 +266,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
 			PrintToScreenDiskSpaceWarning "${newweekly}" "${oldweekly}"
 			PrintToLogDiskSpaceWarning
+			PrintToTerminalDiskSpaceWarning
 		fi
 
 		# check if there is no backup from the current week
@@ -271,6 +280,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 		else
 			PrintToScreenBackupAlreadyExists "${newweekly}" "${oldweekly}"
 			PrintToLogBackupAlreadyExists "weekly"
+			PrintToTerminalBackupAlreadyExists "weekly"
 			exit 1
 		fi
 
@@ -291,14 +301,17 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newweekly}" "${oldweekly}"
 			PrintToLogBackupSuccess "${newweekly}" "${oldweekly}"
+			PrintToTerminalBackupSuccess "${newweekly}" "${oldweekly}"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newweekly}" "${oldweekly}"
 			PrintToLogBackupError
+			PrintToTerminalBackupError
 		fi
 
 	else
 		# write to logfiles that it's disabled
+		CheckDebug "info: backup-weekly is disabled" >> ${debuglog}
 		echo "info: backup-weekly is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
@@ -311,6 +324,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 	# write date and execute into logfiles
 	echo "${date} executing backup-monthly script" >> ${screenlog}
 	echo "${date} executing backup-monthly script" >> ${backuplog}
+	CheckDebug "executing backup-monthly script" >> ${debuglog}
 
 	# check if monthly backups are enabled
 	if [ ${domonthly} = true ]; then
@@ -329,9 +343,10 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 
 		# check if world is bigger than diskspace
 		if (( (${absoluteworldsize} + ${diskspacepadding}) > ${absolutediskspace} )); then
-			# ingame and logfile error output
+			# ingame, terminal and logfile error output
 			PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
 			PrintToLogNotEnoughDiskSpace "monthly"
+			PrintToTerminalNotEnoughDiskSpace "monthly"
 			exit 1
 		fi
 
@@ -339,6 +354,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 		if (( (${absoluteworldsize} + ${diskspacewarning}) > ${absolutediskspace} )); then
 			PrintToScreenDiskSpaceWarning "${newmonthly}" "${oldmonthly}"
 			PrintToLogDiskSpaceWarning
+			PrintToTerminalDiskSpaceWarning
 		fi
 
 		# check if there is no backup from the current month
@@ -352,6 +368,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 		else
 			PrintToScreenBackupAlreadyExists "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupAlreadyExists "monthly"
+			PrintToTerminalBackupAlreadyExists "monthly"
 			exit 1
 		fi
 
@@ -372,14 +389,17 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 			# ingame and logfile success output
 			PrintToScreenBackupSuccess "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupSuccess "${newmonthly}" "${oldmonthly}"
+			PrintToTerminalBackupSuccess "${newmonthly}" "${oldmonthly}"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupError
+			PrintToTerminalBackupError
 		fi
 
 	else
 		# write to logfiles that it's disabled
+		CheckDebug "info: backup-monthly is disabled" >> ${debuglog}
 		echo "info: backup-monthly is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
