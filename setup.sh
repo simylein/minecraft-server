@@ -744,11 +744,11 @@ if [[ ${nerdysetup} == true ]]; then
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automating backups...${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-			crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
+			crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"; } | crontab -
 			backupchoice=true
 		else echo "${yellow}no automated backups${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-			crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
+			crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"; } | crontab -
 			backupchoice=false
 	fi
 
@@ -763,15 +763,15 @@ if [[ ${nerdysetup} == true ]]; then
 			read -p "Your start time [0 - 23]: " starttime
 			read -p "Your stop time [0 - 23]: " stoptime
 			crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
-			crontab -l | { cat; echo "0 ${starttime} * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			crontab -l | { cat; echo "0 ${starttime} * * * cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
 			crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
-			crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+			crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ./stop.sh --quiet"; } | crontab -
 			startstopchoice=true
 		else echo "${yellow}no automated  start and stop${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
-			crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
 			crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
-			crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+			crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ./stop.sh --quiet"; } | crontab -
 			startstopchoice=false
 	fi
 
@@ -784,11 +784,11 @@ if [[ ${nerdysetup} == true ]]; then
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic restarts at 02:00${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
-			crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+			crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"; } | crontab -
 			restartchoice=true
 		else echo "${yellow}no restarts${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
-			crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+			crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"; } | crontab -
 			restartchoice=false
 	fi
 
@@ -801,11 +801,11 @@ if [[ ${nerdysetup} == true ]]; then
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic update at Sunday${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
-			crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+			crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"; } | crontab -
 			updatechoice=true
 		else echo "${yellow}no updates${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
-			crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+			crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"; } | crontab -
 			updatechoice=false
 	fi
 
@@ -818,11 +818,11 @@ if [[ ${nerdysetup} == true ]]; then
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic startup at boot...${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-			crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
 			startatbootchoice=true
 		else echo "${yellow}no startup at boot${nocolor}"
 			crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-			crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+			crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
 			startatbootchoice=false
 	fi
 
@@ -875,25 +875,25 @@ if [[ ${nerdysetup} == false ]]; then
 
 	# crontab automatization backups
 	crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-	crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ${serverdirectory}/backup.sh"; } | crontab -
+	crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"; } | crontab -
 
 	# crontab automated start and stop
 	crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
-	crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+	crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
 	crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
-	crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ${serverdirectory}/stop.sh"; } | crontab -
+	crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ./stop.sh --quiet"; } | crontab -
 
 	# crontab automatization restart
 	crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
-	crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ${serverdirectory}/restart.sh"; } | crontab -
+	crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"; } | crontab -
 
 	# crontab automatization updates
 	crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
-	crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ${serverdirectory}/update.sh"; } | crontab -
+	crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"; } | crontab -
 
 	# crontab automatization startup
 	crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-	crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ${serverdirectory}/start.sh"; } | crontab -
+	crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
 
 	# padd crontab with two empty lines
 	crontab -l | { cat; echo ""; } | crontab -
@@ -907,6 +907,18 @@ echo "If you would like to start your Server:"
 echo "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
 echo "execute like this: ${green}./start.sh${nocolor}"
 echo "${magenta}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
+
+# ask user for removal of setup script
+read -p "Would you like to remove the setup script? [Y/N]: "
+regex="^(Y|y|N|n)$"
+while [[ ! ${REPLY} =~ ${regex} ]]; do
+	read -p "Please press Y or N: " REPLY
+done
+if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+	cd ${homedirectory}
+	rm setup.sh
+	cd ${serverdirectory}
+fi
 
 # ask user to start server now
 read -p "Would you like to start your server now? [Y/N]: "
