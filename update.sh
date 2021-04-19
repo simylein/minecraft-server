@@ -99,58 +99,17 @@ if ! screen -list | grep -q "\.${servername}"; then
 		fi
 	fi
 
-	# user info
-
-	# user info about download
-	CheckVerbose "removing scripts in serverdirectory... "
-
 	# remove scripts from serverdirectory
-	# declare all scripts in an array
-	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
-	# get length of script array
-	scriptslength=${#scripts[@]}
-	# loop through all entries in the array
-	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "Removing script ${1}"
-		rm "${scripts[${i}-1]}"
-	done
-
-	# user info about download
-	CheckVerbose "downloading scripts from GitHub... "
+	RemoveScriptsFromServerDirectory
 
 	# downloading scripts from github
-	# declare all scripts in an array
-	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
-	# get length of script array
-	scriptslength=${#scripts[@]}
-	# loop through all entries in the array
-	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		FetchScriptFromGitHub "${scripts[${i}-1]}"
-	done
-
-	# user info
-	CheckVerbose "download successful"
+	DownloadScriptsFromGitHub
 
 	# make selected scripts executable
-	# declare all scripts in an array
-	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
-	# get length of script array
-	scriptslength=${#scripts[@]}
-	# loop through all entries in the array
-	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "Setting script ${1} executable"
-		chmod +x ${scripts[${i}-1]}
-	done
-
-	# store serverdirectory
-	serverdirectory=`pwd`
+	MakeScriptsExecutable
 
 	# restart the server
 	CheckQuiet "${cyan}restarting server...${nocolor}"
-	./start.sh "$@"
-
-	# restart the server
-	CheckQuiet "${green}restarting server...${nocolor}"
 	./start.sh "$@"
 	exit 0
 fi
@@ -239,51 +198,14 @@ else
 	fi
 fi
 
-# user info
-
-# user info about download
-CheckVerbose "removing scripts in serverdirectory... "
-
 # remove scripts from serverdirectory
-# declare all scripts in an array
-declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
-# get length of script array
-scriptslength=${#scripts[@]}
-# loop through all entries in the array
-for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-	CheckVerbose "Removing script ${1}"
-	rm "${scripts[${i}-1]}"
-done
-
-# user info about download
-CheckVerbose "downloading scripts from GitHub... "
+RemoveScriptsFromServerDirectory
 
 # downloading scripts from github
-# declare all scripts in an array
-declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
-# get length of script array
-scriptslength=${#scripts[@]}
-# loop through all entries in the array
-for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-	FetchScriptFromGitHub "${scripts[${i}-1]}"
-done
-
-# user info
-CheckVerbose "download successful"
+DownloadScriptsFromGitHub
 
 # make selected scripts executable
-# declare all scripts in an array
-declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
-# get length of script array
-scriptslength=${#scripts[@]}
-# loop through all entries in the array
-for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-	CheckVerbose "Setting script ${1} executable"
-	chmod +x ${scripts[${i}-1]}
-done
-
-# store serverdirectory
-serverdirectory=`pwd`
+MakeScriptsExecutable
 
 # restart the server
 CheckQuiet "${cyan}restarting server...${nocolor}"
