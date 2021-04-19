@@ -92,5 +92,6 @@ if screen -list | grep -q "${servername}"; then
 fi
 
 # restart the server
-CheckQuiet "${blue}restarting server...${nocolor}"
+CheckQuiet "${cyan}restarting server...${nocolor}"
 ./start.sh "$@"
+exit 0
