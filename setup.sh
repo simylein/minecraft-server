@@ -268,13 +268,18 @@ echo -n "setting up a backupdirectory... "
 mkdir world
 mkdir backups
 	cd backups
+		CheckVerbose "creating ${serverdirectory}/backups/hourly"
 		mkdir hourly
+		CheckVerbose "creating ${serverdirectory}/backups/daily"
 		mkdir daily
+		CheckVerbose "creating ${serverdirectory}/backups/weekly"
 		mkdir weekly
+		CheckVerbose "creating ${serverdirectory}/backups/monthly"
 		mkdir monthly
+		CheckVerbose "creating ${serverdirectory}/backups/cached"
 		mkdir cached
 		backupdirectory=`pwd`
-	cd ../
+	cd ${serverdirectory}
 echo "done"
 
 # ask all the importatnt user input
