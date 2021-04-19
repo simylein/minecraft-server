@@ -116,19 +116,19 @@ cd ${backupdirectory}
 backups=($(ls))
 cd hourly
 backupshourly=($(ls))
-cd ../
+cd ${backupdirectory}
 cd daily
 backupsdaily=($(ls))
-cd ../
+cd ${backupdirectory}
 cd weekly
 backupsweekly=($(ls))
-cd ../
+cd ${backupdirectory}
 cd monthly
 backupsmonthly=($(ls))
-cd ../
+cd ${backupdirectory}
 cd cached
 backupscached=($(ls))
-cd ../
+cd ${backupdirectory}
 
 # ask for daily or hourly backup to restore
 PS3="Would you like to restore a ${backups[0]}, ${backups[1]}, ${backups[2]}, ${backups[3]}, ${backups[4]}? "
