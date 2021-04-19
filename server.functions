@@ -212,3 +212,50 @@ function FetchScriptFromGitHub {
 		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
 fi
 }
+
+# function for removing scripts from serverdirectory
+function RemoveScriptsFromServerDirectory {
+	# user info about download
+	CheckVerbose "removing scripts in serverdirectory... "
+	# remove scripts from serverdirectory
+	# declare all scripts in an array
+	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+	# get length of script array
+	scriptslength=${#scripts[@]}
+	# loop through all entries in the array
+	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+		CheckVerbose "Removing script ${1}"
+		rm "${scripts[${i}-1]}"
+	done
+}
+
+# function for downloading scripts from github
+function DownloadScriptsFromGitHub {
+	# user info about download
+	CheckVerbose "downloading scripts from GitHub... "
+	# downloading scripts from github
+	# declare all scripts in an array
+	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+	# get length of script array
+	scriptslength=${#scripts[@]}
+	# loop through all entries in the array
+	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+		FetchScriptFromGitHub "${scripts[${i}-1]}"
+	done
+}
+
+# function for making scripts executable
+function MakeScriptsExecutable {
+	# user info
+	CheckVerbose "download successful"
+	# make selected scripts executable
+	# declare all scripts in an array
+	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+	# get length of script array
+	scriptslength=${#scripts[@]}
+	# loop through all entries in the array
+	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+		CheckVerbose "Setting script ${1} executable"
+		chmod +x ${scripts[${i}-1]}
+	done
+}
