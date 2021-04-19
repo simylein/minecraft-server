@@ -55,8 +55,8 @@ fi
 
 # write a function that checks if backups are done regularly
 # if any irregularities are detected notify via ingame or logfiles
-lastabsoluteworldsize="0"
-lastabsolutebackupsize="0"
+lastabsoluteworldsize="65536"
+lastabsolutebackupsize="65536"
 counter="0"
 while true; do
 	if [[ ${counter} -eq 120 ]]; then
