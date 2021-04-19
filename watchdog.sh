@@ -57,19 +57,21 @@ fi
 # if any irregularities are detected notify via ingame or logfiles
 lastabsoluteworldsize="65536"
 lastabsolutebackupsize="65536"
-timestamp=$(date +"H:M:S")
+timestamp=$(date +"%H:%M:%S")
 counter="0"
 while true; do
 	if [[ ${counter} -eq 120 ]]; then
 		. ./server.settings
 		if [[ ${absoluteworldsize} < $((${lastabsoluteworldsize} - 65536)) ]]; then
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your world-size is getting smaller - this may result in a corrupted world\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"world-size at ${timestamp} was ${lastabsoluteworldsize}, world-size at ${timestamp} is ${absoluteworldsize}\"}]}}}]$(printf '\r')"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your world-size is getting smaller - this may result in a corrupted world\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"world-size at ${timestamp} was ${lastabsoluteworldsize} bytes, world-size at ${timestamp} is ${absoluteworldsize} bytes\"}]}}}]$(printf '\r')"
 			echo "info: your world-size is getting smaller - this may result in a corrupted world" >> ${backuplog}
+			echo "info: world-size at ${timestamp} was ${lastabsoluteworldsize} bytes, world-size at ${timestamp} is ${absoluteworldsize} bytes" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
 		if [[ ${absolutebackupsize} < $((${lastabsolutebackupsize} - 65536)) ]]; then
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your backup-size is getting smaller - this may result in corrupted backups\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"backup-size at ${timestamp} was ${lastabsolutebackupsize}, backup-size at ${timestamp} is ${absolutebackupsize}\"}]}}}]$(printf '\r')"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your backup-size is getting smaller - this may result in corrupted backups\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"backup-size at ${timestamp} was ${lastabsolutebackupsize} bytes, backup-size at ${timestamp} is ${absolutebackupsize} bytes\"}]}}}]$(printf '\r')"
 			echo "info: your backup-size is getting smaller - this may result in corrupted backups" >> ${backuplog}
+			echo "info: backup-size at ${timestamp} was ${lastabsolutebackupsize} bytes, backup-size at ${timestamp} is ${absolutebackupsize} bytes" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
 		lastabsoluteworldsize="${absoluteworldsize}"
