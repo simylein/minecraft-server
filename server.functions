@@ -166,6 +166,19 @@ function ExtractDirectoryWithProgress {
 }
 
 
+# creates a Progressbar function
+function ProgressBar {
+	# process data
+	let progress=(${2}*100/${3}*100)/100
+	let done=(${progress}*4)/10
+	let left=40-${done}
+	# build progressbar string lengths
+	fill=$(printf "%${done}s")
+	empty=$(printf "%${left}s")
+	# terminal output
+	printf "\r${1} [${fill// /#}${empty// /-}] ${progress}%% "
+}
+
 # function for testing if all categories for backups exists if not create them
 function CheckBackupDirectoryIntegrity {
 	declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
