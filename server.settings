@@ -61,7 +61,7 @@ java="/usr/bin/java" # defines path to java binary
 screen="/usr/bin/screen" # defines path to screen binary
 
 # github branch
-branch="testing" # all scripts will fetch from this branch
+branch="main" # all scripts will fetch from this branch
 
 # enables debug logging
 enabledebug="false" # enables debug log into logfiles if set to true
