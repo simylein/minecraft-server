@@ -41,6 +41,9 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # write date to logfile
 echo "${date} executing update script" >> ${screenlog}
 
@@ -53,7 +56,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	fi
 
 	# create backup
-	echo "${blue}backing up...${nocolor}"
+	CheckVerbose "${blue}backing up...${nocolor}"
 	tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
 
 	# check if safety backup exists
@@ -71,11 +74,11 @@ if ! screen -list | grep -q "\.${servername}"; then
 		echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 		echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 	else
-		echo "${green}downloading newest server version...${nocolor}"
+		CheckQuiet "${green}downloading newest server version...${nocolor}"
 		echo "downloading newest server version..." >> ${screenlog}
 		# check if already on newest version
 		if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
-			echo "You are running the newest server version - skipping update"
+			CheckVerbose "You are running the newest server version - skipping update"
 			echo "You are running the newest server version - skipping update" >> ${screenlog}
 		else
 			wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
@@ -83,7 +86,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 			newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 			# if new serverfile exists remove oldserverfile
 			if [ -f "${newserverfile}" ]; then
-				echo "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+				CheckVerbose "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
 				sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 				# remove old serverfile if it exists
 				if [ -f "${serverfile}" ]; then
@@ -96,52 +99,39 @@ if ! screen -list | grep -q "\.${servername}"; then
 		fi
 	fi
 
-	# Test internet connectivity and update on success
-	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-	if [ "$?" != 0 ]; then
-		echo "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
-		echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
-	else
-		echo "${green}downloading newest scripts version...${nocolor}"
-		echo "downloading newest scripts version..." >> ${screenlog}
-		# remove all scripts then download all the scripts then make the scripts executable
-		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
-		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
-		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
-		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
-		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
-		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
-		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
-		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
-		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
-		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
-		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/watchdog.sh && chmod +x watchdog.sh
-		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
-		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
-	fi
+	# remove scripts from serverdirectory
+	RemoveScriptsFromServerDirectory
+
+	# downloading scripts from github
+	DownloadScriptsFromGitHub
+
+	# make selected scripts executable
+	MakeScriptsExecutable
 
 	# restart the server
-	echo "${green}restarting server...${nocolor}"
-	./start.sh
+	CheckQuiet "${cyan}restarting server...${nocolor}"
+	./start.sh "$@"
 	exit 0
 fi
 
-# countdown
-counter="60"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediatly is specified
+if ! [[ ${immediatly} == true ]]; then
+	# countdown
+	counter="60"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+			CheckQuiet "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckQuiet "stopping server..."
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -165,7 +155,7 @@ if [[ -s "${backupdirectory}/cached/update-"* ]]; then
 fi
 
 # create backup
-echo "${blue}backing up...${nocolor}"
+CheckVerbose "${blue}backing up...${nocolor}"
 tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
 
 # check if safety backup exists
@@ -183,11 +173,11 @@ if [ "$?" != 0 ]; then
 	echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 	echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 else
-	echo "${green}downloading newest server version...${nocolor}"
+	CheckQuiet "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
 	# check if already on newest version
 	if [[ "${serverfile}" = *"minecraft-server.1.16.5.jar" ]]; then
-		echo "You are running the newest server version - skipping update"
+		CheckVerbose "You are running the newest server version - skipping update"
 		echo "You are running the newest server version - skipping update" >> ${screenlog}
 	else
 		wget -q -O minecraft-server.1.16.5.jar https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
@@ -195,7 +185,7 @@ else
 		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			echo "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+			CheckVerbose "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
@@ -208,31 +198,15 @@ else
 	fi
 fi
 
-# Test internet connectivity and update on success
-wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-if [ "$?" != 0 ]; then
-	echo "${red}Warning: Unable to connect to GitHub API. Skipping update...${nocolor}"
-	echo "Warning: Unable to connect to GitHub API. Skipping update..." >> ${screenlog}
-else
-	echo "${green}downloading newest scripts version...${nocolor}"
-	echo "downloading newest scripts version..." >> ${screenlog}
-		# remove all scripts then download all the scripts then make the scripts executable
-		rm LICENSE && wget -q -O LICENSE https://raw.githubusercontent.com/Simylein/MinecraftServer/master/LICENSE
-		rm README.md && wget -q -O README.md https://raw.githubusercontent.com/Simylein/MinecraftServer/master/README.md
-		rm start.sh && wget -q -O start.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/start.sh && chmod +x start.sh
-		rm restore.sh && wget -q -O restore.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restore.sh && chmod +x restore.sh
-		rm reset.sh && wget -q -O reset.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/reset.sh && chmod +x reset.sh
-		rm restart.sh && wget -q -O restart.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/restart.sh && chmod +x restart.sh
-		rm stop.sh && wget -q -O stop.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/stop.sh && chmod +x stop.sh
-		rm backup.sh && wget -q -O backup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/backup.sh && chmod +x backup.sh
-		rm update.sh && wget -q -O update.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/update.sh && chmod +x update.sh
-		rm maintenance.sh && wget -q -O maintenance.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/maintenance.sh && chmod +x maintenance.sh
-		rm prerender.sh && wget -q -O prerender.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/prerender.sh && chmod +x prerender.sh
-		rm watchdog.sh && wget -q -O watchdog.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/watchdog.sh && chmod +x watchdog.sh
-		rm welcome.sh && wget -q -O welcome.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/welcome.sh && chmod +x welcome.sh
-		rm vent.sh && wget -q -O vent.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/master/vent.sh
-fi
+# remove scripts from serverdirectory
+RemoveScriptsFromServerDirectory
+
+# downloading scripts from github
+DownloadScriptsFromGitHub
+
+# make selected scripts executable
+MakeScriptsExecutable
 
 # restart the server
-echo "${green}restarting server...${nocolor}"
-./start.sh
+CheckQuiet "${cyan}restarting server...${nocolor}"
+./start.sh "$@"

@@ -5,59 +5,91 @@
 # if you know what you are doing, feel free to tinker with them ;^)
 
 # command line colours
-black="$(tput setaf 0)"
-red="$(tput setaf 1)"
-green="$(tput setaf 2)"
-yellow="$(tput setaf 3)"
-blue="$(tput setaf 4)"
-magenta="$(tput setaf 5)"
-cyan="$(tput setaf 6)"
-white="$(tput setaf 7)"
-nocolor="$(tput sgr0)"
+black="$(tput setaf 0)" # defines command line color black
+red="$(tput setaf 1)" # defines command line color red
+green="$(tput setaf 2)" # defines command line color green
+yellow="$(tput setaf 3)" # defines command line color yellow
+blue="$(tput setaf 4)" # defines command line color blue
+magenta="$(tput setaf 5)" # defines command line color magenta
+cyan="$(tput setaf 6)" # defines command line color cyan
+white="$(tput setaf 7)" # defines command line color white
+nocolor="$(tput sgr0)" # defines command line color nocolor
 
 # backup stuff
-newhourly=$(date +"%H:00")
-oldhourly=$(date -d "-23 hours" +"%H:00")
-newdaily=$(date +"%Y-%m-%d")
-olddaily=$(date -d "-32 days" +"%Y-%m-%d")
-newweekly=$(date +"week-%U")
-oldweekly=$(date -d "-12 weeks" +"week-%U")
-newmonthly=$(date +"%B")
-oldmonthly=$(date -d "-6 months" +"%B")
+newhourly=$(date +"%H:00") # defines file format for new hourly backup
+oldhourly=$(date -d "-23 hours" +"%H:00") # defines file format for old hourly backup
+newdaily=$(date +"%Y-%m-%d") # defines file format for new daily backup
+olddaily=$(date -d "-32 days" +"%Y-%m-%d") # defines file format for old daily backup
+newweekly=$(date +"week-%U") # defines file format for new weekly backup
+oldweekly=$(date -d "-12 weeks" +"week-%U") # defines file format for old weekly backup
+newmonthly=$(date +"%B") # defines file format for new monthly backup
+oldmonthly=$(date -d "-6 months" +"%B") # defines file format for old monthly backup
 
 # backup config
-dohourly="true"
-dodaily="true"
-doweekly="true"
-domonthly="true"
+dohourly="true" # backup script will do backups hourly if set to true
+dodaily="true" # backup script will do backups daily if set to true
+doweekly="true" # backup script will do backups weekly if set to true
+domonthly="true" # backup script will do backups monthly if set to true
 
 # backup events
 hours=$(date +"%H")
 weekday=$(date +"%u")
 dayofmonth=$(date +"%d")
-dailybackuptime="22"
-weeklybackupday="7"
-monthlybackupday="1"
+dailybackuptime="22" # defines hour for daily backups
+weeklybackupday="7" # defines day of week for weekly backups
+monthlybackupday="1" # defines day of month for monthly backups
 
 # world size stuff
-absoluteworldsize=$(du -sb world | cut -f1)
-absolutebackupsize=$(du -sb backups | cut -f1)
-absolutediskspace=$(df -B 1 / | tail -1 | awk '{print $4}')
-worldsize=$(du -sh world | cut -f1)
-backupsize=$(du -sh backups | cut -f1)
-diskspace=$(df -h / | tail -1 | awk '{print $4}')
+absoluteworldsize=$(du -sb world | cut -f1) # assings value in bytes of world directory
+absolutebackupsize=$(du -sb backups | cut -f1) # assings value in bytes of backup directory
+absolutediskspace=$(df -B 1 / | tail -1 | awk '{print $4}') # assings value in bytes for free disk space
+worldsize=$(du -sh world | cut -f1) # assigns human readable value of world directory
+backupsize=$(du -sh backups | cut -f1) # assigns human readable value of backup directory
+diskspace=$(df -h / | tail -1 | awk '{print $4}') # assigns human readable value of free disk space
 
 # warning and exiting parameters
-diskspacepadding="2097152"
-diskspacewarning="8208608"
+diskspacepadding="2097152" # value in bytes for diskspace padding
+diskspacewarning="8208608" # value in bytes for diskspace warning
 
 # logfiles
-screenlog="screen.log"
-backuplog="backup.log"
+screenlog="screen.log" # defines name of screenlog file
+backuplog="backup.log" # defines name of backuplog file
+debuglog="debug.log" # defines name of debuglog file
 
 # binarys
-java="/usr/bin/java"
-screen="/usr/bin/screen"
+java="/usr/bin/java" # defines path to java binary
+screen="/usr/bin/screen" # defines path to screen binary
+
+# github branch
+branch="testing" # all scripts will fetch from this branch
+
+# enables debug logging
+enabledebug="false" # enables debug log into logfiles if set to true
 
 # script time logging
-date=$(date +"%Y-%m-%d %H:%M:%S")
+date=$(date +"%Y-%m-%d %H:%M:%S") # defines format of script time logging
+
+# change to server console after startup
+changetoconsole="replacechangetoconsole" # changes to server console after startup if set to true
+
+# enables watchdog integrity checks for backups
+enablewatchdog="replaceenablewatchdog" # executes watchdog script if set to true
+
+# print welcome messages if a player joins
+welcomemessage="replacewelcomemessage" # executes welcome script if set to true
+
+# network stuff
+dnsserver="replacednsserver" # server will ping it for public avalability checks
+interface="replaceinterface" # server will ping it for private avalability checks
+
+# memory and threads
+mems="replacemems" # minimun memory for java server process
+memx="replacememx" # maximum memory for java server process
+threadcount="replacethreadcount" # amount of threads which can be used by java server
+
+# files and directories
+servername="replaceservername" # defines server name
+homedirectory="replacehomedirectory" # defines path to home directory
+serverdirectory="replaceserverdirectory" # defines path to server directory
+backupdirectory="replacebackupdirectory" # defines path to backup directory
+serverfile="replaceserverfile" # defines path to executable server file

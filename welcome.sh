@@ -60,10 +60,11 @@ welcome=( "Welcome on my server" "A warm welcome to" "Greetings" "Hello to" "Wel
 while true; do
 	size=${#welcome[@]}
 	index=$(($RANDOM % $size))
+	timestamp=$(date +"%H:%M:%S")
 	if tail -1 screen.log | grep -q "joined the game"; then
 		welcomemsg=${welcome[$index]}
 		player=$(tail -1 screen.log | grep -oP '.*?(?=joined the game)' | cut -d ' ' -f 4-)
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${welcomemsg} ${player}\"}]$(printf '\r')"
+		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${welcomemsg} ${player}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"player ${player} joined at ${timestamp}\"}]}}}]$(printf '\r')"
 	fi
 	if ! screen -list | grep -q "\.${servername}"; then
 		exit 0

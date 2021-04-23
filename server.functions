@@ -6,6 +6,59 @@
 # if you know what you are doing, feel free to tinker with them ;^)
 
 
+# function for parsing arguments for a script
+function ParseScriptArguments {
+	immediatly=false
+	quiet=false
+	verbose=false
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			-i)
+				immediatly=true
+			;;
+			-q)
+				quiet=true
+			;;
+			-v)
+				verbose=true
+			;;
+			--immediatly)
+				immediatly=true
+			;;
+			--quiet)
+				quiet=true
+			;;
+			--verbose)
+				verbose=true
+			;;
+			*)
+				echo "bad argument: $1"
+				exit 1
+			;;
+		esac
+		shift
+	done
+}
+# checks if debug is set to true and logs very verbose to debug.log
+function CheckDebug {
+	if [[ ${enabledebug} == true ]]; then
+		echo "${date} ${1}" >> debug.log
+	fi
+}
+# check if verbose mode is on
+function CheckVerbose {
+	if [[ ${verbose} == true ]]; then
+		echo "${1}"
+	fi
+}
+# check if quiet mode is on
+function CheckQuiet {
+	if ! [[ ${quiet} == true ]]; then
+		echo "${1}"
+	fi
+}
+
+
 # prints all input to screen terminal
 function PrintToScreen {
 	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
@@ -26,6 +79,15 @@ function PrintToLogBackupSuccess {
 	echo "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}" >> ${backuplog}
 	echo "" >> ${backuplog}
 }
+# prints success messages to terminal
+function PrintToTerminalBackupSuccess {
+	CheckQuiet "newest backup has been successfully created"
+	CheckQuiet "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz"
+	CheckQuiet "oldest backup has been successfully removed"
+	CheckQuiet "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz"
+	CheckVerbose "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}"
+	CheckVerbose "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}"
+}
 
 
 # prints colourful backup already exists message into screen
@@ -34,33 +96,42 @@ function PrintToScreenBackupAlreadyExists {
 }
 # prints backup already exists to backup log
 function PrintToLogBackupAlreadyExists {
-	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
 	echo "warning: could not create new ${1}-backup" >> ${backuplog}
 	echo "warning: backup already exists" >> ${backuplog}
 	echo "" >> ${backuplog}
+}
+# prints backup already exists to terminal
+function PrintToTerminalBackupAlreadyExists {
+	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
 }
 
 
 # prints colorful disk space warning message into screen
 function PrintToScreenDiskSpaceWarning {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: free disk space is getting rare - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, warning: free disk space is getting rare\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: free disk space is getting rare - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, warning: free disk space is getting rare\"}]}}}]$(printf '\r')"
 }
 # prints disk space warning to backup log
 function PrintToLogDiskSpaceWarning {
-	echo "${yellow}warning: free disk-space is getting rare${nocolor}"
 	echo "warning: free disk-space is getting rare" >> ${backuplog}
+}
+# prints disk space warnig to terminal
+function PrintToTerminalDiskSpaceWarning {
+	echo "${yellow}warning: free disk-space is getting rare${nocolor}"
 }
 
 
 # prints colourful not enough disk space message into screen
 function PrintToScreenNotEnoughtDiskSpace {
-	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
+	screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: not enough disk space - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]$(printf '\r')"
 }
 # prints not enough disk space to backup log
 function PrintToLogNotEnoughDiskSpace {
-	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
 	echo "fatal: not enough disk-space to perform backup-${1}" >> ${backuplog}
 	echo "" >> ${backuplog}
+}
+# prints not enough disk space to terminal
+function PrintToTerminalNotEnoughDiskSpace {
+	echo "${red}fatal: not enough disk-space to perform backup-${1}${nocolor}"
 }
 
 
@@ -74,6 +145,12 @@ function PrintToLogBackupError {
 	echo "warning: could not remove old backup" >> ${backuplog}
 	echo "fatal: could not backup world" >> ${backuplog}
 	echo "" >> ${backuplog}
+}
+# prints backup error to backup log
+function PrintToTerminalBackupError {
+	echo "${orange}warning: cannot remove old backup because new backup is missing${nocolor}"
+	echo "${orange}warning: could not remove old backup${nocolor}"
+	echo "${red}fatal: could not backup world${nocolor}"
 }
 
 
@@ -89,9 +166,109 @@ function ExtractDirectoryWithProgress {
 }
 
 
-# checks if debug is set to true and logs very verbose to debug.log
-function CheckIfDebugTrue {
-	if [[ ${enabledebug} -eq true ]]; then
-		echo "${date} ${1}" >> debug.log
-	fi
+# creates a Progressbar function
+function ProgressBar {
+	# process data
+	let progress=(${2}*100/${3}*100)/100
+	let done=(${progress}*4)/10
+	let left=40-${done}
+	# build progressbar string lengths
+	fill=$(printf "%${done}s")
+	empty=$(printf "%${left}s")
+	# terminal output
+	printf "\r${1} [${fill// /#}${empty// /-}] ${progress}%% "
+}
+
+# function for testing if all categories for backups exists if not create them
+function CheckBackupDirectoryIntegrity {
+	declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
+	arraylenght=${#backupcategories[@]}
+	for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
+		if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
+			echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
+			echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
+			echo "" >> ${backuplog}
+			CheckVerbose "info: the backup-directory ${backupcategories[${i}-1]} is missing"
+			CheckVerbose "info: creating ${backupdirectory}/${backupcategories[${i}-1]}"
+			cd ${backupdirectory}
+			mkdir ${backupcategories[${i}-1]}
+			cd ${serverdirectory}
+		fi
+	done
+}
+
+# prints game over as pixel art on terminal
+function PrintGameOver {
+		echo "${red}                                            ${nocolor}"
+		echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
+		echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
+		echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
+		echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
+		echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
+		echo "${red}                                            ${nocolor}"
+		echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
+		echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
+		echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
+		echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
+		echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
+		echo "${red}                                            ${nocolor}"
+}
+
+# function for fetching scripts from github with error checking
+function FetchScriptFromGitHub {
+	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+	if [ "$?" != 0 ]; then
+		echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
+		exit 1
+	else
+		CheckVerbose "Fetching file: ${1} from branch ${branch} on GitHub..."
+		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+fi
+}
+
+# function for removing scripts from serverdirectory
+function RemoveScriptsFromServerDirectory {
+	# user info about download
+	CheckVerbose "removing scripts in serverdirectory... "
+	# remove scripts from serverdirectory
+	# declare all scripts in an array
+	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+	# get length of script array
+	scriptslength=${#scripts[@]}
+	# loop through all entries in the array
+	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+		CheckVerbose "Removing script ${1}"
+		rm "${scripts[${i}-1]}"
+	done
+}
+
+# function for downloading scripts from github
+function DownloadScriptsFromGitHub {
+	# user info about download
+	CheckVerbose "downloading scripts from GitHub... "
+	# downloading scripts from github
+	# declare all scripts in an array
+	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+	# get length of script array
+	scriptslength=${#scripts[@]}
+	# loop through all entries in the array
+	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+		FetchScriptFromGitHub "${scripts[${i}-1]}"
+	done
+}
+
+# function for making scripts executable
+function MakeScriptsExecutable {
+	# user info
+	CheckVerbose "download successful"
+	# make selected scripts executable
+	# declare all scripts in an array
+	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+	# get length of script array
+	scriptslength=${#scripts[@]}
+	# loop through all entries in the array
+	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
+		CheckVerbose "Setting script ${1} executable"
+		chmod +x ${scripts[${i}-1]}
+	done
 }

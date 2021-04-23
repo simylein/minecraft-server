@@ -49,6 +49,9 @@ if ! ls ${serverfile}* 1> /dev/null 2>&1; then
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # padd logfile for visibility
 echo "" >> ${screenlog}
 echo "" >> ${screenlog}
@@ -67,12 +70,17 @@ fi
 interfacechecks="0"
 while [ ${interfacechecks} -lt 8 ]; do
 	if ping -c 1 ${interface} &> /dev/null
-	then echo "${green}Success: Interface is online${nocolor}" && echo "Success: Interface is online" >> ${screenlog}
+	then
+		CheckVerbose "${green}Success: Interface is online${nocolor}"
+		echo "Success: Interface is online" >> ${screenlog}
 		break
-	else echo "${red}Warning: Interface is offline${nocolor}" && echo "Warning: Interface is offline" >> ${screenlog}
+	else
+		echo "${red}Warning: Interface is offline${nocolor}"
+		echo "Warning: Interface is offline" >> ${screenlog}
 	fi
 	if [ ${interfacechecks} -eq 7 ]; then
-		echo "${red}Fatal: Interface timed out${nocolor}" && echo "Fatal: Interface timed out" >> ${screenlog}
+		echo "${red}Fatal: Interface timed out${nocolor}"
+		echo "Fatal: Interface timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
@@ -82,22 +90,27 @@ done
 networkchecks="0"
 while [ ${networkchecks} -lt 8 ]; do
 	if ping -c 1 ${dnsserver} &> /dev/null
-	then echo "${green}Success: Nameserver is online${nocolor}" && echo "Success: Nameserver is online" >> ${screenlog}
+	then
+		CheckVerbose "${green}Success: Nameserver is online${nocolor}"
+		echo "Success: Nameserver is online" >> ${screenlog}
 		break
-	else echo "${red}Warning: Nameserver is offline${nocolor}" && echo "Warning: Nameserver is offline" >> ${screenlog}
+	else
+		echo "${red}Warning: Nameserver is offline${nocolor}"
+		echo "Warning: Nameserver is offline" >> ${screenlog}
 	fi
 	if [ ${networkchecks} -eq 7 ]; then
-		echo "${red}Fatal: Nameserver timed out${nocolor}" && echo "Fatal: Nameserver timed out" >> ${screenlog}
+		echo "${red}Fatal: Nameserver timed out${nocolor}"
+		echo "Fatal: Nameserver timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	networkchecks=$((networkchecks+1))
 done
 
 # user information
-echo "Starting Minecraft server.  To view window type screen -r ${servername}."
-echo "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
+CheckQuiet "Starting Minecraft server.  To view window type screen -r ${servername}."
+CheckQuiet "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 echo "starting ${servername} server..." >> ${screenlog}
-echo "starting ${servername} server..."	
+CheckVerbose "starting ${servername} server..."	
 
 # main start commmand
 ${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile} -nogui
@@ -126,7 +139,7 @@ fi
 
 # succesful start sequence
 echo "server is on startup..." >> ${screenlog}
-echo "${green}server is on startup...${nocolor}"
+CheckQuiet "${green}server is on startup...${nocolor}"
 
 # check if screenlog contains start comfirmation
 count="0"
@@ -135,12 +148,19 @@ startupchecks="0"
 while [ ${startupchecks} -lt 120 ]; do
 	if tail ${screenlog} | grep -q "Query running on"; then
 		echo "server startup successful - query up and running" >> ${screenlog}
-		echo "${green}server startup successful - query up and running${nocolor}"
+		CheckQuiet "${green}server startup successful - query up and running${nocolor}"
 		break
+	fi
+	if tail -20 ${screenlog} | grep -q "FAILED TO BIND TO PORT"; then
+		echo "server port is already in use - please change to another port" >> ${screenlog}
+		echo "${red}server port is already in use - please change to another port${nocolor}"
+		exit 1
 	fi
 	if ! screen -list | grep -q "${servername}"; then
 		echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
 		echo "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
+		echo "crash dump - last 10 lines of ${screenlog}"
+		tail -10 ${screenlog}
 		exit 1
 	fi
 	if tail ${screenlog} | grep -q "Preparing spawn area"; then
@@ -148,7 +168,7 @@ while [ ${startupchecks} -lt 120 ]; do
 	fi
 	if tail ${screenlog} | grep -q "Environment"; then
 		if [ ${count} -eq 0 ]; then
-			echo "server is loading the environment..."
+			CheckVerbose "server is loading the environment..."
 		fi
 		count=$((count+1))
 	fi
@@ -159,7 +179,7 @@ while [ ${startupchecks} -lt 120 ]; do
 		count=$((count+1))
 	fi
 	if [ ${counter} -ge 10 ]; then
-		echo "server is preparing spawn area..."
+		CheckVerbose "server is preparing spawn area..."
 		counter="0"
 	fi
 	if [ ${count} -eq 0 ] && [ ${startupchecks} -eq 20 ]; then
@@ -179,22 +199,22 @@ fi
 
 # enables the watchdog script for backup integrity
 if [ ${enablewatchdog} = true ]; then
-	echo "activating watchdog..."
+	CheckVerbose "activating watchdog..."
 	./watchdog.sh &
 fi
 
 # check if user wants to send welcome messages
 if [ ${welcomemessage} = true ]; then
-	echo "activating welcome messages..."
+	CheckVerbose "activating welcome messages..."
 	./welcome.sh &
 fi
 
 # if set to true change automatically to server console
 if [ ${changetoconsole} = true ]; then
-	echo "changing to server console..."
+	CheckVerbose "changing to server console..."
 	screen -r ${servername}
 	exit 1
 fi
 
 # user information
-echo "If you would like to change to server console - type screen -r ${servername}"
+CheckQuiet "If you would like to change to server console - type screen -r ${servername}"

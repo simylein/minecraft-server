@@ -140,6 +140,7 @@ select method in "${method[@]}"; do
 			sleep 2s
 
 			# teleport script with progress
+			totalamount=$((${amount} * ${amount}))
 			progress="1"
 			counter="1"
 			y="120"
@@ -147,7 +148,7 @@ select method in "${method[@]}"; do
 				for z in "${cords[@]}"; do
 					let "progress=counter"
 					# progress counter
-					echo "${blue}[Script]${nocolor} Progress: [${progress}/$((${amount} * ${amount}))]"
+					ProgressBar "${blue}[Script]${nocolor} Progress: [${progress}/${totalamount}]" "${progress}" "${totalamount}"
 					# teleporting with facing directions
 					PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
 					${between}

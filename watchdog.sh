@@ -55,20 +55,24 @@ fi
 
 # write a function that checks if backups are done regularly
 # if any irregularities are detected notify via ingame or logfiles
-lastabsoluteworldsize="0"
-lastabsolutebackupsize="0"
+lastabsoluteworldsize="65536"
+lastabsolutebackupsize="65536"
 counter="0"
 while true; do
 	if [[ ${counter} -eq 120 ]]; then
 		. ./server.settings
+		timestamp=$(date +"%H:%M:%S")
+		lasttimestamp=$(date -d -"2 minute" +"%H:%M:%S")
 		if [[ ${absoluteworldsize} < $((${lastabsoluteworldsize} - 65536)) ]]; then
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your world-size is getting smaller - this may result in a corrupted world\"}]$(printf '\r')"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your world-size is getting smaller - this may result in a corrupted world\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"world-size at ${lasttimestamp} was ${lastabsoluteworldsize} bytes, world-size at ${timestamp} is ${absoluteworldsize} bytes\"}]}}}]$(printf '\r')"
 			echo "info: your world-size is getting smaller - this may result in a corrupted world" >> ${backuplog}
+			echo "info: world-size at ${timestamp} was ${lastabsoluteworldsize} bytes, world-size at ${lasttimestamp} is ${absoluteworldsize} bytes" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
 		if [[ ${absolutebackupsize} < $((${lastabsolutebackupsize} - 65536)) ]]; then
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your backup-size is getting smaller - this may result in corrupted backups\"}]$(printf '\r')"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"info: your backup-size is getting smaller - this may result in corrupted backups\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"backup-size at ${lasttimestamp} was ${lastabsolutebackupsize} bytes, backup-size at ${timestamp} is ${absolutebackupsize} bytes\"}]}}}]$(printf '\r')"
 			echo "info: your backup-size is getting smaller - this may result in corrupted backups" >> ${backuplog}
+			echo "info: backup-size at ${timestamp} was ${lastabsolutebackupsize} bytes, backup-size at ${lasttimestamp} is ${absolutebackupsize} bytes" >> ${backuplog}
 			echo "" >> ${backuplog}
 		fi
 		lastabsoluteworldsize="${absoluteworldsize}"
