@@ -237,7 +237,7 @@ function RemoveScriptsFromServerDirectory {
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "Removing script ${1}"
+		CheckVerbose "Removing script ${scripts[${i}-1]}"
 		rm "${scripts[${i}-1]}"
 	done
 }
@@ -268,7 +268,7 @@ function MakeScriptsExecutable {
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "Setting script ${1} executable"
+		CheckVerbose "Setting script ${scripts[${i}-1]} executable"
 		chmod +x ${scripts[${i}-1]}
 	done
 }
