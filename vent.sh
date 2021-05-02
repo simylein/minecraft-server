@@ -50,6 +50,7 @@ if [[ ${REPLY} == "CONFIRM VENTING" ]]; then
 	echo "User confirmed venting - I will self-destruct now"
 else
 	echo "wrong token - please try again"
+	exit 1
 fi
 
 # write date to logfile
@@ -80,7 +81,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	if ! [ -d "${serverdirectory}" ]; then
 		# game over terminal screen
 		PrintGameOver
-		exit 1
+		exit 0
 	else
 		# error if serverdirectory still exists
 		echo "${red}venting failed!${nocolor}"
@@ -150,7 +151,7 @@ rm -r ${servername}
 if ! [ -d "${serverdirectory}" ]; then
 	# game over terminal screen
 	PrintGameOver
-	exit 1
+	exit 0
 else
 	# error if serverdirectory still exists
 	echo "${red}venting failed!${nocolor}"
