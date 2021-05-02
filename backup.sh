@@ -84,6 +84,7 @@ if [ ${dohourly} = true ]; then
 		PrintToScreenNotEnoughtDiskSpace "${newhourly}" "${oldhourly}"
 		PrintToLogNotEnoughDiskSpace "hourly"
 		PrintToTerminalNotEnoughDiskSpace "hourly"
+		CheckDebug "backup script reports not enough disk-space while performing backup-hourly"
 		exit 1
 	fi
 
@@ -92,6 +93,7 @@ if [ ${dohourly} = true ]; then
 		PrintToScreenDiskSpaceWarning "${newhourly}" "${oldhourly}"
 		PrintToLogDiskSpaceWarning
 		PrintToTerminalDiskSpaceWarning
+		CheckDebug "backup script reports low disk-space while performing backup-hourly"
 	fi
 
 	# check if there is no backup from the current hour
@@ -106,6 +108,7 @@ if [ ${dohourly} = true ]; then
 		PrintToScreenBackupAlreadyExists "${newhourly}" "${oldhourly}"
 		PrintToLogBackupAlreadyExists "hourly"
 		PrintToTerminalBackupAlreadyExists "hourly"
+		CheckDebug "backup script reports backup already exists while performing backup-hourly"
 		exit 1
 	fi
 
@@ -127,11 +130,13 @@ if [ ${dohourly} = true ]; then
 		PrintToScreenBackupSuccess "${newhourly}" "${oldhourly}"
 		PrintToLogBackupSuccess "${newhourly}" "${oldhourly}"
 		PrintToTerminalBackupSuccess "${newhourly}" "${oldhourly}"
+		CheckDebug "backup script reports backup success while performing backup-hourly"
 	else
 		# ingame and logfile error output
 		PrintToScreenBackupError "${newhourly}" "${oldhourly}"
 		PrintToLogBackupError
 		PrintToTerminalBackupError
+		CheckDebug "backup script reports backup error while performing backup-hourly"
 	fi
 
 else
@@ -171,6 +176,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 			PrintToScreenNotEnoughtDiskSpace "${newdaily}" "${olddaily}"
 			PrintToLogNotEnoughDiskSpace "daily"
 			PrintToTerminalNotEnoughDiskSpace "daily"
+			CheckDebug "backup script reports not enough disk-space while performing backup-daily"
 			exit 1
 		fi
 
@@ -179,6 +185,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 			PrintToScreenDiskSpaceWarning "${newdaily}" "${olddaily}"
 			PrintToLogDiskSpaceWarning
 			PrintToTerminalDiskSpaceWarning
+			CheckDebug "backup script reports low disk-space while performing backup-daily"
 		fi
 
 		# check if there is no backup from the current day
@@ -193,6 +200,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 			PrintToScreenBackupAlreadyExists "${newdaily}" "${olddaily}"
 			PrintToLogBackupAlreadyExists "daily"
 			PrintToTerminalBackupAlreadyExists "daily"
+			CheckDebug "backup script reports backup already exists while performing backup-daily"
 			exit 1
 		fi
 
@@ -214,11 +222,13 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 			PrintToScreenBackupSuccess "${newdaily}" "${olddaily}"
 			PrintToLogBackupSuccess "${newdaily}" "${olddaily}"
 			PrintToTerminalBackupSuccess "${newdaily}" "${olddaily}"
+			CheckDebug "backup script reports backup success while performing backup-daily"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newdaily}" "${olddaily}"
 			PrintToLogBackupError
 			PrintToTerminalBackupError
+			CheckDebug "backup script reports backup error while performing backup-daily"
 		fi
 
 	else
@@ -259,6 +269,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 			PrintToScreenNotEnoughtDiskSpace "${newweekly}" "${oldweekly}"
 			PrintToLogNotEnoughDiskSpace "weekly"
 			PrintToTerminalNotEnoughDiskSpace "weekly"
+			CheckDebug "backup script reports not enough disk-space while performing backup-weekly"
 			exit 1
 		fi
 
@@ -267,6 +278,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 			PrintToScreenDiskSpaceWarning "${newweekly}" "${oldweekly}"
 			PrintToLogDiskSpaceWarning
 			PrintToTerminalDiskSpaceWarning
+			CheckDebug "backup script reports low disk-space while performing backup-weekly"
 		fi
 
 		# check if there is no backup from the current week
@@ -281,6 +293,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 			PrintToScreenBackupAlreadyExists "${newweekly}" "${oldweekly}"
 			PrintToLogBackupAlreadyExists "weekly"
 			PrintToTerminalBackupAlreadyExists "weekly"
+			CheckDebug "backup script reports backup already exists while performing backup-weekly"
 			exit 1
 		fi
 
@@ -302,11 +315,13 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 			PrintToScreenBackupSuccess "${newweekly}" "${oldweekly}"
 			PrintToLogBackupSuccess "${newweekly}" "${oldweekly}"
 			PrintToTerminalBackupSuccess "${newweekly}" "${oldweekly}"
+			CheckDebug "backup script reports backup success while performing backup-weekly"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newweekly}" "${oldweekly}"
 			PrintToLogBackupError
 			PrintToTerminalBackupError
+			CheckDebug "backup script reports backup error while performing backup-weekly"
 		fi
 
 	else
@@ -347,6 +362,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 			PrintToScreenNotEnoughtDiskSpace "${newmonthly}" "${oldmonthly}"
 			PrintToLogNotEnoughDiskSpace "monthly"
 			PrintToTerminalNotEnoughDiskSpace "monthly"
+			CheckDebug "backup script reports not enough disk-space while performing backup-monthly"
 			exit 1
 		fi
 
@@ -355,6 +371,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 			PrintToScreenDiskSpaceWarning "${newmonthly}" "${oldmonthly}"
 			PrintToLogDiskSpaceWarning
 			PrintToTerminalDiskSpaceWarning
+			CheckDebug "backup script reports low disk-space while performing backup-monthly"
 		fi
 
 		# check if there is no backup from the current month
@@ -369,6 +386,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 			PrintToScreenBackupAlreadyExists "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupAlreadyExists "monthly"
 			PrintToTerminalBackupAlreadyExists "monthly"
+			CheckDebug "backup script reports backup already exists while performing backup-monthly"
 			exit 1
 		fi
 
@@ -390,11 +408,13 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 			PrintToScreenBackupSuccess "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupSuccess "${newmonthly}" "${oldmonthly}"
 			PrintToTerminalBackupSuccess "${newmonthly}" "${oldmonthly}"
+			CheckDebug "backup script reports backup success while performing backup-monthly"
 		else
 			# ingame and logfile error output
 			PrintToScreenBackupError "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupError
 			PrintToTerminalBackupError
+			CheckDebug "backup script reports backup error while performing backup-monthly"
 		fi
 
 	else
