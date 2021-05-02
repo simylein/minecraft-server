@@ -60,6 +60,12 @@ debuglog="debug.log" # defines name of debuglog file
 java="/usr/bin/java" # defines path to java binary
 screen="/usr/bin/screen" # defines path to screen binary
 
+# enables admins to perform cetrain actions with the ingame chat
+enablesafetybackupstring="true" # enables safety backup string to perform a safety backup if set to true
+enableconfirmrestartstring="true" # enables confirm restart string to perform a restart if set to true
+enableconfirmupdatestring="false" # enables confirm update string to perform an update if set to true
+enableconfirmresetstring="false" # enables confirm reset string to perform a reset if set to true
+
 # github branch
 branch="main" # all scripts will fetch from this branch
 
@@ -71,12 +77,12 @@ date=$(date +"%Y-%m-%d %H:%M:%S") # defines format of script time logging
 
 # change to server console after startup
 changetoconsole="replacechangetoconsole" # changes to server console after startup if set to true
-
 # enables watchdog integrity checks for backups
 enablewatchdog="replaceenablewatchdog" # executes watchdog script if set to true
-
 # print welcome messages if a player joins
 welcomemessage="replacewelcomemessage" # executes welcome script if set to true
+# enables task execution if an admin uses ingame chat
+enabletasks="replaceenabletasksmessage"
 
 # network stuff
 dnsserver="replacednsserver" # server will ping it for public avalability checks
