@@ -197,23 +197,6 @@ function CheckBackupDirectoryIntegrity {
 	done
 }
 
-# prints game over as pixel art on terminal
-function PrintGameOver {
-		echo "${red}                                            ${nocolor}"
-		echo "${red}  .@@^^^@.  .@@^^^@@.  .@@^@.@^@@.  @@^^^^  ${nocolor}"
-		echo "${red}  @@    @@  @@     @@  @@   @   @@  @@      ${nocolor}"
-		echo "${red}  @@  ....  @@.....@@  @@   ^   @@  @@^^^^  ${nocolor}"
-		echo "${red}  @@    @@  @@     @@  @@       @@  @@      ${nocolor}"
-		echo "${red}  ^@@...@^  @@     @@  @@       @@  @@....  ${nocolor}"
-		echo "${red}                                            ${nocolor}"
-		echo "${red}   .@@^^^@@.  @@@  @@r  @@^^^^  @@^^^^@@.   ${nocolor}"
-		echo "${red}   @@     @@   @@  @@   @@      @@     @@   ${nocolor}"
-		echo "${red}   @@     @@   @@  @@   @@^^^^  @@.....^^   ${nocolor}"
-		echo "${red}   @@     @@   @@  @r   @@      @@     @@   ${nocolor}"
-		echo "${red}   ^@@...@@^    &@r     @@....  @@     @@.  ${nocolor}"
-		echo "${red}                                            ${nocolor}"
-}
-
 # function for fetching scripts from github with error checking
 function FetchScriptFromGitHub {
 	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
@@ -363,4 +346,16 @@ function CheckConfirmResetString {
 			echo "warning: The player ${player} requested a reset and does not have permission to do so" >> ${screenlog}
 		fi
 	fi
+}
+
+
+# prints game over as pixel art on terminal
+function PrintGameOver {
+	echo "${red}    ______                       _____                     ${nocolor}"
+	echo "${red}   / _____)                     / ___ \                    ${nocolor}"
+	echo "${red}  | /  ___  ____ ____   ____   | |   | |_   _ ____  ____   ${nocolor}"
+	echo "${red}  | | (___)/ _  |    \ / _  )  | |   | | | | / _  )/ ___)  ${nocolor}"
+	echo "${red}  | \____/( ( | | | | ( (/ /   | |___| |\ V ( (/ /| |      ${nocolor}"
+	echo "${red}   \_____/ \_||_|_|_|_|\____)   \_____/  \_/ \____)_|      ${nocolor}"
+	echo "${red}                                                           ${nocolor}"
 }
