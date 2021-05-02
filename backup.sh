@@ -2,7 +2,7 @@
 # minecraft server backup script
 
 # this script is meant to be executed every hour by crontab
-# 0 * * * * cd ${serverdirectory} ./backup.sh
+# 0 * * * * cd ${serverdirectory} ./backup.sh --quiet
 
 # if you want you can change the time of day on which
 # daily backups are made as an example in server.settings, but please beware:
@@ -64,7 +64,7 @@ if [ ${dohourly} = true ]; then
 	# write date and execute into logfiles
 	echo "${date} executing backup-hourly script" >> ${screenlog}
 	echo "${date} executing backup-hourly script" >> ${backuplog}
-	CheckDebug "executing backup-hourly script" >> ${debuglog}
+	CheckDebug "executing backup-hourly script"
 	
 	# start milliseconds timer
 	before=$(date +%s%3N)
@@ -136,7 +136,7 @@ if [ ${dohourly} = true ]; then
 
 else
 	# write to logfiles that it's disabled
-	CheckDebug "info: backup-hourly is disabled" >> ${debuglog}
+	CheckDebug "info: backup-hourly is disabled"
 	echo "info: backup-hourly is disabled" >> ${backuplog}
 	echo "" >> ${backuplog}
 fi
@@ -148,7 +148,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 	# write date and execute into logfiles
 	echo "${date} executing backup-daily script" >> ${screenlog}
 	echo "${date} executing backup-daily script" >> ${backuplog}
-	CheckDebug "executing backup-daily script" >> ${debuglog}
+	CheckDebug "executing backup-daily script"
 
 	# check if daily backups are anabled
 	if [ ${dodaily} = true ]; then
@@ -223,7 +223,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 
 	else
 		# write to logfiles that it's disabled
-		CheckDebug "info: backup-daily is disabled" >> ${debuglog}
+		CheckDebug "info: backup-daily is disabled"
 		echo "info: backup-daily is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
@@ -236,7 +236,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 	# write date and execute into logfiles
 	echo "${date} executing backup-weekly script" >> ${screenlog}
 	echo "${date} executing backup-weekly script" >> ${backuplog}
-	CheckDebug "executing backup-weekly script" >> ${debuglog}
+	CheckDebug "executing backup-weekly script"
 
 	# check if weekly backups are enabled
 	if [ ${doweekly} = true ]; then
@@ -311,7 +311,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 
 	else
 		# write to logfiles that it's disabled
-		CheckDebug "info: backup-weekly is disabled" >> ${debuglog}
+		CheckDebug "info: backup-weekly is disabled"
 		echo "info: backup-weekly is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
@@ -324,7 +324,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 	# write date and execute into logfiles
 	echo "${date} executing backup-monthly script" >> ${screenlog}
 	echo "${date} executing backup-monthly script" >> ${backuplog}
-	CheckDebug "executing backup-monthly script" >> ${debuglog}
+	CheckDebug "executing backup-monthly script"
 
 	# check if monthly backups are enabled
 	if [ ${domonthly} = true ]; then
@@ -399,7 +399,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 
 	else
 		# write to logfiles that it's disabled
-		CheckDebug "info: backup-monthly is disabled" >> ${debuglog}
+		CheckDebug "info: backup-monthly is disabled"
 		echo "info: backup-monthly is disabled" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
