@@ -310,7 +310,6 @@ function CheckSafetyBackupString {
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a safety backup of the server\"}]"
 			echo "info: The player ${player} requested a safety backup and has permission - server will perform safety backup" >> ${backuplog}
-			echo "" >> ${backuplog}
 			CreateSafetyBackup
 			sleep 20s
 		else
