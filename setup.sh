@@ -196,7 +196,7 @@ echo "downloading scripts from GitHub... "
 
 # downloading scripts from github
 # declare all scripts in an array
-declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
 # get length of script array
 scriptslength=${#scripts1[@]}
 # loop through all entries in the array
@@ -206,7 +206,7 @@ done
 
 # make selected scripts executable
 # declare all scripts in an array
-declare -a scripts2=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" )
+declare -a scripts2=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
 # get length of script array
 scriptslength=${#scripts2[@]}
 # loop through all entries in the array
@@ -283,20 +283,20 @@ mkdir backups
 echo "done"
 
 # ask all the importatnt user input
-echo "${cyan}nerdy setup means you are able to customise everything - you are able to change these settings later${nocolor}"
 echo "${cyan}auto setup means you are asked fewer questions but there will not be as much customisation for you${nocolor}"
+echo "${cyan}nerdy setup means you are able to customise everything - you are able to change these settings later${nocolor}"
 PS3="How would you like to setup your server? "
-serversetup=("nerdy" "auto")
+serversetup=("auto" "nerdy")
 select setup in ${serversetup[@]}; do
 	case ${setup} in
-		"nerdy")
-			# set nerdysetup to true
-			nerdysetup=true
-			break
-		;;
 		"auto")
 			# set nerdysetup to false
 			nerdysetup=false
+			break
+		;;
+		"nerdy")
+			# set nerdysetup to true
+			nerdysetup=true
 			break
 		;;
 		*)
@@ -593,6 +593,15 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	echo "Your Server will be on change-to-console ${green}${changetoconsole}${nocolor}"
 
+	# ask for admin task execution
+	echo "Would you like to enable admin tasks for the in game chat? Example: ${yellow}false${nocolor}"
+	read -re -i "false" -p "Your choice: " enabletasks
+	regex="^(true|false)$"
+	while [[ ! ${enabletasks} =~ ${regex} ]]; do
+	read -p "Please enter true or false: " enabletasks
+	done
+	echo "Your Server will be on admin-tasks ${green}${enabletasks}${nocolor}"
+
 	# ask for server message
 	echo "Please chose your server message. Example: ${yellow}Hello World, I am your new Minecraft Server ;^)${nocolor}"
 	read -re -i "Hello World, I am your new Minecraft Server ;^)" -p "Your message: " motd
@@ -632,6 +641,7 @@ if [[ ${nerdysetup} == false ]]; then
 	cmdblock="enable-command-block=true"
 	entitybroadcast="entity-broadcast-range-percentage=100"
 	enablewatchdog="true"
+	enabletasks="false"
 	welcomemessage="true"
 	changetoconsole="false"
 	motd="motd=Hello World, I am your new Minecraft Server ;^)"
@@ -669,6 +679,7 @@ echo -n "storing variables in server.settings... "
 	StoreToSettings "replacechangetoconsole" "${changetoconsole}"
 	StoreToSettings "replaceenablewatchdog" "${enablewatchdog}"
 	StoreToSettings "replacewelcomemessage" "${welcomemessage}"
+	StoreToSettings "replaceenabletasksmessage" "${enabletasks}"
 	StoreToSettings "replacednsserver" "${dnsserver}"
 	StoreToSettings "replaceinterface" "${interface}"
 	StoreToSettings "replacemems" "${mems}"
