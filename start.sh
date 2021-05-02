@@ -198,19 +198,25 @@ if ! tail ${screenlog} | grep -q "Query running on"; then
 fi
 
 # enables the watchdog script for backup integrity
-if [ ${enablewatchdog} = true ]; then
+if [[ ${enablewatchdog} == true ]]; then
 	CheckVerbose "activating watchdog..."
 	./watchdog.sh &
 fi
 
 # check if user wants to send welcome messages
-if [ ${welcomemessage} = true ]; then
+if [[ ${welcomemessage} == true ]]; then
 	CheckVerbose "activating welcome messages..."
 	./welcome.sh &
 fi
 
+# check if user wants to enable task execution
+if [[ ${enabletasks} == true ]]; then
+	CheckVerbose "activating task execution..."
+	./task.sh &
+fi
+
 # if set to true change automatically to server console
-if [ ${changetoconsole} = true ]; then
+if [[ ${changetoconsole} == true ]]; then
 	CheckVerbose "changing to server console..."
 	screen -r ${servername}
 	exit 1
