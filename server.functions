@@ -42,7 +42,7 @@ function ParseScriptArguments {
 # checks if debug is set to true and logs very verbose to debug.log
 function CheckDebug {
 	if [[ ${enabledebug} == true ]]; then
-		echo "${date} ${1}" >> debug.log
+		echo "${date} ${1}" >> ${debuglog}
 	fi
 }
 # check if verbose mode is on
