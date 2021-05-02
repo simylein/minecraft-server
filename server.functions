@@ -285,7 +285,7 @@ function CreateSafetyBackup {
 	# check if safety backup exists
 	if ! [[ -s "${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz" ]]; then
 		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"safety backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
+		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
 		# terminal output
 		echo "${red}warning: safety backup failed${nocolor}"
 		# logfile output
@@ -293,7 +293,7 @@ function CreateSafetyBackup {
 		echo "" >> ${backuplog}
 	else
 		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"safety backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz as a safety backup\"}]}}}]"
+		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
 		# terminal output
 		echo "${blue}backup successful${nocolor}"
 		# logfile output
@@ -312,6 +312,7 @@ function CheckSafetyBackupString {
 			echo "info: The player ${player} requested a safety backup and has permission - server will perform safety backup" >> ${backuplog}
 			echo "" >> ${backuplog}
 			CreateSafetyBackup
+			sleep 20s
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to safety backup the server\"}]"
 			echo "warning: The player ${player} requested a safety backup and does not have permission to do so" >> ${backuplog}
