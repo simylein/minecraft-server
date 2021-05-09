@@ -725,12 +725,17 @@ echo "Hello World, this ${servername}-server and log-file was created on ${date}
 echo "" >> ${backuplog}
 echo "" >> ${backuplog}
 
+# store to crontab function
+function StoreToCrontab {
+	crontab -l | { cat; echo "${1}"; } | crontab -
+}
+
 # check if nerdysetup is true
 if [[ ${nerdysetup} == true ]]; then
 
 	# write servername and date into crontab
 	date=$(date +"%Y-%m-%d %H:%M:%S")
-		crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
+		StoreToCrontab "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"
 
 	# crontab e-mail config
 	read -p "Would you like to receive emails from your crontab? [Y/N]: "
@@ -740,16 +745,16 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ [Yy]$ ]]
 		then read -p "Please enter your email address: " emailaddress
-			crontab -l | { cat; echo "MAILTO=${emailaddress}"; } | crontab -
+			StoreToCrontab "MAILTO=${emailaddress}"
 			emailchoice=true
 		else echo "${yellow}no emails${nocolor}"
-			crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
+			StoreToCrontab "#MAILTO=youremail@example.com"
 			emailchoice=false
 	fi
 
 	# define colors for tput
-	crontab -l | { cat; echo "TERM=xterm"; } | crontab -
-	crontab -l | { cat; echo ""; } | crontab -
+	StoreToCrontab "TERM=xterm"
+	StoreToCrontab ""
 
 	# crontab automatization backups
 	read -p "Would you like to automate backups? [Y/N]: "
@@ -759,12 +764,12 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automating backups...${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-			crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server backup hourly at **:00"
+			StoreToCrontab "0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"
 			backupchoice=true
 		else echo "${yellow}no automated backups${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-			crontab -l | { cat; echo "#0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server backup hourly at **:00"
+			StoreToCrontab "#0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"
 			backupchoice=false
 	fi
 
@@ -778,16 +783,16 @@ if [[ ${nerdysetup} == true ]]; then
 		then echo "${green}automating start and stop...${nocolor}"
 			read -p "Your start time [0 - 23]: " starttime
 			read -p "Your stop time [0 - 23]: " stoptime
-			crontab -l | { cat; echo "# minecraft ${servername} server start at ${starttime}"; } | crontab -
-			crontab -l | { cat; echo "0 ${starttime} * * * cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
-			crontab -l | { cat; echo "# minecraft ${servername} server stop at ${stoptime}"; } | crontab -
-			crontab -l | { cat; echo "0 ${stoptime} * * * cd ${serverdirectory} && ./stop.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server start at ${starttime}"
+			StoreToCrontab "0 ${starttime} * * * cd ${serverdirectory} && ./start.sh --quiet"
+			StoreToCrontab "# minecraft ${servername} server stop at ${stoptime}"
+			StoreToCrontab "0 ${stoptime} * * * cd ${serverdirectory} && ./stop.sh --quiet"
 			startstopchoice=true
 		else echo "${yellow}no automated  start and stop${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
-			crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
-			crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
-			crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ./stop.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server start at 06:00"
+			StoreToCrontab "#0 6 * * * cd ${serverdirectory} && ./start.sh --quiet"
+			StoreToCrontab "# minecraft ${servername} server stop at 23:00"
+			StoreToCrontab "#0 23 * * * cd ${serverdirectory} && ./stop.sh --quiet"
 			startstopchoice=false
 	fi
 
@@ -799,12 +804,12 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic restarts at 02:00${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
-			crontab -l | { cat; echo "0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server restart at 02:00 on Sundays"
+			StoreToCrontab "0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"
 			restartchoice=true
 		else echo "${yellow}no restarts${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
-			crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server restart at 02:00 on Sundays"
+			StoreToCrontab "#0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"
 			restartchoice=false
 	fi
 
@@ -816,12 +821,12 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic update at Sunday${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
-			crontab -l | { cat; echo "0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server update at 18:00 on Sundays"
+			StoreToCrontab "0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"
 			updatechoice=true
 		else echo "${yellow}no updates${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
-			crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server update at 18:00 on Sundays"
+			StoreToCrontab "#0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"
 			updatechoice=false
 	fi
 
@@ -833,18 +838,18 @@ if [[ ${nerdysetup} == true ]]; then
 	done
 	if [[ ${REPLY} =~ ^[Yy]$ ]]
 		then echo "${green}automatic startup at boot...${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-			crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server startup at boot"
+			StoreToCrontab "@reboot cd ${serverdirectory} && ./start.sh --quiet"
 			startatbootchoice=true
 		else echo "${yellow}no startup at boot${nocolor}"
-			crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-			crontab -l | { cat; echo "#@reboot cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
+			StoreToCrontab "# minecraft ${servername} server startup at boot"
+			StoreToCrontab "#@reboot cd ${serverdirectory} && ./start.sh --quiet"
 			startatbootchoice=false
 	fi
 
 	# padd crontab with two empty lines
-	crontab -l | { cat; echo ""; } | crontab -
-	crontab -l | { cat; echo ""; } | crontab -
+	StoreToCrontab ""
+	StoreToCrontab ""
 
 	# inform user of automated crontab choices
 	echo "You have chosen the following configuration of your server:"
@@ -880,40 +885,40 @@ if [[ ${nerdysetup} == false ]]; then
 
 	# write servername and date into crontab
 	date=$(date +"%Y-%m-%d %H:%M:%S")
-	crontab -l | { cat; echo "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"; } | crontab -
+	StoreToCrontab "# Minecraft ${servername} server automatisation - executed setup.sh at ${date}"
 
 	# crontab e-mail config
-	crontab -l | { cat; echo "#MAILTO=youremail@example.com"; } | crontab -
+	StoreToCrontab "#MAILTO=youremail@example.com"
 
 	# define colors for tput
-	crontab -l | { cat; echo "TERM=xterm"; } | crontab -
-	crontab -l | { cat; echo ""; } | crontab -
+	StoreToCrontab "TERM=xterm"
+	StoreToCrontab ""
 
 	# crontab automatization backups
-	crontab -l | { cat; echo "# minecraft ${servername} server backup hourly at **:00"; } | crontab -
-	crontab -l | { cat; echo "0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"; } | crontab -
+	StoreToCrontab "# minecraft ${servername} server backup hourly at **:00"
+	StoreToCrontab "0 * * * * cd ${serverdirectory} && ./backup.sh --quiet"
 
 	# crontab automated start and stop
-	crontab -l | { cat; echo "# minecraft ${servername} server start at 06:00"; } | crontab -
-	crontab -l | { cat; echo "#0 6 * * * cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
-	crontab -l | { cat; echo "# minecraft ${servername} server stop at 23:00"; } | crontab -
-	crontab -l | { cat; echo "#0 23 * * * cd ${serverdirectory} && ./stop.sh --quiet"; } | crontab -
+	StoreToCrontab "# minecraft ${servername} server start at 06:00"
+	StoreToCrontab "#0 6 * * * cd ${serverdirectory} && ./start.sh --quiet"
+	StoreToCrontab "# minecraft ${servername} server stop at 23:00"
+	StoreToCrontab "#0 23 * * * cd ${serverdirectory} && ./stop.sh --quiet"
 
 	# crontab automatization restart
-	crontab -l | { cat; echo "# minecraft ${servername} server restart at 02:00 on Sundays"; } | crontab -
-	crontab -l | { cat; echo "#0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"; } | crontab -
+	StoreToCrontab "# minecraft ${servername} server restart at 02:00 on Sundays"
+	StoreToCrontab "#0 12 * * 0 cd ${serverdirectory} && ./restart.sh --quiet"
 
 	# crontab automatization updates
-	crontab -l | { cat; echo "# minecraft ${servername} server update at 18:00 on Sunday"; } | crontab -
-	crontab -l | { cat; echo "#0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"; } | crontab -
+	StoreToCrontab "# minecraft ${servername} server update at 18:00 on Sundays"
+	StoreToCrontab "#0 18 * * 0 cd ${serverdirectory} && ./update.sh --quiet"
 
 	# crontab automatization startup
-	crontab -l | { cat; echo "# minecraft ${servername} server startup at boot"; } | crontab -
-	crontab -l | { cat; echo "@reboot cd ${serverdirectory} && ./start.sh --quiet"; } | crontab -
+	StoreToCrontab "# minecraft ${servername} server startup at boot"
+	StoreToCrontab "@reboot cd ${serverdirectory} && ./start.sh --quiet"
 
 	# padd crontab with two empty lines
-	crontab -l | { cat; echo ""; } | crontab -
-	crontab -l | { cat; echo ""; } | crontab -
+	StoreToCrontab ""
+	StoreToCrontab ""
 
 fi
 
