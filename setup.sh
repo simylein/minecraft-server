@@ -112,7 +112,7 @@ for (( i = 1; i < ${packageslength} + 1; i ++ )); do
 done
 
 # user info about script
-echo "${magenta}I will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
+echo "${cyan}I will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
 
 # initial question
 echo "How should I call your server?"
@@ -948,10 +948,10 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
-	echo "${green}starting up server...${nocolor}"
+	echo "${cyan}starting up server...${nocolor}"
 	./start.sh --verbose
 else
-	echo "${magenta}script has finished!${nocolor}"
+	echo "${cyan}script has finished!${nocolor}"
 fi
 
 # exit with code 0
