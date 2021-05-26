@@ -8,27 +8,27 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # read server.functions file with error checking
-if [[ -f "server.functions" ]]; then
+if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
 	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
-	echo "fatal: server.functions is missing"
+	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.properties file with error checking
-if ! [[ -f "server.properties" ]]; then
+if ! [[ -s "server.properties" ]]; then
 	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
-	echo "fatal: server.properties is missing"
+	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.settings file with error checking
-if [[ -f "server.settings" ]]; then
+if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
 	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-	echo "fatal: server.settings is missing"
+	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
 	exit 1
 fi
 
@@ -37,7 +37,7 @@ if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
 	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
-	echo "fatal: serverdirectory is missing"
+	echo "${red}fatal: serverdirectory is missing${nocolor}"
 	exit 1
 fi
 
@@ -71,16 +71,16 @@ interfacechecks="0"
 while [ ${interfacechecks} -lt 8 ]; do
 	if ping -c 1 ${interface} &> /dev/null
 	then
-		CheckVerbose "${green}Success: Interface is online${nocolor}"
-		echo "Success: Interface is online" >> ${screenlog}
+		CheckVerbose "${green}ok: Interface is online${nocolor}"
+		echo "ok: Interface is online" >> ${screenlog}
 		break
 	else
-		echo "${red}Warning: Interface is offline${nocolor}"
-		echo "Warning: Interface is offline" >> ${screenlog}
+		echo "${orange}warning: Interface is offline${nocolor}"
+		echo "warning: Interface is offline" >> ${screenlog}
 	fi
 	if [ ${interfacechecks} -eq 7 ]; then
-		echo "${red}Fatal: Interface timed out${nocolor}"
-		echo "Fatal: Interface timed out" >> ${screenlog}
+		echo "${red}fatal: Interface timed out${nocolor}"
+		echo "fatal: Interface timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
@@ -91,16 +91,16 @@ networkchecks="0"
 while [ ${networkchecks} -lt 8 ]; do
 	if ping -c 1 ${dnsserver} &> /dev/null
 	then
-		CheckVerbose "${green}Success: Nameserver is online${nocolor}"
-		echo "Success: Nameserver is online" >> ${screenlog}
+		CheckVerbose "${green}ok: Nameserver is online${nocolor}"
+		echo "ok: Nameserver is online" >> ${screenlog}
 		break
 	else
-		echo "${red}Warning: Nameserver is offline${nocolor}"
-		echo "Warning: Nameserver is offline" >> ${screenlog}
+		echo "${orange}warning: Nameserver is offline${nocolor}"
+		echo "warning: Nameserver is offline" >> ${screenlog}
 	fi
 	if [ ${networkchecks} -eq 7 ]; then
-		echo "${red}Fatal: Nameserver timed out${nocolor}"
-		echo "Fatal: Nameserver timed out" >> ${screenlog}
+		echo "${red}fatal: Nameserver timed out${nocolor}"
+		echo "fatal: Nameserver timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	networkchecks=$((networkchecks+1))
@@ -212,7 +212,7 @@ fi
 # check if user wants to enable task execution
 if [[ ${enabletasks} == true ]]; then
 	CheckVerbose "activating task execution..."
-	./task.sh &
+	./worker.sh &
 fi
 
 # if set to true change automatically to server console
@@ -224,3 +224,6 @@ fi
 
 # user information
 CheckQuiet "If you would like to change to server console - type screen -r ${servername}"
+
+# exit with code 0
+exit 0
