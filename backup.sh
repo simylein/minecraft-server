@@ -47,7 +47,7 @@ if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
 	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
-	echo "$(tput setaf 1)fatal: serverdirectory is missing$(tput sgr0)"
+	echo "${red}fatal: serverdirectory is missing${nocolor}"
 	exit 1
 fi
 
@@ -424,3 +424,6 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 		echo "" >> ${backuplog}
 	fi
 fi
+
+# exit with code 0
+exit 0
