@@ -8,27 +8,27 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # read server.functions file with error checking
-if [[ -f "server.functions" ]]; then
+if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
 	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
-	echo "fatal: server.functions is missing"
+	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.properties file with error checking
-if ! [[ -f "server.properties" ]]; then
+if ! [[ -s "server.properties" ]]; then
 	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
-	echo "fatal: server.properties is missing"
+	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.settings file with error checking
-if [[ -f "server.settings" ]]; then
+if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
 	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-	echo "fatal: server.settings is missing"
+	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
 	exit 1
 fi
 
@@ -37,7 +37,7 @@ if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
 	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
-	echo "fatal: serverdirectory is missing"
+	echo "${red}fatal: serverdirectory is missing${nocolor}"
 	exit 1
 fi
 
@@ -71,8 +71,8 @@ if ! screen -list | grep -q "\.${servername}"; then
 	# Test internet connectivity and update on success
 	wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 	if [ "$?" != 0 ]; then
-		echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
-		echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
+		echo "${red}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
+		echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 	else
 		CheckQuiet "${green}downloading newest server version...${nocolor}"
 		echo "downloading newest server version..." >> ${screenlog}
@@ -86,14 +86,14 @@ if ! screen -list | grep -q "\.${servername}"; then
 			newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 			# if new serverfile exists remove oldserverfile
 			if [ -f "${newserverfile}" ]; then
-				CheckVerbose "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+				CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.16.5${nocolor}"
 				sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 				# remove old serverfile if it exists
 				if [ -f "${serverfile}" ]; then
 					rm ${serverfile}
 				fi
 			else
-				echo "${yellow}Warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
+				echo "${yellow}warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
 				echo "Server will startup with old serverfile ${serverfile}"
 			fi
 		fi
@@ -170,8 +170,8 @@ fi
 # Test internet connectivity and update on success
 wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 if [ "$?" != 0 ]; then
-	echo "${red}Warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
-	echo "Warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
+	echo "${red}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
+	echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 else
 	CheckQuiet "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
@@ -185,14 +185,14 @@ else
 		newserverfile="${serverdirectory}/minecraft-server.1.16.5.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			CheckVerbose "${green}Success: updating server.settings for startup with new server version 1.16.5${nocolor}"
+			CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.16.5${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
 				rm ${serverfile}
 			fi
 		else
-			echo "${yellow}Warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
+			echo "${yellow}warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
 			echo "Server will startup with old serverfile ${serverfile}"
 		fi
 	fi
@@ -210,3 +210,6 @@ MakeScriptsExecutable
 # restart the server
 CheckQuiet "${cyan}restarting server...${nocolor}"
 ./start.sh "$@"
+
+# exit with code 0
+exit 0
