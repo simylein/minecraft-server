@@ -196,7 +196,7 @@ echo "downloading scripts from GitHub... "
 
 # downloading scripts from github
 # declare all scripts in an array
-declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
+declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
 # get length of script array
 scriptslength=${#scripts1[@]}
 # loop through all entries in the array
@@ -206,7 +206,7 @@ done
 
 # make selected scripts executable
 # declare all scripts in an array
-declare -a scripts2=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
+declare -a scripts2=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
 # get length of script array
 scriptslength=${#scripts2[@]}
 # loop through all entries in the array
@@ -953,3 +953,6 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 else
 	echo "${magenta}script has finished!${nocolor}"
 fi
+
+# exit with code 0
+exit 0
