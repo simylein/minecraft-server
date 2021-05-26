@@ -71,22 +71,22 @@ function PrintToScreenBackupSuccess {
 }
 # prints backup success to backup log
 function PrintToLogBackupSuccess {
-	echo "newest backup has been successfully created" >> ${backuplog}
-	echo "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz" >> ${backuplog}
-	echo "oldest backup has been successfully removed" >> ${backuplog}
-	echo "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz" >> ${backuplog}
-	echo "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
-	echo "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}" >> ${backuplog}
+	echo "ok: newest backup has been successfully created" >> ${backuplog}
+	echo "ok: added ${backupdirectory}/hourly/${servername}-${1}.tar.gz" >> ${backuplog}
+	echo "ok: oldest backup has been successfully removed" >> ${backuplog}
+	echo "ok: removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz" >> ${backuplog}
+	echo "ok: current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" >> ${backuplog}
+	echo "ok: time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}" >> ${backuplog}
 	echo "" >> ${backuplog}
 }
 # prints success messages to terminal
 function PrintToTerminalBackupSuccess {
-	CheckQuiet "newest backup has been successfully created"
-	CheckQuiet "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz"
-	CheckQuiet "oldest backup has been successfully removed"
-	CheckQuiet "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz"
-	CheckVerbose "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}"
-	CheckVerbose "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}"
+	CheckQuiet "${green}ok: newest backup has been successfully created${nocolor}"
+	CheckQuiet "${green}ok: added ${backupdirectory}/hourly/${servername}-${1}.tar.gz${nocolor}"
+	CheckQuiet "${green}ok: oldest backup has been successfully removed${nocolor}"
+	CheckQuiet "${green}ok: removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz${nocolor}"
+	CheckVerbose "${green}ok: current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}${nocolor}"
+	CheckVerbose "${green}ok: time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}${nocolor}"
 }
 
 
@@ -102,7 +102,7 @@ function PrintToLogBackupAlreadyExists {
 }
 # prints backup already exists to terminal
 function PrintToTerminalBackupAlreadyExists {
-	echo "${yellow}warning: could not create new ${1}-backup - backup already exists"
+	echo "${yellow}warning: could not create new ${1}-backup - backup already exists${nocolor}"
 }
 
 
@@ -201,10 +201,10 @@ function CheckBackupDirectoryIntegrity {
 function FetchScriptFromGitHub {
 	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
 	if [ "$?" != 0 ]; then
-		echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
+		echo "${red}fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
 		exit 1
 	else
-		CheckVerbose "Fetching file: ${1} from branch ${branch} on GitHub..."
+		CheckVerbose "fetching file: ${1} from branch ${branch} on GitHub..."
 		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
 fi
 }
@@ -215,12 +215,12 @@ function RemoveScriptsFromServerDirectory {
 	CheckVerbose "removing scripts in serverdirectory... "
 	# remove scripts from serverdirectory
 	# declare all scripts in an array
-	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
+	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
 	# get length of script array
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "Removing script ${scripts[${i}-1]}"
+		CheckVerbose "removing script ${scripts[${i}-1]}"
 		rm "${scripts[${i}-1]}"
 	done
 }
@@ -231,7 +231,7 @@ function DownloadScriptsFromGitHub {
 	CheckVerbose "downloading scripts from GitHub... "
 	# downloading scripts from github
 	# declare all scripts in an array
-	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
+	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
 	# get length of script array
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
@@ -246,12 +246,12 @@ function MakeScriptsExecutable {
 	CheckVerbose "download successful"
 	# make selected scripts executable
 	# declare all scripts in an array
-	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "vent.sh" "task.sh" )
+	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
 	# get length of script array
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "Setting script ${scripts[${i}-1]} executable"
+		CheckVerbose "setting script ${scripts[${i}-1]} executable"
 		chmod +x ${scripts[${i}-1]}
 	done
 }
@@ -270,7 +270,7 @@ function CreateSafetyBackup {
 		# ingame output
 		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
 		# terminal output
-		echo "${red}warning: safety backup failed${nocolor}"
+		echo "${orange}warning: safety backup failed${nocolor}"
 		# logfile output
 		echo "warning: safety backup failed" >> ${backuplog}
 		echo "" >> ${backuplog}
