@@ -10,27 +10,27 @@ if [ $(id -u) = 0 ]; then
 fi
 
 # read server.functions file with error checking
-if [[ -f "server.functions" ]]; then
+if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
 	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
-	echo "fatal: server.functions is missing"
+	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.properties file with error checking
-if ! [[ -f "server.properties" ]]; then
+if ! [[ -s "server.properties" ]]; then
 	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
-	echo "fatal: server.properties is missing"
+	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.settings file with error checking
-if [[ -f "server.settings" ]]; then
+if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
 	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-	echo "fatal: server.settings is missing"
+	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
 	exit 1
 fi
 
@@ -39,7 +39,7 @@ if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
 	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
-	echo "fatal: serverdirectory is missing"
+	echo "${red}fatal: serverdirectory is missing${nocolor}"
 	exit 1
 fi
 
