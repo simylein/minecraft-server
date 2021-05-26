@@ -7,7 +7,7 @@ This tutorial contains important steps if you would like to host a minecraft ser
 In order for the Server to run we will need to install some packages: (please note: some of them could be installed already) <br>
 This command installs all packages you will need to run your server.
 ```
-sudo apt install openjdk-11-jre-headless iputils-ping net-tools mailutils coreutils dnsutils sendmail screen grep nano wget less cron sed pv
+sudo apt install openjdk-11-jre-headless iputils-ping net-tools mailutils coreutils dnsutils sendmail screen grep nano wget less cron man sed pv
 ```
 ## setup
 Then, you can download and execute the setup script. <br>
