@@ -47,7 +47,7 @@ fi
 ParseScriptArguments "$@"
 
 # user safety function for confirmation
-echo "${orange}Are you sure you want to vent your server?${nocolor}"
+echo "${yellow}Are you sure you want to vent your server?${nocolor}"
 read -p "If so, please type ${red}CONFIRM VENTING${nocolor} "
 if [[ ${REPLY} == "CONFIRM VENTING" ]]; then
 	echo "User confirmed venting - I will self-destruct now"
