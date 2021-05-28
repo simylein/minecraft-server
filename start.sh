@@ -75,7 +75,7 @@ while [ ${interfacechecks} -lt 8 ]; do
 		echo "ok: Interface is online" >> ${screenlog}
 		break
 	else
-		echo "${orange}warning: Interface is offline${nocolor}"
+		echo "${yellow}warning: Interface is offline${nocolor}"
 		echo "warning: Interface is offline" >> ${screenlog}
 	fi
 	if [ ${interfacechecks} -eq 7 ]; then
@@ -95,7 +95,7 @@ while [ ${networkchecks} -lt 8 ]; do
 		echo "ok: Nameserver is online" >> ${screenlog}
 		break
 	else
-		echo "${orange}warning: Nameserver is offline${nocolor}"
+		echo "${yellow}warning: Nameserver is offline${nocolor}"
 		echo "warning: Nameserver is offline" >> ${screenlog}
 	fi
 	if [ ${networkchecks} -eq 7 ]; then
