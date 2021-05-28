@@ -148,8 +148,8 @@ function PrintToLogBackupError {
 }
 # prints backup error to backup log
 function PrintToTerminalBackupError {
-	echo "${orange}warning: cannot remove old backup because new backup is missing${nocolor}"
-	echo "${orange}warning: could not remove old backup${nocolor}"
+	echo "${yellow}warning: cannot remove old backup because new backup is missing${nocolor}"
+	echo "${yellow}warning: could not remove old backup${nocolor}"
 	echo "${red}fatal: could not backup world${nocolor}"
 }
 
@@ -270,7 +270,7 @@ function CreateSafetyBackup {
 		# ingame output
 		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
 		# terminal output
-		echo "${orange}warning: safety backup failed${nocolor}"
+		echo "${yellow}warning: safety backup failed${nocolor}"
 		# logfile output
 		echo "warning: safety backup failed" >> ${backuplog}
 		echo "" >> ${backuplog}
