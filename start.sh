@@ -71,16 +71,16 @@ interfacechecks="0"
 while [ ${interfacechecks} -lt 8 ]; do
 	if ping -c 1 ${interface} &> /dev/null
 	then
-		CheckVerbose "${green}ok: Interface is online${nocolor}"
-		echo "ok: Interface is online" >> ${screenlog}
+		CheckVerbose "${green}ok: interface is online${nocolor}"
+		echo "ok: interface is online" >> ${screenlog}
 		break
 	else
-		echo "${yellow}warning: Interface is offline${nocolor}"
-		echo "warning: Interface is offline" >> ${screenlog}
+		echo "${yellow}warning: interface is offline${nocolor}"
+		echo "warning: interface is offline" >> ${screenlog}
 	fi
 	if [ ${interfacechecks} -eq 7 ]; then
-		echo "${red}fatal: Interface timed out${nocolor}"
-		echo "fatal: Interface timed out" >> ${screenlog}
+		echo "${red}fatal: interface timed out${nocolor}"
+		echo "fatal: interface timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	interfacechecks=$((interfacechecks+1))
@@ -91,23 +91,23 @@ networkchecks="0"
 while [ ${networkchecks} -lt 8 ]; do
 	if ping -c 1 ${dnsserver} &> /dev/null
 	then
-		CheckVerbose "${green}ok: Nameserver is online${nocolor}"
-		echo "ok: Nameserver is online" >> ${screenlog}
+		CheckVerbose "${green}ok: nameserver is online${nocolor}"
+		echo "ok: nameserver is online" >> ${screenlog}
 		break
 	else
-		echo "${yellow}warning: Nameserver is offline${nocolor}"
-		echo "warning: Nameserver is offline" >> ${screenlog}
+		echo "${yellow}warning: nameserver is offline${nocolor}"
+		echo "warning: nameserver is offline" >> ${screenlog}
 	fi
 	if [ ${networkchecks} -eq 7 ]; then
-		echo "${red}fatal: Nameserver timed out${nocolor}"
-		echo "fatal: Nameserver timed out" >> ${screenlog}
+		echo "${red}fatal: nameserver timed out${nocolor}"
+		echo "fatal: nameserver timed out" >> ${screenlog}
 	fi
 	sleep 1s
 	networkchecks=$((networkchecks+1))
 done
 
 # user information
-CheckQuiet "Starting Minecraft server.  To view window type screen -r ${servername}."
+CheckQuiet "Starting Minecraft server. To view window type screen -r ${servername}."
 CheckQuiet "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 echo "starting ${servername} server..." >> ${screenlog}
 CheckVerbose "starting ${servername} server..."	
@@ -157,8 +157,8 @@ while [ ${startupchecks} -lt 120 ]; do
 		exit 1
 	fi
 	if ! screen -list | grep -q "${servername}"; then
-		echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
-		echo "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
+		echo "fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
+		echo "${red}fatal: something went wrong - server appears to have crashed!${nocolor}"
 		echo "crash dump - last 10 lines of ${screenlog}"
 		tail -10 ${screenlog}
 		exit 1
@@ -183,8 +183,8 @@ while [ ${startupchecks} -lt 120 ]; do
 		counter="0"
 	fi
 	if [ ${count} -eq 0 ] && [ ${startupchecks} -eq 20 ]; then
-		echo "Warning: the server could be crashed" >> ${screenlog}
-		echo "${yellow}Warning: the server could be crashed${nocolor}"
+		echo "warning: the server could be crashed" >> ${screenlog}
+		echo "${yellow}warning: the server could be crashed${nocolor}"
 		exit 1
 	fi
 	startupchecks=$((startupchecks+1))
@@ -219,11 +219,10 @@ fi
 if [[ ${changetoconsole} == true ]]; then
 	CheckVerbose "changing to server console..."
 	screen -r ${servername}
-	exit 1
 fi
 
 # user information
-CheckQuiet "If you would like to change to server console - type screen -r ${servername}"
+CheckQuiet "If you would like to change to server console - type ${green}screen -r ${servername}${nocolor}"
 
 # exit with code 0
 exit 0
