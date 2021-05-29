@@ -103,7 +103,7 @@ tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirect
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/restore-${newdaily}.tar.gz" ]]; then
-	echo "${red}warning: safety backup failed - proceeding to server restore${nocolor}"
+	echo "${yellow}warning: safety backup failed - proceeding to server restore${nocolor}"
 	echo "warning: safety backup failed - proceeding to server restore" >> ${screenlog}
 else
 	echo "created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
@@ -197,7 +197,7 @@ read -p "Continue? [Y/N]: "
 # if user replys yes perform restore
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	cd ${serverdirectory}
-	echo "${green}restoring backup...${nocolor}"
+	echo "${cyan}restoring backup...${nocolor}"
 	mv ${serverdirectory}/world ${serverdirectory}/old-world
 	cp ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
 	mv ${backup} world.tar.gz
@@ -205,21 +205,21 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	rm world.tar.gz
 	if [ -d "world" ]; then
 		echo "${green}restore successful${nocolor}"
-		echo "${blue}restarting server with restored backup...${nocolor}"
+		echo "${cyan}restarting server with restored backup...${nocolor}"
 		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
 		rm -r ${serverdirectory}/old-world
 	else
-		echo "${red}something went wrong - could not restore backup${nocolor}"
-		echo "something went wrong - could not restore backup" >> ${screenlog}
+		echo "${red}fatal: something went wrong - could not restore backup${nocolor}"
+		echo "fatal: something went wrong - could not restore backup" >> ${screenlog}
 		mv ${serverdirectory}/old-world ${serverdirectory}/world
 	fi
 	./start.sh "$@"
 # if user replys no cancel and restart server
 else cd ${serverdirectory}
 	echo "${yellow}canceling backup restore...${nocolor}"
-	echo "${blue}restarting server...${nocolor}"
-	echo "backup restore has been canceled" >> ${screenlog}
-	echo "resuming to current live world" >> ${screenlog}
+	echo "${cyan}restarting server...${nocolor}"
+	echo "info: backup restore has been canceled" >> ${screenlog}
+	echo "info: resuming to current live world" >> ${screenlog}
 	./start.sh "$@"
 fi
 
