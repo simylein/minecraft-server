@@ -61,7 +61,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 
 	# check if safety backup exists
 	if ! [[ -s "${backupdirectory}/cached/update-${newdaily}.tar.gz" ]]; then
-		echo "${red}warning: safety backup failed - proceeding to server update${nocolor}"
+		echo "${yellow}warning: safety backup failed - proceeding to server update${nocolor}"
 		echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 	else
 		echo "created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
@@ -71,7 +71,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	# Test internet connectivity and update on success
 	wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 	if [ "$?" != 0 ]; then
-		echo "${red}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
+		echo "${yellow}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 		echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 	else
 		CheckQuiet "${green}downloading newest server version...${nocolor}"
@@ -160,7 +160,7 @@ tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirect
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/update-${newdaily}.tar.gz" ]]; then
-	echo "${red}warning: safety backup failed - proceeding to server update${nocolor}"
+	echo "${yellow}warning: safety backup failed - proceeding to server update${nocolor}"
 	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 else
 	echo "created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
@@ -170,7 +170,7 @@ fi
 # Test internet connectivity and update on success
 wget --spider --quiet https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
 if [ "$?" != 0 ]; then
-	echo "${red}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
+	echo "${yellow}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 	echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
 else
 	CheckQuiet "${green}downloading newest server version...${nocolor}"
