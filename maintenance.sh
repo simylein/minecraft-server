@@ -96,7 +96,7 @@ tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirect
 
 # check if safety backup exists
 if ! [[ -s "${backupdirectory}/cached/maintenance-${newdaily}.tar.gz" ]]; then
-	echo "${red}warning: safety backup failed - proceeding to server maintenance${nocolor}"
+	echo "${yellow}warning: safety backup failed - proceeding to server maintenance${nocolor}"
 	echo "warning: safety backup failed - proceeding to server maintenance" >> ${screenlog}
 else
 	echo "created ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
