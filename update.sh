@@ -86,7 +86,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 			newserverfile="${serverdirectory}/minecraft-server.1.17.jar"
 			# if new serverfile exists remove oldserverfile
 			if [ -f "${newserverfile}" ]; then
-				CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.16.5${nocolor}"
+				CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.17${nocolor}"
 				sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 				# remove old serverfile if it exists
 				if [ -f "${serverfile}" ]; then
@@ -185,7 +185,7 @@ else
 		newserverfile="${serverdirectory}/minecraft-server.1.17.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.16.5${nocolor}"
+			CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.17${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
