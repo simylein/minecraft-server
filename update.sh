@@ -69,7 +69,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	fi
 
 	# Test internet connectivity and update on success
-	wget --spider --quiet https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar
+	wget --spider --quiet https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
 	if [ "$?" != 0 ]; then
 		echo "${yellow}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 		echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
@@ -77,16 +77,16 @@ if ! screen -list | grep -q "\.${servername}"; then
 		CheckQuiet "${green}downloading newest server version...${nocolor}"
 		echo "downloading newest server version..." >> ${screenlog}
 		# check if already on newest version
-		if [[ "${serverfile}" = *"minecraft-server.1.17.jar" ]]; then
+		if [[ "${serverfile}" = *"minecraft-server.1.17.1.jar" ]]; then
 			CheckVerbose "You are running the newest server version - skipping update"
 			echo "You are running the newest server version - skipping update" >> ${screenlog}
 		else
-			wget -q -O minecraft-server.1.17.jar https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar
+			wget -q -O minecraft-server.1.17.1.jar https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
 			# update serverfile variable in server.settings
-			newserverfile="${serverdirectory}/minecraft-server.1.17.jar"
+			newserverfile="${serverdirectory}/minecraft-server.1.17.1.jar"
 			# if new serverfile exists remove oldserverfile
 			if [ -f "${newserverfile}" ]; then
-				CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.17${nocolor}"
+				CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.17.1${nocolor}"
 				sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 				# remove old serverfile if it exists
 				if [ -f "${serverfile}" ]; then
@@ -168,7 +168,7 @@ else
 fi
 
 # Test internet connectivity and update on success
-wget --spider --quiet https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar
+wget --spider --quiet https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
 if [ "$?" != 0 ]; then
 	echo "${yellow}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 	echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
@@ -176,16 +176,16 @@ else
 	CheckQuiet "${green}downloading newest server version...${nocolor}"
 	echo "downloading newest server version..." >> ${screenlog}
 	# check if already on newest version
-	if [[ "${serverfile}" = *"minecraft-server.1.17.jar" ]]; then
+	if [[ "${serverfile}" = *"minecraft-server.1.17.1.jar" ]]; then
 		CheckVerbose "You are running the newest server version - skipping update"
 		echo "You are running the newest server version - skipping update" >> ${screenlog}
 	else
-		wget -q -O minecraft-server.1.17.jar https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar
+		wget -q -O minecraft-server.1.17.1.jar https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
 		# update serverfile variable in server.settings
-		newserverfile="${serverdirectory}/minecraft-server.1.17.jar"
+		newserverfile="${serverdirectory}/minecraft-server.1.17.1.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.17${nocolor}"
+			CheckVerbose "${green}ok: updating server.settings for startup with new server version 1.17.1${nocolor}"
 			sed -i "s|${serverfile}|${newserverfile}|g" server.settings
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then
