@@ -102,7 +102,7 @@ There are lots of script in your ${serverdirectory}. Normally, the executable on
 
 Example: `./start.sh -v`
 
-Arguments: `-i --immediatly -q --quiet -v --verbose`
+Arguments: `-i --immediately -q --quiet -v --verbose`
 
 ## crontab
 If you would like to automate some of those task on your server you can create a crontab.
