@@ -105,7 +105,7 @@ declare -a packages=( "apt" "java" "screen" "date" "tar" "echo" "ping" "ifconfig
 packageslength=${#packages[@]}
 # use for loop to read all values and indexes
 for (( i = 1; i < ${packageslength} + 1; i ++ )); do
-	if ! man ${packages[$i-1]} &> /dev/null; then
+	if ! command -v ${packages[$i-1]} &> /dev/null; then
 		echo "${red}fatal: the package ${packages[${i}-1]} is not installed on your system"
 		exit 1
 	fi
@@ -160,7 +160,7 @@ fi
 echo "I will now setup a server and backup directory."
 
 # set up server directory
-echo -n "setting up a serverdirectory... "
+echo -n "info: setting up a serverdirectory... "
 mkdir ${servername}
 cd ${servername}
 echo "done"
@@ -192,7 +192,7 @@ function FetchScriptFromGitHub {
 }
 
 # user info about download
-echo "downloading scripts from GitHub... "
+echo "info: downloading scripts from GitHub... "
 
 # downloading scripts from github
 # declare all scripts in an array
@@ -218,14 +218,14 @@ done
 # store serverdirectory
 serverdirectory=`pwd`
 
-echo "download successful"
+echo "${green}ok: download successful${nocolor}"
 
 # function for downloading serverfile from mojang api with error checking
 function FetchServerFileFromMojan {
 	echo -n "downloading minecraft-server.${version}.jar... "
 	wget -q -O minecraft-server.${version}.jar https://launcher.mojang.com/v1/objects/${1}/server.jar
 	serverfile="${serverdirectory}/minecraft-server.${version}.jar"
-	echo "done"
+	echo "${green}done${nocolor}"
 	if ! [[ -s "minecraft-server.${version}.jar" ]]; then
 		echo "download error: downloaded server-file minecraft-server.${version}.jar is empty or not available"
 	fi
@@ -264,7 +264,7 @@ done
 echo "Your Server will execute ${green}${serverfile}${nocolor} at start"
 
 # set up backupdirectory with child directories
-echo -n "setting up a backupdirectory... "
+echo -n "info: setting up a backupdirectory... "
 mkdir world
 mkdir backups
 	cd backups
@@ -927,7 +927,7 @@ echo "${green}setup is complete!${nocolor}"
 echo "If you would like to start your Server:"
 echo "go into your ${green}${serverdirectory}${nocolor} directory and execute ${green}start.sh${nocolor}"
 echo "execute like this: ${green}./start.sh${nocolor}"
-echo "${magenta}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
+echo "${cyan}God Luck and Have Fun!${nocolor} ${blue};^)${nocolor}"
 
 # ask user for removal of setup script
 read -p "Would you like to remove the setup script? [Y/N]: "
@@ -948,10 +948,10 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
-	echo "${cyan}starting up server...${nocolor}"
+	echo "${cyan}action: starting up server...${nocolor}"
 	./start.sh --verbose
 else
-	echo "${cyan}script has finished!${nocolor}"
+	echo "${green}ok: script has finished!${nocolor}"
 fi
 
 # exit with code 0
