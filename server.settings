@@ -82,7 +82,7 @@ enablewatchdog="replaceenablewatchdog" # executes watchdog script if set to true
 # print welcome messages if a player joins
 welcomemessage="replacewelcomemessage" # executes welcome script if set to true
 # enables task execution if an admin uses ingame chat
-enabletasks="replaceenabletasksmessage"
+enabletasks="replaceenabletasksmessage" # give admins the power of restarting your server
 
 # network stuff
 dnsserver="replacednsserver" # server will ping it for public avalability checks
