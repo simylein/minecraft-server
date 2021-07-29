@@ -109,8 +109,8 @@ done
 # user information
 CheckQuiet "Starting Minecraft server. To view window type screen -r ${servername}."
 CheckQuiet "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
-echo "starting ${servername} server..." >> ${screenlog}
-CheckVerbose "starting ${servername} server..."	
+echo "action: starting ${servername} server..." >> ${screenlog}
+CheckVerbose "action: starting ${servername} server..."
 
 # main start commmand
 ${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile} -nogui
@@ -132,14 +132,14 @@ done
 
 # if no screen output error
 if ! screen -list | grep -q "${servername}"; then
-	echo "something went wrong - server failed to start!" >> ${screenlog}
-	echo "${red}something went wrong - server failed to start!${nocolor}"
+	echo "fatal: something went wrong - server failed to start!" >> ${screenlog}
+	echo "${red}fatal: something went wrong - server failed to start!${nocolor}"
 	exit 1
 fi
 
 # succesful start sequence
-echo "server is on startup..." >> ${screenlog}
-CheckQuiet "${green}server is on startup...${nocolor}"
+echo "ok: server is on startup..." >> ${screenlog}
+CheckQuiet "${green}ok: server is on startup...${nocolor}"
 
 # check if screenlog contains start comfirmation
 count="0"
@@ -147,19 +147,19 @@ counter="0"
 startupchecks="0"
 while [ ${startupchecks} -lt 120 ]; do
 	if tail ${screenlog} | grep -q "Query running on"; then
-		echo "server startup successful - query up and running" >> ${screenlog}
-		CheckQuiet "${green}server startup successful - query up and running${nocolor}"
+		echo "ok: server startup successful - query up and running" >> ${screenlog}
+		CheckQuiet "${green}ok: server startup successful - query up and running${nocolor}"
 		break
 	fi
 	if tail -20 ${screenlog} | grep -q "FAILED TO BIND TO PORT"; then
-		echo "server port is already in use - please change to another port" >> ${screenlog}
-		echo "${red}server port is already in use - please change to another port${nocolor}"
+		echo "fatal: server port is already in use - please change to another port" >> ${screenlog}
+		echo "${red}fatal: server port is already in use - please change to another port${nocolor}"
 		exit 1
 	fi
 	if ! screen -list | grep -q "${servername}"; then
 		echo "fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
 		echo "${red}fatal: something went wrong - server appears to have crashed!${nocolor}"
-		echo "crash dump - last 10 lines of ${screenlog}"
+		echo "info: crash dump - last 10 lines of ${screenlog}"
 		tail -10 ${screenlog}
 		exit 1
 	fi
@@ -168,7 +168,7 @@ while [ ${startupchecks} -lt 120 ]; do
 	fi
 	if tail ${screenlog} | grep -q "Environment"; then
 		if [ ${count} -eq 0 ]; then
-			CheckVerbose "server is loading the environment..."
+			CheckVerbose "info: server is loading the environment..."
 		fi
 		count=$((count+1))
 	fi
@@ -179,7 +179,7 @@ while [ ${startupchecks} -lt 120 ]; do
 		count=$((count+1))
 	fi
 	if [ ${counter} -ge 10 ]; then
-		CheckVerbose "server is preparing spawn area..."
+		CheckVerbose "info: server is preparing spawn area..."
 		counter="0"
 	fi
 	if [ ${count} -eq 0 ] && [ ${startupchecks} -eq 20 ]; then
@@ -193,31 +193,31 @@ done
 
 # check if screenlog does not contain startup confirmation
 if ! tail ${screenlog} | grep -q "Query running on"; then
-	echo "server startup unsuccessful - perhaps query is disabled" >> ${screenlog}
-	echo "${yellow}server startup unsuccessful - perhaps query is disabled${nocolor}"
+	echo "warning: server startup unsuccessful - perhaps query is disabled" >> ${screenlog}
+	echo "${yellow}warning: server startup unsuccessful - perhaps query is disabled${nocolor}"
 fi
 
 # enables the watchdog script for backup integrity
 if [[ ${enablewatchdog} == true ]]; then
-	CheckVerbose "activating watchdog..."
+	CheckVerbose "info: activating watchdog..."
 	./watchdog.sh &
 fi
 
 # check if user wants to send welcome messages
 if [[ ${welcomemessage} == true ]]; then
-	CheckVerbose "activating welcome messages..."
+	CheckVerbose "info: activating welcome messages..."
 	./welcome.sh &
 fi
 
 # check if user wants to enable task execution
 if [[ ${enabletasks} == true ]]; then
-	CheckVerbose "activating task execution..."
+	CheckVerbose "info: activating task execution..."
 	./worker.sh &
 fi
 
 # if set to true change automatically to server console
 if [[ ${changetoconsole} == true ]]; then
-	CheckVerbose "changing to server console..."
+	CheckVerbose "info: changing to server console..."
 	screen -r ${servername}
 fi
 
