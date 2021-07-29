@@ -41,6 +41,9 @@ else
 	exit 1
 fi
 
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # write date to logfile
 echo "${date} executing reset script" >> ${screenlog}
 
