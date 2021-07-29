@@ -64,8 +64,8 @@ if ! screen -list | grep -q "\.${servername}"; then
 	echo "server is not currently running!" >> ${screenlog}
 	echo "${yellow}server is not currently running!${nocolor}"
 	counter="10"
-	# check if immediatly is specified
-	if ! [[ ${immediatly} == true ]]; then
+	# check if immediately is specified
+	if ! [[ ${immediately} == true ]]; then
 		while [ ${counter} -gt 0 ]; do
 			if [[ "${counter}" =~ ^(10|9|8|7|6|5|4|3|2|1)$ ]]; then
 				CheckQuiet "${blue}[Script]${nocolor} ${red}server is self-destructing in ${counter} seconds${nocolor}"
@@ -99,8 +99,8 @@ screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"co
 # sleep for 2 seconds
 sleep 2s
 
-# check if immediatly is specified
-if ! [[ ${immediatly} == true ]]; then
+# check if immediately is specified
+if ! [[ ${immediately} == true ]]; then
 	# countdown
 	counter="120"
 	while [ ${counter} -gt 0 ]; do
