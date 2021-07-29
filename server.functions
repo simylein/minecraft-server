@@ -8,13 +8,13 @@
 
 # function for parsing arguments for a script
 function ParseScriptArguments {
-	immediatly=false
+	immediately=false
 	quiet=false
 	verbose=false
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
 			-i)
-				immediatly=true
+				immediately=true
 			;;
 			-q)
 				quiet=true
@@ -22,8 +22,8 @@ function ParseScriptArguments {
 			-v)
 				verbose=true
 			;;
-			--immediatly)
-				immediatly=true
+			--immediately)
+				immediately=true
 			;;
 			--quiet)
 				quiet=true
@@ -179,16 +179,27 @@ function ProgressBar {
 	printf "\r${1} [${fill// /#}${empty// /-}] ${progress}%% "
 }
 
-# function for testing if all categories for backups exists if not create them
+# function for testing if all categories for backups exists if not create them also check for root backups directory
 function CheckBackupDirectoryIntegrity {
+	cd ${serverdirectory}
+	# check for root backup directory and create if missing
+	if ! ls ${backupdirectory} &> /dev/null; then
+		echo "fatal: the root-backupdirectory is missing - your backups are likely gone :(" >> ${backuplog}
+		echo "info: creating a new root-backupdirectory with name backups at ${serverdirectory}" >> ${backuplog}
+		echo "" >> ${backuplog}
+		echo "${red}fatal: the root-backupdirectory is missing - your backups are likely gone :(${nocolor}"
+		CheckVerbose "info: creating a new root-backupdirectory with name backups at ${serverdirectory}"
+		mkdir backups
+	fi
 	declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
 	arraylenght=${#backupcategories[@]}
 	for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
+		# check for backup category directories and create if missing
 		if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
-			echo "info: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
+			echo "warning: the backup-directory ${backupcategories[${i}-1]} is missing" >> ${backuplog}
 			echo "info: creating ${backupdirectory}/${backupcategories[${i}-1]}" >> ${backuplog}
 			echo "" >> ${backuplog}
-			CheckVerbose "info: the backup-directory ${backupcategories[${i}-1]} is missing"
+			echo "${yellow}warning: the backup-directory ${backupcategories[${i}-1]} is missing${nocolor}"
 			CheckVerbose "info: creating ${backupdirectory}/${backupcategories[${i}-1]}"
 			cd ${backupdirectory}
 			mkdir ${backupcategories[${i}-1]}
@@ -204,7 +215,7 @@ function FetchScriptFromGitHub {
 		echo "${red}fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
 		exit 1
 	else
-		CheckVerbose "fetching file: ${1} from branch ${branch} on GitHub..."
+		CheckVerbose "info: fetching file: ${1} from branch ${branch} on GitHub..."
 		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
 fi
 }
@@ -212,7 +223,7 @@ fi
 # function for removing scripts from serverdirectory
 function RemoveScriptsFromServerDirectory {
 	# user info about download
-	CheckVerbose "removing scripts in serverdirectory... "
+	CheckVerbose "info: removing scripts in serverdirectory... "
 	# remove scripts from serverdirectory
 	# declare all scripts in an array
 	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
@@ -220,7 +231,7 @@ function RemoveScriptsFromServerDirectory {
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "removing script ${scripts[${i}-1]}"
+		CheckVerbose "info: removing script ${scripts[${i}-1]}"
 		rm "${scripts[${i}-1]}"
 	done
 }
@@ -228,7 +239,7 @@ function RemoveScriptsFromServerDirectory {
 # function for downloading scripts from github
 function DownloadScriptsFromGitHub {
 	# user info about download
-	CheckVerbose "downloading scripts from GitHub... "
+	CheckVerbose "info: downloading scripts from GitHub... "
 	# downloading scripts from github
 	# declare all scripts in an array
 	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
@@ -243,7 +254,7 @@ function DownloadScriptsFromGitHub {
 # function for making scripts executable
 function MakeScriptsExecutable {
 	# user info
-	CheckVerbose "download successful"
+	CheckVerbose "ok: download successful"
 	# make selected scripts executable
 	# declare all scripts in an array
 	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
@@ -251,7 +262,7 @@ function MakeScriptsExecutable {
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "setting script ${scripts[${i}-1]} executable"
+		CheckVerbose "info: setting script ${scripts[${i}-1]} executable"
 		chmod +x ${scripts[${i}-1]}
 	done
 }
@@ -278,7 +289,7 @@ function CreateSafetyBackup {
 		# ingame output
 		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
 		# terminal output
-		echo "${blue}backup successful${nocolor}"
+		echo "${green}ok: backup successful${nocolor}"
 		# logfile output
 		echo "created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz as a safety backup" >> ${backuplog}
 		echo "" >> ${backuplog}
@@ -288,7 +299,7 @@ function CreateSafetyBackup {
 
 # check for safety backup string
 function CheckSafetyBackupString {
-	if tail -1 "${screenlog}" | grep -q "safety backup"; then
+	if tail -1 "${screenlog}" | grep -q "perform safety backup"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=safety backup)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a safety backup of the server\"}]"
@@ -302,9 +313,10 @@ function CheckSafetyBackupString {
 		fi
 	fi
 }
-# check for confirm restart string
+# check for confirm restart strings
 function CheckConfirmRestartString {
-	if tail -1 "${screenlog}" | grep -q "confirm restart"; then
+	# check for perform restart string
+	if tail -1 "${screenlog}" | grep -q "perform restart"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a restart of the server\"}]"
@@ -316,10 +328,24 @@ function CheckConfirmRestartString {
 			echo "warning: The player ${player} requested a restart and does not have permission to do so" >> ${screenlog}
 		fi
 	fi
+	# check for perform restart now string
+	if tail -1 "${screenlog}" | grep -q "perform restart now"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		if cat ops.json | grep -q "${player}"; then
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a restart of the server\"}]"
+			echo "info: The player ${player} requested a restart and has permission - server will restart" >> ${screenlog}
+			./restart.sh --immediately
+			exit 0
+		else
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to restart the server\"}]"
+			echo "warning: The player ${player} requested a restart and does not have permission to do so" >> ${screenlog}
+		fi
+	fi
 }
-# check for confirm update string
+# check for confirm update strings
 function CheckConfirmUpdateString {
-	if tail -1 "${screenlog}" | grep -q "confirm update"; then
+	# check for perform update string
+	if tail -1 "${screenlog}" | grep -q "perform update"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested an update of the server\"}]"
@@ -331,15 +357,42 @@ function CheckConfirmUpdateString {
 			echo "warning: The player ${player} requested an update and does not have permission to do so" >> ${screenlog}
 		fi
 	fi
+	# check for perform update now string
+	if tail -1 "${screenlog}" | grep -q "perform update now"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		if cat ops.json | grep -q "${player}"; then
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested an update of the server\"}]"
+			echo "info: The player ${player} requested an update and has permission - server will update" >> ${screenlog}
+			./update.sh --immediately
+			exit 0
+		else
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to update the server\"}]"
+			echo "warning: The player ${player} requested an update and does not have permission to do so" >> ${screenlog}
+		fi
+	fi
 }
-# check for confirm reset string
+# check for confirm reset strings
 function CheckConfirmResetString {
-	if tail -1 "${screenlog}" | grep -q "confirm reset"; then
+	# check for perform reset string
+	if tail -1 "${screenlog}" | grep -q "perform reset"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm reset)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a reset of the server\"}]"
 			echo "info: The player ${player} requested a reset and has permission - server will reset" >> ${screenlog}
 			./reset.sh
+			exit 0
+		else
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to reset the server\"}]"
+			echo "warning: The player ${player} requested a reset and does not have permission to do so" >> ${screenlog}
+		fi
+	fi
+	# check for perform reset now string
+	if tail -1 "${screenlog}" | grep -q "perform reset now"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm reset)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		if cat ops.json | grep -q "${player}"; then
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a reset of the server\"}]"
+			echo "info: The player ${player} requested a reset and has permission - server will reset" >> ${screenlog}
+			./reset.sh --immediately
 			exit 0
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to reset the server\"}]"
