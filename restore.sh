@@ -54,8 +54,8 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# check if immediatly is specified
-if ! [[ ${immediatly} == true ]]; then
+# check if immediately is specified
+if ! [[ ${immediately} == true ]]; then
 	# countdown
 	counter="60"
 	while [ ${counter} -gt 0 ]; do
@@ -85,7 +85,7 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}warning: minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
@@ -106,12 +106,12 @@ if ! [[ -s "${backupdirectory}/cached/restore-${newdaily}.tar.gz" ]]; then
 	echo "${yellow}warning: safety backup failed - proceeding to server restore${nocolor}"
 	echo "warning: safety backup failed - proceeding to server restore" >> ${screenlog}
 else
-	echo "created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
+	echo "info: created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
 	echo "" >> ${backuplog}
 fi
 
 # create arrays with backupdirectorys
-CheckVerbose "scanning backup directory..."
+CheckVerbose "info: scanning backup directory..."
 cd ${backupdirectory}
 backups=($(ls))
 cd hourly
@@ -204,8 +204,8 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	tar -xf world.tar.gz
 	rm world.tar.gz
 	if [ -d "world" ]; then
-		echo "${green}restore successful${nocolor}"
-		echo "${cyan}restarting server with restored backup...${nocolor}"
+		echo "${green}ok: restore successful${nocolor}"
+		echo "${cyan}action: restarting server with restored backup...${nocolor}"
 		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
 		rm -r ${serverdirectory}/old-world
 	else
@@ -216,8 +216,8 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	./start.sh "$@"
 # if user replys no cancel and restart server
 else cd ${serverdirectory}
-	echo "${yellow}canceling backup restore...${nocolor}"
-	echo "${cyan}restarting server...${nocolor}"
+	echo "${yellow}warning: canceling backup restore...${nocolor}"
+	echo "${cyan}action: restarting server...${nocolor}"
 	echo "info: backup restore has been canceled" >> ${screenlog}
 	echo "info: resuming to current live world" >> ${screenlog}
 	./start.sh "$@"
