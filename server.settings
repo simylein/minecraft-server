@@ -28,8 +28,8 @@ oldmonthly=$(date -d "-6 months" +"%B") # defines file format for old monthly ba
 # backup config
 dohourly="true" # backup script will do backups hourly if set to true
 dodaily="true" # backup script will do backups daily if set to true
-doweekly="true" # backup script will do backups weekly if set to true
-domonthly="true" # backup script will do backups monthly if set to true
+doweekly="false" # backup script will do backups weekly if set to true
+domonthly="false" # backup script will do backups monthly if set to true
 
 # backup events
 hours=$(date +"%H")
