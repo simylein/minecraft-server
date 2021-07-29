@@ -100,7 +100,7 @@ fi
 
 # check if every required package is installed
 # declare all packages in an array
-declare -a packages=( "apt" "java" "screen" "date" "tar" "echo" "ping" "ifconfig" "grep" "wget" "cron" "nano" "less" "sed" "pv" "awk" )
+declare -a packages=( "apt" "java" "screen" "date" "tar" "echo" "ping" "grep" "wget" "cron" "nano" "less" "sed" "pv" "awk" )
 # get length of package array
 packageslength=${#packages[@]}
 # use for loop to read all values and indexes
