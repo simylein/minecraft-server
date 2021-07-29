@@ -49,11 +49,11 @@ echo "${date} executing restart script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
-	echo "${yellow}server is not currently running!${nocolor}"
-	echo "${yellow}server not running - starting server now!${nocolor}"
-	echo "server not running - starting server now!" >> ${screenlog}
+	echo "${yellow}warning: server is not currently running!${nocolor}"
+	echo "${cyan}action: server not running - starting server now!${nocolor}"
+	echo "action: server not running - starting server now!" >> ${screenlog}
 	./start.sh
-	exit 1
+	exit 0
 fi
 
 # check if immediately is specified
@@ -87,12 +87,12 @@ done
 
 # force quit server if not stopped
 if screen -list | grep -q "${servername}"; then
-	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
+	echo "${yellow}warning: minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
 	screen -S ${servername} -X quit
 fi
 
 # restart the server
-CheckQuiet "${cyan}restarting server...${nocolor}"
+CheckQuiet "${cyan}action: restarting server...${nocolor}"
 ./start.sh "$@"
 
 # exit with code 0
