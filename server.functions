@@ -300,7 +300,7 @@ function CreateSafetyBackup {
 # check for safety backup string
 function CheckSafetyBackupString {
 	if tail -1 "${screenlog}" | grep -q "perform safety backup"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=safety backup)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform safety backup)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a safety backup of the server\"}]"
 			echo "info: The player ${player} requested a safety backup and has permission - server will perform safety backup" >> ${backuplog}
@@ -315,22 +315,9 @@ function CheckSafetyBackupString {
 }
 # check for confirm restart strings
 function CheckConfirmRestartString {
-	# check for perform restart string
-	if tail -1 "${screenlog}" | grep -q "perform restart"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
-		if cat ops.json | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a restart of the server\"}]"
-			echo "info: The player ${player} requested a restart and has permission - server will restart" >> ${screenlog}
-			./restart.sh
-			exit 0
-		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to restart the server\"}]"
-			echo "warning: The player ${player} requested a restart and does not have permission to do so" >> ${screenlog}
-		fi
-	fi
 	# check for perform restart now string
 	if tail -1 "${screenlog}" | grep -q "perform restart now"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform restart now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a restart of the server\"}]"
 			echo "info: The player ${player} requested a restart and has permission - server will restart" >> ${screenlog}
@@ -341,25 +328,25 @@ function CheckConfirmRestartString {
 			echo "warning: The player ${player} requested a restart and does not have permission to do so" >> ${screenlog}
 		fi
 	fi
+	# check for perform restart string
+	if tail -1 "${screenlog}" | grep -q "perform restart"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		if cat ops.json | grep -q "${player}"; then
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a restart of the server\"}]"
+			echo "info: The player ${player} requested a restart and has permission - server will restart" >> ${screenlog}
+			./restart.sh
+			exit 0
+		else
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to restart the server\"}]"
+			echo "warning: The player ${player} requested a restart and does not have permission to do so" >> ${screenlog}
+		fi
+	fi
 }
 # check for confirm update strings
 function CheckConfirmUpdateString {
-	# check for perform update string
-	if tail -1 "${screenlog}" | grep -q "perform update"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
-		if cat ops.json | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested an update of the server\"}]"
-			echo "info: The player ${player} requested an update and has permission - server will update" >> ${screenlog}
-			./update.sh
-			exit 0
-		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to update the server\"}]"
-			echo "warning: The player ${player} requested an update and does not have permission to do so" >> ${screenlog}
-		fi
-	fi
 	# check for perform update now string
 	if tail -1 "${screenlog}" | grep -q "perform update now"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform update now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested an update of the server\"}]"
 			echo "info: The player ${player} requested an update and has permission - server will update" >> ${screenlog}
@@ -370,29 +357,42 @@ function CheckConfirmUpdateString {
 			echo "warning: The player ${player} requested an update and does not have permission to do so" >> ${screenlog}
 		fi
 	fi
+	# check for perform update string
+	if tail -1 "${screenlog}" | grep -q "perform update"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		if cat ops.json | grep -q "${player}"; then
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested an update of the server\"}]"
+			echo "info: The player ${player} requested an update and has permission - server will update" >> ${screenlog}
+			./update.sh
+			exit 0
+		else
+			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to update the server\"}]"
+			echo "warning: The player ${player} requested an update and does not have permission to do so" >> ${screenlog}
+		fi
+	fi
 }
 # check for confirm reset strings
 function CheckConfirmResetString {
-	# check for perform reset string
-	if tail -1 "${screenlog}" | grep -q "perform reset"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm reset)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+	# check for perform reset now string
+	if tail -1 "${screenlog}" | grep -q "perform reset now"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform reset now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a reset of the server\"}]"
 			echo "info: The player ${player} requested a reset and has permission - server will reset" >> ${screenlog}
-			./reset.sh
+			./reset.sh --immediately
 			exit 0
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to reset the server\"}]"
 			echo "warning: The player ${player} requested a reset and does not have permission to do so" >> ${screenlog}
 		fi
 	fi
-	# check for perform reset now string
-	if tail -1 "${screenlog}" | grep -q "perform reset now"; then
-		player=$(tail -1 screen.log | grep -oP '.*?(?=confirm reset)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+	# check for perform reset string
+	if tail -1 "${screenlog}" | grep -q "perform reset"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=perform reset)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat ops.json | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a reset of the server\"}]"
 			echo "info: The player ${player} requested a reset and has permission - server will reset" >> ${screenlog}
-			./reset.sh --immediately
+			./reset.sh
 			exit 0
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to reset the server\"}]"
