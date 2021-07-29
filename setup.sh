@@ -22,13 +22,13 @@ white="$(tput setaf 7)"
 nocolor="$(tput sgr0)"
 
 # parse script arguments
-immediatly=false
+immediately=false
 quiet=false
 verbose=false
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-i)
-			immediatly=true
+			immediately=true
 		;;
 		-q)
 			quiet=true
@@ -36,8 +36,8 @@ while [[ $# -gt 0 ]]; do
 		-v)
 			verbose=true
 		;;
-		--immediatly)
-			immediatly=true
+		--immediately)
+			immediately=true
 		;;
 		--quiet)
 			quiet=true
