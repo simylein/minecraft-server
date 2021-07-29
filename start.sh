@@ -110,7 +110,7 @@ done
 CheckQuiet "Starting Minecraft server. To view window type screen -r ${servername}."
 CheckQuiet "To minimise the window and let the server run in the background, press Ctrl+A then Ctrl+D"
 echo "action: starting ${servername} server..." >> ${screenlog}
-CheckVerbose "action: starting ${servername} server..."
+CheckVerbose "${cyan}action: starting ${servername} server...${nocolor}"
 
 # main start commmand
 ${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile} -nogui
