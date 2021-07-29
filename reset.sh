@@ -51,17 +51,20 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# countdown
-counter="60"
-while [ ${counter} -gt 0 ]; do
-	if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-		echo "${blue}[Script]${nocolor} server is resetting in ${counter} seconds"
-		screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
-		screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is resetting in ${counter} seconds\"}]$(printf '\r')"
-	fi
-	counter=$((counter-1))
-	sleep 1s
-done
+# check if immediately is specified
+if ! [[ ${immediately} == true ]]; then
+	# countdown
+	counter="60"
+	while [ ${counter} -gt 0 ]; do
+		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+			echo "${blue}[Script]${nocolor} server is resetting in ${counter} seconds"
+			screen -Rd ${servername} -X stuff "gamemode spectator @a$(printf '\r')"
+			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is resetting in ${counter} seconds\"}]$(printf '\r')"
+		fi
+		counter=$((counter-1))
+		sleep 1s
+	done
+fi
 
 # server stop
 echo "stopping server..."
