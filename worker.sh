@@ -54,26 +54,34 @@ if ! screen -list | grep -q "\.${servername}"; then
 fi
 
 # check every second if a player with permission request a task
+linebuffer=$(tail -1 "${screenlog}")
+lastlinebuffer=${linebuffer}
 while true; do
-	# check if safety backup is enabled
-	if [[ ${enablesafetybackupstring} == true ]]; then
-		CheckSafetyBackupString
+	linebuffer=$(tail -1 "${screenlog}")
+	if [[ ! ${linebuffer} == ${lastlinebuffer} ]]; then
+		# check if safety backup is enabled
+		if [[ ${enablesafetybackupstring} == true ]]; then
+			CheckSafetyBackupString
+		fi
+		# check if safety backup is enabled
+		if [[ ${enableconfirmrestartstring} == true ]]; then
+			CheckConfirmRestartString
+		fi
+		# check if safety backup is enabled
+		if [[ ${enableconfirmupdatestring} == true ]]; then
+			CheckConfirmUpdateString
+		fi
+		# check if safety backup is enabled
+		if [[ ${enableconfirmresetstring} == true ]]; then
+			CheckConfirmResetString
+		fi
 	fi
-	# check if safety backup is enabled
-	if [[ ${enableconfirmrestartstring} == true ]]; then
-		CheckConfirmRestartString
-	fi
-	# check if safety backup is enabled
-	if [[ ${enableconfirmupdatestring} == true ]]; then
-		CheckConfirmUpdateString
-	fi
-	# check if safety backup is enabled
-	if [[ ${enableconfirmresetstring} == true ]]; then
-		CheckConfirmResetString
-	fi
+	# store last line of screen log into buffer
+	linebuffer=$(tail -1 "${screenlog}")
 	# exit check if server is shut down
 	if ! screen -list | grep -q "\.${servername}"; then
 		exit 0
 	fi
+	lastlinebuffer=${linebuffer}
 	sleep 1s
 done
