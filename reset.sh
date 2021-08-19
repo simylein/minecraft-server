@@ -41,11 +41,14 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing reset script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "${date} executing reset script" >> ${screenlog}
+echo "action: ${date} executing reset script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
@@ -70,9 +73,9 @@ if ! [[ ${immediately} == true ]]; then
 fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckQuiet "${cyan}action: stopping server...${nocolor}"
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -120,6 +123,9 @@ mkdir world
 # restart the server
 echo "${cyan}restarting server...${nocolor}"
 ./start.sh "$@"
+
+# log to debug if true
+CheckDebug "executed reset script"
 
 # exit with code 0
 exit 0
