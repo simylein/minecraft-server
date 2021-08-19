@@ -41,6 +41,12 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing prerender script"
+
+# parsing script arguments
+ParseScriptArguments "$@"
+
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	echo "${yellow}Server is not currently running!${nocolor}"
@@ -54,7 +60,7 @@ method=("online" "offline")
 select method in "${method[@]}"; do
 	case $method in
 		"online")
-			echo "${magenta}starting online prerenderer...${nocolor}"
+			echo "action ${cyan}starting online prerenderer...${nocolor}"
 
 			# explain to user
 			echo "${blue}I will prerender your minecraft world by teleporting a selected player through it${nocolor}"
@@ -327,6 +333,9 @@ select method in "${method[@]}"; do
 			*) echo "Please choose an option from the list: " ;;
 	esac
 done
+
+# log to debug if true
+CheckDebug "executed prerender script"
 
 # exit with code 0
 exit 0
