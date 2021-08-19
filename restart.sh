@@ -41,11 +41,14 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing restart script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "${date} executing restart script" >> ${screenlog}
+echo "action: ${date} executing restart script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
@@ -71,7 +74,7 @@ if ! [[ ${immediately} == true ]]; then
 fi
 
 # server stop
-CheckQuiet "stopping server..."
+CheckQuiet "${cyan}action: stopping server...${nocolor}"
 PrintToScreen "say stopping server..."
 PrintToScreen "stop"
 
@@ -94,6 +97,9 @@ fi
 # restart the server
 CheckQuiet "${cyan}action: restarting server...${nocolor}"
 ./start.sh "$@"
+
+# log to debug if true
+CheckDebug "executed restart script"
 
 # exit with code 0
 exit 0
