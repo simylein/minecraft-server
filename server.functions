@@ -291,7 +291,7 @@ function CreateSafetyBackup {
 		# terminal output
 		echo "${green}ok: backup successful${nocolor}"
 		# logfile output
-		echo "created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz as a safety backup" >> ${backuplog}
+		echo "ok: created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz as a safety backup" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
 }
