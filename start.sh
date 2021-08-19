@@ -49,6 +49,9 @@ if ! ls ${serverfile}* 1> /dev/null 2>&1; then
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing start script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
@@ -57,7 +60,7 @@ echo "" >> ${screenlog}
 echo "" >> ${screenlog}
 
 # write date to logfile
-echo "${date} executing start script" >> ${screenlog}
+echo "action: ${date} executing start script" >> ${screenlog}
 
 # check if server is already running
 if screen -list | grep -q "\.${servername}"; then
@@ -223,6 +226,9 @@ fi
 
 # user information
 CheckQuiet "If you would like to change to server console - type ${green}screen -r ${servername}${nocolor}"
+
+# log to debug if true
+CheckDebug "executed start script"
 
 # exit with code 0
 exit 0
