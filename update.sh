@@ -41,11 +41,14 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing update script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "${date} executing update script" >> ${screenlog}
+echo "action: ${date} executing update script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
@@ -64,7 +67,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 		echo "${yellow}warning: safety backup failed - proceeding to server update${nocolor}"
 		echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
 	else
-		echo "created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
+		echo "ok: created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
 		echo "" >> ${backuplog}
 	fi
 
@@ -109,7 +112,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	MakeScriptsExecutable
 
 	# restart the server
-	CheckQuiet "${cyan}restarting server...${nocolor}"
+	CheckQuiet "${cyan}action: restarting server...${nocolor}"
 	./start.sh "$@"
 	exit 0
 fi
@@ -129,7 +132,7 @@ if ! [[ ${immediately} == true ]]; then
 fi
 
 # server stop
-CheckQuiet "stopping server..."
+CheckQuiet "${cyan}action: stopping server...${nocolor}"
 PrintToScreen "say stopping server..."
 PrintToScreen "stop"
 
@@ -210,6 +213,9 @@ MakeScriptsExecutable
 # restart the server
 CheckQuiet "${cyan}restarting server...${nocolor}"
 ./start.sh "$@"
+
+# log to debug if true
+CheckDebug "executed update script"
 
 # exit with code 0
 exit 0
