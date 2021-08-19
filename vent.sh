@@ -43,6 +43,9 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing vent script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
@@ -57,7 +60,7 @@ else
 fi
 
 # write date to logfile
-echo "${date} executing self-destruct script" >> ${screenlog}
+echo "action: ${date} executing self-destruct script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
