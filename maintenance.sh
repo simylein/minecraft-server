@@ -41,11 +41,14 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing maintenance script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "${date} executing maintenance script" >> ${screenlog}
+echo "action: ${date} executing maintenance script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
@@ -68,9 +71,9 @@ if ! [[ ${immediately} == true ]]; then
 fi
 
 # server stop
-echo "stopping server..."
-screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-screen -Rd ${servername} -X stuff "stop$(printf '\r')"
+CheckQuiet "${cyan}action: stopping server...${nocolor}"
+PrintToScreen "say stopping server..."
+PrintToScreen "stop"
 
 # check if server stopped
 stopchecks="0"
@@ -105,10 +108,13 @@ if ! [[ -s "${backupdirectory}/cached/maintenance-${newdaily}.tar.gz" ]]; then
 	echo "${yellow}warning: safety backup failed - proceeding to server maintenance${nocolor}"
 	echo "warning: safety backup failed - proceeding to server maintenance" >> ${screenlog}
 else
-	echo "created ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
+	echo "ok: created ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
 	echo "" >> ${backuplog}
 	echo "have fun with maintenance ;^)"
 fi
+
+# log to debug if true
+CheckDebug "executed maintenance script"
 
 # exit with code 0
 exit 0
