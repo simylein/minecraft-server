@@ -41,11 +41,14 @@ else
 	exit 1
 fi
 
+# log to debug if true
+CheckDebug "executing restore script"
+
 # parsing script arguments
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "${date} executing restore script" >> ${screenlog}
+echo "action: ${date} executing restore script" >> ${screenlog}
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
@@ -222,6 +225,9 @@ else cd ${serverdirectory}
 	echo "info: resuming to current live world" >> ${screenlog}
 	./start.sh "$@"
 fi
+
+# log to debug if true
+CheckDebug "executed restore script"
 
 # exit with code 0
 exit 0
