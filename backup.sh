@@ -62,8 +62,8 @@ CheckBackupDirectoryIntegrity
 if [ ${dohourly} = true ]; then
 
 	# write date and execute into logfiles
-	echo "${date} executing backup-hourly script" >> ${screenlog}
-	echo "${date} executing backup-hourly script" >> ${backuplog}
+	echo "action: ${date} executing backup-hourly script" >> ${screenlog}
+	echo "action: ${date} executing backup-hourly script" >> ${backuplog}
 	CheckDebug "executing backup-hourly script"
 	
 	# start milliseconds timer
@@ -151,8 +151,8 @@ fi
 if [ ${hours} -eq ${dailybackuptime} ]; then
 
 	# write date and execute into logfiles
-	echo "${date} executing backup-daily script" >> ${screenlog}
-	echo "${date} executing backup-daily script" >> ${backuplog}
+	echo "action: ${date} executing backup-daily script" >> ${screenlog}
+	echo "action: ${date} executing backup-daily script" >> ${backuplog}
 	CheckDebug "executing backup-daily script"
 
 	# check if daily backups are anabled
@@ -244,8 +244,8 @@ fi
 if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ]; then
 
 	# write date and execute into logfiles
-	echo "${date} executing backup-weekly script" >> ${screenlog}
-	echo "${date} executing backup-weekly script" >> ${backuplog}
+	echo "action: ${date} executing backup-weekly script" >> ${screenlog}
+	echo "action: ${date} executing backup-weekly script" >> ${backuplog}
 	CheckDebug "executing backup-weekly script"
 
 	# check if weekly backups are enabled
@@ -337,8 +337,8 @@ fi
 if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday} ]; then
 
 	# write date and execute into logfiles
-	echo "${date} executing backup-monthly script" >> ${screenlog}
-	echo "${date} executing backup-monthly script" >> ${backuplog}
+	echo "action: ${date} executing backup-monthly script" >> ${screenlog}
+	echo "action: ${date} executing backup-monthly script" >> ${backuplog}
 	CheckDebug "executing backup-monthly script"
 
 	# check if monthly backups are enabled
