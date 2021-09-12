@@ -233,9 +233,13 @@ function FetchServerFileFromMojan {
 
 # download java executable from mojang.com
 PS3="Which server version would you like to install? "
-versions=("1.16.5" "1.16.4" "1.16.3" "1.16.2" "1.16.1")
+versions=("1.17.1" "1.16.5" "1.16.4" "1.16.3")
 select version in "${versions[@]}"; do
 	case ${version} in
+		"1.17.1")
+			FetchServerFileFromMojan "a16d67e5807f57fc4e550299cf20226194497dc2"
+			break
+			;;
 		"1.16.5")
 			FetchServerFileFromMojan "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
 			break
@@ -246,14 +250,6 @@ select version in "${versions[@]}"; do
 		;;
 		"1.16.3")
 			FetchServerFileFromMojan "f02f4473dbf152c23d7d484952121db0b36698cb"
-			break
-		;;
-		"1.16.2")
-			FetchServerFileFromMojan "c5f6fb23c3876461d46ec380421e42b289789530"
-			break
-		;;
-		"1.16.1")
-			FetchServerFileFromMojan "a412fd69db1f81db3f511c1463fd304675244077"
 			break
 		;;
 		*) echo "Please choose an option from the list: ";;
