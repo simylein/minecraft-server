@@ -71,6 +71,10 @@ AwaitServerStop
 # force quit server if not stopped
 ConditionalForceQuit
 
+# output confirmed stop
+PrintToLog "ok" "server successfully stopped!" "${screenlog}"
+CheckQuiet "ok" "server successfully stopped!"
+
 # restart the server
 CheckQuiet "action" "restarting server..."
 ./start.sh "$@"

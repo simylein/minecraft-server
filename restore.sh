@@ -70,7 +70,8 @@ AwaitServerStop
 ConditionalForceQuit
 
 # output confirmed stop
-PrintToTerminal "ok" "server successfully stopped!"
+PrintToLog "ok" "server successfully stopped!" "${screenlog}"
+CheckQuiet "ok" "server successfully stopped!"
 
 # create backup
 CreateCachedBackup "restore"

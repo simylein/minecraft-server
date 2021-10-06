@@ -439,7 +439,7 @@ function PerformCountdown {
 
 # performs a server stop
 function PerformServerStop {
-	CheckQuiet "info" "stopping server..."
+	CheckQuiet "action" "stopping server..."
 	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"stopping server...\"}]"
 	sleep 1s
 	PrintToScreen "stop"

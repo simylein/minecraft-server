@@ -129,10 +129,9 @@ AwaitServerStop
 # force quit server if not stopped
 ConditionalForceQuit
 
-# remove all older safety backups
-if [[ -s "${backupdirectory}/cached/update-"* ]]; then
-	rm "${backupdirectory}/cached/update-"*
-fi
+# output confirmed stop
+PrintToLog "ok" "server successfully stopped!" "${screenlog}"
+CheckQuiet "ok" "server successfully stopped!"
 
 # create backup
 CreateCachedBackup "update"
