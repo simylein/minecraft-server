@@ -56,62 +56,23 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# check if immediately is specified
-if ! [[ ${immediately} == true ]]; then
-	# countdown
-	counter="60"
-	while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-			echo "${blue}[Script]${nocolor} server is going into maintenance in ${counter} seconds"
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is going into maintenance in ${counter} seconds\"}]$(printf '\r')"
-		fi
-		counter=$((counter-1))
-		sleep 1s
-	done
-fi
+# prints countdown to screen
+PerformCountdown "going into maintenance"
 
 # server stop
-CheckQuiet "${cyan}action: stopping server...${nocolor}"
-PrintToScreen "say stopping server..."
-PrintToScreen "stop"
+PerformServerStop
 
-# check if server stopped
-stopchecks="0"
-while [ $stopchecks -lt 30 ]; do
-	if ! screen -list | grep -q "\.${servername}"; then
-		break
-	fi
-stopchecks=$((stopchecks+1))
-sleep 1s
-done
+# awaits server stop
+AwaitServerStop
 
 # force quit server if not stopped
-if screen -list | grep -q "${servername}"; then
-	echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
-	screen -S ${servername} -X quit
-fi
+ConditionalForceQuit
 
 # output confirmed stop
-echo "${green}server successfully stopped!${nocolor}"
-
-# remove all older safety backups
-if [[ -s "${backupdirectory}/cached/maintenance-"* ]]; then
-	rm ${backupdirectory}/cached/maintenance-*
-fi
+PrintToTerminal "ok" "server successfully stopped!"
 
 # create backup
-echo "${blue}backing up...${nocolor}"
-tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz
-
-# check if safety backup exists
-if ! [[ -s "${backupdirectory}/cached/maintenance-${newdaily}.tar.gz" ]]; then
-	echo "${yellow}warning: safety backup failed - proceeding to server maintenance${nocolor}"
-	echo "warning: safety backup failed - proceeding to server maintenance" >> ${screenlog}
-else
-	echo "ok: created ${backupdirectory}/cached/maintenance-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
-	echo "" >> ${backuplog}
-	echo "have fun with maintenance ;^)"
-fi
+CreateCachedBackup "maintenance"
 
 # log to debug if true
 CheckDebug "executed maintenance script"

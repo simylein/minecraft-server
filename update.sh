@@ -48,19 +48,19 @@ CheckDebug "executing update script"
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "action: ${date} executing update script" >> ${screenlog}
+PrintToLog "action" "${date} executing update script" "${screenlog}"
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 
 	# remove all older safety backups
 	if [[ -s "${backupdirectory}/cached/update-"* ]]; then
-		rm ${backupdirectory}/cached/update-*
+		rm "${backupdirectory}/cached/update-"*
 	fi
 
 	# create backup
 	CheckVerbose "${blue}backing up...${nocolor}"
-	tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
+	tar -czf "world.tar.gz" world && mv "${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz"
 
 	# check if safety backup exists
 	if ! [[ -s "${backupdirectory}/cached/update-${newdaily}.tar.gz" ]]; then
@@ -72,7 +72,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 	fi
 
 	# Test internet connectivity and update on success
-	wget --spider --quiet https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
+	wget --spider --quiet "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
 	if [ "$?" != 0 ]; then
 		echo "${yellow}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 		echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
@@ -84,7 +84,7 @@ if ! screen -list | grep -q "\.${servername}"; then
 			CheckVerbose "You are running the newest server version - skipping update"
 			echo "You are running the newest server version - skipping update" >> ${screenlog}
 		else
-			wget -q -O minecraft-server.1.17.1.jar https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
+			wget -q -O "minecraft-server.1.17.1.jar" "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
 			# update serverfile variable in server.settings
 			newserverfile="${serverdirectory}/minecraft-server.1.17.1.jar"
 			# if new serverfile exists remove oldserverfile
@@ -96,8 +96,8 @@ if ! screen -list | grep -q "\.${servername}"; then
 					rm ${serverfile}
 				fi
 			else
-				echo "${yellow}warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
-				echo "Server will startup with old serverfile ${serverfile}"
+				PrintToTerminal "warn" "could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing"
+				PrintToTerminal "info" "server will startup with old serverfile ${serverfile}"
 			fi
 		fi
 	fi
@@ -112,66 +112,33 @@ if ! screen -list | grep -q "\.${servername}"; then
 	MakeScriptsExecutable
 
 	# restart the server
-	CheckQuiet "${cyan}action: restarting server...${nocolor}"
+	CheckQuiet "action" "restarting server..."
 	./start.sh "$@"
 	exit 0
 fi
 
-# check if immediately is specified
-if ! [[ ${immediately} == true ]]; then
-	# countdown
-	counter="60"
-	while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-			CheckQuiet "${blue}[Script]${nocolor} server is updating in ${counter} seconds"
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is updating in ${counter} seconds\"}]$(printf '\r')"
-		fi
-		counter=$((counter-1))
-		sleep 1s
-	done
-fi
+# prints countdown to screen
+PerformCountdown "updating"
 
 # server stop
-CheckQuiet "${cyan}action: stopping server...${nocolor}"
-PrintToScreen "say stopping server..."
-PrintToScreen "stop"
+PerformServerStop
 
-# check if server stopped
-stopchecks="0"
-while [ $stopchecks -lt 30 ]; do
-	if ! screen -list | grep -q "\.${servername}"; then
-		break
-	fi
-	stopchecks=$((stopchecks+1))
-	sleep 1;
-done
+# awaits server stop
+AwaitServerStop
 
 # force quit server if not stopped
-if screen -list | grep -q "${servername}"; then
-		echo "${yellow}minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
-		screen -S ${servername} -X quit
-fi
+ConditionalForceQuit
 
 # remove all older safety backups
 if [[ -s "${backupdirectory}/cached/update-"* ]]; then
-	rm ${backupdirectory}/cached/update-*
+	rm "${backupdirectory}/cached/update-"*
 fi
 
 # create backup
-CheckVerbose "${blue}backing up...${nocolor}"
-tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/update-${newdaily}.tar.gz
-
-# check if safety backup exists
-if ! [[ -s "${backupdirectory}/cached/update-${newdaily}.tar.gz" ]]; then
-	echo "${yellow}warning: safety backup failed - proceeding to server update${nocolor}"
-	echo "warning: safety backup failed - proceeding to server update" >> ${screenlog}
-else
-	echo "created ${backupdirectory}/cached/update-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
-	echo "" >> ${backuplog}
-fi
+CreateCachedBackup "update"
 
 # Test internet connectivity and update on success
-wget --spider --quiet https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
+wget --spider --quiet "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
 if [ "$?" != 0 ]; then
 	echo "${yellow}warning: Unable to connect to Mojang API. Skipping update...${nocolor}"
 	echo "warning: Unable to connect to Mojang API. Skipping update..." >> ${screenlog}
@@ -183,7 +150,7 @@ else
 		CheckVerbose "You are running the newest server version - skipping update"
 		echo "You are running the newest server version - skipping update" >> ${screenlog}
 	else
-		wget -q -O minecraft-server.1.17.1.jar https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
+		wget -q -O "minecraft-server.1.17.1.jar" "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
 		# update serverfile variable in server.settings
 		newserverfile="${serverdirectory}/minecraft-server.1.17.1.jar"
 		# if new serverfile exists remove oldserverfile
@@ -195,8 +162,8 @@ else
 				rm ${serverfile}
 			fi
 		else
-			echo "${yellow}warning: could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing${nocolor}"
-			echo "Server will startup with old serverfile ${serverfile}"
+			PrintToTerminal "warn" "could not remove old serverfile ${serverfile} because new serverfile ${newserverfile} is missing"
+			PrintToTerminal "info" "server will startup with old serverfile ${serverfile}"
 		fi
 	fi
 fi
@@ -211,7 +178,7 @@ DownloadScriptsFromGitHub
 MakeScriptsExecutable
 
 # restart the server
-CheckQuiet "${cyan}restarting server...${nocolor}"
+CheckQuiet "action" "restarting server..."
 ./start.sh "$@"
 
 # log to debug if true

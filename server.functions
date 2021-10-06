@@ -41,26 +41,24 @@ function ParseScriptArguments {
 	done
 }
 
-
 # check if verbose mode is on
 function CheckVerbose {
 	if [[ ${verbose} == true ]]; then
-		return true
+		PrintToTerminal "${1}" "${2}"
 	fi
 }
 # checks if debug mode is on
 function CheckDebug {
 	if [[ ${enabledebug} == true ]]; then
-		return true
+		echo "$(date) ${1}" "debug.log"
 	fi
 }
 # check if quiet mode is on
 function CheckQuiet {
-	if [[ ${quiet} == true ]]; then
-		return true
+	if ! [[ ${quiet} == true ]]; then
+		PrintToTerminal "${1}" "${2}"
 	fi
 }
-
 
 # prints all unpit to terminal
 function PrintToTerminal {
@@ -109,7 +107,6 @@ function PrintToLog {
 	fi
 }
 
-
 # prints success messages to terminal
 function PrintToTerminalBackupSuccess {
 	PrintToTerminal "ok" "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz"
@@ -130,7 +127,6 @@ function PrintToLogBackupSuccess {
 	echo "" >> "${backuplog}"
 }
 
-
 # prints backup already exists to terminal
 function PrintToTerminalBackupAlreadyExists {
 	PrintToTerminal "error" "could not create new ${1}-backup - backup already exists"
@@ -144,7 +140,6 @@ function PrintToLogBackupAlreadyExists {
 	PrintToLog "error" "could not create new ${1}-backup - backup already exists" "${backuplog}"
 	echo "" >> "${backuplog}"
 }
-
 
 # prints disk space warnig to terminal
 function PrintToTerminalDiskSpaceWarning {
@@ -160,7 +155,6 @@ function PrintToLogDiskSpaceWarning {
 	echo "" >> "${backuplog}"
 }
 
-
 # prints not enough disk space to terminal
 function PrintToTerminalNotEnoughDiskSpace {
 	PrintToTerminal "error" "not enough disk-space to perform backup-${1}"
@@ -174,7 +168,6 @@ function PrintToLogNotEnoughDiskSpace {
 	PrintToLog "error" "not enough disk-space to perform backup-${1}" "${backuplog}"
 	echo "" >> "${backuplog}"
 }
-
 
 # prints backup error to backup log
 function PrintToTerminalBackupError {
@@ -193,7 +186,6 @@ function PrintToLogBackupError {
 	PrintToLog "error" "could not backup world" "${backuplog}"
 	echo "" >> "${backuplog}"
 }
-
 
 # creates a Progressbar function
 function ProgressBar {
@@ -244,9 +236,7 @@ function FetchScriptFromGitHub {
 		PrintToTerminal "fatal" "Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)"
 		exit 1
 	else
-		if [[ CheckVerbose ]]; then
-			PrintToTerminal "info" "fetching file: ${1} from branch ${branch} on GitHub..."
-		fi
+		CheckVerbose "info" "fetching file: ${1} from branch ${branch} on GitHub..."
 		wget -q -O "${1}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}"
 fi
 }
@@ -262,9 +252,7 @@ function RemoveScriptsFromServerDirectory {
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		if [[ CheckVerbose ]]; then
-			PrintToTerminal "info" "removing script ${scripts[${i}-1]}"
-		fi
+		CheckVerbose "info" "removing script ${scripts[${i}-1]}"
 		rm "${scripts[${i}-1]}"
 	done
 }
@@ -293,42 +281,39 @@ function MakeScriptsExecutable {
 	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
 	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		if [[ CheckVerbose ]]; then
-			PrintToTerminal "info" "setting script ${scripts[${i}-1]} executable"
-		fi
+		CheckVerbose "info" "setting script ${scripts[${i}-1]} executable"
 		chmod +x ${scripts[${i}-1]}
 	done
 }
 
-# function for creating a safety backup
-function CreateSafetyBackup {
-	# remove all older safety backups
-	if [[ -s "${backupdirectory}/cached/safety-"* ]]; then
-		rm "${backupdirectory}/cached/safety-"*
+# function for creating a cached backup
+function CreateCachedBackup {
+	# remove all older cached backups
+	if [[ -s "${backupdirectory}/cached/${1}-"* ]]; then
+		rm "${backupdirectory}/cached/${1}-"*
 	fi
 	# create backup
-	PrintToTerminal "action" "creating safety backup..."
-	tar -czf "world.tar.gz" "world" && mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz"
+	PrintToTerminal "action" "creating ${1} backup..."
+	tar -czf "world.tar.gz" "world" && mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz"
 	# check if safety backup exists
-	if ! [[ -s "${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz" ]]; then
+	if ! [[ -s "${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz" ]]; then
 		# terminal output
-		PrintToTerminal "warn" "safety backup failed"
+		PrintToTerminal "warn" "${1} backup failed"
 		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
+		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
 		# logfile output
-		PrintToLog "warn" "safety backup failed" "${backuplog}"
-		echo "" >> ${backuplog}
+		PrintToLog "warn" "${1} backup failed" "${backuplog}"
+		echo "" >> "${backuplog}"
 	else
 		# terminal output
-		PrintToTerminal "ok" "safety backup successful"
+		PrintToTerminal "ok" "${1} backup successful"
 		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
+		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
 		# logfile output
-		PrintToLog "ok" "created ${backupdirectory}/cached/safety-${newdaily}-${newhourly}.tar.gz as a safety backup" "${backuplog}"
+		PrintToLog "ok" "created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz as a ${1} backup" "${backuplog}"
 		echo "" >> "${backuplog}"
 	fi
 }
-
 
 # check for safety backup string
 function CheckSafetyBackupString {
@@ -339,7 +324,7 @@ function CheckSafetyBackupString {
 			PrintToLog "info" "The player ${player} requested a safety backup and has permission - server will perform safety backup" "${backuplog}"
 			echo "" >> "${backuplog}"
 			# run safety backup
-			CreateSafetyBackup
+			CreateCachedBackup "safety"
 			# spam protection
 			sleep 20s
 		else
@@ -415,7 +400,7 @@ function CheckConfirmResetString {
 		if cat "ops.json" | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a reset of the server\"}]"
 			PrintToLog "info" "the player ${player} requested a reset and has permission - server will reset" "${screenlog}"
-			./reset.sh --immediately
+			./reset.sh --quiet --now
 			exit 0
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to reset the server\"}]"
@@ -428,7 +413,7 @@ function CheckConfirmResetString {
 		if cat "ops.json" | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You successfully requested a reset of the server\"}]"
 			PrintToLog "info" "the player ${player} requested a reset and has permission - server will reset" "${screenlog}"
-			./reset.sh
+			./reset.sh --quiet
 			exit 0
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"You do not have permissions to reset the server\"}]"
@@ -437,6 +422,48 @@ function CheckConfirmResetString {
 	fi
 }
 
+# performs countdown
+function PerformCountdown {
+	if ! [[ ${now} == true ]]; then
+		counter="60"
+		while [ ${counter} -gt 0 ]; do
+			if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
+				CheckQuiet "info" "server is ${1} in ${counter} seconds"
+				PrintToScreen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is ${1} in ${counter} seconds\"}]"
+			fi
+			counter=$((counter-1))
+			sleep 1s
+		done
+	fi
+}
+
+# performs a server stop
+function PerformServerStop {
+	CheckQuiet "info" "stopping server..."
+	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"stopping server...\"}]"
+	sleep 1s
+	PrintToScreen "stop"
+}
+
+# awaits server stop
+function AwaitServerStop {
+	stopchecks="0"
+	while [ $stopchecks -lt 30 ]; do
+		if ! screen -list | grep -q "\.${servername}"; then
+			break
+		fi
+		stopchecks=$((stopchecks+1))
+		sleep 1;
+	done
+}
+# conditional force quit
+function ConditionalForceQuit {
+	if screen -list | grep -q "${servername}"; then
+		PrintToTerminal "warn" "${servername} server still hasn't closed after 30 seconds, closing screen manually..."
+		PrintToLog "warn" "${servername} server still hasn't closed after 30 seconds, closing screen manually..." "${screenlog}"
+		screen -S "${servername}" -X quit
+	fi
+}
 
 # prints game over as pixel art on terminal
 function PrintGameOver {

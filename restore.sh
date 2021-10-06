@@ -57,64 +57,26 @@ if ! screen -list | grep -q "\.${servername}"; then
 	exit 1
 fi
 
-# check if immediately is specified
-if ! [[ ${immediately} == true ]]; then
-	# countdown
-	counter="60"
-	while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-			CheckQuiet "${blue}[Script]${nocolor} server is restoring a backup in ${counter} seconds"
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is restoring a backup in ${counter} seconds\"}]$(printf '\r')"
-		fi
-		counter=$((counter-1))
-		sleep 1s
-	done
-fi
+# prints countdown to screen
+PerformCountdown "restoring a backup"
 
 # server stop
-CheckQuiet "stopping server..."
-PrintToScreen "say stopping server..."
-PrintToScreen "stop"
+PerformServerStop
 
-# check if server stopped
-stopchecks="0"
-while [ $stopchecks -lt 30 ]; do
-	if ! screen -list | grep -q "\.${servername}"; then
-		break
-	fi
-	stopchecks=$((stopchecks+1))
-	sleep 1;
-done
+# awaits server stop
+AwaitServerStop
 
 # force quit server if not stopped
-if screen -list | grep -q "${servername}"; then
-	echo "${yellow}warning: minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
-	screen -S ${servername} -X quit
-fi
+ConditionalForceQuit
 
 # output confirmed stop
-echo "${green}server successfully stopped!${nocolor}"
-
-# remove all older safety backups
-if [[ -s "${backupdirectory}/cached/restore-"* ]]; then
-	rm ${backupdirectory}/cached/restore-*
-fi
+PrintToTerminal "ok" "server successfully stopped!"
 
 # create backup
-echo "${blue}backing up...${nocolor}"
-tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/restore-${newdaily}.tar.gz
-
-# check if safety backup exists
-if ! [[ -s "${backupdirectory}/cached/restore-${newdaily}.tar.gz" ]]; then
-	echo "${yellow}warning: safety backup failed - proceeding to server restore${nocolor}"
-	echo "warning: safety backup failed - proceeding to server restore" >> ${screenlog}
-else
-	echo "info: created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
-	echo "" >> ${backuplog}
-fi
+CreateCachedBackup "restore"
 
 # create arrays with backupdirectorys
-CheckVerbose "info: scanning backup directory..."
+CheckVerbose "info" "scanning backup directory..."
 cd ${backupdirectory}
 backups=($(ls))
 cd hourly
@@ -199,30 +161,30 @@ read -p "Continue? [Y/N]: "
 
 # if user replys yes perform restore
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
-	cd ${serverdirectory}
+	cd "${serverdirectory}"
 	echo "${cyan}restoring backup...${nocolor}"
-	mv ${serverdirectory}/world ${serverdirectory}/old-world
-	cp ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
-	mv ${backup} world.tar.gz
-	tar -xf world.tar.gz
-	rm world.tar.gz
+	mv "${serverdirectory}/world" "${serverdirectory}/old-world"
+	cp "${backupdirectory}/${dailyhourlyweeklymonthly}/${backup}" "${serverdirectory}"
+	mv "${backup}" "world.tar.gz"
+	tar -xf "world.tar.gz"
+	rm "world.tar.gz"
 	if [ -d "world" ]; then
 		echo "${green}ok: restore successful${nocolor}"
 		echo "${cyan}action: restarting server with restored backup...${nocolor}"
 		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
-		rm -r ${serverdirectory}/old-world
+		rm -r "${serverdirectory}/old-world"
 	else
 		echo "${red}fatal: something went wrong - could not restore backup${nocolor}"
 		echo "fatal: something went wrong - could not restore backup" >> ${screenlog}
-		mv ${serverdirectory}/old-world ${serverdirectory}/world
+		mv "${serverdirectory}/old-world" "${serverdirectory}/world"
 	fi
 	./start.sh "$@"
 # if user replys no cancel and restart server
 else cd ${serverdirectory}
-	echo "${yellow}warning: canceling backup restore...${nocolor}"
-	echo "${cyan}action: restarting server...${nocolor}"
-	echo "info: backup restore has been canceled" >> ${screenlog}
-	echo "info: resuming to current live world" >> ${screenlog}
+	PrintToTerminal "warn" "canceling backup restore..."
+	PrintToTerminal "action" "restarting server..."
+	PrintToLog "info" "backup restore has been canceled" "${screenlog}"
+	PrintToLog "info" "resuming to current live world" "${screenlog}"
 	./start.sh "$@"
 fi
 

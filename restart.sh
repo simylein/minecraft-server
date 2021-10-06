@@ -48,54 +48,31 @@ CheckDebug "executing restart script"
 ParseScriptArguments "$@"
 
 # write date to logfile
-echo "action: ${date} executing restart script" >> ${screenlog}
+PrintToLog "action" "${date} executing restart script" "${screenlog}"
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
-	echo "${yellow}warning: server is not currently running!${nocolor}"
-	echo "${cyan}action: server not running - starting server now!${nocolor}"
-	echo "action: server not running - starting server now!" >> ${screenlog}
+	PrintToTerminal "warn" "server is not currently running!"
+	PrintToTerminal "action" "server not running - starting server now!"
+	PrintToLog "action" "server not running - starting server now!" "${screenlog}"
 	./start.sh
 	exit 0
 fi
 
-# check if immediately is specified
-if ! [[ ${immediately} == true ]]; then
-	# countdown
-	counter="60"
-	while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-			CheckQuiet "${blue}[Script]${nocolor} server is restarting in ${counter} seconds"
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is restarting in ${counter} seconds\"}]$(printf '\r')"
-		fi
-		counter=$((counter-1))
-		sleep 1s
-	done
-fi
+# prints countdown to screen
+PerformCountdown "restarting"
 
 # server stop
-CheckQuiet "${cyan}action: stopping server...${nocolor}"
-PrintToScreen "say stopping server..."
-PrintToScreen "stop"
+PerformServerStop
 
-# check if server stopped
-stopchecks="0"
-while [ $stopchecks -lt 30 ]; do
-	if ! screen -list | grep -q "\.${servername}"; then
-		break
-	fi
-	stopchecks=$((stopchecks+1))
-	sleep 1;
-done
+# awaits server stop
+AwaitServerStop
 
 # force quit server if not stopped
-if screen -list | grep -q "${servername}"; then
-	echo "${yellow}warning: minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
-	screen -S ${servername} -X quit
-fi
+ConditionalForceQuit
 
 # restart the server
-CheckQuiet "${cyan}action: restarting server...${nocolor}"
+CheckQuiet "action" "restarting server..."
 ./start.sh "$@"
 
 # log to debug if true
