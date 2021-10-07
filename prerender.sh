@@ -177,7 +177,7 @@ select method in "${method[@]}"; do
 
 			# kick player with finished message
 			PrintToScreen "kick ${playername} pre-rendering of your world has finished"
-
+			break
 		;;
 		"offline")
 			PrintToTerminal "action" "starting offline pre-renderer..."
@@ -274,8 +274,8 @@ select method in "${method[@]}"; do
 			PrintToScreen "setworldspawn 0 ~ 0"
 
 			# command line info
-			PrintToTerminal "ok" "prerendering of your world has finished"
-
+			PrintToTerminal "ok" "pre-rendering of your world has finished"
+			break
 		;;
 			*) echo "please choose an option from the list: " ;;
 	esac
