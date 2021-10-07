@@ -219,7 +219,7 @@ function CheckBackupDirectoryIntegrity {
 		if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
 			PrintToLog "warn" "the backup-directory ${backupcategories[${i}-1]} is missing" "${backuplog}"
 			PrintToLog "info" "creating ${backupdirectory}/${backupcategories[${i}-1]}" "${backuplog}"
-			echo "" >> ${backuplog}
+			echo "" >> "${backuplog}"
 			PrintToTerminal "warn" "the backup-directory ${backupcategories[${i}-1]} is missing"
 			PrintToTerminal "info" "creating ${backupdirectory}/${backupcategories[${i}-1]}"
 			cd ${backupdirectory}
@@ -300,7 +300,9 @@ function CreateCachedBackup {
 		# terminal output
 		PrintToTerminal "warn" "${1} backup failed"
 		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
+		if ! screen -list | grep -q "\.${servername}"; then
+			PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
+		fi
 		# logfile output
 		PrintToLog "warn" "${1} backup failed" "${backuplog}"
 		echo "" >> "${backuplog}"
@@ -308,7 +310,9 @@ function CreateCachedBackup {
 		# terminal output
 		PrintToTerminal "ok" "${1} backup successful"
 		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
+		if ! screen -list | grep -q "\.${servername}"; then
+			PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
+		fi
 		# logfile output
 		PrintToLog "ok" "created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz as a ${1} backup" "${backuplog}"
 		echo "" >> "${backuplog}"

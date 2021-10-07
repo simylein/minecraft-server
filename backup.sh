@@ -21,14 +21,14 @@ fi
 if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
-	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
+	echo "$(date) fatal: server.functions is missing" >> "fatalerror.log"
 	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.properties file with error checking
 if ! [[ -s "server.properties" ]]; then
-	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
+	echo "$(date) fatal: server.properties is missing" >> "fatalerror.log"
 	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
 	exit 1
 fi
@@ -37,7 +37,7 @@ fi
 if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
-	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
+	echo "$(date) fatal: server.settings is missing" >> "fatalerror.log"
 	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
 	exit 1
 fi
@@ -46,7 +46,7 @@ fi
 if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
-	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
+	echo "$(date) fatal: serverdirectory is missing" >> "fatalerror.log"
 	echo "${red}fatal: serverdirectory is missing${nocolor}"
 	exit 1
 fi
@@ -62,8 +62,8 @@ CheckBackupDirectoryIntegrity
 if [ ${dohourly} = true ]; then
 
 	# write date and execute into logfiles
-	echo "action: ${date} executing backup-hourly script" >> ${screenlog}
-	echo "action: ${date} executing backup-hourly script" >> ${backuplog}
+	PrintToLog "action" "${date} executing backup-hourly script" "${screenlog}"
+	PrintToLog "action" "${date} executing backup-hourly script" "${backuplog}"
 	CheckDebug "executing backup-hourly script"
 	
 	# start milliseconds timer
@@ -71,10 +71,10 @@ if [ ${dohourly} = true ]; then
 
 	# checks for the existence of a screen terminal
 	if ! screen -list | grep -q "\.${servername}"; then
-		echo "${yellow}server is not currently running!${nocolor}"
-		echo "info: server is not currently running!" >> ${screenlog}
-		echo "info: server is not currently running!" >> ${backuplog}
-		echo "" >> ${backuplog}
+		PrintToTerminal "warn" "server is not currently running!"
+		PrintToLog "info" "server is not currently running!" "${screenlog}"
+		PrintToLog "info" "server is not currently running!" "${backuplog}"
+		echo "" >> "${backuplog}"
 		exit 1
 	fi
 
@@ -99,15 +99,25 @@ if [ ${dohourly} = true ]; then
 	# check if there is no backup from the current hour
 	if ! [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
 		if [[ -s "world.tar.gz" ]]; then
-			rm world.tar.gz
+			rm "world.tar.gz"
 		fi
+		# disable auto save
 		PrintToScreen "save-off"
-		tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz
+		# run backup with compression
+		cp -r "world" "tmp"
+		tar -czf "world.tar.gz" "tmp"
+		# check for tar errors
+		if [ "$?" != 0 ]; then
+			CheckDebug "backup script reports tar error while performing backup-hourly"
+		fi
+		mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz"
+		rm -r "tmp"
+		# enable auto save
 		PrintToScreen "save-on"
 	else
+		PrintToTerminalBackupAlreadyExists "hourly"
 		PrintToScreenBackupAlreadyExists "${newhourly}" "${oldhourly}"
 		PrintToLogBackupAlreadyExists "hourly"
-		PrintToTerminalBackupAlreadyExists "hourly"
 		CheckDebug "backup script reports backup already exists while performing backup-hourly"
 		exit 1
 	fi
@@ -116,7 +126,7 @@ if [ ${dohourly} = true ]; then
 	if [[ -s "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz" ]]; then
 		# check if an old backup exists an remove it
 		if [[ -s "${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz" ]]; then
-			rm ${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz
+			rm "${backupdirectory}/hourly/${servername}-${oldhourly}.tar.gz"
 		fi
 		# stop milliseconds timer
 		after=$(date +%s%3N)
@@ -141,9 +151,9 @@ if [ ${dohourly} = true ]; then
 
 else
 	# write to logfiles that it's disabled
-	CheckDebug "info: backup-hourly is disabled"
-	echo "info: backup-hourly is disabled" >> ${backuplog}
-	echo "" >> ${backuplog}
+	CheckDebug "backup-hourly is disabled"
+	PrintToLog "info" "backup-hourly is disabled" "${backuplog}"
+	echo "" >> "${backuplog}"
 fi
 
 
@@ -151,8 +161,8 @@ fi
 if [ ${hours} -eq ${dailybackuptime} ]; then
 
 	# write date and execute into logfiles
-	echo "action: ${date} executing backup-daily script" >> ${screenlog}
-	echo "action: ${date} executing backup-daily script" >> ${backuplog}
+	PrintToLog "action" "${date} executing backup-daily script" "${screenlog}"
+	PrintToLog "action" "${date} executing backup-daily script" "${backuplog}"
 	CheckDebug "executing backup-daily script"
 
 	# check if daily backups are anabled
@@ -163,10 +173,10 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
-			echo "${yellow}server is not currently running!${nocolor}"
-			echo "info: server is not currently running!" >> ${screenlog}
-			echo "info: server is not currently running!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToTerminal "warn" "server is not currently running!"
+			PrintToLog "info" "server is not currently running!" "${screenlog}"
+			PrintToLog "info" "server is not currently running!" "${backuplog}"
+			echo "" >> "${backuplog}"
 			exit 1
 		fi
 
@@ -191,15 +201,25 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 		# check if there is no backup from the current day
 		if ! [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
 			if [[ -s "world.tar.gz" ]]; then
-				rm world.tar.gz
+				rm "world.tar.gz"
 			fi
+			# disable auto save
 			PrintToScreen "save-off"
-			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/daily/${servername}-${newdaily}.tar.gz
+			# run backup with compression
+			cp -r "world" "tmp"
+			tar -czf "world.tar.gz" "tmp"
+			# check for tar errors
+			if [ "$?" != 0 ]; then
+				CheckDebug "backup script reports tar error while performing backup-daily"
+			fi
+			mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz"
+			rm -r "tmp"
+			# enable auto save
 			PrintToScreen "save-on"
 		else
+			PrintToTerminalBackupAlreadyExists "daily"
 			PrintToScreenBackupAlreadyExists "${newdaily}" "${olddaily}"
 			PrintToLogBackupAlreadyExists "daily"
-			PrintToTerminalBackupAlreadyExists "daily"
 			CheckDebug "backup script reports backup already exists while performing backup-daily"
 			exit 1
 		fi
@@ -208,7 +228,7 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 		if [[ -s "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz" ]]; then
 			# check if an old backup exists an remove it
 			if [[ -s "${backupdirectory}/daily/${servername}-${olddaily}.tar.gz" ]]; then
-				rm ${backupdirectory}/daily/${servername}-${olddaily}.tar.gz
+				rm "${backupdirectory}/daily/${servername}-${olddaily}.tar.gz"
 			fi
 			# stop milliseconds timer
 			after=$(date +%s%3N)
@@ -233,9 +253,9 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 
 	else
 		# write to logfiles that it's disabled
-		CheckDebug "info: backup-daily is disabled"
-		echo "info: backup-daily is disabled" >> ${backuplog}
-		echo "" >> ${backuplog}
+		CheckDebug "backup-daily is disabled"
+		PrintToLog "info" "backup-daily is disabled" "${backuplog}"
+		echo "" >> "${backuplog}"
 	fi
 fi
 
@@ -244,8 +264,8 @@ fi
 if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ]; then
 
 	# write date and execute into logfiles
-	echo "action: ${date} executing backup-weekly script" >> ${screenlog}
-	echo "action: ${date} executing backup-weekly script" >> ${backuplog}
+	PrintToLog "action" "${date} executing backup-weekly script" "${screenlog}"
+	PrintToLog "action" "${date} executing backup-weekly script" "${backuplog}"
 	CheckDebug "executing backup-weekly script"
 
 	# check if weekly backups are enabled
@@ -256,10 +276,10 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
-			echo "${yellow}server is not currently running!${nocolor}"
-			echo "info: server is not currently running!" >> ${screenlog}
-			echo "info: server is not currently running!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToTerminal "warn" "server is not currently running!"
+			PrintToLog "info" "server is not currently running!" "${screenlog}"
+			PrintToLog "info" "server is not currently running!" "${backuplog}"
+			echo "" >> "${backuplog}"
 			exit 1
 		fi
 
@@ -284,15 +304,25 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 		# check if there is no backup from the current week
 		if ! [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
 			if [[ -s "world.tar.gz" ]]; then
-				rm world.tar.gz
+				rm "world.tar.gz"
 			fi
+			# disable auto save
 			PrintToScreen "save-off"
-			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz
+			# run backup with compression
+			cp -r "world" "tmp"
+			tar -czf "world.tar.gz" "tmp"
+			# check for tar errors
+			if [ "$?" != 0 ]; then
+				CheckDebug "backup script reports tar error while performing backup-weekly"
+			fi
+			mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz"
+			rm -r "tmp"
+			# enable auto save
 			PrintToScreen "save-on"
 		else
+			PrintToTerminalBackupAlreadyExists "weekly"
 			PrintToScreenBackupAlreadyExists "${newweekly}" "${oldweekly}"
 			PrintToLogBackupAlreadyExists "weekly"
-			PrintToTerminalBackupAlreadyExists "weekly"
 			CheckDebug "backup script reports backup already exists while performing backup-weekly"
 			exit 1
 		fi
@@ -301,7 +331,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 		if [[ -s "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz" ]]; then
 			# check if an old backup exists an remove it
 			if [[ -s "${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz" ]]; then
-				rm ${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz
+				rm "${backupdirectory}/weekly/${servername}-${oldweekly}.tar.gz"
 			fi
 			# stop milliseconds timer
 			after=$(date +%s%3N)
@@ -326,9 +356,9 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 
 	else
 		# write to logfiles that it's disabled
-		CheckDebug "info: backup-weekly is disabled"
-		echo "info: backup-weekly is disabled" >> ${backuplog}
-		echo "" >> ${backuplog}
+		CheckDebug "backup-weekly is disabled"
+		PrintToLog "info" "backup-weekly is disabled" "${backuplog}"
+		echo "" >> "${backuplog}"
 	fi
 fi
 
@@ -337,8 +367,8 @@ fi
 if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday} ]; then
 
 	# write date and execute into logfiles
-	echo "action: ${date} executing backup-monthly script" >> ${screenlog}
-	echo "action: ${date} executing backup-monthly script" >> ${backuplog}
+	PrintToLog "action" "${date} executing backup-monthly script" "${screenlog}"
+	PrintToLog "action" "${date} executing backup-monthly script" "${backuplog}"
 	CheckDebug "executing backup-monthly script"
 
 	# check if monthly backups are enabled
@@ -349,10 +379,10 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 
 		# checks for the existence of a screen terminal
 		if ! screen -list | grep -q "\.${servername}"; then
-			echo "${yellow}server is not currently running!${nocolor}"
-			echo "info: server is not currently running!" >> ${screenlog}
-			echo "info: server is not currently running!" >> ${backuplog}
-			echo "" >> ${backuplog}
+			PrintToTerminal "warn" "server is not currently running!"
+			PrintToLog "info" "server is not currently running!" "${screenlog}"
+			PrintToLog "info" "server is not currently running!" "${backuplog}"
+			echo "" >> "${backuplog}"
 			exit 1
 		fi
 
@@ -377,15 +407,25 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 		# check if there is no backup from the current month
 		if ! [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
 			if [[ -s "world.tar.gz" ]]; then
-				rm world.tar.gz
+				rm "world.tar.gz"
 			fi
+			# disable auto save
 			PrintToScreen "save-off"
-			tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz
+			# run backup with compression
+			cp -r "world" "tmp"
+			tar -czf "world.tar.gz" "tmp"
+			# check for tar errors
+			if [ "$?" != 0 ]; then
+				CheckDebug "backup script reports tar error while performing backup-monthly"
+			fi
+			mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz"
+			rm -r "tmp"
+			# enable auto save
 			PrintToScreen "save-on"
 		else
+			PrintToTerminalBackupAlreadyExists "monthly"
 			PrintToScreenBackupAlreadyExists "${newmonthly}" "${oldmonthly}"
 			PrintToLogBackupAlreadyExists "monthly"
-			PrintToTerminalBackupAlreadyExists "monthly"
 			CheckDebug "backup script reports backup already exists while performing backup-monthly"
 			exit 1
 		fi
@@ -394,7 +434,7 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 		if [[ -s "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz" ]]; then
 			# check if an old backup exists an remove it
 			if [[ -s "${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz" ]]; then
-				rm ${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz
+				rm "${backupdirectory}/monthly/${servername}-${oldmonthly}.tar.gz"
 			fi
 			# stop milliseconds timer
 			after=$(date +%s%3N)
@@ -419,9 +459,9 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 
 	else
 		# write to logfiles that it's disabled
-		CheckDebug "info: backup-monthly is disabled"
-		echo "info: backup-monthly is disabled" >> ${backuplog}
-		echo "" >> ${backuplog}
+		CheckDebug "backup-monthly is disabled"
+		PrintToLog "info" "backup-monthly is disabled" "${backuplog}"
+		echo "" >> "${backuplog}"
 	fi
 fi
 

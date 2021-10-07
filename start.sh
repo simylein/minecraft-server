@@ -111,7 +111,7 @@ done
 
 # user information
 CheckQuiet "info" "starting minecraft server. to view window type screen -r ${servername}."
-CheckQuiet "info" "To minimise the window and let the server run in the background, press ctrl+a then ctrl+d"
+CheckQuiet "info" "to minimise the window and let the server run in the background, press ctrl+a then ctrl+d"
 PrintToLog "action" "starting ${servername} server..." "${screenlog}"
 CheckVerbose "action" "starting ${servername} server..."
 
@@ -149,7 +149,7 @@ count="0"
 counter="0"
 startupchecks="0"
 while [ ${startupchecks} -lt 120 ]; do
-	if tail "${screenlog}" | grep -q "Query running on"; then
+	if tail "${screenlog}" | grep -q "Thread Query Listener started"; then
 		PrintToLog "ok" "server startup successful - query up and running" "${screenlog}"
 		CheckQuiet "ok" "server startup successful - query up and running"
 		break
@@ -195,7 +195,7 @@ while [ ${startupchecks} -lt 120 ]; do
 done
 
 # check if screenlog does not contain startup confirmation
-if ! tail "${screenlog}" | grep -q "Query running on"; then
+if ! tail "${screenlog}" | grep -q "Thread Query Listener started"; then
 	PrintToTerminal "warn" "server startup unsuccessful - perhaps query is disabled"
 	PrintToLog "warn" "server startup unsuccessful - perhaps query is disabled" "${screenlog}"
 fi
@@ -225,7 +225,7 @@ if [[ "${changetoconsole}" == true ]]; then
 fi
 
 # user information
-CheckQuiet "info" "if you would like to change to server console - type ${green}screen -r ${servername}"
+CheckQuiet "info" "if you would like to change to server console - type screen -r ${servername}"
 
 # log to debug if true
 CheckDebug "executed start script"
