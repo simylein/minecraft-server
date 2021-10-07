@@ -262,11 +262,11 @@ select method in "${method[@]}"; do
 					# progress counter
 					ProgressBar "${blue}[Script]${nocolor} Progress: [${progress}/${totalamount}]" "${progress}" "${totalamount}"
 					# stop server
-					./stop --quiet --now
+					./stop.sh --quiet --now
 					# setworldspawn to x y z
 					PrintToScreen "setworldspawn ${x} ~ ${z}"
 					# start server
-					./start --quiet
+					./start.sh --quiet
 				done
 			done
 
