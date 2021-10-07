@@ -248,7 +248,7 @@ select method in "${method[@]}"; do
 			fi
 
 			# prerender start
-			PrintToterminal "info" "pre-rendering started"
+			PrintToTerminal "info" "pre-rendering started"
 			sleep 2s
 
 			# teleport script with progress
@@ -261,10 +261,10 @@ select method in "${method[@]}"; do
 					let "progress=counting"
 					# progress counter
 					ProgressBar "${blue}[Script]${nocolor} Progress: [${progress}/${totalamount}]" "${progress}" "${totalamount}"
-					# stop server
-					./stop.sh --quiet --now
 					# setworldspawn to x y z
 					PrintToScreen "setworldspawn ${x} ~ ${z}"
+					# stop server
+					./stop.sh --quiet --now
 					# start server
 					./start.sh --quiet
 				done
