@@ -83,7 +83,9 @@ function PrintToTerminal {
 }
 # prints all input to screen
 function PrintToScreen {
-	screen -Rd ${servername} -X stuff "${1}$(printf '\r')"
+	if screen -list | grep -q "\.${servername}"; then
+		screen -Rd "${servername}" -X stuff "${1}$(printf '\r')"
+	fi
 }
 # prints all input to log
 function PrintToLog {
@@ -300,9 +302,7 @@ function CreateCachedBackup {
 		# terminal output
 		PrintToTerminal "warn" "${1} backup failed"
 		# ingame output
-		if ! screen -list | grep -q "\.${servername}"; then
-			PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
-		fi
+		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
 		# logfile output
 		PrintToLog "warn" "${1} backup failed" "${backuplog}"
 		echo "" >> "${backuplog}"
@@ -310,9 +310,7 @@ function CreateCachedBackup {
 		# terminal output
 		PrintToTerminal "ok" "${1} backup successful"
 		# ingame output
-		if ! screen -list | grep -q "\.${servername}"; then
-			PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
-		fi
+		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
 		# logfile output
 		PrintToLog "ok" "created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz as a ${1} backup" "${backuplog}"
 		echo "" >> "${backuplog}"
