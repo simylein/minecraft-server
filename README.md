@@ -2,7 +2,7 @@ MinecraftServer
 ===============
 Scripts for a Minecraft Server on Linux Debian using screen.
 
-This tutorial contains important steps if you would like to host a minecraft server from the command line. 
+This tutorial contains important steps if you would like to host a minecraft server from the command line.
 ## software
 In order for the Server to run we will need to install some packages: (please note: some of them could be installed already) <br>
 This command installs all packages you will need to run your server.
@@ -11,16 +11,16 @@ sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreut
 ```
 ## setup
 Then, you can download and execute the setup script. <br>
-This command downloads, makes exectable and executes the setup script. 
+This command downloads, makes executable and executes the setup script. 
 ```
 wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh && chmod +x setup.sh && ./setup.sh
 ```
-The Script will ask you some Questions. Please answer them in order for the Server to work. If you do not know what you like right now you can edit all answers later in the server.* files and going with the prefilled answer works for most people. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups. 
+The Script will ask you some Questions. Please answer them in order for the Server to work. If you do not know what you like right now you can edit all answers later in the server.* files and going with the pre-filled answer works for most people. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups.
 ## serverstart
 Start your Server for the first time: `./start.sh`
 
 ## screen
-Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal.
+Screen is an amazing command line tool that creates a "virtual" terminal inside your terminal.
 
 You can view all your active screens by typing: `screen -list`
 <br>
@@ -43,8 +43,8 @@ I will explain some of them to you.
 `tp ${playername} ${x} ${y} ${z}` teleporting a player to cords. <br>
 `tp ${playername} ${playername}` teleporting a player to another player.
 
-Important: If you do these commands ingame you will need to put a `/` before each command. <br>
-In the screen terminal you don't need a `/` before your command. 
+Important: If you do these commands in-game you will need to put a `/` before each command. <br>
+In the screen terminal you don't need a `/` before your command.
 ## server.settings
 This is your file that holds the variables you have chosen with the setup script. <br>
 If you know what your are doing feel free to edit it to suit your needs.
@@ -56,7 +56,7 @@ It looks like this: (there will be alot of variables after setup.sh)
 #!/bin/bash
 # minecraft server settings
 
-# This file stores all the variables for the server. 
+# This file stores all the variables for the server.
 # If you know what you are doing, feel free to tinker with them ;^)
 
 # command line colours
@@ -72,25 +72,25 @@ nocolor="$(tput sgr0)"
 ...
 ```
 ## server.properties
-If you would like to costumize your server further have a look at your server.properties file. 
+If you would like to costomize your server further have a look at your server.properties file. 
 ```
 nano server.properties
 ```
 Important settings are:
 
-`max-players=`          (limuts the maximumg amount of players on the server at the same time) <br>
+`max-players=`          (limits the maximum amount of players on the server at the same time) <br>
                         [Warning large numbers may impact performance] <br>
 `difficulty=`           (defines ingame difficulty) [peaceful, easy, normal, hard] <br>
-`view-distance=`        (defines number of ingame chnuks to be rendered) <br>
+`view-distance=`        (defines number of in-game chunks to be rendered) <br>
                         [Warning large numbers may impact performance] <br>
 `white-list=`           (turns on the whitelist) [I would strongely recomment to set this to true] <br>
 `motd=`                 (this will be displayed in the menu below your server - chose what you like) <br>
-`server-port=`          (default by 25565. Only importent if you are dealing with multiple server) <br>
+`server-port=`          (default by 25565. Only important if you are dealing with multiple server) <br>
                         [if you run multiple servers each server wants to have its own port] <br>
 `gamemode=`             (default survival. Defines your game mode. For creative server replace with creative) <br>
                         [survival/creative/adventure/spectator] <br>
-`spawn-protection=`     (the number of block at the worldspawn only operators can touch) <br>
-`pvp=`                  (ability for player to do damage to oneanother) [true/false] <br>
+`spawn-protection=`     (the number of block at the world-spawn only operators can touch) <br>
+`pvp=`                  (ability for player to do damage to eachother) [true/false] <br>
 `enable-command-block=` (enables command blocks to tinker with) [true/false] <br>
 
 ## scripts
@@ -102,7 +102,9 @@ There are lots of script in your ${serverdirectory}. Normally, the executable on
 
 Example: `./start.sh -v`
 
-Arguments: `-i --immediately -q --quiet -v --verbose`
+Example: `./start.sh -q`
+
+Arguments: `-n --now -q --quiet -v --verbose`
 
 ## crontab
 If you would like to automate some of those task on your server you can create a crontab.
@@ -122,13 +124,13 @@ Fifth star: Day of Week [0 - 6]
 Generic Example: (In order to work, please replace the variables with your own ones)
 ```
 # minecraft ${servername} your description of command here
-* * * * * cd ${serverdirectory} && ${serverdirectory}/NameOfScript.sh
+* * * * * cd ${serverdirectory} && ${serverdirectory}/${script}.sh
 ```
 Close and save your crontab. (Press Ctrl X and Y)
 ## logfiles
 Your server will write two growing logfiles (located in your ${serverdirectory}) <br>
 screen.log and backup.log <br>
-screen.log contains everything that get's written inside your screen terminal while backup.log logs all action of the backup script. 
+screen.log contains everything that get's written inside your screen terminal while backup.log logs all action of the backup script.
 
 to view them:
 ```
