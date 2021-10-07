@@ -11,14 +11,14 @@ fi
 if [[ -s "server.functions" ]]; then
 	. ./server.functions
 else
-	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
+	echo "$(date) fatal: server.functions is missing" >> "fatalerror.log"
 	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
 	exit 1
 fi
 
 # read server.properties file with error checking
 if ! [[ -s "server.properties" ]]; then
-	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
+	echo "$(date) fatal: server.properties is missing" >> "fatalerror.log"
 	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
 	exit 1
 fi
@@ -27,7 +27,7 @@ fi
 if [[ -s "server.settings" ]]; then
 	. ./server.settings
 else
-	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
+	echo "$(date) fatal: server.settings is missing" >> "fatalerror.log"
 	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
 	exit 1
 fi
@@ -36,42 +36,42 @@ fi
 if [ -d "${serverdirectory}" ]; then
 	cd ${serverdirectory}
 else
-	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
+	echo "$(date) fatal: serverdirectory is missing" >> "fatalerror.log"
 	echo "${red}fatal: serverdirectory is missing${nocolor}"
 	exit 1
 fi
 
 # log to debug if true
-CheckDebug "executing prerender script"
+CheckDebug "executing pre-render script"
 
 # parsing script arguments
 ParseScriptArguments "$@"
 
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
-	echo "${yellow}Server is not currently running!${nocolor}"
+	PrintToTerminal "warn" "server is not currently running!"
 	exit 1
 fi
 
 # let user chose between online and offline prerendering
-echo "Would you like to startup online or offline prerendering?"
-PS3="Your choice: "
+echo "would you like to startup online or offline pre-rendering?"
+PS3="your choice: "
 method=("online" "offline")
 select method in "${method[@]}"; do
 	case $method in
 		"online")
-			echo "action ${cyan}starting online prerenderer...${nocolor}"
+			PrintToTerminal "action" "starting online pre-renderer..."
 
 			# explain to user
-			echo "${blue}I will prerender your minecraft world by teleporting a selected player through it${nocolor}"
-			echo "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
+			PrintToTerminal "info" "i will pre-render your minecraft world by teleporting a selected player through it"
+			PrintToTerminal "info" "i will scan so to speak in a grid with the spacing of 256 blocks"
 
 			# ask for playername
-			read -p "Please enter a playername: " playername
-			echo "The player will be ${green}${playername}${nocolor}"
+			read -p "please enter a player-name: " playername
+			echo "the player will be ${green}${playername}${nocolor}"
 
 			# ask for cords
-			PS3="Which radius would you like to prerender? "
+			PS3="which radius would you like to pre-render? "
 			grid=("1024*1024" "2048*2048" "4096*4096" "8192*8192")
 			select grid in "${grid[@]}"; do
 				case $grid in
@@ -103,18 +103,18 @@ select method in "${method[@]}"; do
 						amount="65"
 						break
 					;;
-					*) echo "Please choose an option from the list: " ;;
+					*) echo "please choose an option from the list: " ;;
 				esac
 			done
 
 			# ask for interval in seconds
-			echo "I would like to know how fast you want to scan your world"
-			echo "I would recommend an interval of 20 to 80 seconds depending on your server recources"
-			echo "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
+			PrintToTerminal "info" "i would like to know how fast you want to scan your world"
+			PrintToTerminal "info" "i would recommend an interval of 20 to 80 seconds depending on your server resources"
+			PrintToTerminal "info" "please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 			read -p "interval: " interval
 			regex="^([8-9]|[1-9][0-9]|1[0-2][0-8])$"
 			while [[ ! ${interval} =~ ${regex} ]]; do
-				read -p "Please enter an interval between 8 and 128 seconds: " interval
+				read -p "please enter an interval between 8 and 128 seconds: " interval
 			done
 
 			# calculate some internal intervals
@@ -122,27 +122,27 @@ select method in "${method[@]}"; do
 			between="sleep ${between}s"
 			estimated=$((${interval} * ${amount} * ${amount}))
 			interval="sleep ${interval}s"
-			echo "The selected grid will be ${green}${area}${nocolor}"
-			echo "The selected interval will be ${green}${interval}${nocolor}"
-			echo "The selected between will be ${green}${between}${nocolor}"
+			PrintToTerminal "info" "the selected grid will be ${green}${area}${nocolor}"
+			PrintToTerminal "info" "the selected interval will be ${green}${interval}${nocolor}"
+			PrintToTerminal "info" "the selected between will be ${green}${between}${nocolor}"
 
 			# ask for permission to proceed
 			echo "I will now start to teleport the selected player through the world"
-			echo "It will take about ${estimated} seconds to finish prerendering"
+			echo "It will take about ${estimated} seconds to finish pre-rendering"
 			read -p "Continue? [Y/N]: "
 			regex="^(Y|y|N|n)$"
 			while [[ ! ${REPLY} =~ ${regex} ]]; do
 				read -p "Please press Y or N: " REPLY
 			done
 			if [[ ${REPLY} =~ ^[Yy]$ ]]
-				then echo "${green}starting prerenderer...${nocolor}"
+				then echo "${green}starting pre-renderer...${nocolor}"
 				else echo "${red}exiting...${nocolor}"
 					exit 1
 			fi
 
 			# prerender start
-			echo "Prerendering started"
-			echo "Progress: [0/$((${amount} * ${amount}))]"
+			echo "pre-rendering started"
+			echo "progress: [0/$((${amount} * ${amount}))]"
 			sleep 2s
 
 			# teleport script with progress
@@ -156,37 +156,38 @@ select method in "${method[@]}"; do
 					# progress counter
 					ProgressBar "${blue}[Script]${nocolor} Progress: [${progress}/${totalamount}]" "${progress}" "${totalamount}"
 					# teleporting with facing directions
-					PrintToScreen "tp ${playername} ${x} ${y} ${z} 0 0"
+					PrintToScreen "tp ${playername} ${x} ~ ${z} 0 0"
 					${between}
-					PrintToScreen "tp ${playername} ${x} ${y} ${z} 90 0"
+					PrintToScreen "tp ${playername} ${x} ~ ${z} 90 0"
 					${between}
-					PrintToScreen "tp ${playername} ${x} ${y} ${z} 180 0"
+					PrintToScreen "tp ${playername} ${x} ~ ${z} 180 0"
 					${between}
-					PrintToScreen "tp ${playername} ${x} ${y} ${z} 270 0"
+					PrintToScreen "tp ${playername} ${x} ~ ${z} 270 0"
 					${between}
 					counter=$((counter+1))
 				done
 			done
 
 			# command line finished message
-			PrintToScreen "say Prerendering of your world has finished"
-			echo "${blue}[Script]${nocolor} ${green}Prerendering of your world has finished${nocolor}"
-
-			echo "${blue}[Script]${nocolor} ${green}Rendered ${totalblocks} [${area}] blocks of area${nocolor}"
+			PrintToScreen "say pre-rendering of your world has finished"
+			
+			# user info
+			PrintToTerminal "info" "pre-rendering of your world has finished"
+			PrintToTerminal "info" "rendered ${totalblocks} [${area}] blocks of area"
 
 			# kick player with finished message
-			screen -Rd ${servername} -X stuff "kick ${playername} prerendering of your world has finished$(printf '\r')"
+			PrintToScreen "kick ${playername} pre-rendering of your world has finished"
 
 		;;
 		"offline")
-			echo "${magenta}starting offline prerenderer...${nocolor}"
+			PrintToTerminal "action" "starting offline pre-renderer..."
 
 			# explain to user
-			echo "${blue}I will prerender your minecraft world by setting the worldspawn to various cordinates and then restarting the server over and over${nocolor}"
-			echo "${blue}I will scan so to speak in a grid with the spacing of 256 blocks${nocolor}"
+			PrintToTerminal "info" "i will pre-render your minecraft world by setting the world-spawn to various coordinates and then restarting the server over and over"
+			PrintToTerminal "info" "i will scan so to speak in a grid with the spacing of 256 blocks"
 
 			# ask for cords
-			PS3="Which radius would you like to prerender? "
+			PS3="Which radius would you like to pre-render? "
 			grid=("1024*1024" "2048*2048" "4096*4096" "8192*8192")
 			select grid in "${grid[@]}"; do
 				case $grid in
@@ -218,13 +219,13 @@ select method in "${method[@]}"; do
 						amount="65"
 						break
 					;;
-					*) echo "Please choose an option from the list: " ;;
+					*) echo "please choose an option from the list: " ;;
 				esac
 			done
 
 			# ask for interval in seconds
 			echo "I would like to know how fast you want to scan your world"
-			echo "I would recommend an interval of 20 to 80 seconds depending on your server recources"
+			echo "I would recommend an interval of 20 to 80 seconds depending on your server resources"
 			echo "Please enter an interval in seconds. Example: ${yellow}60${nocolor}"
 			read -p "interval: " interval
 			regex="^([8-9]|[1-9][0-9]|1[0-2][0-8])$"
@@ -234,24 +235,24 @@ select method in "${method[@]}"; do
 			interval="sleep ${interval}s"
 
 			# ask for permission to proceed
-			echo "I will now start to prerender your world using worldspawns and server restart"
+			echo "I will now start to pre-render your world using world-spawns and server restart"
 			read -p "Continue? [Y/N]: "
 			regex="^(Y|y|N|n)$"
 			while [[ ! ${REPLY} =~ ${regex} ]]; do
 				read -p "Please press Y or N: " REPLY
 			done
 			if [[ ${REPLY} =~ ^[Yy]$ ]]
-				then echo "${green}starting prerenderer...${nocolor}"
+				then echo "${green}starting pre-renderer...${nocolor}"
 				else echo "${red}exiting...${nocolor}"
 					exit 1
 			fi
 
 			# prerender start
-			echo "Prerendering started"
-			echo "Progress: [0/$((${amount} * ${amount}))]"
+			PrintToterminal "info" "pre-rendering started"
 			sleep 2s
 
 			# teleport script with progress
+			totalamount=$((${amount} * ${amount}))
 			progress="1"
 			counting="1"
 			y="120"
@@ -259,83 +260,29 @@ select method in "${method[@]}"; do
 				for z in "${cords[@]}"; do
 					let "progress=counting"
 					# progress counter
-					echo "${blue}[Script]${nocolor} Progress: [${progress}/$((${amount} * ${amount}))]"
+					ProgressBar "${blue}[Script]${nocolor} Progress: [${progress}/${totalamount}]" "${progress}" "${totalamount}"
+					# stop server
+					./stop --quiet --now
 					# setworldspawn to x y z
-					PrintToScreen "setworldspawn ${x} ${y} ${z}"
-					# server stop
-					screen -Rd ${servername} -X stuff "say stopping server...$(printf '\r')"
-					screen -Rd ${servername} -X stuff "stop$(printf '\r')"
-					# check if server stopped
-					stopchecks="0"
-					while [ $stopchecks -lt 10 ]; do
-						if ! screen -list | grep -q "\.${servername}"; then
-							break
-						fi
-						stopchecks=$((stopchecks+1))
-						sleep 1s
-					done
-					# force quit server if not stopped
-					if screen -list | grep -q "${servername}"; then
-						screen -S ${servername} -X quit
-					fi
-					${interval}
-					# main start commmand
-					${screen} -dmSL ${servername} -Logfile ${screenlog} ${java} -server ${mems} ${memx} ${threadcount} -jar ${serverfile}
-					${screen} -r ${servername} -X colon "logfile flush 1^M"
-					# check if screenlog contains start comfirmation
-					count="0"
-					counter="0"
-					startupchecks="0"
-					while [ ${startupchecks} -lt 120 ]; do
-						if tail ${screenlog} | grep -q "Query running on"; then
-							break
-						fi
-						if ! screen -list | grep -q "${servername}"; then
-							echo "Fatal: something went wrong - server appears to have crashed!" >> ${screenlog}
-							echo "${red}Fatal: something went wrong - server appears to have crashed!${nocolor}"
-							exit 1
-						fi
-						if tail ${screenlog} | grep -q "Preparing spawn area"; then
-							counter=$((counter+1))
-						fi
-						if tail ${screenlog} | grep -q "Environment"; then
-							count=$((count+1))
-						fi
-						if tail ${screenlog} | grep -q "Reloading ResourceManager"; then
-							count=$((count+1))
-						fi
-						if tail ${screenlog} | grep -q "Starting minecraft server"; then
-							count=$((count+1))
-						fi
-						if [ ${counter} -ge 10 ]; then
-							counter="0"
-						fi
-						if [ ${count} -eq 0 ] && [ ${startupchecks} -eq 20 ]; then
-							echo "Warning: the server could be crashed" >> ${screenlog}
-							echo "${yellow}Warning: the server could be crashed${nocolor}"
-							exit 1
-						fi
-						startupchecks=$((startupchecks+1))
-						sleep 1s
-					done
-					counting=$((counting+1))
-					${interval}
+					PrintToScreen "setworldspawn ${x} ~ ${z}"
+					# start server
+					./start --quiet
 				done
 			done
 
 			# reset spawnpoint
-			PrintToScreen "setworldspawn 0 100 0"
+			PrintToScreen "setworldspawn 0 ~ 0"
 
 			# command line info
-			echo "${green}Prerendering of your world has finished${nocolor}"
+			PrintToTerminal "ok" "prerendering of your world has finished"
 
 		;;
-			*) echo "Please choose an option from the list: " ;;
+			*) echo "please choose an option from the list: " ;;
 	esac
 done
 
 # log to debug if true
-CheckDebug "executed prerender script"
+CheckDebug "executed pre-render script"
 
 # exit with code 0
 exit 0
