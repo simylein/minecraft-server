@@ -246,7 +246,7 @@ fi
 # function for removing scripts from serverdirectory
 function RemoveScriptsFromServerDirectory {
 	# user info about download
-	PrintToTerminal "info" "removing scripts in serverdirectory..."
+	CheckVerbose "info" "removing scripts in serverdirectory..."
 	# remove scripts from serverdirectory
 	# declare all scripts in an array
 	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
@@ -262,7 +262,7 @@ function RemoveScriptsFromServerDirectory {
 # function for downloading scripts from github
 function DownloadScriptsFromGitHub {
 	# user info about download
-	PrintToTerminal "info" "downloading scripts from GitHub..."
+	CheckVerbose "info" "downloading scripts from GitHub..."
 	# downloading scripts from github
 	# declare all scripts in an array
 	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
@@ -295,7 +295,7 @@ function CreateCachedBackup {
 		rm "${backupdirectory}/cached/${1}-"*
 	fi
 	# create backup
-	PrintToTerminal "action" "creating ${1} backup..."
+	CheckQuiet "action" "creating ${1} backup..."
 	tar -czf "world.tar.gz" "world" && mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz"
 	# check if safety backup exists
 	if ! [[ -s "${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz" ]]; then
@@ -308,7 +308,7 @@ function CreateCachedBackup {
 		echo "" >> "${backuplog}"
 	else
 		# terminal output
-		PrintToTerminal "ok" "${1} backup successful"
+		CheckQuiet "ok" "${1} backup successful"
 		# ingame output
 		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
 		# logfile output
