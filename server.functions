@@ -60,7 +60,7 @@ function CheckQuiet {
 	fi
 }
 
-# prints all unpit to terminal
+# prints all input to terminal
 function PrintToTerminal {
 	if [[ $1 == "ok" ]]; then
 	echo "${green}ok: ${2}${nocolor}"
