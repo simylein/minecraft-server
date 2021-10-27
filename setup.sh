@@ -21,29 +21,44 @@ cyan="$(tput setaf 6)"
 white="$(tput setaf 7)"
 nocolor="$(tput sgr0)"
 
+# prints all input to terminal
+function PrintToTerminal {
+	if [[ $1 == "ok" ]]; then
+		echo "${green}ok: ${2}${nocolor}"
+	fi
+	if [[ $1 == "info" ]]; then
+		echo "${nocolor}info: ${2}${nocolor}"
+	fi
+	if [[ $1 == "warn" ]]; then
+		echo "${yellow}warn: ${2}${nocolor}"
+	fi
+	if [[ $1 == "error" ]]; then
+		echo "${red}error: ${2}${nocolor}"
+	fi
+	if [[ $1 == "fatal" ]]; then
+		echo "${red}fatal: ${2}${nocolor}"
+	fi
+	if [[ $1 == "action" ]]; then
+		echo "${cyan}action: ${2}${nocolor}"
+	fi
+}
+
 # parse script arguments
-immediately=false
-quiet=false
-verbose=false
+auto=false
+nerdy=false
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-		-i)
-			immediately=true
+		-a)
+			auto=true
 		;;
-		-q)
-			quiet=true
+		-n)
+			nerdy=true
 		;;
-		-v)
-			verbose=true
+		--auto)
+			auto=true
 		;;
-		--immediately)
-			immediately=true
-		;;
-		--quiet)
-			quiet=true
-		;;
-		--verbose)
-			verbose=true
+		--nerdy)
+			nerdy=true
 		;;
 		*)
 			echo "bad argument: $1"
@@ -106,7 +121,7 @@ packageslength=${#packages[@]}
 # use for loop to read all values and indexes
 for (( i = 1; i < ${packageslength} + 1; i ++ )); do
 	if ! command -v ${packages[$i-1]} &> /dev/null; then
-		echo "${red}fatal: the package ${packages[${i}-1]} is not installed on your system"
+		echo "${red}fatal: the package ${packages[${i}-1]} is not installed on your system${nocolor}"
 		exit 1
 	fi
 done
@@ -121,12 +136,12 @@ read -re -i "minecraft" -p "Your name: " servername
 regex="^[a-zA-Z0-9]+$"
 verify="false"
 while [[ ${verify} == "false" ]]; do
-	if [[ ! ${servername} =~ ${regex} ]]; then
+	if [[ ! "${servername}" =~ ${regex} ]]; then
 		read -p "Please enter a servername which only contains letters and numbers: " servername
 	else
 		check1="true"
 	fi
-	if [ -d ${servername} ]; then
+	if [ -d "${servername}" ]; then
 		read -p "Directory ${servername} already exists - please enter another directory: " servername
 	else
 		check2="true"
@@ -161,38 +176,23 @@ echo "I will now setup a server and backup directory."
 
 # set up server directory
 echo -n "info: setting up a serverdirectory... "
-mkdir ${servername}
-cd ${servername}
+mkdir "${servername}"
+cd "${servername}"
 echo "done"
-
-# check if verbose mode is on
-function CheckVerbose {
-	if [[ ${verbose} == true ]]; then
-		echo "${1}"
-	fi
-}
-
-# check if quiet mode is on
-function CheckQuiet {
-	if ! [[ ${quiet} == true ]]; then
-		echo "${1}"
-	fi
-}
 
 # function for fetching scripts from github with error checking
 function FetchScriptFromGitHub {
-	wget --spider --quiet https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+	wget --spider --quiet "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}"
 	if [ "$?" != 0 ]; then
-		echo "${red}Fatal: Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)${nocolor}"
+		echo "${red}fatal: unable to connect to github api. script will exit! (maybe chose another branch?)${nocolor}"
 		exit 1
 	else
-		CheckVerbose "Fetching file: ${1} from branch ${branch} on GitHub..."
-		wget -q -O ${1} https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}
+		wget -q -O "${1}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}"
 	fi
 }
 
 # user info about download
-echo "info: downloading scripts from GitHub... "
+echo "info: downloading scripts from github... "
 
 # downloading scripts from github
 # declare all scripts in an array
@@ -221,9 +221,9 @@ serverdirectory=`pwd`
 echo "${green}ok: download successful${nocolor}"
 
 # function for downloading serverfile from mojang api with error checking
-function FetchServerFileFromMojan {
+function FetchServerFileFromMojang {
 	echo -n "downloading minecraft-server.${version}.jar... "
-	wget -q -O minecraft-server.${version}.jar https://launcher.mojang.com/v1/objects/${1}/server.jar
+	wget -q -O "minecraft-server.${version}.jar" "https://launcher.mojang.com/v1/objects/${1}/server.jar"
 	serverfile="${serverdirectory}/minecraft-server.${version}.jar"
 	echo "${green}done${nocolor}"
 	if ! [[ -s "minecraft-server.${version}.jar" ]]; then
@@ -232,32 +232,32 @@ function FetchServerFileFromMojan {
 }
 
 # download java executable from mojang.com
-PS3="Which server version would you like to install? "
+PS3="which server version would you like to install? "
 versions=("1.17.1" "1.16.5" "1.16.4" "1.16.3")
 select version in "${versions[@]}"; do
 	case ${version} in
 		"1.17.1")
-			FetchServerFileFromMojan "a16d67e5807f57fc4e550299cf20226194497dc2"
+			FetchServerFileFromMojang "a16d67e5807f57fc4e550299cf20226194497dc2"
 			break
 			;;
 		"1.16.5")
-			FetchServerFileFromMojan "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
+			FetchServerFileFromMojang "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
 			break
 			;;
 		"1.16.4")
-			FetchServerFileFromMojan "35139deedbd5182953cf1caa23835da59ca3d7cd"
+			FetchServerFileFromMojang "35139deedbd5182953cf1caa23835da59ca3d7cd"
 			break
 		;;
 		"1.16.3")
-			FetchServerFileFromMojan "f02f4473dbf152c23d7d484952121db0b36698cb"
+			FetchServerFileFromMojang "f02f4473dbf152c23d7d484952121db0b36698cb"
 			break
 		;;
-		*) echo "Please choose an option from the list: ";;
+		*) echo "please choose an option from the list: ";;
 	esac
 done
 
 # user information about execute at start
-echo "Your Server will execute ${green}${serverfile}${nocolor} at start"
+echo "your Server will execute ${green}${serverfile}${nocolor} at start"
 
 # set up backupdirectory with child directories
 echo -n "info: setting up a backupdirectory... "
@@ -278,28 +278,37 @@ mkdir backups
 	cd ${serverdirectory}
 echo "done"
 
-# ask all the importatnt user input
-echo "${cyan}auto setup means you are asked fewer questions but there will not be as much customisation for you${nocolor}"
-echo "${cyan}nerdy setup means you are able to customise everything - you are able to change these settings later${nocolor}"
-PS3="How would you like to setup your server? "
-serversetup=("auto" "nerdy")
-select setup in ${serversetup[@]}; do
-	case ${setup} in
-		"auto")
-			# set nerdysetup to false
-			nerdysetup=false
-			break
-		;;
-		"nerdy")
-			# set nerdysetup to true
-			nerdysetup=true
-			break
-		;;
-		*)
-			echo "Please chose an option from the list: "
-		;;
-	esac
-done
+if [[ ${nerdy} == true ]] || [[ ${nerdy} == true ]]; then
+	if [[ ${nerdy} == true ]]; then
+		nerdysetup=true
+	fi
+	if [[ ${auto} == true ]]; then
+		nerdysetup=false
+	fi
+else
+	# ask user for setup method
+	echo "${cyan}auto setup means you are asked fewer questions but there will not be as much customisation for you${nocolor}"
+	echo "${cyan}nerdy setup means you are able to customise everything - you are able to change these settings later${nocolor}"
+	PS3="How would you like to setup your server? "
+	serversetup=("auto" "nerdy")
+	select setup in ${serversetup[@]}; do
+		case ${setup} in
+			"auto")
+				# set nerdysetup to false
+				nerdysetup=false
+				break
+			;;
+			"nerdy")
+				# set nerdysetup to true
+				nerdysetup=true
+				break
+			;;
+			*)
+				echo "please chose an option from the list: "
+			;;
+		esac
+	done
+fi
 
 # check if nerdysetup is true
 if [[ ${nerdysetup} == true ]]; then
@@ -716,8 +725,8 @@ echo "done"
 # create logfiles with welcome message
 . ./server.settings
 . ./server.functions
-echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> ${screenlog}
-echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> ${backuplog}
+echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> "${screenlog}"
+echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> "${backuplog}"
 echo "" >> ${backuplog}
 echo "" >> ${backuplog}
 
@@ -932,9 +941,9 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "Please press Y or N: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
-	cd ${homedirectory}
+	cd "${homedirectory}"
 	rm setup.sh
-	cd ${serverdirectory}
+	cd "${serverdirectory}"
 fi
 
 # ask user to start server now
