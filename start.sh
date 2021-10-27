@@ -205,28 +205,33 @@ if ! tail "${screenlog}" | grep -q "Thread Query Listener started"; then
 	PrintToLog "warn" "server startup unsuccessful - perhaps query is disabled" "${screenlog}"
 fi
 
+# execute server worker
+./worker.sh &
+
 # enables the watchdog script for backup integrity
 if [[ "${enablewatchdog}" == true ]]; then
 	CheckVerbose "info" "activating watchdog..."
-	./watchdog.sh &
 fi
 
 # check if user wants to send welcome messages
 if [[ "${welcomemessage}" == true ]]; then
 	CheckVerbose "info" "activating welcome messages..."
-	./welcome.sh &
 fi
 
 # check if user wants to enable task execution
 if [[ "${enabletasks}" == true ]]; then
 	CheckVerbose "info" "activating task execution..."
-	./worker.sh &
+fi
+
+# check if user wants to enable task execution
+if [[ "${enablestartoncrash}" == true ]]; then
+	CheckVerbose "info" "activating auto start on crash..."
 fi
 
 # if set to true change automatically to server console
 if [[ "${changetoconsole}" == true ]]; then
 	CheckVerbose "info" "changing to server console..."
-	screen -r ${servername}
+	screen -r "${servername}"
 fi
 
 # user information
