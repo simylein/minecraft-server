@@ -77,12 +77,18 @@ date=$(date +"%Y-%m-%d %H:%M:%S") # defines format of script time logging
 
 # change to server console after startup
 changetoconsole="replacechangetoconsole" # changes to server console after startup if set to true
+
 # enables watchdog integrity checks for backups
 enablewatchdog="replaceenablewatchdog" # executes watchdog script if set to true
+
 # print welcome messages if a player joins
 welcomemessage="replacewelcomemessage" # executes welcome script if set to true
+
 # enables task execution if an admin uses ingame chat
 enabletasks="replaceenabletasksmessage" # give admins the power of restarting your server
+
+# enables an autostart triggered by a server crash
+enablestartoncrash="replaceenablestartoncrash" # let your server autostart in case of a crash
 
 # network stuff
 dnsserver="replacednsserver" # server will ping it for public avalability checks
