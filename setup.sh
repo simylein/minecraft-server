@@ -8,7 +8,7 @@
 TERM="xterm"
 
 # branch selection from for github
-branch="main"
+branch="dev"
 
 # command line colours
 black="$(tput setaf 0)"
@@ -196,7 +196,7 @@ echo "info: downloading scripts from github... "
 
 # downloading scripts from github
 # declare all scripts in an array
-declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
+declare -a scripts1=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
 # get length of script array
 scriptslength=${#scripts1[@]}
 # loop through all entries in the array
@@ -695,6 +695,7 @@ echo -n "storing variables in server.settings... "
 	StoreToSettings "replaceserverdirectory" "${serverdirectory}"
 	StoreToSettings "replacebackupdirectory" "${backupdirectory}"
 	StoreToSettings "replaceserverfile" "${serverfile}"
+	StoreToSettings "replacebranch" "${branch}"
 echo "done"
 
 # store all the userinput

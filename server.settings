@@ -67,7 +67,7 @@ enableconfirmupdatestring="false" # enables confirm update string to perform an 
 enableconfirmresetstring="false" # enables confirm reset string to perform a reset if set to true
 
 # github branch
-branch="main" # all scripts will fetch from this branch
+branch="replacebranch" # all scripts will fetch from this branch
 
 # enables debug logging
 enabledebug="false" # enables debug log into logfiles if set to true
