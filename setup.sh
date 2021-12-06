@@ -198,9 +198,9 @@ PrintToTerminal "info" "downloading scripts from github..."
 # declare all scripts in an array
 declare -a scriptsdownload=( "LICENSE" "README.md" "server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
 # get length of script array
-scriptslength=${#scriptsdownload[@]}
+arraylength=${#scriptsdownload[@]}
 # loop through all entries in the array
-for (( i = 0; i < ${scriptslength}; i ++ )); do
+for (( i = 0; i < ${arraylength}; i ++ )); do
 	FetchScriptFromGitHub "${scriptsdownload[${i}]}"
 done
 
@@ -211,9 +211,9 @@ PrintToTerminal "ok" "download successful"
 # declare all scripts in an array
 declare -a scriptsexecutable=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
 # get length of script array
-scriptslength=${#scriptsexecutable[@]}
+arraylength=${#scriptsexecutable[@]}
 # loop through all entries in the array
-for (( i = 0; i < ${scriptslength}; i ++ )); do
+for (( i = 0; i < ${arraylength}; i ++ )); do
 	chmod +x "${scriptsexecutable[${i}]}"
 done
 
@@ -261,11 +261,10 @@ mkdir world
 mkdir backups
 cd backups
 # declare all backup children in an array
-declare -a backupchildren=( "hourly" "daily" "weekly" "monthly" "cached")
+declare -a backupchildren=( "hourly" "daily" "weekly" "monthly" "cached" )
 # get length of backup children array
-scriptslength=${#backupchildren[@]}
-for (( i = 0; i < ${scriptslength}; i ++ )); do
-	PrintToTerminal "info" "creating ${serverdirectory}/backups/${scriptslength[${i}-1]}"
+arraylength=${#backupchildren[@]}
+for (( i = 0; i < ${arraylength}; i ++ )); do
 	mkdir "${backupchildren[${i}]}"
 done
 backupdirectory=`pwd`
