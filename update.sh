@@ -74,7 +74,7 @@ fi
 CreateCachedBackup "update"
 
 # Test internet connectivity and update on success
-wget --spider --quiet "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
+wget --spider --quiet "https://launcher.mojang.com/v1/objects/3cf24a8694aca6267883b17d934efacc5e44440d/server.jar"
 if [ "$?" != 0 ]; then
 	PrintToTerminal "warn" "unable to connect to mojang api skipping update..."
 	PrintToLog "warn" "unable to connect to mojang api skipping update..." "${screenlog}"
@@ -86,12 +86,12 @@ else
 		CheckVerbose "info" "you are running the newest server version - skipping update"
 		PrintToLog "info" "you are running the newest server version - skipping update" "${screenlog}"
 	else
-		wget -q -O "minecraft-server.1.17.1.jar" "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
+		wget -q -O "minecraft-server.1.18.0.jar" "https://launcher.mojang.com/v1/objects/3cf24a8694aca6267883b17d934efacc5e44440d/server.jar"
 		# update serverfile variable in server.settings
-		newserverfile="${serverdirectory}/minecraft-server.1.17.1.jar"
+		newserverfile="${serverdirectory}/minecraft-server.1.18.0.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -f "${newserverfile}" ]; then
-			CheckVerbose "ok" "updating server.settings for startup with new server version 1.17.1"
+			CheckVerbose "ok" "updating server.settings for startup with new server version 1.18.0"
 			sed -i "s|${serverfile}|${newserverfile}|g" "server.settings"
 			# remove old serverfile if it exists
 			if [ -f "${serverfile}" ]; then

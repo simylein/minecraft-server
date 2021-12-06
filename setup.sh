@@ -127,12 +127,12 @@ for (( i = 1; i < ${packageslength} + 1; i ++ )); do
 done
 
 # user info about script
-echo "${cyan}I will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
+echo "${cyan}i will setup a minecraft server for you${nocolor} ${blue};^)${nocolor}"
 
 # initial question
-echo "How should I call your server?"
-echo "Please enter a servername: Example: ${yellow}minecraft${nocolor}"
-read -re -i "minecraft" -p "Your name: " servername
+echo "how should I call your server?"
+echo "please enter a servername: example: ${yellow}minecraft${nocolor}"
+read -re -i "minecraft" -p "your name: " servername
 regex="^[a-zA-Z0-9]+$"
 verify="false"
 while [[ ${verify} == "false" ]]; do
@@ -152,7 +152,7 @@ while [[ ${verify} == "false" ]]; do
 		verify="false"
 	fi
 done
-echo "Your Server will be called ${green}${servername}${nocolor}"
+echo "your server will be called ${green}${servername}${nocolor}"
 
 # store homedirectory
 homedirectory=`pwd`
@@ -172,7 +172,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 fi
 
 # set up directorys
-echo "I will now setup a server and backup directory."
+echo "i will now setup a server and backup directory."
 
 # set up server directory
 echo -n "info: setting up a serverdirectory... "
@@ -233,23 +233,19 @@ function FetchServerFileFromMojang {
 
 # download java executable from mojang.com
 PS3="which server version would you like to install? "
-versions=("1.17.1" "1.16.5" "1.16.4" "1.16.3")
+versions=("1.18.0" "1.17.1" "1.16.5" "1.16.4" "1.16.3")
 select version in "${versions[@]}"; do
 	case ${version} in
+		"1.18.0")
+			FetchServerFileFromMojang "3cf24a8694aca6267883b17d934efacc5e44440d"
+			break
+		;;
 		"1.17.1")
 			FetchServerFileFromMojang "a16d67e5807f57fc4e550299cf20226194497dc2"
 			break
-			;;
+		;;
 		"1.16.5")
 			FetchServerFileFromMojang "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
-			break
-			;;
-		"1.16.4")
-			FetchServerFileFromMojang "35139deedbd5182953cf1caa23835da59ca3d7cd"
-			break
-		;;
-		"1.16.3")
-			FetchServerFileFromMojang "f02f4473dbf152c23d7d484952121db0b36698cb"
 			break
 		;;
 		*) echo "please choose an option from the list: ";;
