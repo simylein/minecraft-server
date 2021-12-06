@@ -374,12 +374,6 @@ StoreToProperties "query.port=25565" "${queryport}"
 StoreToProperties "enable-query=false" "${enablequery}"
 StoreToProperties "motd=A Minecraft Server" "${motd}"
 
-# create logfiles with welcome message
-echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> "${screenlog}"
-echo "Hello World, this ${servername}-server and log-file was created on ${date}" >> "${backuplog}"
-echo "" >> "${backuplog}"
-echo "" >> "${backuplog}"
-
 # store to crontab function
 function StoreToCrontab {
 	crontab -l | { cat; echo "${1}"; } | crontab -
