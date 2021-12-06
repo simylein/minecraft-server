@@ -170,8 +170,8 @@ while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "please press y or n: " REPLY
 done
 if [[ $REPLY =~ ^[Yy]$ ]]
-	then echo "${green}starting setup...${nocolor}"
-	else echo "${red}exiting...${nocolor}"
+	then PrintToTerminal "ok" "starting setup..."
+	else PrintToTerminal "error" "exiting..."
 		exit 1
 fi
 
