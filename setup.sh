@@ -267,7 +267,7 @@ declare -a backupchildren=( "hourly" "daily" "weekly" "monthly" "cached")
 scriptslength=${#backupchildren[@]}
 for (( i = 0; i < ${scriptslength}; i ++ )); do
 	PrintToTerminal "info" "creating ${serverdirectory}/backups/${scriptslength[${i}-1]}"
-	mkdir "${scriptslength[${i}]}"
+	mkdir "${backupchildren[${i}]}"
 done
 
 backupdirectory=`pwd`
