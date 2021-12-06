@@ -209,7 +209,7 @@ PrintToTerminal "ok" "download successful"
 
 # make selected scripts executable
 # declare all scripts in an array
-declare -a scriptsexecutable=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "watchdog.sh" "welcome.sh" "worker.sh" "vent.sh" )
+declare -a scriptsexecutable=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
 # get length of script array
 scriptslength=${#scriptsexecutable[@]}
 # loop through all entries in the array
@@ -260,7 +260,6 @@ PrintToTerminal "info" "setting up a backupdirectory..."
 mkdir world
 mkdir backups
 cd backups
-
 # declare all backup children in an array
 declare -a backupchildren=( "hourly" "daily" "weekly" "monthly" "cached")
 # get length of backup children array
@@ -269,7 +268,6 @@ for (( i = 0; i < ${scriptslength}; i ++ )); do
 	PrintToTerminal "info" "creating ${serverdirectory}/backups/${scriptslength[${i}-1]}"
 	mkdir "${backupchildren[${i}]}"
 done
-
 backupdirectory=`pwd`
 cd ${serverdirectory}
 
@@ -418,7 +416,6 @@ StoreToCrontab "@reboot cd ${serverdirectory} && ./start.sh --quiet"
 # padd crontab with two empty lines
 StoreToCrontab ""
 StoreToCrontab ""
-
 
 # finish messages
 PrintToTerminal "ok" "setup is complete!"
