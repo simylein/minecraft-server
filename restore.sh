@@ -47,6 +47,9 @@ CheckDebug "executing restore script"
 # parsing script arguments
 ParseScriptArguments "$@"
 
+# check for script lock
+CheckScriptLock
+
 # write date to logfile
 echo "action: ${date} executing restore script" >> ${screenlog}
 

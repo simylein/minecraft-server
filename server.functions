@@ -9,11 +9,15 @@
 
 # function for parsing arguments for a script
 function ParseScriptArguments {
+	force=false
 	now=false
 	quiet=false
 	verbose=false
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
+			-f)
+				force=true
+			;;
 			-n)
 				now=true
 			;;
@@ -22,6 +26,9 @@ function ParseScriptArguments {
 			;;
 			-v)
 				verbose=true
+			;;
+			--force)
+				force=true
 			;;
 			--now)
 				now=true
@@ -33,12 +40,26 @@ function ParseScriptArguments {
 				verbose=true
 			;;
 			*)
-				echo "bad argument: $1"
+				echo "info: bad argument: $1"
 				exit 1
 			;;
 		esac
 		shift
 	done
+}
+
+# checks if a script is already running
+function CheckScriptLock {
+	if [[ ${force} == false ]] && [[ ${skipscriptlockcheck} == false ]]; then
+		declare -a arr=("maintenance.sh" "prerender.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
+		for i in "${scriptslock[@]}"; do
+			if pidof -x "${scriptslock[i]}" &> /dev/null; then
+				echo "info: script ${scriptslock[i]} is already running"
+				echo "info: use --force option to ignore safety check"
+				exit 1
+			fi
+		done
+	fi
 }
 
 # check if verbose mode is on

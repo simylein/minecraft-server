@@ -47,6 +47,9 @@ CheckDebug "executing pre-render script"
 # parsing script arguments
 ParseScriptArguments "$@"
 
+# check for script lock
+CheckScriptLock
+
 # check if server is running
 if ! screen -list | grep -q "\.${servername}"; then
 	PrintToTerminal "warn" "server is not currently running!"

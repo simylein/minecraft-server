@@ -55,6 +55,9 @@ CheckDebug "executing start script"
 # parsing script arguments
 ParseScriptArguments "$@"
 
+# check for script lock
+CheckScriptLock
+
 # padd logfile for visibility
 echo "" >> "${screenlog}"
 echo "" >> "${screenlog}"

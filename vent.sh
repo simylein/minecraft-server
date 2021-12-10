@@ -49,6 +49,9 @@ CheckDebug "executing vent script"
 # parsing script arguments
 ParseScriptArguments "$@"
 
+# check for script lock
+CheckScriptLock
+
 # user safety function for confirmation
 PrintToTerminal "warn" "are you sure you want to vent your server?"
 read -p "if so, please type ${red}confirm venting${nocolor} "

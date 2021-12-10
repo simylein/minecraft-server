@@ -75,6 +75,9 @@ enabledebug="false" # enables debug log into logfiles if set to true
 # script time logging
 date=$(date +"%Y-%m-%d %H:%M:%S") # defines format of script time logging
 
+# script lock check
+skipscriptlockcheck="false" # scripts will not check for other already running scripts if set to true
+
 # change to server console after startup
 changetoconsole="replacechangetoconsole" # changes to server console after startup if set to true
 
