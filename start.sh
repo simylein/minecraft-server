@@ -159,7 +159,7 @@ while [ ${startupchecks} -lt 120 ]; do
 		PrintToLog "error" "server port is already in use - please change to another port" "${screenlog}"
 		exit 1
 	fi
-	if tail -20 "${screenlog}" | grep -q "Address already in use"; then
+	if tail -20 "${screenlog}" | grep -q "Address already in use"; then
 		PrintToTerminal "error" "server address is already in use - please change to another port"
 		PrintToLog "error" "server address is already in use - please change to another port" "${screenlog}"
 		exit 1
