@@ -233,11 +233,11 @@ function FetchServerFileFromMojang {
 
 # download java executable from mojang.com
 PS3="which server version would you like to install? "
-versions=("1.18.0" "1.17.1" "1.16.5")
+versions=("1.18.1" "1.17.1" "1.16.5")
 select version in "${versions[@]}"; do
 	case ${version} in
-		"1.18.0")
-			FetchServerFileFromMojang "3cf24a8694aca6267883b17d934efacc5e44440d"
+		"1.18.1")
+			FetchServerFileFromMojang "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
 			break
 		;;
 		"1.17.1")
