@@ -9,6 +9,11 @@ if [ $(id -u) = 0 ]; then
 	exit 1
 fi
 
+# check if worker is already running
+if pidof -x "worker.sh" &> /dev/null; then
+	exit 0
+fi
+
 # read server.functions file with error checking
 if [[ -s "server.functions" ]]; then
 	. ./server.functions
