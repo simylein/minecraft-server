@@ -65,7 +65,7 @@ if [ ${dohourly} = true ]; then
 	PrintToLog "action" "${date} executing backup-hourly script" "${screenlog}"
 	PrintToLog "action" "${date} executing backup-hourly script" "${backuplog}"
 	CheckDebug "executing backup-hourly script"
-	
+
 	# start milliseconds timer
 	before=$(date +%s%3N)
 
@@ -104,14 +104,14 @@ if [ ${dohourly} = true ]; then
 		# disable auto save
 		PrintToScreen "save-off"
 		# run backup with compression
-		cp -r "world" "tmp"
-		tar -czf "world.tar.gz" "tmp"
+		nice -n 19 cp -r "world" "tmp"
+		nice -n 19 tar -czf "world.tar.gz" "tmp"
 		# check for tar errors
 		if [ "$?" != 0 ]; then
 			CheckDebug "backup script reports tar error while performing backup-hourly"
 		fi
-		mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz"
-		rm -r "tmp"
+		nice -n 19 mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/hourly/${servername}-${newhourly}.tar.gz"
+		nice -n 19 rm -r "tmp"
 		# enable auto save
 		PrintToScreen "save-on"
 	else
@@ -206,14 +206,14 @@ if [ ${hours} -eq ${dailybackuptime} ]; then
 			# disable auto save
 			PrintToScreen "save-off"
 			# run backup with compression
-			cp -r "world" "tmp"
-			tar -czf "world.tar.gz" "tmp"
+			nice -n 19 cp -r "world" "tmp"
+			nice -n 19 tar -czf "world.tar.gz" "tmp"
 			# check for tar errors
 			if [ "$?" != 0 ]; then
 				CheckDebug "backup script reports tar error while performing backup-daily"
 			fi
-			mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz"
-			rm -r "tmp"
+			nice -n 19 mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/daily/${servername}-${newdaily}.tar.gz"
+			nice -n 19 rm -r "tmp"
 			# enable auto save
 			PrintToScreen "save-on"
 		else
@@ -309,14 +309,14 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${weekday} -eq ${weeklybackupday} ];
 			# disable auto save
 			PrintToScreen "save-off"
 			# run backup with compression
-			cp -r "world" "tmp"
-			tar -czf "world.tar.gz" "tmp"
+			nice -n 19 cp -r "world" "tmp"
+			nice -n 19 tar -czf "world.tar.gz" "tmp"
 			# check for tar errors
 			if [ "$?" != 0 ]; then
 				CheckDebug "backup script reports tar error while performing backup-weekly"
 			fi
-			mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz"
-			rm -r "tmp"
+			nice -n 19 mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/weekly/${servername}-${newweekly}.tar.gz"
+			nice -n 19 rm -r "tmp"
 			# enable auto save
 			PrintToScreen "save-on"
 		else
@@ -412,14 +412,14 @@ if [ ${hours} -eq ${dailybackuptime} ] && [ ${dayofmonth} -eq ${monthlybackupday
 			# disable auto save
 			PrintToScreen "save-off"
 			# run backup with compression
-			cp -r "world" "tmp"
-			tar -czf "world.tar.gz" "tmp"
+			nice -n 19 cp -r "world" "tmp"
+			nice -n 19 tar -czf "world.tar.gz" "tmp"
 			# check for tar errors
 			if [ "$?" != 0 ]; then
 				CheckDebug "backup script reports tar error while performing backup-monthly"
 			fi
-			mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz"
-			rm -r "tmp"
+			nice -n 19 mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/monthly/${servername}-${newmonthly}.tar.gz"
+			nice -n 19 rm -r "tmp"
 			# enable auto save
 			PrintToScreen "save-on"
 		else
