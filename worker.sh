@@ -79,6 +79,7 @@ while true; do
 	if [[ ${enabletasks} == true ]]; then
 		linebuffer=$(tail -1 "${screenlog}")
 		if [[ ! ${linebuffer} == ${lastlinebuffer} ]]; then
+			CheckPerformTasksString
 			if [[ ${enablesafetybackupstring} == true ]]; then # check if safety backup is enabled
 				CheckSafetyBackupString
 			fi
