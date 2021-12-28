@@ -124,6 +124,8 @@ while true; do
 			sleep 20s
 			if ! screen -list | grep -q "\.${servername}"; then
 				./start.sh --quiet
+			else
+				exit 0
 			fi
 		else
 			exit 0
