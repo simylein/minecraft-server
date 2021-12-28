@@ -208,8 +208,10 @@ if ! tail "${screenlog}" | grep -q "Thread Query Listener started"; then
 	PrintToLog "warn" "server startup unsuccessful - perhaps query is disabled" "${screenlog}"
 fi
 
-# execute server worker
-./worker.sh &
+# execute server worker if set to true
+if [[ "${enabletasks}" == true ]]; then
+        nice -n 19 ./worker.sh &
+fi
 
 # enables the watchdog script for backup integrity
 if [[ "${enablewatchdog}" == true ]]; then
