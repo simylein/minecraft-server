@@ -120,7 +120,7 @@ while true; do
 	fi
 	# autostart on crash or exit
 	if ! screen -list | grep -q "\.${servername}"; then
-		if [[ ${enablestartoncrash} == true ]]; then
+		if [[ ${enablestartoncrash} == true ]] && [[ -d "${serverdirectory}" ]]; then
 			./start.sh --quiet
 		else
 			exit 0
