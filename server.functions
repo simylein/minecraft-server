@@ -441,7 +441,7 @@ function CheckConfirmUpdateString {
 		if cat "ops.json" | grep -q "${player}"; then
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
 			PrintToLog "info" "the player ${player} requested an update and has permission - server will update" "${screenlog}"
-			./update.sh --quiet --immediately
+			./update.sh --quiet --now
 			exit 0
 		else
 			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
