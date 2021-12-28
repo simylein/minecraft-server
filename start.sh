@@ -167,6 +167,11 @@ while [ ${startupchecks} -lt 120 ]; do
 		PrintToLog "error" "server address is already in use - please change to another port" "${screenlog}"
 		exit 1
 	fi
+	if tail -20 "${screenlog}" | grep -q "session.lock: already locked"; then
+		PrintToTerminal "error" "session is locked - is the world in use by another instance?"
+		PrintToLog "error" "session is locked - is the world in use by another instance?" "${screenlog}"
+		exit 1
+	fi
 	if ! screen -list | grep -q "${servername}"; then
 		PrintToTerminal "fatal" "something went wrong - server appears to have crashed!"
 		PrintToTerminal "info" "crash dump - last 10 lines of ${screenlog}"
