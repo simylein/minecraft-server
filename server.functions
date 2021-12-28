@@ -71,7 +71,7 @@ function CheckVerbose {
 # checks if debug mode is on
 function CheckDebug {
 	if [[ ${enabledebug} == true ]]; then
-		echo "$(date) ${1}" "debug.log"
+		echo "$(date) ${1}" >> "debug.log"
 	fi
 }
 # check if quiet mode is on
