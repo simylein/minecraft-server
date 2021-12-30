@@ -240,7 +240,7 @@ done
 serverDirectory=$(pwd)
 
 # download java executable from mojang
-PS3="which server version would you like to install? "
+PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
 versions=("1.18.1" "1.17.1" "1.16.5")
 select version in "${versions[@]}"; do
 	case ${version} in
