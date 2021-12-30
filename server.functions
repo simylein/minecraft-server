@@ -130,6 +130,7 @@ function ParseCategory {
 		isMonthly=true
 	else
 		Print "error" "$1 is not a backup category"
+		Print "info" "use --hourly, --daily, --weekly, --monthly"
 	fi
 }
 
