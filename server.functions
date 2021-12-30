@@ -225,7 +225,7 @@ function TellrawPlayer {
 	if [[ $# -eq 2 ]]; then
 		Screen "tellraw ${1} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${2}\"}]"
 	else
-		Screen "tellraw ${1} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${2}\"},{\"text\":\"${3}\",\"color\":\"${4}\"}]"
+		Screen "tellraw ${1} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${2} \"},{\"text\":\"${3}\",\"color\":\"${4}\"}]"
 	fi
 }
 
