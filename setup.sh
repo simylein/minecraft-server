@@ -170,17 +170,17 @@ CheckUnsupported
 Print "action" "i will setup a minecraft server for you ;^)"
 
 # initial question
-read -re -i "minecraft" -p "${time} prompt: how should I call your server? your name: " serverName
+read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
 regex="^[a-zA-Z0-9]+$"
 verify="false"
 while [[ ${verify} == false ]]; do
 	if [[ ! "${serverName}" =~ ${regex} ]]; then
-		read -p "${time} prompt: please enter a name which only contains letters and numbers: " serverName
+		read -p "$(date +"%H:%M:%S") prompt: please enter a name which only contains letters and numbers: " serverName
 	else
 		regexCheck=true
 	fi
 	if [ -d "${serverName}" ]; then
-		read -p "${time} prompt: directory ${serverName} already exists - please enter another directory: " serverName
+		read -p "$(date +"%H:%M:%S") prompt: directory ${serverName} already exists - please enter another directory: " serverName
 	else
 		existsCheck=true
 	fi
@@ -199,10 +199,10 @@ homeDirectory=$(pwd)
 
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
-read -p "${time} prompt: proceed? (y/n): "
+read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "${time} prompt: please press y or n: " REPLY
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
 done
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	Print "ok" "starting setup..."
@@ -280,10 +280,10 @@ cd ${serverDirectory}
 
 # eula question
 Print "info" "would you like to accept the end user license agreement from mojang?"
-read -p "${time} prompt: (y/n): "
+read -p "$(date +"%H:%M:%S") prompt: (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "${time} prompt: please press y or n: " REPLY
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	Print "ok" "accepting eula..."
@@ -345,10 +345,10 @@ StoreCrontab ""
 Print "ok" "setup is complete!"
 
 # ask user for removal of setup script
-read -p "${time} prompt: would you like to remove the setup script? (y/n): "
+read -p "$(date +"%H:%M:%S") prompt: would you like to remove the setup script? (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "${time} prompt: please press y or n: " REPLY
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	cd "${homeDirectory}"
@@ -357,10 +357,10 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 fi
 
 # ask user to start server now
-read -p "${time} prompt: would you like to start your server now? (y/n): "
+read -p "$(date +"%H:%M:%S") prompt: would you like to start your server now? (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "${time} prompt: please press y or n: " REPLY
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	Print "action" "starting up server..."
