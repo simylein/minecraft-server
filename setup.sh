@@ -245,13 +245,16 @@ versions=("1.18.1" "1.17.1" "1.16.5")
 select version in "${versions[@]}"; do
 	case ${version} in
 	"1.18.1")
-		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9" break
+		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
+		break
 		;;
 	"1.17.1")
-		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2" break
+		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
+		break
 		;;
 	"1.16.5")
-		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced" break
+		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
+		break
 		;;
 	*) echo "please choose an option from the list: " ;;
 	esac
