@@ -194,7 +194,7 @@ function LookForScreen {
 
 # check for executable
 function CheckExecutable {
-	if ! ls ${serverfile}* 1>/dev/null 2>&1; then
+	if ! ls ${executableServerFile}* 1>/dev/null 2>&1; then
 		Log "fatal" "no executable found" >>"${screenLog}"
 		Print "fatal" "no executable found"
 		exit 1
