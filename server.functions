@@ -510,10 +510,11 @@ function Help {
 	if tail -1 "${screenLog}" | grep -q "help"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=help)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		Log "info" "the player ${player} requested help - server will print help info and admin contact" "${screenLog}"
-		TellrawPlayer "${player}" "info: admin contact info: ${adminContact}"
 		TellrawPlayer "${player}" "info: available commands: (seperated by comma)"
 		TellrawPlayer "${player}" "info: list tasks, list backups"
-		TellrawPlayer "${player}" "info: perform backup, perform restart, perform update, perform reset"
+		TellrawPlayer "${player}" "info: perform backup, perform restart"
+		TellrawPlayer "${player}" "info: perform update, perform reset"
+		TellrawPlayer "${player}" "info: admin contact info: ${adminContact}"
 		# spam protection
 		sleep 10s
 	fi
