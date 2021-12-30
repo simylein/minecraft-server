@@ -81,6 +81,6 @@ while true; do
 	fi
 
 	lastLineBuffer="${lineBuffer}"
-	counter++
+	counter$((counter + 1))
 	sleep 1s
 done
