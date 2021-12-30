@@ -7,541 +7,671 @@
 # please notice that editing these functions can be devastating
 # if you know what you are doing, feel free to tinker with them ;^)
 
-# function for parsing arguments for a script
-function ParseScriptArguments {
+# prints all input to log at given log level
+function Log {
+	if [[ $1 == "ok" ]]; then
+		echo "${date} ok: ${2}" >>"${3}"
+	fi
+	if [[ $1 == "info" ]]; then
+		echo "${date} info: ${2}" >>"${3}"
+	fi
+	if [[ $1 == "warn" ]]; then
+		echo "${date} warn: ${2}" >>"${3}"
+	fi
+	if [[ $1 == "error" ]]; then
+		echo "${date} error: ${2}" >>"${3}"
+	fi
+	if [[ $1 == "fatal" ]]; then
+		echo "${date} fatal: ${2}" >>"${3}"
+	fi
+	if [[ $1 == "action" ]]; then
+		echo "${date} action: ${2}" >>"${3}"
+	fi
+}
+
+# prints all input to terminal at given log level
+function Print {
+	if [[ ${1} == "ok" ]] && [[ ${quiet} == false ]]; then
+		echo "${time} ${green}ok${noColor}: ${2}"
+	fi
+	if [[ ${1} == "info" ]] && [[ ${verbose} == true ]] && [[ ${quiet} == false ]]; then
+		echo "${time} ${blue}info${noColor}: ${2}"
+	fi
+	if [[ ${1} == "warn" ]]; then
+		echo "${time} ${yellow}warn${noColor}: ${2}"
+	fi
+	if [[ ${1} == "error" ]]; then
+		echo "${time} ${red}error${noColor}: ${2}"
+	fi
+	if [[ ${1} == "fatal" ]]; then
+		echo "${time} ${red}fatal${noColor}: ${2}"
+	fi
+	if [[ ${1} == "action" ]] && [[ ${quiet} == false ]]; then
+		echo "${time} ${cyan}action${noColor}: ${2}"
+	fi
+}
+
+# checks if debug mode is on
+function Debug {
+	if [[ ${enableDebug} == true ]]; then
+		echo "${date} ${1}" >>"${debugLog}"
+	fi
+}
+
+# prints all input to screen
+function Screen {
+	if screen -list | grep -q "\.${serverName}"; then
+		screen -Rd "${serverName}" -X stuff "${1}$(printf '\r')"
+	fi
+}
+
+# root safety check
+function RootSafety {
+	if [ $(id -u) = 0 ]; then
+		Print "fatal" "please do not run me as root as this is dangerous :("
+		exit 1
+	fi
+}
+
+# checks if a script is already running
+function ScriptSafety {
+	if [[ ${force} == false ]]; then
+		declare -a arr=("reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
+		for i in "${scriptslock[@]}"; do
+			if pidof -x "${scriptslock[i]}" &>/dev/null; then
+				Print "warn" "script ${scriptslock[i]} is already running"
+				Print "info" "use --force option to ignore this safety check"
+				exit 1
+			fi
+		done
+	fi
+}
+
+# check for existance of screen terminal
+function CheckScreen {
+	if ! screen -list | grep -q "\.${serverName}"; then
+		Log "warn" "server is not currently running" >>"${screenLog}"
+		Print "warn" "server is not currently running"
+		exit 1
+	fi
+}
+
+# check for existance of screen terminal
+function LookForScreen {
+	if screen -list | grep -q "\.${serverName}"; then
+		Log "warn" "server is already running -  type screen -r ${serverName} to open server terminal" >>"${screenLog}"
+		Print "warn" "server is already running"
+		exit 1
+	fi
+}
+
+# check for executable
+function CheckExecutable {
+	if ! ls ${serverfile}* 1>/dev/null 2>&1; then
+		Log "fatal" "no executable found" >>"${screenLog}"
+		Print "fatal" "no executable found"
+		exit 1
+	fi
+}
+
+# prints input to screen with script format
+function TellrawScript {
+	if [[ $# -eq 1 ]]; then
+		Screen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${1}\"}]"
+	else
+		Screen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${1}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"${2}\"}]}}}]"
+	fi
+}
+
+# prints input to screen with backup format and color
+function TellrawBackup {
+	if [[ $# -eq 2 ]]; then
+		Screen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"blue\"},{\"text\":\"${1}\",\"color\":\"${2}\"}]"
+	else
+		Screen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"blue\"},{\"text\":\"${1}\",\"color\":\"${2}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"${3}\"}]}}}]"
+	fi
+}
+
+# prints input to screen at given player
+function TellrawPlayer {
+	if [[ $# -eq 2 ]]; then
+		Screen "tellraw ${1} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${2}\"}]"
+	else
+		Screen "tellraw ${1} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"${2}\"},{\"text\":\"${3}\",\"color\":\"${4}\"}]"
+	fi
+}
+
+# function for parsing all arguments for a script
+function ParseArgs {
 	force=false
+	help=false
 	now=false
 	quiet=false
 	verbose=false
 	while [[ $# -gt 0 ]]; do
-		case "$1" in
-			-f)
-				force=true
-			;;
-			-n)
-				now=true
-			;;
-			-q)
-				quiet=true
-			;;
-			-v)
-				verbose=true
-			;;
-			--force)
-				force=true
-			;;
-			--now)
-				now=true
-			;;
-			--quiet)
-				quiet=true
-			;;
-			--verbose)
-				verbose=true
-			;;
-			*)
-				echo "info: bad argument: $1"
-				exit 1
+		case "${1}" in
+		-f) force=true ;;
+		-h) help=true ;;
+		-n) now=true ;;
+		-q) quiet=true ;;
+		-v) verbose=true ;;
+		--force) force=true ;;
+		--help) help=true ;;
+		--now) now=true ;;
+		--quiet) quiet=true ;;
+		--verbose) verbose=true ;;
+		*)
+			Print "warn" "bad argument: ${1}"
+			Print "info" "for help use --help"
 			;;
 		esac
 		shift
 	done
 }
 
-# checks if a script is already running
-function CheckScriptLock {
-	if [[ ${force} == false ]] && [[ ${skipscriptlockcheck} == false ]]; then
-		declare -a arr=("maintenance.sh" "prerender.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
-		for i in "${scriptslock[@]}"; do
-			if pidof -x "${scriptslock[i]}" &> /dev/null; then
-				echo "info: script ${scriptslock[i]} is already running"
-				echo "info: use --force option to ignore safety check"
-				exit 1
-			fi
-		done
+# change to server directory with error checking
+function ChangeServerDirectory {
+	if [ -d "${serverDirectory}" ]; then
+		cd ${serverDirectory}
+	else
+		Log "fatal" "server-directory is missing - path: ${serverDirectory}" "${screenLog}"
+		Print "fatal" "server-directory is missing - path: ${serverDirectory}"
+		exit 1
 	fi
 }
 
-# check if verbose mode is on
-function CheckVerbose {
-	if [[ ${verbose} == true ]]; then
-		PrintToTerminal "${1}" "${2}"
-	fi
-}
-# checks if debug mode is on
-function CheckDebug {
-	if [[ ${enabledebug} == true ]]; then
-		echo "$(date) ${1}" >> "debug.log"
-	fi
-}
-# check if quiet mode is on
-function CheckQuiet {
-	if ! [[ ${quiet} == true ]]; then
-		PrintToTerminal "${1}" "${2}"
+# change to backup directory with error checking
+function ChangeBackupDirectory {
+	if [ -d "${backupDirectory}" ]; then
+		cd ${backupDirectory}
+	else
+		Log "fatal" "backup-directory is missing - path: ${backupDirectory}" "${screenLog}"
+		Print "fatal" "backup-directory is missing - path: ${backupDirectory}"
+		exit 1
 	fi
 }
 
-# prints all input to terminal
-function PrintToTerminal {
-	if [[ $1 == "ok" ]]; then
-	echo "${green}ok: ${2}${nocolor}"
-	fi
-	if [[ $1 == "info" ]]; then
-	echo "${nocolor}info: ${2}${nocolor}"
-	fi
-	if [[ $1 == "warn" ]]; then
-	echo "${yellow}warn: ${2}${nocolor}"
-	fi
-	if [[ $1 == "error" ]]; then
-	echo "${red}error: ${2}${nocolor}"
-	fi
-	if [[ $1 == "fatal" ]]; then
-	echo "${red}fatal: ${2}${nocolor}"
-	fi
-	if [[ $1 == "action" ]]; then
-	echo "${cyan}action: ${2}${nocolor}"
-	fi
-}
-# prints all input to screen
-function PrintToScreen {
-	if screen -list | grep -q "\.${servername}"; then
-		screen -Rd "${servername}" -X stuff "${1}$(printf '\r')"
-	fi
-}
-# prints all input to log
-function PrintToLog {
-	if [[ $1 == "ok" ]]; then
-		echo "ok: ${2}" >> "${3}"
-	fi
-	if [[ $1 == "info" ]]; then
-		echo "info: ${2}" >> "${3}"
-	fi
-	if [[ $1 == "warn" ]]; then
-		echo "warn: ${2}" >> "${3}"
-	fi
-	if [[ $1 == "error" ]]; then
-		echo "error: ${2}" >> "${3}"
-	fi
-	if [[ $1 == "fatal" ]]; then
-		echo "fatal: ${2}" >> "${3}"
-	fi
-	if [[ $1 == "action" ]]; then
-		echo "action: ${2}" >> "${3}"
-	fi
+# prints success messages to terminal screen and backup log
+function OutputBackupSuccess {
+	Log "ok" "added ${backupDirectory}/${1}/${serverName}-${2}.tar.gz" "${backupLog}"
+	Log "ok" "removed ${backupDirectory}/${1}/${serverName}-${3}.tar.gz" "${backupLog}"
+	Log "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskspace}" "${backupLog}"
+	Log "ok" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}" "${backupLog}"
+
+	Print "ok" "added ${backupDirectory}/${1}/${serverName}-${2}.tar.gz"
+	Print "ok" "removed ${backupDirectory}/${1}/${serverName}-${3}.tar.gz"
+	Print "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}"
+	Print "ok" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}"
+
+	TellrawBackup "ok: successfully created new backup" "green" "created file: ${serverName}-${2}.tar.gz, removed file: ${serverName}-${3}.tar.gz, current world size: ${worldSizeHuman}, current backup size: ${backupSize}, current disk space: ${diskSpaceHuman}, time spent: ${timeSpent} ms, compression: ${compressedBackupSize}/${worldSizeHuman}"
 }
 
-# prints success messages to terminal
-function PrintToTerminalBackupSuccess {
-	PrintToTerminal "ok" "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz"
-	PrintToTerminal "ok" "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz"
-	PrintToTerminal "ok" "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}"
-	PrintToTerminal "ok" "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}"
-}
-# prints success messages to screen
-function PrintToScreenBackupSuccess {
-	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"successfully created new backup\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created file: ${servername}-${1}.tar.gz, removed file: ${servername}-${2}.tar.gz, current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, time spent: ${timespent} ms, compression: ${compressedbackup}/${worldsize}\"}]}}}]"
-}
-# prints backup success to backup log
-function PrintToLogBackupSuccess {
-	PrintToLog "ok" "added ${backupdirectory}/hourly/${servername}-${1}.tar.gz" "${backuplog}"
-	PrintToLog "ok" "removed ${backupdirectory}/hourly/${servername}-${2}.tar.gz" "${backuplog}"
-	PrintToLog "ok" "current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}" "${backuplog}"
-	PrintToLog "ok" "time spent on backup process: ${timespent} milliseconds, compression ratio: ${compressedbackup}/${worldsize}" "${backuplog}"
-	echo "" >> "${backuplog}"
+# prints disk space warning to terminal screen and backup log
+function OutputDiskSpaceWarning {
+	Log "warn" "free disk-space is getting rare - make some room for backups" "${backupLog}"
+
+	Print "warn" "free disk-space is getting rare - make some room for backups"
+
+	TellrawBackup "warn: free disk space is getting rare - please tell your server admin" "yellow" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}, warning: free disk space is getting rare"
 }
 
-# prints backup already exists to terminal
-function PrintToTerminalBackupAlreadyExists {
-	PrintToTerminal "error" "could not create new ${1}-backup - backup already exists"
-}
-# prints backup already exists to screen
-function PrintToScreenBackupAlreadyExists {
-	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: backup already exists - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: backup already exists\"}]}}}]"
-}
-# prints backup already exists to log
-function PrintToLogBackupAlreadyExists {
-	PrintToLog "error" "could not create new ${1}-backup - backup already exists" "${backuplog}"
-	echo "" >> "${backuplog}"
+# prints disk space error to terminal screen and backup log
+function OutputDiskSpaceError {
+	Log "error" "not enough disk-space to perform backup-${1}" "${backupLog}"
+
+	Print "error" "not enough disk-space to perform backup-${1}"
+
+	TellrawBackup "fatal: not enough disk space - please immediately tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: not enough disk-space"
 }
 
-# prints disk space warnig to terminal
-function PrintToTerminalDiskSpaceWarning {
-	PrintToTerminal "warn" "free disk-space is getting rare - make some room for backups"
-}
-# prints disk space warning to screen
-function PrintToScreenDiskSpaceWarning {
-	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"warning: free disk space is getting rare - please tell your server admin\",\"color\":\"yellow\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"current world size: ${worldsize}, current backup size: ${backupsize}, current disk space: ${diskspace}, warning: free disk space is getting rare\"}]}}}]"
-}
-# prints disk space warning to log
-function PrintToLogDiskSpaceWarning {
-	PrintToLog "warn" "free disk-space is getting rare - make some room for backups" "${backuplog}"
-	echo "" >> "${backuplog}"
+# prints backup already exists messages to terminal screen and backup log
+function OutputBackupAlreadyExists {
+	Log "error" "could not create new ${1}-backup - backup already exists" "${backupLog}"
+
+	Print "error" "could not create new ${1}-backup - backup already exists"
+
+	TellrawBackup "error: backup already exists - please tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: backup already exists"
 }
 
-# prints not enough disk space to terminal
-function PrintToTerminalNotEnoughDiskSpace {
-	PrintToTerminal "error" "not enough disk-space to perform backup-${1}"
-}
-# prints not enough disk space to screen
-function PrintToScreenNotEnoughtDiskSpace {
-	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: not enough disk space - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: not enough disk-space\"}]}}}]"
-}
-# prints not enough disk space to backup log
-function PrintToLogNotEnoughDiskSpace {
-	PrintToLog "error" "not enough disk-space to perform backup-${1}" "${backuplog}"
-	echo "" >> "${backuplog}"
+# prints tar backup error messages to terminal screen and backup log
+function OutputBackupTarError {
+	Log "error" "tar reports errors during compression of world directory" "${backupLog}"
+
+	Print "error" "tar reports errors during compression of world directory"
+
+	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: tar reports errors during compression of world directory"
 }
 
-# prints backup error to backup log
-function PrintToTerminalBackupError {
-	PrintToTerminal "warn" "cannot remove old backup because new backup is missing"
-	PrintToTerminal "warn" "could not remove old backup"
-	PrintToTerminal "error" "could not backup world"
-}
-# prints error messages to screen
-function PrintToScreenBackupError {
-	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"fatal: could not create new backup - please immediately tell your server admin\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"could not create file: ${servername}-${1}.tar.gz, could not remove file: ${servername}-${2}.tar.gz, reason: missing directories, empty file-path or empty files\"}]}}}]"
-}
-# prints backup error to log
-function PrintToLogBackupError {
-	PrintToLog "warn" "cannot remove old backup because new backup is missing" "${backuplog}"
-	PrintToLog "warn" "could not remove old backup" "${backuplog}"
-	PrintToLog "error" "could not backup world" "${backuplog}"
-	echo "" >> "${backuplog}"
-}
+# prints generic backup error messages to terminal screen and backup log
+function OutputBackupGenericError {
+	Log "error" "could not backup world" "${backupLog}"
 
-# creates a Progressbar function
-function ProgressBar {
-	# process data
-	let progress=(${2}*100/${3}*100)/100
-	let done=(${progress}*4)/10
-	let left=40-${done}
-	# build progressbar string lengths
-	fill=$(printf "%${done}s")
-	empty=$(printf "%${left}s")
-	# terminal output
-	printf "\r${1} [${fill// /#}${empty// /-}] ${progress}%% "
+	Print "error" "could not backup world"
+
+	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: generic error - missing directories, empty file-path or empty files"
 }
 
 # function for testing if all categories for backups exists if not create them also check for root backups directory
-function CheckBackupDirectoryIntegrity {
-	cd ${serverdirectory}
+function BackupDirectoryIntegrity {
+	cd ${serverDirectory}
 	# check for root backup directory and create if missing
-	if ! ls ${backupdirectory} &> /dev/null; then
-		PrintToLog "error" "the root-backupdirectory is missing - your backups are likely gone :(" "${backuplog}"
-		PrintToLog "info" "creating a new root-backupdirectory with name backups at ${serverdirectory}" "${backuplog}"
-		echo "" >> "${backuplog}"
-		PrintToTerminal "error" "the root-backupdirectory is missing - your backups are likely gone :("
-		PrintToTerminal "info" "creating a new root-backupdirectory with name backups at ${serverdirectory}"
+	if ! ls ${backupDirectory} &>/dev/null; then
+		Log "error" "the root-backupdirectory is missing - your backups are likely gone :(" "${backupLog}"
+		Log "info" "creating a new root-backupdirectory with name backups at ${serverDirectory}" "${backupLog}"
+		Print "error" "the root-backupdirectory is missing - your backups are likely gone :("
+		Print "info" "creating a new root-backupdirectory with name backups at ${serverDirectory}"
+		Screen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"blue\"},{\"text\":\"error: the root-backupdirectory is missing - your backups are likely gone :(\",\"color\":\"red\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"reason: backup directory integrity check reports that the root backup directory is missing - the root backup directory has been recreated\"}]}}}]"
 		mkdir backups
 	fi
-	declare -a backupcategories=( "cached" "hourly" "daily" "weekly" "monthly" )
-	arraylenght=${#backupcategories[@]}
-	for (( i = 1; i < ${arraylenght} + 1; i ++ )); do
+	declare -a backupCategories=("cached" "hourly" "daily" "weekly" "monthly")
+	arrayLenght=${#backupCategories[@]}
+	for ((i = 0; i < ${arrayLenght}; i++)); do
 		# check for backup category directories and create if missing
-		if ! ls ${backupdirectory}/${backupcategories[${i}-1]} &> /dev/null; then
-			PrintToLog "warn" "the backup-directory ${backupcategories[${i}-1]} is missing" "${backuplog}"
-			PrintToLog "info" "creating ${backupdirectory}/${backupcategories[${i}-1]}" "${backuplog}"
-			echo "" >> "${backuplog}"
-			PrintToTerminal "warn" "the backup-directory ${backupcategories[${i}-1]} is missing"
-			PrintToTerminal "info" "creating ${backupdirectory}/${backupcategories[${i}-1]}"
-			cd ${backupdirectory}
-			mkdir ${backupcategories[${i}-1]}
-			cd ${serverdirectory}
+		if ! ls ${backupDirectory}/${backupCategories[${i}]} &>/dev/null; then
+			Log "warn" "the backup-directory ${backupCategories[${i}]} is missing" "${backupLog}"
+			Log "info" "creating ${backupDirectory}/${backupCategories[${i}]}" "${backupLog}"
+			Print "warn" "the backup-directory ${backupCategories[${i}]} is missing"
+			Print "info" "creating ${backupDirectory}/${backupCategories[${i}]}"
+			Screen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"blue\"},{\"text\":\"warn: the ${backupCategories[${i}]} backup category is missing - your ${backupCategories[${i}]} backups are likely gone :/\",\"color\":\"yellow\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"reason: backup directory integrity check reports that the ${backupCategories[${i}]} backup directory is missing - the ${backupCategories[${i}]} backup directory has been recreated\"}]}}}]"
+			cd ${backupDirectory}
+			mkdir ${backupCategories[${i}]}
+			cd ${serverDirectory}
 		fi
 	done
 }
 
-# function for fetching scripts from github with error checking
-function FetchScriptFromGitHub {
-	wget --spider --quiet "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}"
-	if [ "$?" != 0 ]; then
-		PrintToTerminal "fatal" "Unable to connect to GitHub API. Script will exit! (maybe chose another branch?)"
-		exit 1
-	else
-		CheckVerbose "info" "fetching file: ${1} from branch ${branch} on GitHub..."
-		wget -q -O "${1}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${1}"
-fi
-}
+# declare all scripts in an array
+declare -a scripts=("start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "worker.sh" "vent.sh")
+# get length of script array
+scriptsLength=${#scripts[@]}
 
 # function for removing scripts from serverdirectory
-function RemoveScriptsFromServerDirectory {
-	# user info about download
-	CheckVerbose "info" "removing scripts in serverdirectory..."
+function RemoveScripts {
 	# remove scripts from serverdirectory
-	# declare all scripts in an array
-	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
-	# get length of script array
-	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
-	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "info" "removing script ${scripts[${i}-1]}"
-		rm "${scripts[${i}-1]}"
+	for ((i = 1; i < ${scriptsLength} + 1; i++)); do
+		Print "info" "removing script ${scripts[${i} - 1]}"
+		rm "${scripts[${i} - 1]}"
 	done
 }
 
 # function for downloading scripts from github
-function DownloadScriptsFromGitHub {
-	# user info about download
-	CheckVerbose "info" "downloading scripts from GitHub..."
+function DownloadScripts {
 	# downloading scripts from github
-	# declare all scripts in an array
-	declare -a scripts=( "LICENSE" "README.md" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
-	# get length of script array
-	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
-	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		FetchScriptFromGitHub "${scripts[${i}-1]}"
+	for ((i = 0; i < ${scriptsLength}; i++)); do
+		Print "info" "downloading script ${scripts[${i}]} from branch ${branch} on github..."
+		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scripts[${i}]}"
 	done
 }
 
 # function for making scripts executable
-function MakeScriptsExecutable {
+function ExecutableScripts {
 	# make selected scripts executable
-	# declare all scripts in an array
-	declare -a scripts=( "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "maintenance.sh" "prerender.sh" "worker.sh" "vent.sh" )
-	# get length of script array
-	scriptslength=${#scripts[@]}
 	# loop through all entries in the array
-	for (( i = 1; i < ${scriptslength} + 1; i ++ )); do
-		CheckVerbose "info" "setting script ${scripts[${i}-1]} executable"
-		chmod +x ${scripts[${i}-1]}
+	for ((i = 0; i < ${scriptsLength}; i++)); do
+		Print "info" "setting script ${scripts[${i}]} executable"
+		chmod +x ${scripts[${i}]}
 	done
 }
 
-# function for creating a cached backup
-function CreateCachedBackup {
+# function for creating a cached backup with name as input
+function CachedBackup {
 	# remove all older cached backups
-	if [[ -s "${backupdirectory}/cached/${1}-"* ]]; then
-		rm "${backupdirectory}/cached/${1}-"*
+	if [[ -s "${backupDirectory}/cached/${1}-"* ]]; then
+		rm "${backupDirectory}/cached/${1}-"*
 	fi
-	# create backup
-	CheckQuiet "action" "creating ${1} backup..."
-	tar -czf "world.tar.gz" "world" && mv "${serverdirectory}/world.tar.gz" "${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz"
+	# user info about backup to create
+	Print "action" "creating cached ${1} backup..."
+	# create backup with given name
+	nice -n 19 cp -r "world" "tmp"
+	nice -n 19 tar -czf "world.tar.gz" "tmp"
+	nice -n 19 mv "${serverDirectory}/world.tar.gz" "${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz"
+	nice -n 19 rm -r "tmp"
 	# check if safety backup exists
-	if ! [[ -s "${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz" ]]; then
-		# terminal output
-		PrintToTerminal "warn" "${1} backup failed"
-		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup failed\",\"color\":\"red\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"file ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz does not exist\"}]}}}]"
-		# logfile output
-		PrintToLog "warn" "${1} backup failed" "${backuplog}"
-		echo "" >> "${backuplog}"
+	if [[ -s "${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz" ]]; then
+		Log "ok" "created ${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz as a ${1} backup" "${backupLog}"
+
+		Print "ok" "${1} backup successful"
+
+		TellrawBackup "ok: backup successful" "green" "created ${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz"
 	else
-		# terminal output
-		CheckQuiet "ok" "${1} backup successful"
-		# ingame output
-		PrintToScreen "tellraw @a [\"\",{\"text\":\"[Backup] \",\"color\":\"gray\",\"italic\":true},{\"text\":\"backup successful\",\"color\":\"green\",\"italic\":true,\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz\"}]}}}]"
-		# logfile output
-		PrintToLog "ok" "created ${backupdirectory}/cached/${1}-${newdaily}-${newhourly}.tar.gz as a ${1} backup" "${backuplog}"
-		echo "" >> "${backuplog}"
+		Log "warn" "${1} backup failed" "${backupLog}"
+
+		Print "warn" "${1} backup failed"
+
+		TellrawBackup "warn: backup failed" "yellow" "failed to create ${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz"
 	fi
 }
 
+# check for help string
+function Help {
+	if tail -1 "${screenLog}" | grep -q "help"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=help)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		Log "info" "the player ${player} requested help - server will print help info and admin contact" "${screenLog}"
+		TellrawPlayer "${player}" "info: admin contact info: ${adminContact}"
+		TellrawPlayer "${player}" "info: available commands: (seperated by comma)"
+		TellrawPlayer "${player}" "info: list tasks, list backups"
+		TellrawPlayer "${player}" "info: perform backup, perform restart, perform update, perform reset"
+		# spam protection
+		sleep 10s
+	fi
+}
 
-# check for perform tasks string
-function CheckPerformTasksString {
-	if tail -1 "${screenlog}" | grep -q "perform tasks"; then
-	player=$(tail -1 screen.log | grep -oP '.*?(?=perform tasks)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+# check for list tasks string
+function ListTasks {
+	if tail -1 "${screenLog}" | grep -q "list tasks"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=list tasks)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested all available tasks of the server\"}]"
-			PrintToLog "info" "the player ${player} requested list of all tasks and has permission - server will list all tasks" "${screenlog}"
-			echo "" >> "${screenlog}"
-			# run perform tasks
-			if [[ "${enablesafetybackupstring}" == true ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform backup is \"},{\"text\":\"enabled\",\"color\":\"green\"}]"
-			elif [[ "${enablesafetybackupstring}" == false ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform backup is \"},{\"text\":\"disabled\",\"color\":\"red\"}]"
+			Log "info" "the player ${player} requested list of all tasks and has permission - server will list all tasks" "${screenLog}"
+			TellrawPlayer "${player}" "info: you successfully requested all available tasks of the server"
+			# run list tasks
+			if [[ ${enablePerformBackup} == true ]]; then
+				TellrawPlayer "${player}" "perform backup is" "enabled" "green"
+			elif [[ "${enablePerformBackup}" == false ]]; then
+				TellrawPlayer "${player}" "perform backup is" "disabled" "red"
 			else
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform backup is \"},{\"text\":\"undefined\",\"color\":\"grey\"}]"
+				TellrawPlayer "${player}" "perform backup is" "undefined" "grey"
 			fi
-			if [[ "${enableconfirmrestartstring}" == true ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform restart is \"},{\"text\":\"enabled\",\"color\":\"green\"}]"
-			elif [[ "${enableconfirmrestartstring}" == false ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform restart is \"},{\"text\":\"disabled\",\"color\":\"red\"}]"
+			if [[ ${enablePerformRestart} == true ]]; then
+				TellrawPlayer "${player}" "perform restart is" "enabled" "green"
+			elif [[ "${enablePerformRestart}" == false ]]; then
+				TellrawPlayer "${player}" "perform restart is" "disabled" "red"
 			else
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform restart is \"},{\"text\":\"undefined\",\"color\":\"grey\"}]"
+				TellrawPlayer "${player}" "perform restart is" "undefined" "grey"
 			fi
-			if [[ "${enableconfirmupdatestring}" == true ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform update is \"},{\"text\":\"enabled\",\"color\":\"green\"}]"
-			elif [[ "${enableconfirmupdatestring}" == false ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform update is \"},{\"text\":\"disabled\",\"color\":\"red\"}]"
+			if [[ ${enablePerformUpdate} == true ]]; then
+				TellrawPlayer "${player}" "perform update is" "enabled" "green"
+			elif [[ ${enablePerformUpdate} == false ]]; then
+				TellrawPlayer "${player}" "perform update is" "disabled" "red"
 			else
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform update is \"},{\"text\":\"undefined\",\"color\":\"grey\"}]"
+				TellrawPlayer "${player}" "perform update is" "undefined" "grey"
 			fi
-			if [[ "${enableconfirmresetstring}" == true ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform reset is \"},{\"text\":\"enabled\",\"color\":\"green\"}]"
-			elif [[ "${enableconfirmresetstring}" == false ]]; then
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform reset is \"},{\"text\":\"disabled\",\"color\":\"red\"}]"
+			if [[ ${enablePerformReset} == true ]]; then
+				TellrawPlayer "${player}" "perform reset is" "enabled" "green"
+			elif [[ ${enablePerformReset} == false ]]; then
+				TellrawPlayer "${player}" "perform reset is" "disabled" "red"
 			else
-				PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"perform reset is \"},{\"text\":\"undefined\",\"color\":\"grey\"}]"
+				TellrawPlayer "${player}" "perform reset is" "undefined" "grey"
 			fi
 			# spam protection
 			sleep 20s
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to request all available tasks of the server\"}]"
-			PrintToLog "warn" "the player ${player} requested a safety backup and does not have permission to do so" "${screenlog}"
-			echo "" >> "${screenlog}"
+			Log "warn" "the player ${player} requested a list of tasks and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to list all available tasks of the server"
 		fi
 	fi
 }
-# check for safety backup string
-function CheckSafetyBackupString {
-	if tail -1 "${screenlog}" | grep -q "perform backup"; then
+
+# check for list backups string
+function ListBackups {
+	if tail -1 "${screenLog}" | grep -q "list backups"; then
+		player=$(tail -1 screen.log | grep -oP '.*?(?=list backups)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
+		if cat "ops.json" | grep -q "${player}"; then
+			Log "info" "the player ${player} requested list of all backups and has permission - server will list all backups" "${screenLog}"
+			TellrawPlayer "${player}" "info: you successfully requested all available backups of the server"
+			# run list backups
+			if [[ ${doHourly} == true ]]; then
+				TellrawPlayer "${player}" "hourly backup is" "enabled" "green"
+			elif [[ "${doHourly}" == false ]]; then
+				TellrawPlayer "${player}" "hourly backup is" "disabled" "red"
+			else
+				TellrawPlayer "${player}" "hourly backup is" "undefined" "grey"
+			fi
+			if [[ ${doDaily} == true ]]; then
+				TellrawPlayer "${player}" "daily backup is" "enabled" "green"
+			elif [[ "${doDaily}" == false ]]; then
+				TellrawPlayer "${player}" "daily backup is" "disabled" "red"
+			else
+				TellrawPlayer "${player}" "daily backup is" "undefined" "grey"
+			fi
+			if [[ ${doWeekly} == true ]]; then
+				TellrawPlayer "${player}" "weekly backup is" "enabled" "green"
+			elif [[ ${doWeekly} == false ]]; then
+				TellrawPlayer "${player}" "weekly backup is" "disabled" "red"
+			else
+				TellrawPlayer "${player}" "weekly backup is" "undefined" "grey"
+			fi
+			if [[ ${doMonthly} == true ]]; then
+				TellrawPlayer "${player}" "monthly backup is" "enabled" "green"
+			elif [[ ${doMonthly} == false ]]; then
+				TellrawPlayer "${player}" "monthly backup is" "disabled" "red"
+			else
+				TellrawPlayer "${player}" "monthly backup is" "undefined" "grey"
+			fi
+			# spam protection
+			sleep 20s
+		else
+			Log "warn" "the player ${player} requested a list of backups and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to list all available backups of the server"
+		fi
+	fi
+}
+
+# check for perform backup string
+function PerformBackup {
+	if tail -1 "${screenLog}" | grep -q "perform backup"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform backup)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested a safety backup of the server\"}]"
-			PrintToLog "info" "the player ${player} requested a safety backup and has permission - server will perform safety backup" "${backuplog}"
-			echo "" >> "${backuplog}"
+			Log "info" "the player ${player} requested a safety backup and has permission - server will perform safety backup" "${backupLog}"
+			TellrawPlayer "${player}" "info: you successfully requested a safety backup of the server\"}]"
 			# run safety backup
-			CreateCachedBackup "safety"
+			CachedBackup "safety"
 			# spam protection
 			sleep 20s
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to safety backup the server\"}]"
-			PrintToLog "warn" "the player ${player} requested a safety backup and does not have permission to do so" "${backuplog}"
-			echo "" >> "${backuplog}"
+			Log "warn" "the player ${player} requested a safety backup and does not have permission to do so" "${backupLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to safety backup the server\"}]"
 		fi
 	fi
 }
-# check for confirm restart strings
-function CheckConfirmRestartString {
+
+# check for perform restart strings
+function PerformRestart {
 	# check for perform restart now string
-	if tail -1 "${screenlog}" | grep -q "perform restart now"; then
+	if tail -1 "${screenLog}" | grep -q "perform restart now"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform restart now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested a restart of the server\"}]"
-			PrintToLog "info" "the player ${player} requested a restart and has permission - server will restart" "${screenlog}"
+			Log "info" "the player ${player} requested a restart and has permission - server will restart" "${screenLog}"
+			TellrawPlayer "${player}" "info: you successfully requested a restart of the server\"}]"
 			./restart.sh --quiet --now
 			exit 0
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to restart the server\"}]"
-			PrintToLog "warn" "the player ${player} requested a restart and does not have permission to do so" "${screenlog}"
+			Log "warn" "the player ${player} requested a restart and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to restart the server\"}]"
 		fi
 	fi
 	# check for perform restart string
-	if tail -1 "${screenlog}" | grep -q "perform restart"; then
+	if tail -1 "${screenLog}" | grep -q "perform restart"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested a restart of the server\"}]"
-			PrintToLog "info" "the player ${player} requested a restart and has permission - server will restart" "${screenlog}"
+			Log "info" "the player ${player} requested a restart and has permission - server will restart" "${screenLog}"
+			TellrawPlayer "${player}" "info: you successfully requested a restart of the server\"}]"
 			./restart.sh --quiet
 			exit 0
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to restart the server\"}]"
-			PrintToLog "warn" "the player ${player} requested a restart and does not have permission to do so" "${screenlog}"
+			Log "warn" "the player ${player} requested a restart and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to restart the server\"}]"
 		fi
 	fi
 }
-# check for confirm update strings
-function CheckConfirmUpdateString {
+
+# check for perform update strings
+function PerformUpdate {
 	# check for perform update now string
-	if tail -1 "${screenlog}" | grep -q "perform update now"; then
+	if tail -1 "${screenLog}" | grep -q "perform update now"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform update now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
-			PrintToLog "info" "the player ${player} requested an update and has permission - server will update" "${screenlog}"
+			Log "info" "the player ${player} requested an update and has permission - server will update" "${screenLog}"
+			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
 			./update.sh --quiet --now
 			exit 0
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
-			PrintToLog "warn" "the player ${player} requested an update and does not have permission to do so" "${screenlog}"
+			Log "warn" "the player ${player} requested an update and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
 		fi
 	fi
 	# check for perform update string
-	if tail -1 "${screenlog}" | grep -q "perform update"; then
+	if tail -1 "${screenLog}" | grep -q "perform update"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
-			PrintToLog "info" "the player ${player} requested an update and has permission - server will update" "${screenlog}"
+			Log "info" "the player ${player} requested an update and has permission - server will update" "${screenLog}"
+			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
 			./update.sh --quiet
 			exit 0
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
-			PrintToLog "warn" "the player ${player} requested an update and does not have permission to do so" "${screenlog}"
+			Log "warn" "the player ${player} requested an update and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
 		fi
 	fi
 }
-# check for confirm reset strings
-function CheckConfirmResetString {
+
+# check for perform reset strings
+function PerformReset {
 	# check for perform reset now string
-	if tail -1 "${screenlog}" | grep -q "perform reset now"; then
+	if tail -1 "${screenLog}" | grep -q "perform reset now"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform reset now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested a reset of the server\"}]"
-			PrintToLog "info" "the player ${player} requested a reset and has permission - server will reset" "${screenlog}"
+			Log "info" "the player ${player} requested a reset and has permission - server will reset" "${screenLog}"
+			TellrawPlayer "${player}" "info: you successfully requested a reset of the server"
 			./reset.sh --quiet --now
 			exit 0
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to reset the server\"}]"
-			PrintToLog "warn" "the player ${player} requested a reset and does not have permission to do so" "${screenlog}"
+			Log "warn" "the player ${player} requested a reset and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to reset the server"
 		fi
 	fi
 	# check for perform reset string
-	if tail -1 "${screenlog}" | grep -q "perform reset"; then
+	if tail -1 "${screenLog}" | grep -q "perform reset"; then
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform reset)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested a reset of the server\"}]"
-			PrintToLog "info" "the player ${player} requested a reset and has permission - server will reset" "${screenlog}"
+			Log "info" "the player ${player} requested a reset and has permission - server will reset" "${screenLog}"
+			TellrawPlayer "${player}" "info: you successfully requested a reset of the server"
 			./reset.sh --quiet
 			exit 0
 		else
-			PrintToScreen "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to reset the server\"}]"
-			PrintToLog "warn" "the player ${player} requested a reset and does not have permission to do so" "${screenlog}"
+			Log "warn" "the player ${player} requested a reset and does not have permission to do so" "${screenLog}"
+			TellrawPlayer "${player}" "warn: you do not have permissions to reset the server"
 		fi
 	fi
 }
 
 # performs countdown
-function PerformCountdown {
+function Countdown {
 	if ! [[ ${now} == true ]]; then
-		counter="60"
+		counter=60
 		while [ ${counter} -gt 0 ]; do
-			if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-				CheckQuiet "info" "server is ${1} in ${counter} seconds"
-				PrintToScreen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"server is ${1} in ${counter} seconds\"}]"
+			if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2)$ ]]; then
+				Print "info" "server is ${1} in ${counter} seconds"
+				TellrawScript "server is ${1} in ${counter} seconds"
 			fi
-			counter=$((counter-1))
+			if [[ "${counter}" == 1 ]]; then
+				Print "info" "server is ${1} in ${counter} second"
+				TellrawScript "server is ${1} in ${counter} second"
+			fi
+			counter=$((counter - 1))
 			sleep 1s
 		done
 	fi
 }
 
-# performs a server stop
-function PerformServerStop {
-	CheckQuiet "action" "stopping server..."
-	PrintToScreen "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"stopping server...\"}]"
+# checks private network availability
+function CheckPrivate {
+	privateChecks=0
+	while [ ${privateChecks} -lt 8 ]; do
+		if ping -c 1 "${private}" &>/dev/null; then
+			Log "ok" "interface is online" "${screenLog}"
+			Print "ok" "interface is online"
+			break
+		else
+			Log "warn" "interface is offline" "${screenLog}"
+			Print "warn" "interface is offline"
+		fi
+		if [ ${privateChecks} -eq 7 ]; then
+			Log "error" "interface timed out" "${screenLog}"
+			Print "error" "interface timed out"
+		fi
+		sleep 1s
+		privateChecks=$((privateChecks + 1))
+	done
+}
+
+# checks public network availability
+function CheckPublic {
+	publicChecks=0
+	while [ ${publicChecks} -lt 8 ]; do
+		if ping -c 1 "${public}" &>/dev/null; then
+			Log "ok" "nameserver is online" "${screenLog}"
+			Print "ok" "nameserver is online"
+			break
+		else
+			Log "warn" "nameserver is offline" "${screenLog}"
+			Print "warn" "nameserver is offline"
+		fi
+		if [ ${publicChecks} -eq 7 ]; then
+			Log "error" "nameserver timed out" "${screenLog}"
+			Print "error" "nameserver timed out"
+		fi
+		sleep 1s
+		publicChecks=$((publicChecks + 1))
+	done
+}
+
+# performs server start
+function Start {
+	Print "action" "starting server..."
+	screen -dmSL "${serverName}" -Logfile "${screenLog}" java -server "${memory}" "${threads}" -jar "${executableServerFile}" -nogui
+	screen -r "${serverName}" -X colon "logfile flush 1^M"
+}
+
+# awaits server start
+function AwaitStart {
+	startChecks=0
+	while [ ${startChecks} -lt 10 ]; do
+		if screen -list | grep -q "\.${serverName}"; then
+			break
+		fi
+		startChecks=$((startChecks + 1))
+		sleep 1s
+	done
+}
+
+# performs server stop
+function Stop {
+	Print "action" "stopping server..."
+	TellrawScript "stopping server..."
 	sleep 1s
-	PrintToScreen "stop"
+	Screen "stop"
 }
 
 # awaits server stop
-function AwaitServerStop {
-	stopchecks="0"
-	while [ $stopchecks -lt 30 ]; do
-		if ! screen -list | grep -q "\.${servername}"; then
+function AwaitStop {
+	stopChecks=0
+	while [ ${stopChecks} -lt 20 ]; do
+		if ! screen -list | grep -q "\.${serverName}"; then
 			break
 		fi
-		stopchecks=$((stopchecks+1))
-		sleep 1;
+		stopChecks=$((stopChecks + 1))
+		sleep 1
 	done
 }
+
 # conditional force quit
-function ConditionalForceQuit {
-	if screen -list | grep -q "${servername}"; then
-		PrintToTerminal "warn" "${servername} server still hasn't closed after 30 seconds, closing screen manually..."
-		PrintToLog "warn" "${servername} server still hasn't closed after 30 seconds, closing screen manually..." "${screenlog}"
-		screen -S "${servername}" -X quit
+function ForceQuit {
+	if screen -list | grep -q "${serverName}"; then
+		Log "warn" "${serverName} server still hasn't closed after 30 seconds, closing screen manually..." "${screenLog}"
+		Print "warn" "${serverName} server still hasn't closed after 30 seconds, closing screen manually..."
+		screen -S "${serverName}" -X quit
 	fi
 }
 
 # prints game over as pixel art on terminal
-function PrintGameOver {
-	echo "${red}    ______                       _____                     ${nocolor}"
-	echo "${red}   / _____)                     / ___ \                    ${nocolor}"
-	echo "${red}  | /  ___  ____ ____   ____   | |   | |_   _ ____  ____   ${nocolor}"
-	echo "${red}  | | (___)/ _  |    \ / _  )  | |   | | | | / _  )/ ___)  ${nocolor}"
-	echo "${red}  | \____/( ( | | | | ( (/ /   | |___| |\ V ( (/ /| |      ${nocolor}"
-	echo "${red}   \_____/ \_||_|_|_|_|\____)   \_____/  \_/ \____)_|      ${nocolor}"
-	echo "${red}                                                           ${nocolor}"
+function GameOver {
+	echo "${red}    ______                       _____                     ${noColor}"
+	echo "${red}   / _____)                     / ___ \                    ${noColor}"
+	echo "${red}  | /  ___  ____ ____   ____   | |   | |_   _ ____  ____   ${noColor}"
+	echo "${red}  | | (___)/ _  |    \ / _  )  | |   | | | | / _  )/ ___)  ${noColor}"
+	echo "${red}  | \____/( ( | | | | ( (/ /   | |___| |\ V ( (/ /| |      ${noColor}"
+	echo "${red}   \_____/ \_||_|_|_|_|\____)   \_____/  \_/ \____)_|      ${noColor}"
+	echo "${red}                                                           ${noColor}"
 }
