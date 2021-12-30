@@ -16,6 +16,9 @@ ScriptSafety
 # parse backup category
 ParseCategory "$@"
 
+# shift args
+shift
+
 # parse arguments
 ParseArgs "$@"
 

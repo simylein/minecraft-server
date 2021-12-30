@@ -122,19 +122,14 @@ function ParseCategory {
 	# test and set backup category
 	if [[ $1 == "--hourly" ]]; then
 		isHourly=true
-		shift
 	elif [[ $1 == "--daily" ]]; then
 		isDaily=true
-		shift
 	elif [[ $1 == "--weekly" ]]; then
 		isWeekly=true
-		shift
 	elif [[ $1 == "--monthly" ]]; then
 		isMonthly=true
-		shift
 	else
 		Print "error" "$1 is not a backup category"
-		shift
 	fi
 }
 
