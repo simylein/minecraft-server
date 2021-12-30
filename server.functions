@@ -556,6 +556,7 @@ function ListTasks {
 			else
 				TellrawPlayer "${player}" "perform reset is" "undefined" "grey"
 			fi
+			TellrawPlayer "${player}" "config is located in file server.settings"
 			# spam protection
 			sleep 20s
 		else
@@ -601,6 +602,7 @@ function ListBackups {
 			else
 				TellrawPlayer "${player}" "monthly backup is" "undefined" "grey"
 			fi
+			TellrawPlayer "${player}" "config is located in file server.settings"
 			# spam protection
 			sleep 20s
 		else
