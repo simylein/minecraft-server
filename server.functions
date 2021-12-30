@@ -34,7 +34,7 @@ function Print {
 	if [[ ${1} == "ok" ]] && [[ ${quiet} == false ]]; then
 		echo "$(date +"%H:%M:%S") ${green}ok${noColor}: ${2}"
 	fi
-	if [[ ${1} == "info" ]] && [[ ${verbose} == true ]] && [[ ${quiet} == false ]]; then
+	if [[ ${1} == "info" ]] && [[ ${quiet} == false ]]; then
 		echo "$(date +"%H:%M:%S") ${blue}info${noColor}: ${2}"
 	fi
 	if [[ ${1} == "warn" ]]; then
