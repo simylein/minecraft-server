@@ -135,19 +135,36 @@ function FetchServerFile {
 	Print "info" "downloading minecraft-server.${version}.jar..."
 	wget -q -O "minecraft-server.${version}.jar" "https://launcher.mojang.com/v1/objects/${1}/server.jar"
 	executableServerFile="${serverDirectory}/minecraft-server.${version}.jar"
-	Print "ok" "download successful"
-	if ! [[ -s "minecraft-server.${version}.jar" ]]; then
+	if [[ -s "minecraft-server.${version}.jar" ]]; then
+		Print "ok" "download successful"
+	else
 		Print "fatal" "downloaded server-file minecraft-server.${version}.jar is empty or not available"
 	fi
 }
 
 # root safety check
-if [ $(id -u) = 0 ]; then
-	Print "fatal" "please do not run me as root :( - this is dangerous!"
-	exit 1
-fi
+function RootSafety {
+	if [ $(id -u) = 0 ]; then
+		Print "fatal" "please do not run me as root :( - this is dangerous!"
+		exit 1
+	fi
+}
 
-# run all checks
+# checks if a script is already running
+function ScriptSafety {
+	if [[ ${force} == false ]]; then
+		if pidof -x "setup.sh" &>/dev/null; then
+			Print "warn" "script setup.sh is already running"
+			exit 1
+		fi
+	fi
+}
+
+# safety
+RootSafety
+ScriptSafety
+
+# os detection
 CheckLinux
 CheckMacOS
 CheckWindows
@@ -162,7 +179,7 @@ regex="^[a-zA-Z0-9]+$"
 verify="false"
 while [[ ${verify} == false ]]; do
 	if [[ ! "${serverName}" =~ ${regex} ]]; then
-		read -p "${time} prompt: please enter a serverName which only contains letters and numbers: " serverName
+		read -p "${time} prompt: please enter a name which only contains letters and numbers: " serverName
 	else
 		regexCheck=true
 	fi
