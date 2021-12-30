@@ -1,127 +1,99 @@
 #!/bin/bash
 # minecraft server update script
 
-# root safety check
-if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
-	exit 1
-fi
+# read server files
+source server.settings
+source server.functions
 
-# read server.functions file with error checking
-if [[ -s "server.functions" ]]; then
-	. ./server.functions
-else
-	echo "$(date) fatal: server.functions is missing" >> "fatalerror.log"
-	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
-	exit 1
-fi
+# safety checks
+RootSafety
+ScriptSafety
 
-# read server.properties file with error checking
-if ! [[ -s "server.properties" ]]; then
-	echo "$(date) fatal: server.properties is missing" >> "fatalerror.log"
-	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
-	exit 1
-fi
+# parse arguments
+ParseArgs "$@"
 
-# read server.settings file with error checking
-if [[ -s "server.settings" ]]; then
-	. ./server.settings
-else
-	echo "$(date) fatal: server.settings is missing" >> "fatalerror.log"
-	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
-	exit 1
-fi
+# debug
+Debug "executing $0 script"
 
-# change to server directory with error checking
-if [ -d "${serverdirectory}" ]; then
-	cd ${serverdirectory}
-else
-	echo "$(date) fatal: serverdirectory is missing" >> "fatalerror.log"
-	echo "${red}fatal: serverdirectory is missing${nocolor}"
-	exit 1
-fi
+# change to server directory
+ChangeServerDirectory
 
-# log to debug if true
-CheckDebug "executing update script"
+# check for existance of executable
+CheckExecutable
 
-# parsing script arguments
-ParseScriptArguments "$@"
+# look if server is running
+CheckScreen
 
-# check for script lock
-CheckScriptLock
+# prints countdown to screen
+Countdown "stopping"
 
-# write date to logfile
-PrintToLog "action" "${date} executing update script" "${screenlog}"
+# server stop
+Stop
 
-# check if server is running
-if screen -list | grep -q "\.${servername}"; then
+# awaits server stop
+AwaitStop
 
-	# prints countdown to screen
-	PerformCountdown "updating"
-	
-	# server stop
-	PerformServerStop
-	
-	# awaits server stop
-	AwaitServerStop
-	
-	# force quit server if not stopped
-	ConditionalForceQuit
-	
-	# output confirmed stop
-	PrintToLog "ok" "server successfully stopped!" "${screenlog}"
-	CheckQuiet "ok" "server successfully stopped!"
-fi
+# force quit server if not stopped
+ForceQuit
+
+# output confirmed stop
+Log "ok" "server successfully stopped" "${screenLog}"
+Print "ok" "server successfully stopped"
 
 # create backup
-CreateCachedBackup "update"
+CachedBackup "update"
+
+# update from url
+url="https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar"
+version="1.18.1"
 
 # Test internet connectivity and update on success
-wget --spider --quiet "https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar"
+wget --spider --quiet "${url}"
 if [ "$?" != 0 ]; then
-	PrintToTerminal "warn" "unable to connect to mojang api skipping update..."
-	PrintToLog "warn" "unable to connect to mojang api skipping update..." "${screenlog}"
+	Log "warn" "unable to connect to mojang api skipping update..." "${screenLog}"
+	Print "warn" "unable to connect to mojang api skipping update..."
 else
-	CheckQuiet "ok" "downloading newest server version..."
-	PrintToLog "info" "downloading newest server version..." "${screenlog}"
+	Log "info" "downloading newest server version..." "${screenLog}"
+	Print "ok" "downloading newest server version..."
 	# check if already on newest version
-	if [[ "${serverfile}" = *"minecraft-server.1.18.1.jar" ]]; then
-		CheckVerbose "info" "you are running the newest server version - skipping update"
-		PrintToLog "info" "you are running the newest server version - skipping update" "${screenlog}"
+	if [[ "${executableServerFile}" = *"minecraft-server.${version}.jar" ]]; then
+		Log "info" "you are running the newest server version - skipping update" "${screenLog}"
+		Print "info" "you are running the newest server version - skipping update"
 	else
-		wget -q -O "minecraft-server.1.18.1.jar" "https://launcher.mojang.com/v1/objects/125e5adf40c659fd3bce3e66e67a16bb49ecc1b9/server.jar"
+		wget -q -O "minecraft-server.${version}.jar" "${url}"
 		# update serverfile variable in server.settings
-		newserverfile="${serverdirectory}/minecraft-server.1.18.0.jar"
+		newExecutableServerFile="${serverDirectory}/minecraft-server.${version}.jar"
 		# if new serverfile exists remove oldserverfile
-		if [ -f "${newserverfile}" ]; then
-			CheckVerbose "ok" "updating server.settings for startup with new server version 1.18.1"
-			sed -i "s|${serverfile}|${newserverfile}|g" "server.settings"
+		if [ -s "${newExecutableServerFile}" ]; then
+			Log "ok" "updating server.settings for startup with new server version ${version}" "${screenLog}"
+			Print "ok" "updating server.settings for startup with new server version ${version}"
+			sed -i "s|${executableServerFile}|${newExecutableServerFile}|g" "server.settings"
 			# remove old serverfile if it exists
-			if [ -f "${serverfile}" ]; then
-				rm ${serverfile}
+			if [ -s "${executableServerFile}" ]; then
+				rm "${executableServerFile}"
 			fi
 		else
-			PrintToTerminal "warn" "could not remove old server-file ${serverfile} because new server-file ${newserverfile} is missing"
-			CheckQuiet "info" "server will startup with old server-file ${serverfile}"
+			Print "warn" "could not remove old server-file ${executableServerFile} because new server-file ${newExecutableServerFile} is missing"
+			Print "info" "server will startup with old server-file ${executableServerFile}"
 		fi
 	fi
 fi
 
 # remove scripts from serverdirectory
-RemoveScriptsFromServerDirectory
+RemoveScripts
 
 # downloading scripts from github
-DownloadScriptsFromGitHub
+DownloadScripts
 
 # make selected scripts executable
-MakeScriptsExecutable
+ExecutableScripts
 
 # restart the server
-CheckQuiet "action" "restarting server..."
+Print "action" "restarting server..."
 ./start.sh "$@"
 
 # log to debug if true
-CheckDebug "executed update script"
+Debug "executed $0 script"
 
 # exit with code 0
 exit 0
