@@ -58,9 +58,9 @@ count="0"
 counter="0"
 startupChecks="0"
 while [ ${startupChecks} -lt 120 ]; do
-	if tail "${screenLog}" | grep -q "Thread Query Listener started"; then
-		Log "ok" "server startup successful - query up and running" "${screenLog}"
-		Print "ok" "server startup successful - query up and running"
+	if tail "${screenLog}" | grep -q "Time elapsed:"; then
+		Log "ok" "server startup successful - up and running" "${screenLog}"
+		Print "ok" "server startup successful - up and running"
 		break
 	fi
 	if tail -20 "${screenLog}" | grep -q "FAILED TO BIND TO PORT"; then
@@ -115,8 +115,10 @@ done
 
 # check if screenlog does not contain startup confirmation
 if ! tail "${screenLog}" | grep -q "Thread Query Listener started"; then
-	Log "warn" "server startup unsuccessful - perhaps query is disabled" "${screenLog}"
-	Print "warn" "server startup unsuccessful - perhaps query is disabled"
+	Log "warn" "server startup unsuccessful" "${screenLog}"
+	Print "warn" "server startup unsuccessful"
+	Print "info" "crash dump - last 10 lines of ${screenLog}"
+	tail -10 "${screenLog}"
 fi
 
 # enable worker script
