@@ -114,7 +114,7 @@ while [ ${startupChecks} -lt 120 ]; do
 done
 
 # check if screenlog does not contain startup confirmation
-if ! tail "${screenLog}" | grep -q "Thread Query Listener started"; then
+if ! tail "${screenLog}" | grep -q "Time elapsed:"; then
 	Log "warn" "server startup unsuccessful" "${screenLog}"
 	Print "warn" "server startup unsuccessful"
 	Print "info" "crash dump - last 10 lines of ${screenLog}"
