@@ -323,7 +323,7 @@ StoreProperties "motd=A Minecraft Server" "motd=Hello World, I am your new Minec
 # store to crontab
 Print "info" "storing config to crontab..."
 date=$(date +"%Y-%m-%d %H:%M:%S")
-StoreCrontab "# minecraft ${serverName} server automatisation - executed setup.sh at ${date}"
+StoreCrontab "# minecraft ${serverName} server automatisation - executed setup.sh at $(date +"%Y-%m-%d %H:%M:%S")"
 StoreCrontab ""
 StoreCrontab "#MAILTO=youremail@example.com"
 StoreCrontab "TERM=xterm"
