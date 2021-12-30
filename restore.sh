@@ -108,9 +108,6 @@ elif [[ "${cachedDailyHourlyWeeklyMonthly}" == "${backups[4]}" ]]; then
 	done
 fi
 
-# echo selected backup
-Print "info" "selected backup to restore: ${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup}"
-
 # ask for permission to proceed
 Print "info" "i will now delete the current world-directory and replace it with your chosen backup"
 Print "info" "you have chosen: ${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup} as a backup to restore"
@@ -125,12 +122,13 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	cd "${serverDirectory}"
 	Print "action" "restoring backup..."
 	nice -n 19 mv "${serverDirectory}/world" "${serverDirectory}/old-world"
-	nice -n 19 cp "${backupdirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup}" "${serverDirectory}"
+	nice -n 19 cp "${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup}" "${serverDirectory}"
 	nice -n 19 mv "${backup}" "world.tar.gz"
 	nice -n 19 tar -xf "world.tar.gz"
+	nice -n 19 mv "tmp" "world"
 	nice -n 19 rm "world.tar.gz"
 	if [ -d "world" ]; then
-		Log "the backup ${backupdirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup} has been restored" "${screenLog}"
+		Log "the backup ${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup} has been restored" "${screenLog}"
 		Print "ok" "restore successful"
 		Print "action" "restarting server with restored backup..."
 		nice -n 19 rm -r "${serverDirectory}/old-world"
