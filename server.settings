@@ -5,7 +5,7 @@
 # if you know what you are doing, feel free to tinker with them ;^)
 
 # your contact info for players
-adminContact"your admin did not edit the server settings file /:"
+adminContact="your admin did not edit the server settings file /:"
 
 # welcome messages if a player joins
 welcome=("welcome on my server" "a warm welcome to" "greetings" "hello to" "welcome aboard" "make yourself at home" "have a nice time" "enjoy yourself")
