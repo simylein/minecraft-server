@@ -10,6 +10,10 @@ TERM="xterm"
 # branch selection from for github
 branch="dev"
 
+# script date and time logging
+time=$(date +"%H:%M:%S")
+date=$(date +"%Y-%m-%d %H:%M:%S")
+
 # command line colours
 black="$(tput setaf 0)"
 red="$(tput setaf 1)"
@@ -20,10 +24,6 @@ magenta="$(tput setaf 5)"
 cyan="$(tput setaf 6)"
 white="$(tput setaf 7)"
 noColor="$(tput sgr0)"
-
-# script date and time logging
-time=$(date +"%H:%M:%S")
-date=$(date +"%Y-%m-%d %H:%M:%S")
 
 # prints all input to terminal at given log level
 function Print {
@@ -157,17 +157,17 @@ CheckUnsupported
 Print "action" "i will setup a minecraft server for you ;^)"
 
 # initial question
-read -re -i "minecraft" -p "prompt: how should I call your server? your name: " serverName
+read -re -i "minecraft" -p "${time} prompt: how should I call your server? your name: " serverName
 regex="^[a-zA-Z0-9]+$"
 verify="false"
 while [[ ${verify} == false ]]; do
 	if [[ ! "${serverName}" =~ ${regex} ]]; then
-		read -p "prompt: please enter a serverName which only contains letters and numbers: " serverName
+		read -p "${time} prompt: please enter a serverName which only contains letters and numbers: " serverName
 	else
 		regexCheck=true
 	fi
 	if [ -d "${serverName}" ]; then
-		read -p "prompt: directory ${serverName} already exists - please enter another directory: " serverName
+		read -p "${time} prompt: directory ${serverName} already exists - please enter another directory: " serverName
 	else
 		existsCheck=true
 	fi
@@ -184,10 +184,10 @@ homeDirectory=$(pwd)
 
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
-read -p "prompt: proceed? (y/n): "
+read -p "${time} prompt: proceed? (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "prompt: please press y or n: " REPLY
+	read -p "${time} prompt: please press y or n: " REPLY
 done
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	Print "ok" "starting setup..."
@@ -211,7 +211,7 @@ declare -a scriptsDownload=("server.settings" "server.properties" "server.functi
 arrayLength=${#scriptsDownload[@]}
 # loop through all entries in the array
 for ((i = 0; i < ${arrayLength}; i++)); do
-	wget -q -O "${1}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scriptsDownload[${i}]}"
+	wget -q -O "${scriptsDownload[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scriptsDownload[${i}]}"
 done
 
 # user info about download
@@ -236,16 +236,13 @@ versions=("1.18.1" "1.17.1" "1.16.5")
 select version in "${versions[@]}"; do
 	case ${version} in
 	"1.18.1")
-		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
-		break
+		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9" break
 		;;
 	"1.17.1")
-		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
-		break
+		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2" break
 		;;
 	"1.16.5")
-		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
-		break
+		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced" break
 		;;
 	*) echo "please choose an option from the list: " ;;
 	esac
@@ -255,7 +252,7 @@ done
 Print "info" "your server will execute ${executableServerFile} at start"
 
 # set up backupdirectory with child directories
-Print "info" "setting up a backupDirectory..."
+Print "info" "setting up a backupdirectory..."
 mkdir world
 mkdir backups
 cd backups
@@ -271,12 +268,10 @@ cd ${serverDirectory}
 
 # eula question
 Print "info" "would you like to accept the end user license agreement from mojang?"
-Print "info" "if you say no your server will not be able to run"
-Print "info" "if you say yes you must abide by their terms and conditions!"
-read -p "prompt: (y/n): "
+read -p "${time} prompt: (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "prompt: please press y or n: " REPLY
+	read -p "${time} prompt: please press y or n: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	Print "ok" "accepting eula..."
@@ -334,18 +329,14 @@ StoreCrontab "@reboot cd ${serverDirectory} && ./start.sh --quiet"
 StoreCrontab ""
 StoreCrontab ""
 
-# finish messages
+# finish message
 Print "ok" "setup is complete!"
-Print "info" "if you would like to start your server"
-Print "info" "go into your ${green}${serverDirectory}${noColor} directory"
-Print "info" "and execute ${green}./start.sh${noColor}"
-Print "info" "god luck and have fun! ;^)"
 
 # ask user for removal of setup script
-read -p "prompt: would you like to remove the setup script? (y/n): "
+read -p "${time} prompt: would you like to remove the setup script? (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "prompt: please press y or n: " REPLY
+	read -p "${time} prompt: please press y or n: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	cd "${homeDirectory}"
@@ -354,10 +345,10 @@ if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 fi
 
 # ask user to start server now
-read -p "prompt: would you like to start your server now? (y/n): "
+read -p "${time} prompt: would you like to start your server now? (y/n): "
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "prompt: please press y or n: " REPLY
+	read -p "${time} prompt: please press y or n: " REPLY
 done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
 	Print "action" "starting up server..."
