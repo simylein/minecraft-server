@@ -28,11 +28,11 @@ CheckScreen
 
 # user safety function for confirmation
 Print "warn" "are you sure you want to vent your server?"
-read -p "if so, please type ${red}confirm venting${noColor} "
+read -p "$(date +"%H:%M:%S") prompt: if so, please type confirm venting "
 if [[ ${REPLY} == "confirm venting" ]]; then
 	Print "info" "you confirmed venting - server will self-destruct now"
 else
-	Print "error" "wrong token - please try again"
+	Print "error" "wrong venting token - you may try again"
 	exit 1
 fi
 
