@@ -10,10 +10,6 @@ TERM="xterm"
 # branch selection from for github
 branch="dev"
 
-# script date and time logging
-time=$(date +"%H:%M:%S")
-date=$(date +"%Y-%m-%d %H:%M:%S")
-
 # command line colours
 black="$(tput setaf 0)"
 red="$(tput setaf 1)"
@@ -28,22 +24,22 @@ noColor="$(tput sgr0)"
 # prints all input to terminal at given log level
 function Print {
 	if [[ ${1} == "ok" ]]; then
-		echo "${time} ${green}ok${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${green}ok${noColor}: ${2}"
 	fi
 	if [[ ${1} == "info" ]]; then
-		echo "${time} ${blue}info${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${blue}info${noColor}: ${2}"
 	fi
 	if [[ ${1} == "warn" ]]; then
-		echo "${time} ${yellow}warn${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${yellow}warn${noColor}: ${2}"
 	fi
 	if [[ ${1} == "error" ]]; then
-		echo "${time} ${red}error${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${red}error${noColor}: ${2}"
 	fi
 	if [[ ${1} == "fatal" ]]; then
-		echo "${time} ${red}fatal${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${red}fatal${noColor}: ${2}"
 	fi
 	if [[ ${1} == "action" ]]; then
-		echo "${time} ${cyan}action${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${cyan}action${noColor}: ${2}"
 	fi
 }
 

@@ -10,51 +10,51 @@
 # prints all input to log at given log level
 function Log {
 	if [[ $1 == "ok" ]]; then
-		echo "${date} ok: ${2}" >>"${3}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") ok: ${2}" >>"${3}"
 	fi
 	if [[ $1 == "info" ]]; then
-		echo "${date} info: ${2}" >>"${3}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") info: ${2}" >>"${3}"
 	fi
 	if [[ $1 == "warn" ]]; then
-		echo "${date} warn: ${2}" >>"${3}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") warn: ${2}" >>"${3}"
 	fi
 	if [[ $1 == "error" ]]; then
-		echo "${date} error: ${2}" >>"${3}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") error: ${2}" >>"${3}"
 	fi
 	if [[ $1 == "fatal" ]]; then
-		echo "${date} fatal: ${2}" >>"${3}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") fatal: ${2}" >>"${3}"
 	fi
 	if [[ $1 == "action" ]]; then
-		echo "${date} action: ${2}" >>"${3}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") action: ${2}" >>"${3}"
 	fi
 }
 
 # prints all input to terminal at given log level
 function Print {
 	if [[ ${1} == "ok" ]] && [[ ${quiet} == false ]]; then
-		echo "${time} ${green}ok${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${green}ok${noColor}: ${2}"
 	fi
 	if [[ ${1} == "info" ]] && [[ ${verbose} == true ]] && [[ ${quiet} == false ]]; then
-		echo "${time} ${blue}info${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${blue}info${noColor}: ${2}"
 	fi
 	if [[ ${1} == "warn" ]]; then
-		echo "${time} ${yellow}warn${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${yellow}warn${noColor}: ${2}"
 	fi
 	if [[ ${1} == "error" ]]; then
-		echo "${time} ${red}error${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${red}error${noColor}: ${2}"
 	fi
 	if [[ ${1} == "fatal" ]]; then
-		echo "${time} ${red}fatal${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${red}fatal${noColor}: ${2}"
 	fi
 	if [[ ${1} == "action" ]] && [[ ${quiet} == false ]]; then
-		echo "${time} ${cyan}action${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${cyan}action${noColor}: ${2}"
 	fi
 }
 
 # checks if debug mode is on
 function Debug {
 	if [[ ${enableDebug} == true ]]; then
-		echo "${date} ${1}" >>"${debugLog}"
+		echo "$(date +"%Y-%m-%d %H:%M:%S") ${1}" >>"${debugLog}"
 	fi
 }
 

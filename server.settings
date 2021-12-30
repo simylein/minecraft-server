@@ -17,10 +17,6 @@ serverDirectory="replaceServerDirectory"
 backupDirectory="replaceBackupDirectory"
 executableServerFile="replaceExecutableServerFile"
 
-# script date and time logging
-time=$(date +"%H:%M:%S")
-date=$(date +"%Y-%m-%d %H:%M:%S")
-
 # memory and threads for java server
 memory="replaceMemory"
 threads="replaceThreads"
