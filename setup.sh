@@ -190,6 +190,8 @@ while [[ ${verify} == false ]]; do
 		verify=false
 	fi
 done
+
+# user info
 Print "info" "your server will be called ${green}${serverName}${noColor}"
 
 # store homedirectory
@@ -218,11 +220,8 @@ cd "${serverName}"
 Print "info" "downloading scripts from github..."
 
 # downloading scripts from github
-# declare all scripts in an array
 declare -a scriptsDownload=("server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "worker.sh" "vent.sh")
-# get length of script array
 arrayLength=${#scriptsDownload[@]}
-# loop through all entries in the array
 for ((i = 0; i < ${arrayLength}; i++)); do
 	wget -q -O "${scriptsDownload[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scriptsDownload[${i}]}"
 done
@@ -231,11 +230,8 @@ done
 Print "ok" "download successful"
 
 # make selected scripts executable
-# declare all scripts in an array
 declare -a scriptsExecutable=("start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "worker.sh" "vent.sh")
-# get length of script array
 arrayLength=${#scriptsExecutable[@]}
-# loop through all entries in the array
 for ((i = 0; i < ${arrayLength}; i++)); do
 	chmod +x "${scriptsExecutable[${i}]}"
 done
@@ -269,9 +265,7 @@ Print "info" "setting up a backupdirectory..."
 mkdir world
 mkdir backups
 cd backups
-# declare all backup children in an array
 declare -a backupChildren=("hourly" "daily" "weekly" "monthly" "cached")
-# get length of backup children array
 arrayLength=${#backupChildren[@]}
 for ((i = 0; i < ${arrayLength}; i++)); do
 	mkdir "${backupChildren[${i}]}"
@@ -294,7 +288,7 @@ else
 	echo "eula=false" >>eula.txt
 fi
 
-# store all the userinput
+# store to settings
 Print "info" "storing variables in server.settings..."
 StoreSettings "replacePublic" "1.1.1.1"
 StoreSettings "replacePrivate" "192.168.1.1"
@@ -310,7 +304,7 @@ StoreSettings "replaceServerDirectory" "${serverDirectory}"
 StoreSettings "replaceBackupDirectory" "${backupDirectory}"
 StoreSettings "replaceExecutableServerFile" "${executableServerFile}"
 
-# store all the userinput
+# store to properties
 Print "info" "storing variables in server.properties..."
 StoreProperties "white-list=false" "white-list=true"
 StoreProperties "enforce-whitelist=false" "enforce-whitelist=true"
