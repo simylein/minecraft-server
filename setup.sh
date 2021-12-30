@@ -256,7 +256,9 @@ select version in "${versions[@]}"; do
 		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
 		break
 		;;
-	*) echo "please choose an option from the list: " ;;
+	*)
+		echo "please choose an option from the list: "
+		;;
 	esac
 done
 
