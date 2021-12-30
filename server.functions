@@ -74,16 +74,36 @@ function ParseArgs {
 	verbose=false
 	while [[ $# -gt 0 ]]; do
 		case "${1}" in
-		-f) force=true ;;
-		-h) help=true ;;
-		-n) now=true ;;
-		-q) quiet=true ;;
-		-v) verbose=true ;;
-		--force) force=true ;;
-		--help) help=true ;;
-		--now) now=true ;;
-		--quiet) quiet=true ;;
-		--verbose) verbose=true ;;
+		-f)
+			force=true
+			;;
+		-h)
+			help=true
+			;;
+		-n)
+			now=true
+			;;
+		-q)
+			quiet=true
+			;;
+		-v)
+			verbose=true
+			;;
+		--force)
+			force=true
+			;;
+		--help)
+			help=true
+			;;
+		--now)
+			now=true
+			;;
+		--quiet)
+			quiet=true
+			;;
+		--verbose)
+			verbose=true
+			;;
 		*)
 			Print "warn" "bad argument: ${1}"
 			Print "info" "for help use --help"
