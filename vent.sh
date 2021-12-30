@@ -55,7 +55,7 @@ cd "${homeDirectory}"
 # remove crontab
 crontab -r
 # remove serverdirectory
-Print "info" "deleting server..."
+Print "action" "deleting server..."
 rm -r "${serverName}"
 # check if vent was successful
 if ! [ -d "${serverDirectory}" ]; then
