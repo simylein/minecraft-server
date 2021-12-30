@@ -21,6 +21,10 @@ cyan="$(tput setaf 6)"
 white="$(tput setaf 7)"
 noColor="$(tput sgr0)"
 
+# script date and time logging
+time=$(date +"%H:%M:%S")
+date=$(date +"%Y-%m-%d %H:%M:%S")
+
 # prints all input to terminal at given log level
 function Print {
 	if [[ ${1} == "ok" ]]; then
