@@ -65,6 +65,78 @@ function Screen {
 	fi
 }
 
+# function for parsing all arguments for a script
+function ParseArgs {
+	force=false
+	help=false
+	now=false
+	quiet=false
+	verbose=false
+	while [[ $# -gt 0 ]]; do
+		case "${1}" in
+		-f) force=true ;;
+		-h) help=true ;;
+		-n) now=true ;;
+		-q) quiet=true ;;
+		-v) verbose=true ;;
+		--force) force=true ;;
+		--help) help=true ;;
+		--now) now=true ;;
+		--quiet) quiet=true ;;
+		--verbose) verbose=true ;;
+		*)
+			Print "warn" "bad argument: ${1}"
+			Print "info" "for help use --help"
+			;;
+		esac
+		shift
+	done
+}
+
+function ParseCategory {
+	# standart values
+	isHourly=false
+	isDaily=false
+	isWeekly=false
+	isMonthly=false
+	# test and set backup category
+	if [[ $1 == "hourly" ]]; then
+		isHourly=true
+		shift
+	elif [[ $1 == "hourly" ]]; then
+		isDaily=true
+		shift
+	elif [[ $1 == "hourly" ]]; then
+		isWeekly=true
+		shift
+	elif [[ $1 == "hourly" ]]; then
+		isMonthly=true
+		shift
+	else
+		Print "error" "$1 is not a backup category"
+		shift
+	fi
+}
+
+# performs countdown
+function Countdown {
+	if ! [[ ${now} == true ]]; then
+		counter=60
+		while [ ${counter} -gt 0 ]; do
+			if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2)$ ]]; then
+				Print "info" "server is ${1} in ${counter} seconds"
+				TellrawScript "server is ${1} in ${counter} seconds"
+			fi
+			if [[ "${counter}" == 1 ]]; then
+				Print "info" "server is ${1} in ${counter} second"
+				TellrawScript "server is ${1} in ${counter} second"
+			fi
+			counter=$((counter - 1))
+			sleep 1s
+		done
+	fi
+}
+
 # root safety check
 function RootSafety {
 	if [ $(id -u) = 0 ]; then
@@ -141,31 +213,139 @@ function TellrawPlayer {
 	fi
 }
 
-# function for parsing all arguments for a script
-function ParseArgs {
-	force=false
-	help=false
-	now=false
-	quiet=false
-	verbose=false
-	while [[ $# -gt 0 ]]; do
-		case "${1}" in
-		-f) force=true ;;
-		-h) help=true ;;
-		-n) now=true ;;
-		-q) quiet=true ;;
-		-v) verbose=true ;;
-		--force) force=true ;;
-		--help) help=true ;;
-		--now) now=true ;;
-		--quiet) quiet=true ;;
-		--verbose) verbose=true ;;
-		*)
-			Print "warn" "bad argument: ${1}"
-			Print "info" "for help use --help"
-			;;
-		esac
-		shift
+# checks private network availability
+function CheckPrivate {
+	privateChecks=0
+	while [ ${privateChecks} -lt 8 ]; do
+		if ping -c 1 "${private}" &>/dev/null; then
+			Log "ok" "interface is online" "${screenLog}"
+			Print "ok" "interface is online"
+			break
+		else
+			Log "warn" "interface is offline" "${screenLog}"
+			Print "warn" "interface is offline"
+		fi
+		if [ ${privateChecks} -eq 7 ]; then
+			Log "error" "interface timed out" "${screenLog}"
+			Print "error" "interface timed out"
+		fi
+		sleep 1s
+		privateChecks=$((privateChecks + 1))
+	done
+}
+
+# checks public network availability
+function CheckPublic {
+	publicChecks=0
+	while [ ${publicChecks} -lt 8 ]; do
+		if ping -c 1 "${public}" &>/dev/null; then
+			Log "ok" "nameserver is online" "${screenLog}"
+			Print "ok" "nameserver is online"
+			break
+		else
+			Log "warn" "nameserver is offline" "${screenLog}"
+			Print "warn" "nameserver is offline"
+		fi
+		if [ ${publicChecks} -eq 7 ]; then
+			Log "error" "nameserver timed out" "${screenLog}"
+			Print "error" "nameserver timed out"
+		fi
+		sleep 1s
+		publicChecks=$((publicChecks + 1))
+	done
+}
+
+# performs server start
+function Start {
+	Print "action" "starting server..."
+	screen -dmSL "${serverName}" -Logfile "${screenLog}" java -server "${memory}" "${threads}" -jar "${executableServerFile}" -nogui
+	screen -r "${serverName}" -X colon "logfile flush 1^M"
+}
+
+# awaits server start
+function AwaitStart {
+	startChecks=0
+	while [ ${startChecks} -lt 10 ]; do
+		if screen -list | grep -q "\.${serverName}"; then
+			break
+		fi
+		startChecks=$((startChecks + 1))
+		sleep 1s
+	done
+}
+
+# performs server stop
+function Stop {
+	Print "action" "stopping server..."
+	TellrawScript "stopping server..."
+	sleep 1s
+	Screen "stop"
+}
+
+# awaits server stop
+function AwaitStop {
+	stopChecks=0
+	while [ ${stopChecks} -lt 20 ]; do
+		if ! screen -list | grep -q "\.${serverName}"; then
+			break
+		fi
+		stopChecks=$((stopChecks + 1))
+		sleep 1
+	done
+}
+
+# conditional force quit
+function ForceQuit {
+	if screen -list | grep -q "${serverName}"; then
+		Log "warn" "${serverName} server still hasn't closed after 30 seconds, closing screen manually..." "${screenLog}"
+		Print "warn" "${serverName} server still hasn't closed after 30 seconds, closing screen manually..."
+		screen -S "${serverName}" -X quit
+	fi
+}
+
+# prints game over as pixel art on terminal
+function GameOver {
+	echo "${red}    ______                       _____                     ${noColor}"
+	echo "${red}   / _____)                     / ___ \                    ${noColor}"
+	echo "${red}  | /  ___  ____ ____   ____   | |   | |_   _ ____  ____   ${noColor}"
+	echo "${red}  | | (___)/ _  |    \ / _  )  | |   | | | | / _  )/ ___)  ${noColor}"
+	echo "${red}  | \____/( ( | | | | ( (/ /   | |___| |\ V ( (/ /| |      ${noColor}"
+	echo "${red}   \_____/ \_||_|_|_|_|\____)   \_____/  \_/ \____)_|      ${noColor}"
+	echo "${red}                                                           ${noColor}"
+}
+
+# declare all scripts in an array
+declare -a scripts=("start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "worker.sh" "vent.sh")
+# get length of script array
+scriptsLength=${#scripts[@]}
+
+# function for removing scripts from serverdirectory
+function RemoveScripts {
+	# remove scripts from serverdirectory
+	# loop through all entries in the array
+	for ((i = 1; i < ${scriptsLength} + 1; i++)); do
+		Print "info" "removing script ${scripts[${i} - 1]}"
+		rm "${scripts[${i} - 1]}"
+	done
+}
+
+# function for downloading scripts from github
+function DownloadScripts {
+	# downloading scripts from github
+	# loop through all entries in the array
+	for ((i = 0; i < ${scriptsLength}; i++)); do
+		Print "info" "downloading script ${scripts[${i}]} from branch ${branch} on github..."
+		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scripts[${i}]}"
+	done
+}
+
+# function for making scripts executable
+function ExecutableScripts {
+	# make selected scripts executable
+	# loop through all entries in the array
+	for ((i = 0; i < ${scriptsLength}; i++)); do
+		Print "info" "setting script ${scripts[${i}]} executable"
+		chmod +x ${scripts[${i}]}
 	done
 }
 
@@ -221,7 +401,7 @@ function OutputDiskSpaceError {
 
 	Print "error" "not enough disk-space to perform backup-${1}"
 
-	TellrawBackup "fatal: not enough disk space - please immediately tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: not enough disk-space"
+	TellrawBackup "fatal: not enough disk space - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: not enough disk-space"
 }
 
 # prints backup already exists messages to terminal screen and backup log
@@ -230,7 +410,7 @@ function OutputBackupAlreadyExists {
 
 	Print "error" "could not create new ${1}-backup - backup already exists"
 
-	TellrawBackup "error: backup already exists - please tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: backup already exists"
+	TellrawBackup "error: backup already exists - please tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: backup already exists"
 }
 
 # prints tar backup error messages to terminal screen and backup log
@@ -277,41 +457,6 @@ function BackupDirectoryIntegrity {
 			mkdir ${backupCategories[${i}]}
 			cd ${serverDirectory}
 		fi
-	done
-}
-
-# declare all scripts in an array
-declare -a scripts=("start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "worker.sh" "vent.sh")
-# get length of script array
-scriptsLength=${#scripts[@]}
-
-# function for removing scripts from serverdirectory
-function RemoveScripts {
-	# remove scripts from serverdirectory
-	# loop through all entries in the array
-	for ((i = 1; i < ${scriptsLength} + 1; i++)); do
-		Print "info" "removing script ${scripts[${i} - 1]}"
-		rm "${scripts[${i} - 1]}"
-	done
-}
-
-# function for downloading scripts from github
-function DownloadScripts {
-	# downloading scripts from github
-	# loop through all entries in the array
-	for ((i = 0; i < ${scriptsLength}; i++)); do
-		Print "info" "downloading script ${scripts[${i}]} from branch ${branch} on github..."
-		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scripts[${i}]}"
-	done
-}
-
-# function for making scripts executable
-function ExecutableScripts {
-	# make selected scripts executable
-	# loop through all entries in the array
-	for ((i = 0; i < ${scriptsLength}; i++)); do
-		Print "info" "setting script ${scripts[${i}]} executable"
-		chmod +x ${scripts[${i}]}
 	done
 }
 
@@ -554,124 +699,4 @@ function PerformReset {
 			TellrawPlayer "${player}" "warn: you do not have permissions to reset the server"
 		fi
 	fi
-}
-
-# performs countdown
-function Countdown {
-	if ! [[ ${now} == true ]]; then
-		counter=60
-		while [ ${counter} -gt 0 ]; do
-			if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2)$ ]]; then
-				Print "info" "server is ${1} in ${counter} seconds"
-				TellrawScript "server is ${1} in ${counter} seconds"
-			fi
-			if [[ "${counter}" == 1 ]]; then
-				Print "info" "server is ${1} in ${counter} second"
-				TellrawScript "server is ${1} in ${counter} second"
-			fi
-			counter=$((counter - 1))
-			sleep 1s
-		done
-	fi
-}
-
-# checks private network availability
-function CheckPrivate {
-	privateChecks=0
-	while [ ${privateChecks} -lt 8 ]; do
-		if ping -c 1 "${private}" &>/dev/null; then
-			Log "ok" "interface is online" "${screenLog}"
-			Print "ok" "interface is online"
-			break
-		else
-			Log "warn" "interface is offline" "${screenLog}"
-			Print "warn" "interface is offline"
-		fi
-		if [ ${privateChecks} -eq 7 ]; then
-			Log "error" "interface timed out" "${screenLog}"
-			Print "error" "interface timed out"
-		fi
-		sleep 1s
-		privateChecks=$((privateChecks + 1))
-	done
-}
-
-# checks public network availability
-function CheckPublic {
-	publicChecks=0
-	while [ ${publicChecks} -lt 8 ]; do
-		if ping -c 1 "${public}" &>/dev/null; then
-			Log "ok" "nameserver is online" "${screenLog}"
-			Print "ok" "nameserver is online"
-			break
-		else
-			Log "warn" "nameserver is offline" "${screenLog}"
-			Print "warn" "nameserver is offline"
-		fi
-		if [ ${publicChecks} -eq 7 ]; then
-			Log "error" "nameserver timed out" "${screenLog}"
-			Print "error" "nameserver timed out"
-		fi
-		sleep 1s
-		publicChecks=$((publicChecks + 1))
-	done
-}
-
-# performs server start
-function Start {
-	Print "action" "starting server..."
-	screen -dmSL "${serverName}" -Logfile "${screenLog}" java -server "${memory}" "${threads}" -jar "${executableServerFile}" -nogui
-	screen -r "${serverName}" -X colon "logfile flush 1^M"
-}
-
-# awaits server start
-function AwaitStart {
-	startChecks=0
-	while [ ${startChecks} -lt 10 ]; do
-		if screen -list | grep -q "\.${serverName}"; then
-			break
-		fi
-		startChecks=$((startChecks + 1))
-		sleep 1s
-	done
-}
-
-# performs server stop
-function Stop {
-	Print "action" "stopping server..."
-	TellrawScript "stopping server..."
-	sleep 1s
-	Screen "stop"
-}
-
-# awaits server stop
-function AwaitStop {
-	stopChecks=0
-	while [ ${stopChecks} -lt 20 ]; do
-		if ! screen -list | grep -q "\.${serverName}"; then
-			break
-		fi
-		stopChecks=$((stopChecks + 1))
-		sleep 1
-	done
-}
-
-# conditional force quit
-function ForceQuit {
-	if screen -list | grep -q "${serverName}"; then
-		Log "warn" "${serverName} server still hasn't closed after 30 seconds, closing screen manually..." "${screenLog}"
-		Print "warn" "${serverName} server still hasn't closed after 30 seconds, closing screen manually..."
-		screen -S "${serverName}" -X quit
-	fi
-}
-
-# prints game over as pixel art on terminal
-function GameOver {
-	echo "${red}    ______                       _____                     ${noColor}"
-	echo "${red}   / _____)                     / ___ \                    ${noColor}"
-	echo "${red}  | /  ___  ____ ____   ____   | |   | |_   _ ____  ____   ${noColor}"
-	echo "${red}  | | (___)/ _  |    \ / _  )  | |   | | | | / _  )/ ___)  ${noColor}"
-	echo "${red}  | \____/( ( | | | | ( (/ /   | |___| |\ V ( (/ /| |      ${noColor}"
-	echo "${red}   \_____/ \_||_|_|_|_|\____)   \_____/  \_/ \____)_|      ${noColor}"
-	echo "${red}                                                           ${noColor}"
 }

@@ -5,7 +5,7 @@
 # if you know what you are doing, feel free to tinker with them ;^)
 
 # your contact info for players
-adminContact"i did not edit the server settings file /:"
+adminContact"your admin did not edit the server settings file /:"
 
 # welcome messages if a player joins
 welcome=("welcome on my server" "a warm welcome to" "greetings" "hello to" "welcome aboard" "make yourself at home" "have a nice time" "enjoy yourself")
@@ -22,10 +22,10 @@ date=$(date +"%Y-%m-%d %H:%M:%S")
 time=$(date +"%H:%M:%S")
 
 # memory and threads for java server
-memory="replacememx"
-threads="replacethreadcount"
+memory="replaceMemory"
+threads="replaceThreads"
 
-# network publick and private addresses
+# network public and private addresses
 public="replacePublic"
 private="replacePrivate"
 
