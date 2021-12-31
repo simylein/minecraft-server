@@ -49,7 +49,7 @@ function Print {
 	if [[ ${1} == "action" ]] && [[ ${quiet} == false ]]; then
 		echo "$(date +"%H:%M:%S") ${cyan}action${noColor}: ${2}"
 	fi
-	if [[ $1 == "debug" ]] && [[ ${quiet} == false ]] && [[ ${debug} == true ]]; then
+	if [[ $1 == "debug" ]] && [[ ${quiet} == false ]]; then
 		echo "$(date +"%H:%M:%S") debug: ${2}"
 	fi
 }
