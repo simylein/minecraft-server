@@ -58,9 +58,9 @@ function Print {
 function Debug {
 	if [[ ${enableDebug} == true ]]; then
 		echo "$(date +"%Y-%m-%d %H:%M:%S") ${1}" >>"${debugLog}"
-		if [[ ${verbose} == true ]]; then
-			Print "debug" "${1}"
-		fi
+	fi
+	if [[ ${verbose} == true ]]; then
+		Print "debug" "${1}"
 	fi
 }
 
