@@ -346,9 +346,9 @@ function RemoveScripts {
 	# remove scripts from serverdirectory
 	# loop through all entries in the array
 	Print "info" "removing scripts..."
-	for ((i = 1; i < ${scriptsLength} + 1; i++)); do
-		Print "debug" "removing script ${scripts[${i} - 1]}"
-		rm "${scripts[${i} - 1]}"
+	for ((i = 0; i < ${scriptsLength}; i++)); do
+		Debug "removing script ${scripts[${i}]}"
+		rm "${scripts[${i}]}"
 	done
 }
 
@@ -358,7 +358,7 @@ function DownloadScripts {
 	# loop through all entries in the array
 	Print "info" "downloading scripts..."
 	for ((i = 0; i < ${scriptsLength}; i++)); do
-		Print "debug" "downloading script ${scripts[${i}]} from branch ${branch} on github..."
+		Debug "downloading script ${scripts[${i}]} from branch ${branch} on github..."
 		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scripts[${i}]}"
 	done
 }
@@ -369,7 +369,7 @@ function ExecutableScripts {
 	# loop through all entries in the array
 	Print "info" "making scripts executable..."
 	for ((i = 0; i < ${scriptsLength}; i++)); do
-		Print "debug" "setting script ${scripts[${i}]} executable"
+		Debug "setting script ${scripts[${i}]} executable"
 		chmod +x ${scripts[${i}]}
 	done
 }
