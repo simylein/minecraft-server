@@ -24,6 +24,15 @@ CheckScreen
 # run various functions every second until server exits
 counter=0
 while true; do
+	if ! [[ -d ${serverDirectory} ]]; then
+		exit 0
+	fi
+
+	if ! screen -list | grep -q "\.${serverName}"; then
+		Debug "executed $0 script"
+		exit 0
+	fi
+
 	lineBuffer=$(tail -1 "${screenLog}")
 	if [[ ! ${lineBuffer} == ${lastLineBuffer} ]]; then
 		if [[ ${enableWelcomeMessage} == true ]]; then
@@ -73,11 +82,6 @@ while true; do
 			lastBackupSizeBytes=${backupSizeBytes}
 			counter=0
 		fi
-	fi
-
-	if ! screen -list | grep -q "\.${serverName}"; then
-		Debug "executed $0 script"
-		exit 0
 	fi
 
 	lastLineBuffer="${lineBuffer}"
