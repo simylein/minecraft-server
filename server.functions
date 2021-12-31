@@ -49,12 +49,18 @@ function Print {
 	if [[ ${1} == "action" ]] && [[ ${quiet} == false ]]; then
 		echo "$(date +"%H:%M:%S") ${cyan}action${noColor}: ${2}"
 	fi
+	if [[ $1 == "debug" ]] && [[ ${quiet} == false ]] && [[ ${debug} == true ]]; then
+		echo "$(date +"%H:%M:%S") debug: ${2}"
+	fi
 }
 
 # checks if debug mode is on
 function Debug {
 	if [[ ${enableDebug} == true ]]; then
 		echo "$(date +"%Y-%m-%d %H:%M:%S") ${1}" >>"${debugLog}"
+		if [[ ${verbose} == true ]]; then
+			Print "debug" "${1}"
+		fi
 	fi
 }
 
@@ -339,8 +345,9 @@ scriptsLength=${#scripts[@]}
 function RemoveScripts {
 	# remove scripts from serverdirectory
 	# loop through all entries in the array
+	Print "info" "removing scripts..."
 	for ((i = 1; i < ${scriptsLength} + 1; i++)); do
-		Print "info" "removing script ${scripts[${i} - 1]}"
+		Print "debug" "removing script ${scripts[${i} - 1]}"
 		rm "${scripts[${i} - 1]}"
 	done
 }
@@ -349,8 +356,9 @@ function RemoveScripts {
 function DownloadScripts {
 	# downloading scripts from github
 	# loop through all entries in the array
+	Print "info" "downloading scripts..."
 	for ((i = 0; i < ${scriptsLength}; i++)); do
-		Print "info" "downloading script ${scripts[${i}]} from branch ${branch} on github..."
+		Print "debug" "downloading script ${scripts[${i}]} from branch ${branch} on github..."
 		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scripts[${i}]}"
 	done
 }
@@ -359,8 +367,9 @@ function DownloadScripts {
 function ExecutableScripts {
 	# make selected scripts executable
 	# loop through all entries in the array
+	Print "info" "making scripts executable..."
 	for ((i = 0; i < ${scriptsLength}; i++)); do
-		Print "info" "setting script ${scripts[${i}]} executable"
+		Print "debug" "setting script ${scripts[${i}]} executable"
 		chmod +x ${scripts[${i}]}
 	done
 }
