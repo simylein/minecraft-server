@@ -25,7 +25,7 @@ CheckExecutable
 CheckScreen
 
 # prints countdown to screen
-Countdown "stopping"
+Countdown "updating"
 
 # server stop
 Stop
