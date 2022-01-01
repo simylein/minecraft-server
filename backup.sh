@@ -9,10 +9,6 @@
 source server.settings
 source server.functions
 
-# safety checks
-RootSafety
-ScriptSafety
-
 # parse backup category
 ParseCategory "$@"
 
@@ -21,6 +17,10 @@ shift
 
 # parse arguments
 ParseArgs "$@"
+
+# safety checks
+RootSafety
+ScriptSafety
 
 # debug
 Debug "executing $0 script"

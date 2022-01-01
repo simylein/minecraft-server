@@ -5,12 +5,12 @@
 source server.settings
 source server.functions
 
+# parse arguments
+ParseArgs "$@"
+
 # safety checks
 RootSafety
 ScriptSafety
-
-# parse arguments
-ParseArgs "$@"
 
 # debug
 Debug "executing $0 script"
