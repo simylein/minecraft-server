@@ -46,9 +46,9 @@ newDaily=$(date +"%Y-%m-%d")
 newWeekly=$(date +"week-%U")
 newMonthly=$(date +"%B" | awk '{print tolower($0)}')
 oldHourly=$(date -d "-23 hours" +"%H:00")
-oldDaily=$(date -d "-18 days" +"%Y-%m-%d")
-oldWeekly=$(date -d "-12 weeks" +"week-%U")
-oldMonthly=$(date -d "-6 months" +"%B" | awk '{print tolower($0)}')
+oldDaily=$(date -d "-17 days" +"%Y-%m-%d")
+oldWeekly=$(date -d "-11 weeks" +"week-%U")
+oldMonthly=$(date -d "-5 months" +"%B" | awk '{print tolower($0)}')
 
 # world and backup sizes in bytes and human readable
 worldSizeBytes=$(du -sb world | cut -f1)
