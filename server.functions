@@ -168,12 +168,14 @@ function RootSafety {
 }
 
 # checks if a script is already running
+# TODO: fix this mess (not working)
 function ScriptSafety {
 	if [[ ${force} == false ]]; then
-		declare -a arr=("reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
-		for i in "${scriptslock[@]}"; do
-			if pidof -x "${scriptslock[i]}" &>/dev/null; then
-				Print "warn" "script ${scriptslock[i]} is already running"
+		declare -a scriptsLock=("backup.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
+		scriptsLockLength=${#scripts[@]}
+		for ((i = 0; i < ${scriptsLockLength}; i++)); do
+			if pgrep --list-full ${scriptsLock[i]} | grep -q ${scriptsLock[i]} &>/dev/null; then
+				Print "warn" "script ${scriptsLock[i]} is already running"
 				Print "info" "use --force option to ignore this safety check"
 				exit 1
 			fi
@@ -524,8 +526,6 @@ function Help {
 		TellrawPlayer "${player}" "info: perform backup, perform restart"
 		TellrawPlayer "${player}" "info: perform update, perform reset"
 		TellrawPlayer "${player}" "info: admin contact info: ${adminContact}"
-		# spam protection
-		sleep 10s
 	fi
 }
 
@@ -566,8 +566,6 @@ function ListTasks {
 				TellrawPlayer "${player}" "perform reset is" "undefined" "grey"
 			fi
 			TellrawPlayer "${player}" "config is located in file server.settings"
-			# spam protection
-			sleep 20s
 		else
 			Log "warn" "the player ${player} requested a list of tasks and does not have permission to do so" "${screenLog}"
 			TellrawPlayer "${player}" "warn: you do not have permissions to list all available tasks of the server"
@@ -612,8 +610,6 @@ function ListBackups {
 				TellrawPlayer "${player}" "monthly backup is" "undefined" "grey"
 			fi
 			TellrawPlayer "${player}" "config is located in file server.settings"
-			# spam protection
-			sleep 20s
 		else
 			Log "warn" "the player ${player} requested a list of backups and does not have permission to do so" "${screenLog}"
 			TellrawPlayer "${player}" "warn: you do not have permissions to list all available backups of the server"
@@ -630,8 +626,6 @@ function PerformBackup {
 			TellrawPlayer "${player}" "info: you successfully requested a safety backup of the server\"}]"
 			# run safety backup
 			CachedBackup "safety"
-			# spam protection
-			sleep 20s
 		else
 			Log "warn" "the player ${player} requested a safety backup and does not have permission to do so" "${backupLog}"
 			TellrawPlayer "${player}" "warn: you do not have permissions to safety backup the server\"}]"
