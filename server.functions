@@ -196,8 +196,8 @@ function CheckScreen {
 # check for existance of screen terminal
 function LookForScreen {
 	if screen -list | grep -q "\.${serverName}"; then
-		Log "warn" "server is already running -  type screen -r ${serverName} to open server terminal" >>"${screenLog}"
-		Print "warn" "server is already running"
+		Log "warn" "server is already running" >>"${screenLog}"
+		Print "warn" "server is already running -  type screen -r ${serverName} to open server terminal"
 		exit 1
 	fi
 }
