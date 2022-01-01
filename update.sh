@@ -5,12 +5,12 @@
 source server.settings
 source server.functions
 
+# parse arguments
+ParseArgs "$@"
+
 # safety checks
 RootSafety
 ScriptSafety
-
-# parse arguments
-ParseArgs "$@"
 
 # debug
 Debug "executing $0 script"
@@ -90,7 +90,7 @@ ExecutableScripts
 
 # restart the server
 Print "action" "restarting server..."
-./start.sh "$@"
+./start.sh --force "$@"
 
 # log to debug if true
 Debug "executed $0 script"

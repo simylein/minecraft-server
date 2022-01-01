@@ -5,12 +5,12 @@
 source server.settings
 source server.functions
 
+# parse arguments
+ParseArgs "$@"
+
 # safety checks
 RootSafety
 ScriptSafety
-
-# parse arguments
-ParseArgs "$@"
 
 # debug
 Debug "executing $0 script"
@@ -148,7 +148,7 @@ else
 	Print "action" "restarting server..."
 	Log "info" "backup restore has been canceled" "${screenLog}"
 	Log "info" "resuming to current live world" "${screenLog}"
-	./start.sh "$@"
+	./start.sh --force "$@"
 fi
 
 # log to debug if true
