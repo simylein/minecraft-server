@@ -169,17 +169,19 @@ function RootSafety {
 
 # checks if a script is already running
 function ScriptSafety {
-	declare -a scriptsLock=("backup.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
-	scriptsLockLength=${#scriptsLock[@]}
-	for ((i = 0; i < ${scriptsLockLength}; i++)); do
-		for pid in $(pidof -x ${scriptsLock[i]}); do
-			if [ $pid != $$ ]; then
-				Print "warn" "script ${scriptsLock[i]} is already running"
-				Print "info" "use --force option to ignore this safety check"
-				exit 1
-			fi
+	if [[ ${force} == false ]]; then
+		declare -a scriptsLock=("backup.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
+		scriptsLockLength=${#scriptsLock[@]}
+		for ((i = 0; i < ${scriptsLockLength}; i++)); do
+			for pid in $(pidof -x ${scriptsLock[i]}); do
+				if [ $pid != $$ ]; then
+					Print "warn" "script ${scriptsLock[i]} is already running"
+					Print "info" "use --force option to ignore this safety check"
+					exit 1
+				fi
+			done
 		done
-	done
+	fi
 }
 
 # check for existance of screen terminal
