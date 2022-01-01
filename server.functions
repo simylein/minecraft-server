@@ -170,13 +170,15 @@ function RootSafety {
 # checks if a script is already running
 function ScriptSafety {
 	declare -a scriptsLock=("backup.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
-	scriptsLockLength=${#scripts[@]}
+	scriptsLockLength=${#scriptsLock[@]}
 	for ((i = 0; i < ${scriptsLockLength}; i++)); do
-		if pgrep --list-full "${scriptsLock[i]}" | grep -q "${scriptsLock[i]}"; then
-			Print "warn" "script ${scriptsLock[i]} is already running"
-			Print "info" "use --force option to ignore this safety check"
-			exit 1
-		fi
+		for pid in $(pidof -x ${scriptsLock[i]}); do
+			if [ $pid != $$ ]; then
+				Print "warn" "script ${scriptsLock[i]} is already running"
+				Print "info" "use --force option to ignore this safety check"
+				exit 1
+			fi
+		done
 	done
 }
 
