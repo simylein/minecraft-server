@@ -4,6 +4,9 @@
 # this file stores all the variables for the server.
 # if you know what you are doing, feel free to tinker with them ;^)
 
+# github branch from whom scripts will fetch
+branch="replaceBranch"
+
 # your contact info for players
 adminContact="your admin did not edit the server settings file /:"
 
@@ -11,7 +14,7 @@ adminContact="your admin did not edit the server settings file /:"
 welcome=("welcome on my server" "a warm welcome to" "greetings" "hello to" "welcome aboard" "make yourself at home" "have a nice time" "enjoy yourself")
 
 # arguments for java server
-javaArgs="-Xms2G -Xmx2G"
+javaArgs="-Xms2G -Xmx2G -XX:ParallelGCThreads=4"
 
 # server resource paths
 serverName="replaceServerName"
@@ -21,8 +24,8 @@ backupDirectory="replaceBackupDirectory"
 executableServerFile="replaceExecutableServerFile"
 
 # network public and private addresses
-public="replacePublic"
-private="replacePrivate"
+public="1.1.1.1"
+private="192.168.1.1"
 
 # values in bytes for disk space control
 diskSpaceError="2097152"
@@ -63,18 +66,16 @@ enablePerformRestart=true
 enablePerformUpdate=false
 enablePerformReset=false
 
-# github branch from whom scripts will fetch
-branch="replaceBranch"
 # enables or disable debug logging
-enableDebug="replaceEnableDebug"
+enableDebug=false
 # change to server console after startup
-changeToConsole="replaceChangeToConsole"
+changeToConsole=false
 # enables watchdog integrity checks for backups
-enableBackupsWatchdog="replaceEnableBackupsWatchdog"
+enableBackupsWatchdog=true
 # print welcome messages if a player joins
-enableWelcomeMessage="replaceEnableWelcomeMessage"
+enableWelcomeMessage=true
 # enables an autostart triggered by a server crash
-enableAutoStartOnCrash="replaceEnableAutoStartOnCrash"
+enableAutoStartOnCrash=true
 
 # terminal output colours
 black="$(tput setaf 0)"
