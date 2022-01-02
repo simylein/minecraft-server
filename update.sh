@@ -54,8 +54,8 @@ if [ "$?" != 0 ]; then
 	Log "warn" "unable to connect to mojang api skipping update..." "${screenLog}"
 	Print "warn" "unable to connect to mojang api skipping update..."
 else
-	Log "info" "downloading newest server version..." "${screenLog}"
-	Print "ok" "downloading newest server version..."
+	Log "action" "downloading newest server version..." "${screenLog}"
+	Print "action" "downloading newest server version..."
 	# check if already on newest version
 	if [[ "${executableServerFile}" = *"minecraft-server.${version}.jar" ]]; then
 		Log "info" "you are running the newest server version - skipping update" "${screenLog}"
@@ -66,8 +66,10 @@ else
 		newExecutableServerFile="${serverDirectory}/minecraft-server.${version}.jar"
 		# if new serverfile exists remove oldserverfile
 		if [ -s "${newExecutableServerFile}" ]; then
-			Log "ok" "updating server.settings for startup with new server version ${version}" "${screenLog}"
-			Print "ok" "updating server.settings for startup with new server version ${version}"
+			Log "ok" "download sucessfull"
+			Print "ok" "download sucessfull"
+			Log "info" "updating server.settings for startup with new server version ${version}" "${screenLog}"
+			Print "info" "updating server.settings for startup with new server version ${version}"
 			sed -i "s|${executableServerFile}|${newExecutableServerFile}|g" "server.settings"
 			# remove old serverfile if it exists
 			if [ -s "${executableServerFile}" ]; then
