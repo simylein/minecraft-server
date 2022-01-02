@@ -135,8 +135,22 @@ function ParseCategory {
 	elif [[ $1 == "--monthly" ]]; then
 		isMonthly=true
 	else
-		Print "error" "$1 is not a backup category"
+		Print "error" "\"$1\" is not a backup category"
 		Print "info" "use --hourly, --daily, --weekly, --monthly"
+		exit 1
+	fi
+}
+
+# prints help and then exits
+function ArgHelp {
+	if [[ ${help} == true ]]; then
+		Print "info" "available arguments:"
+		Print "info" "-f  --force    (ignores script safety checks)"
+		Print "info" "-h  --help     (prints this help page)"
+		Print "info" "-n  --now      (executes an action without countdown)"
+		Print "info" "-q  --quiet    (silences all output except warnings and errors)"
+		Print "info" "-v  --verbose  (prints more verbose and extra debug information)"
+		exit 0
 	fi
 }
 
@@ -170,7 +184,7 @@ function RootSafety {
 # checks if a script is already running
 function ScriptSafety {
 	if [[ ${force} == false ]]; then
-		declare -a scriptsLock=("backup.sh" "reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
+		declare -a scriptsLock=("reset.sh" "restart.sh" "restore.sh" "start.sh" "stop.sh" "update.sh" "vent.sh")
 		scriptsLockLength=${#scriptsLock[@]}
 		for ((i = 0; i < ${scriptsLockLength}; i++)); do
 			for pid in $(pidof -x ${scriptsLock[i]}); do
@@ -182,6 +196,13 @@ function ScriptSafety {
 			done
 		done
 	fi
+}
+
+# checks and coordinates hourly daily weekly and monthly backup
+# TODO: write function which prevents backups from happening simultaneous
+function BackupSafety {
+	Print "info" "this function is still in development"
+	Print "info" "it does not execute anything at the moment"
 }
 
 # check for existance of screen terminal
@@ -411,6 +432,8 @@ function OutputBackupSuccess {
 	Print "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}"
 	Print "ok" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}"
 
+	Debug "backup script reports backup success while performing backup-${1}"
+
 	TellrawBackup "ok: successfully created new backup" "green" "created file: ${serverName}-${2}.tar.gz, removed file: ${serverName}-${3}.tar.gz, current world size: ${worldSizeHuman}, current backup size: ${backupSize}, current disk space: ${diskSpaceHuman}, time spent: ${timeSpent} ms, compression: ${compressedBackupSize}/${worldSizeHuman}"
 }
 
@@ -419,6 +442,8 @@ function OutputDiskSpaceWarning {
 	Log "warn" "free disk-space is getting rare - make some room for backups" "${backupLog}"
 
 	Print "warn" "free disk-space is getting rare - make some room for backups"
+
+	Debug "backup script reports low disk-space while performing backup-${1}"
 
 	TellrawBackup "warn: free disk space is getting rare - please tell your server admin" "yellow" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}, warning: free disk space is getting rare"
 }
@@ -429,6 +454,8 @@ function OutputDiskSpaceError {
 
 	Print "error" "not enough disk-space to perform backup-${1}"
 
+	Debug "backup script reports not enough disk-space while performing backup-${1}"
+
 	TellrawBackup "fatal: not enough disk space - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: not enough disk-space"
 }
 
@@ -437,6 +464,8 @@ function OutputBackupAlreadyExists {
 	Log "error" "could not create new ${1}-backup - backup already exists" "${backupLog}"
 
 	Print "error" "could not create new ${1}-backup - backup already exists"
+
+	Debug "backup script reports backup already exists while performing backup-${1}"
 
 	TellrawBackup "error: backup already exists - please tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: backup already exists"
 }
@@ -447,7 +476,9 @@ function OutputBackupTarError {
 
 	Print "error" "tar reports errors during compression of world directory"
 
-	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: tar reports errors during compression of world directory"
+	Debug "backup script reports tar error while performing backup-${1}"
+
+	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: tar reports errors during compression of world directory"
 }
 
 # prints generic backup error messages to terminal screen and backup log
@@ -456,7 +487,9 @@ function OutputBackupGenericError {
 
 	Print "error" "could not backup world"
 
-	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${1}.tar.gz, could not remove file: ${serverName}-${2}.tar.gz, reason: generic error - missing directories, empty file-path or empty files"
+	Debug "backup script reports generic backup error while performing backup-${1}"
+
+	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: generic error - missing directories, empty file-path or empty files"
 }
 
 # function for testing if all categories for backups exists if not create them also check for root backups directory
@@ -497,10 +530,10 @@ function CachedBackup {
 	# user info about backup to create
 	Print "action" "creating cached ${1} backup..."
 	# create backup with given name
-	nice -n 19 cp -r "world" "tmp"
-	nice -n 19 tar -czf "world.tar.gz" "tmp"
+	nice -n 19 cp -r "world" "tmp-${1}"
+	nice -n 19 tar -czf "world.tar.gz" "tmp-${1}"
 	nice -n 19 mv "${serverDirectory}/world.tar.gz" "${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz"
-	nice -n 19 rm -r "tmp"
+	nice -n 19 rm -r "tmp-${1}"
 	# check if safety backup exists
 	if [[ -s "${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz" ]]; then
 		Log "ok" "created ${backupDirectory}/cached/${1}-${newDaily}-${newHourly}.tar.gz as a ${1} backup" "${backupLog}"
