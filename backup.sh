@@ -39,32 +39,28 @@ function RunBackup {
 	Debug "executing backup-${1} script"
 	if (((${worldSizeBytes} + ${diskSpaceError}) > ${diskSpaceBytes})); then
 		OutputDiskSpaceError "${1}" "${2}" "${3}"
-		Debug "backup script reports not enough disk-space while performing backup-${1}"
 		exit 1
 	fi
 	if (((${worldSizeBytes} + ${diskSpaceWarning}) > ${diskSpaceBytes})); then
-		OutputDiskSpaceWarning
-		Debug "backup script reports low disk-space while performing backup-${1}"
+		OutputDiskSpaceWarning "${1}"
 	fi
 	if ! [[ -s "${backupDirectory}/${1}/${serverName}-${2}.tar.gz" ]]; then
 		Screen "save-off"
 		sleep 1s
 		before=$(date +%s%3N)
-		nice -n 19 cp -r "world" "tmp"
-		nice -n 19 tar -czf "world.tar.gz" "tmp"
+		nice -n 19 cp -r "world" "tmp-${1}"
+		nice -n 19 tar -czf "world.tar.gz" "tmp-${1}"
 		if [ $? != 0 ]; then
-			OutputBackupTarError "${2}" "${3}"
-			Debug "backup script reports tar error while performing backup-${1}"
+			OutputBackupTarError "${1}" "${2}" "${3}"
 		fi
 		nice -n 19 mv "${serverDirectory}/world.tar.gz" "${backupDirectory}/${1}/${serverName}-${2}.tar.gz"
-		nice -n 19 rm -r "tmp"
+		nice -n 19 rm -r "tmp-${1}"
 		after=$(date +%s%3N)
 		Screen "save-on"
 		sleep 1s
 		timeSpent=$((${after} - ${before}))
 	else
 		OutputBackupAlreadyExists "${1}" "${2}" "${3}"
-		Debug "backup script reports backup already exists while performing backup-${1}"
 		exit 1
 	fi
 	if [[ -s "${backupDirectory}/${1}/${serverName}-${2}.tar.gz" ]]; then
@@ -74,10 +70,8 @@ function RunBackup {
 		compressedBackupSize=$(du -sh ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
 		source server.settings
 		OutputBackupSuccess "${1}" "${2}" "${3}"
-		Debug "backup script reports backup success while performing backup-${1}"
 	else
-		OutputBackupGenericError "${2}" "${3}"
-		Debug "backup script reports backup error while performing backup-${1}"
+		OutputBackupGenericError "${1}" "${2}" "${3}"
 	fi
 	Debug "executed backup-${1} script"
 }
