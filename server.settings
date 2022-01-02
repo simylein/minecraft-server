@@ -10,16 +10,16 @@ adminContact="your admin did not edit the server settings file /:"
 # welcome messages if a player joins
 welcome=("welcome on my server" "a warm welcome to" "greetings" "hello to" "welcome aboard" "make yourself at home" "have a nice time" "enjoy yourself")
 
+# memory and arguments for java server
+memory="-Xms2G -Xmx2G"
+javaArgs="-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1"
+
 # server resource paths
 serverName="replaceServerName"
 homeDirectory="replaceHomeDirectory"
 serverDirectory="replaceServerDirectory"
 backupDirectory="replaceBackupDirectory"
 executableServerFile="replaceExecutableServerFile"
-
-# memory and threads for java server
-memory="replaceMemory"
-threads="replaceThreads"
 
 # network public and private addresses
 public="replacePublic"

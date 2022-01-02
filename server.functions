@@ -283,7 +283,7 @@ function CheckPublic {
 # performs server start
 function Start {
 	Print "action" "starting server..."
-	screen -dmSL "${serverName}" -Logfile "${screenLog}" java -server "${memory}" "${threads}" -jar "${executableServerFile}" -nogui
+	screen -dmSL "${serverName}" -Logfile "${screenLog}" java -server "${memory}" "${javaArgs}" -jar "${executableServerFile}" -nogui
 	screen -r "${serverName}" -X colon "logfile flush 1^M"
 }
 
