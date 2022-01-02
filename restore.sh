@@ -7,6 +7,7 @@ source server.functions
 
 # parse arguments
 ParseArgs "$@"
+ArgHelp
 
 # safety checks
 RootSafety

@@ -17,6 +17,7 @@ shift
 
 # parse arguments
 ParseArgs "$@"
+ArgHelp
 
 # safety checks
 RootSafety
