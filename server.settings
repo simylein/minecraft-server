@@ -14,7 +14,7 @@ adminContact="your admin did not edit the server settings file /:"
 welcome=("welcome on my server" "a warm welcome to" "greetings" "hello to" "welcome aboard" "make yourself at home" "have a nice time" "enjoy yourself")
 
 # arguments for java server
-javaArgs="-Xms2G -Xmx2G -XX:ParallelGCThreads=4"
+javaArgs="-Xms2G -Xmx2G -XX:ParallelGCThreads=2"
 
 # server resource paths
 serverName="replaceServerName"
@@ -66,15 +66,11 @@ enablePerformRestart=true
 enablePerformUpdate=false
 enablePerformReset=false
 
-# enables or disable debug logging
+# enables or disable some advanced options
 enableDebug=false
-# change to server console after startup
 changeToConsole=false
-# enables watchdog integrity checks for backups
 enableBackupsWatchdog=true
-# print welcome messages if a player joins
 enableWelcomeMessage=true
-# enables an autostart triggered by a server crash
 enableAutoStartOnCrash=true
 
 # terminal output colours
