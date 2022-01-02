@@ -295,13 +295,6 @@ fi
 
 # store to settings
 Print "info" "storing variables in server.settings..."
-StoreSettings "replacePublic" "1.1.1.1"
-StoreSettings "replacePrivate" "192.168.1.1"
-StoreSettings "replaceMemory" "-Xms2048M"
-StoreSettings "replaceThreads" "-XX:ParallelGCThreads=4"
-StoreSettings "replaceChangeToConsole" "false"
-StoreSettings "replaceEnableWelcomeMessage" "true"
-StoreSettings "replaceEnableBackupsWatchdog" "true"
 StoreSettings "replaceBranch" "${branch}"
 StoreSettings "replaceServerName" "${serverName}"
 StoreSettings "replaceHomeDirectory" "${homeDirectory}"
@@ -318,6 +311,7 @@ StoreProperties "difficulty=easy" "difficulty=normal"
 StoreProperties "max-players=20" "max-players=8"
 StoreProperties "view-distance=10" "view-distance=16"
 StoreProperties "simulation-distance=10" "simulation-distance=8"
+StoreProperties "sync-chunk-writes=true" "sync-chunk-writes=false"
 StoreProperties "motd=A Minecraft Server" "motd=Hello World, I am your new Minecraft Server ;^)"
 
 # store to crontab
