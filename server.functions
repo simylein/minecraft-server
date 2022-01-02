@@ -424,7 +424,7 @@ function ChangeBackupDirectory {
 function OutputBackupSuccess {
 	Log "ok" "added ${backupDirectory}/${1}/${serverName}-${2}.tar.gz" "${backupLog}"
 	Log "ok" "removed ${backupDirectory}/${1}/${serverName}-${3}.tar.gz" "${backupLog}"
-	Log "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskspace}" "${backupLog}"
+	Log "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}" "${backupLog}"
 	Log "ok" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}" "${backupLog}"
 
 	Print "ok" "added ${backupDirectory}/${1}/${serverName}-${2}.tar.gz"
@@ -434,7 +434,7 @@ function OutputBackupSuccess {
 
 	Debug "backup script reports backup success while performing backup-${1}"
 
-	TellrawBackup "ok: successfully created new backup" "green" "created file: ${serverName}-${2}.tar.gz, removed file: ${serverName}-${3}.tar.gz, current world size: ${worldSizeHuman}, current backup size: ${backupSize}, current disk space: ${diskSpaceHuman}, time spent: ${timeSpent} ms, compression: ${compressedBackupSize}/${worldSizeHuman}"
+	TellrawBackup "ok: successfully created new backup" "green" "created file: ${serverName}-${2}.tar.gz, removed file: ${serverName}-${3}.tar.gz, current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}, time spent: ${timeSpent} ms, compression: ${compressedBackupSize}/${worldSizeHuman}"
 }
 
 # prints disk space warning to terminal screen and backup log
