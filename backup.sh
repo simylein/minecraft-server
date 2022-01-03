@@ -49,7 +49,7 @@ function RunBackup {
 		Screen "save-off"
 		sleep 1s
 		before=$(date +%s%3N)
-		nice -n 19 cp -r "world-${1}" "tmp-${1}"
+		nice -n 19 cp -r "world" "tmp-${1}"
 		nice -n 19 tar -czf "world-${1}.tar.gz" "tmp-${1}"
 		if [ $? != 0 ]; then
 			OutputBackupTarError "${1}" "${2}" "${3}"
