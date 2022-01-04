@@ -481,6 +481,17 @@ function OutputBackupTarError {
 	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: tar reports errors during compression of world directory"
 }
 
+# prints copy backup error messages to terminal screen and backup log
+function OutputBackupCopyError {
+	Log "error" "copy reports errors during copying of world directory" "${backupLog}"
+
+	Print "error" "copy reports errors during copying of world directory"
+
+	Debug "backup script reports copy error while performing backup-${1}"
+
+	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: copy reports errors during copying of world directory"
+}
+
 # prints generic backup error messages to terminal screen and backup log
 function OutputBackupGenericError {
 	Log "error" "could not backup world" "${backupLog}"
