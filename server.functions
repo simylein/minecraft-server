@@ -448,6 +448,19 @@ function OutputDiskSpaceWarning {
 	TellrawBackup "warn: free disk space is getting rare - please tell your server admin" "yellow" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}, warning: free disk space is getting rare"
 }
 
+# prints backup size warning to terminal screen and backup log
+function OutputBackupSizeWarning {
+	Log "warn" "the created ${1}-backup is only ${compressedBackupSize} - this may point to a corrupted backup" "${backupLog}"
+	Log "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+
+	Print "warn" "the created ${1}-backup is only ${compressedBackupSize} - this may point to a corrupted backup"
+	Print "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+
+	Debug "backup script reports potentially corrupted backup at ${backupDirectory}/${1}/${serverName}-${2}"
+
+	TellrawBackup "warn: the created backup is unusally small - please tell your server admin" "yellow" "current world size: ${worldSizeHuman}, created backup size: ${compressedBackupSize}, warning: backup unusally small - this may point to corruption"
+}
+
 # prints disk space error to terminal screen and backup log
 function OutputDiskSpaceError {
 	Log "error" "not enough disk-space to perform backup-${1}" "${backupLog}"
@@ -457,6 +470,19 @@ function OutputDiskSpaceError {
 	Debug "backup script reports not enough disk-space while performing backup-${1}"
 
 	TellrawBackup "fatal: not enough disk space - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: not enough disk-space"
+}
+
+# prints backup size error to terminal screen and backup log
+function OutputBackupSizeError {
+	Log "error" "the created ${1}-backup is only ${compressedBackupSize} - this will point to a corrupted backup" "${backupLog}"
+	Log "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+
+	Print "error" "the created ${1}-backup is only ${compressedBackupSize} - this will point to a corrupted backup"
+	Print "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+
+	Debug "backup script reports dangerous corrupted backup at ${backupDirectory}/${1}/${serverName}-${2}"
+
+	TellrawBackup "error: the created backup is too small - please tell your server admin" "red" "current world size: ${worldSizeHuman}, created backup size: ${compressedBackupSize}, reason: backup too small - this points to corruption"
 }
 
 # prints backup already exists messages to terminal screen and backup log
