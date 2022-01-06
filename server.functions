@@ -424,13 +424,13 @@ function ChangeBackupDirectory {
 function OutputBackupSuccess {
 	Log "ok" "added ${backupDirectory}/${1}/${serverName}-${2}.tar.gz" "${backupLog}"
 	Log "ok" "removed ${backupDirectory}/${1}/${serverName}-${3}.tar.gz" "${backupLog}"
-	Log "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}" "${backupLog}"
-	Log "ok" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}" "${backupLog}"
+	Log "info" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}" "${backupLog}"
+	Log "info" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}" "${backupLog}"
 
 	Print "ok" "added ${backupDirectory}/${1}/${serverName}-${2}.tar.gz"
 	Print "ok" "removed ${backupDirectory}/${1}/${serverName}-${3}.tar.gz"
-	Print "ok" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}"
-	Print "ok" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}"
+	Print "info" "current world size: ${worldSizeHuman}, current backup size: ${backupSizeHuman}, current disk space: ${diskSpaceHuman}"
+	Print "info" "time spent on backup process: ${timeSpent} milliseconds, compression ratio: ${compressedBackupSize}/${worldSizeHuman}"
 
 	Debug "backup script reports backup success while performing backup-${1}"
 
