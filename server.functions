@@ -440,8 +440,10 @@ function OutputBackupSuccess {
 # prints disk space warning to terminal screen and backup log
 function OutputDiskSpaceWarning {
 	Log "warn" "free disk-space is getting rare - make some room for backups" "${backupLog}"
+	Log "info" "available disk space ${diskSpaceHuman} - warning at: ${diskSpaceWarning} bytes, limit at: ${diskSpaceError} bytes" "${backupLog}"
 
 	Print "warn" "free disk-space is getting rare - make some room for backups"
+	Print "info" "available disk space ${diskSpaceHuman} - warning at: ${diskSpaceWarning} bytes, limit at: ${diskSpaceError} bytes"
 
 	Debug "backup script reports low disk-space while performing backup-${1}"
 
@@ -464,8 +466,10 @@ function OutputBackupSizeWarning {
 # prints disk space error to terminal screen and backup log
 function OutputDiskSpaceError {
 	Log "error" "not enough disk-space to perform backup-${1}" "${backupLog}"
+	Log "info" "available disk space ${diskSpaceHuman} - warning at: ${diskSpaceWarning} bytes, limit at: ${diskSpaceError} bytes" "${backupLog}"
 
 	Print "error" "not enough disk-space to perform backup-${1}"
+	Print "info" "available disk space ${diskSpaceHuman} - warning at: ${diskSpaceWarning} bytes, limit at: ${diskSpaceError} bytes"
 
 	Debug "backup script reports not enough disk-space while performing backup-${1}"
 
@@ -488,8 +492,10 @@ function OutputBackupSizeError {
 # prints backup already exists messages to terminal screen and backup log
 function OutputBackupAlreadyExists {
 	Log "error" "could not create new ${1}-backup - backup already exists" "${backupLog}"
+	Log "info" "the file ${backupDirectory}/${1}/${serverName}-${2} already exists"
 
 	Print "error" "could not create new ${1}-backup - backup already exists"
+	Print "info" "the file ${backupDirectory}/${1}/${serverName}-${2} already exists"
 
 	Debug "backup script reports backup already exists while performing backup-${1}"
 
@@ -526,7 +532,7 @@ function OutputBackupGenericError {
 
 	Debug "backup script reports generic backup error while performing backup-${1}"
 
-	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: generic error - missing directories, empty file-path or empty files"
+	TellrawBackup "fatal: could not create new backup - please immediately tell your server admin" "red" "could not create file: ${serverName}-${2}.tar.gz, could not remove file: ${serverName}-${3}.tar.gz, reason: generic error - missing directories, empty file-paths or empty files"
 }
 
 # function for testing if all categories for backups exists if not create them also check for root backups directory
