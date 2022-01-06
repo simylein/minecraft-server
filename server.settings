@@ -27,10 +27,6 @@ executableServerFile="replaceExecutableServerFile"
 public="1.1.1.1"
 private="192.168.1.1"
 
-# values in bytes for disk space control
-diskSpaceError="2097152"
-diskSpaceWarning="8208608"
-
 # logfile names
 screenLog="screen.log"
 backupLog="backup.log"
@@ -41,6 +37,14 @@ doHourly=true
 doDaily=true
 doWeekly=false
 doMonthly=false
+
+# values in bytes for disk space control
+diskSpaceError=2097152
+diskSpaceWarning=8208608
+
+# values in percent for backup size control
+backupSizeError=20
+backupSizeWarning=40
 
 # backup file formats
 newHourly=$(date +"%H:00")
@@ -69,9 +73,9 @@ enablePerformReset=false
 # enables or disable some advanced options
 enableDebug=false
 changeToConsole=false
-enableBackupsWatchdog=true
 enableWelcomeMessage=true
-enableAutoStartOnCrash=true
+enableBackupsWatchdog=true
+enableAutoStartOnCrash=false
 
 # terminal output colours
 black="$(tput setaf 0)"
