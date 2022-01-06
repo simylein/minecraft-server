@@ -87,13 +87,15 @@ function RunBackup {
 		timeSpent=$((${after} - ${before}))
 		compressedBackupSize=$(du -sh ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
 		compressedBackupSizeBytes=$(du -s ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
+		# TODO: fix this buggy mess
 		# check if backup size is to small for a real backup
-		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeError}))); then
+		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / (100 * ${backupSizeError})))); then
 			OutputBackupSizeError "${1}" "${2}" "${3}"
 			exit 1
 		fi
+		# TODO: fix this buggy mess
 		# check if backup size is suspiciously small
-		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeWarning}))); then
+		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / (100 * ${backupSizeWarning})))); then
 			OutputBackupSizeWarning "${1}" "${2}" "${3}"
 		fi
 		# read settings and output success
