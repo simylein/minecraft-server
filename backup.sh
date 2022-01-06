@@ -76,6 +76,14 @@ function RunBackup {
 			nice -n 19 rm "${backupDirectory}/${1}/${serverName}-${3}.tar.gz"
 		fi
 		compressedBackupSize=$(du -sh ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
+		compressedBackupSizeBytes=$(du -s ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
+		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeError}))); then
+			OutputBackupSizeError "${1}" "${2}" "${3}"
+			exit 1
+		fi
+		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeWarning}))); then
+			OutputBackupSizeWarning "${1}" "${2}" "${3}"
+		fi
 		source server.settings
 		OutputBackupSuccess "${1}" "${2}" "${3}"
 	else
