@@ -38,52 +38,65 @@ BackupDirectoryIntegrity
 # main backup function
 function RunBackup {
 	Debug "executing backup-${1} script"
+	# check if disk space is too low
 	if (((${worldSizeBytes} + ${diskSpaceError}) > ${diskSpaceBytes})); then
 		OutputDiskSpaceError "${1}" "${2}" "${3}"
 		exit 1
 	fi
+	# check is getting low
 	if (((${worldSizeBytes} + ${diskSpaceWarning}) > ${diskSpaceBytes})); then
 		OutputDiskSpaceWarning "${1}"
 	fi
+	# check if backup already exists
 	if ! [[ -s "${backupDirectory}/${1}/${serverName}-${2}.tar.gz" ]]; then
+		# disable auto save
 		Screen "save-off"
 		sleep 1s
 		before=$(date +%s%3N)
+		# copy world
 		nice -n 19 cp -r "world" "tmp-${1}"
 		if [ $? != 0 ]; then
 			OutputBackupCopyError "${1}" "${2}" "${3}"
 			rm -r "tmp-${1}"
 			exit 1
 		fi
+		# compress world
 		nice -n 19 tar -czf "world-${1}.tar.gz" "tmp-${1}"
 		if [ $? != 0 ]; then
 			OutputBackupTarError "${1}" "${2}" "${3}"
 			rm -r "world-${1}.tar.gz" "tmp-${1}"
 			exit 1
 		fi
+		# mv backup and remove tmp
 		nice -n 19 mv "${serverDirectory}/world-${1}.tar.gz" "${backupDirectory}/${1}/${serverName}-${2}.tar.gz"
 		nice -n 19 rm -r "tmp-${1}"
+		# enable auto save
 		after=$(date +%s%3N)
 		Screen "save-on"
 		sleep 1s
-		timeSpent=$((${after} - ${before}))
 	else
 		OutputBackupAlreadyExists "${1}" "${2}" "${3}"
 		exit 1
 	fi
 	if [[ -s "${backupDirectory}/${1}/${serverName}-${2}.tar.gz" ]]; then
+		# remove old backup if it exists
 		if [[ -s "${backupDirectory}/${1}/${serverName}-${3}.tar.gz" ]]; then
 			nice -n 19 rm "${backupDirectory}/${1}/${serverName}-${3}.tar.gz"
 		fi
+		# calculate time spent and compression
+		timeSpent=$((${after} - ${before}))
 		compressedBackupSize=$(du -sh ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
 		compressedBackupSizeBytes=$(du -s ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
+		# check if backup size is to small for a real backup
 		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeError}))); then
 			OutputBackupSizeError "${1}" "${2}" "${3}"
 			exit 1
 		fi
+		# check if backup size is suspiciously small
 		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeWarning}))); then
 			OutputBackupSizeWarning "${1}" "${2}" "${3}"
 		fi
+		# read settings and output success
 		source server.settings
 		OutputBackupSuccess "${1}" "${2}" "${3}"
 	else
