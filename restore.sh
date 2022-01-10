@@ -1,233 +1,159 @@
 #!/bin/bash
 # minecraft server restore script
 
-# root safety check
-if [ $(id -u) = 0 ]; then
-	echo "$(tput bold)$(tput setaf 1)please do not run me as root :( - this is dangerous!$(tput sgr0)"
-	exit 1
-fi
+# read server files
+source server.settings
+source server.functions
 
-# read server.functions file with error checking
-if [[ -s "server.functions" ]]; then
-	. ./server.functions
-else
-	echo "$(date) fatal: server.functions is missing" >> fatalerror.log
-	echo "$(tput setaf 1)fatal: server.functions is missing$(tput sgr0)"
-	exit 1
-fi
+# parse arguments
+ParseArgs "$@"
+ArgHelp
 
-# read server.properties file with error checking
-if ! [[ -s "server.properties" ]]; then
-	echo "$(date) fatal: server.properties is missing" >> fatalerror.log
-	echo "$(tput setaf 1)fatal: server.properties is missing$(tput sgr0)"
-	exit 1
-fi
+# safety checks
+RootSafety
+ScriptSafety
 
-# read server.settings file with error checking
-if [[ -s "server.settings" ]]; then
-	. ./server.settings
-else
-	echo "$(date) fatal: server.settings is missing" >> fatalerror.log
-	echo "$(tput setaf 1)fatal: server.settings is missing$(tput sgr0)"
-	exit 1
-fi
+# debug
+Debug "executing $0 script"
 
-# change to server directory with error checking
-if [ -d "${serverdirectory}" ]; then
-	cd ${serverdirectory}
-else
-	echo "$(date) fatal: serverdirectory is missing" >> fatalerror.log
-	echo "${red}fatal: serverdirectory is missing${nocolor}"
-	exit 1
-fi
+# change to server directory
+ChangeServerDirectory
 
-# log to debug if true
-CheckDebug "executing restore script"
+# check for existance of executable
+CheckExecutable
 
-# parsing script arguments
-ParseScriptArguments "$@"
+# look if server is running
+CheckScreen
 
-# write date to logfile
-echo "action: ${date} executing restore script" >> ${screenlog}
-
-# check if server is running
-if ! screen -list | grep -q "\.${servername}"; then
-	echo "server is not currently running!" >> ${screenlog}
-	echo "${yellow}server is not currently running!${nocolor}"
-	exit 1
-fi
-
-# check if immediately is specified
-if ! [[ ${immediately} == true ]]; then
-	# countdown
-	counter="60"
-	while [ ${counter} -gt 0 ]; do
-		if [[ "${counter}" =~ ^(60|40|20|10|5|4|3|2|1)$ ]];then
-			CheckQuiet "${blue}[Script]${nocolor} server is restoring a backup in ${counter} seconds"
-			screen -Rd ${servername} -X stuff "tellraw @a [\"\",{\"text\":\"[Script] \",\"color\":\"blue\",\"italic\":false},{\"text\":\"server is restoring a backup in ${counter} seconds\"}]$(printf '\r')"
-		fi
-		counter=$((counter-1))
-		sleep 1s
-	done
-fi
+# prints countdown to screen
+Countdown "restoring a backup"
 
 # server stop
-CheckQuiet "stopping server..."
-PrintToScreen "say stopping server..."
-PrintToScreen "stop"
+Stop
 
-# check if server stopped
-stopchecks="0"
-while [ $stopchecks -lt 30 ]; do
-	if ! screen -list | grep -q "\.${servername}"; then
-		break
-	fi
-	stopchecks=$((stopchecks+1))
-	sleep 1;
-done
+# awaits server stop
+AwaitStop
 
 # force quit server if not stopped
-if screen -list | grep -q "${servername}"; then
-	echo "${yellow}warning: minecraft server still hasn't closed after 30 seconds, closing screen manually${nocolor}"
-	screen -S ${servername} -X quit
-fi
+ForceQuit
 
 # output confirmed stop
-echo "${green}server successfully stopped!${nocolor}"
-
-# remove all older safety backups
-if [[ -s "${backupdirectory}/cached/restore-"* ]]; then
-	rm ${backupdirectory}/cached/restore-*
-fi
+Log "ok" "server successfully stopped" "${screenLog}"
+Print "ok" "server successfully stopped"
 
 # create backup
-echo "${blue}backing up...${nocolor}"
-tar -czf world.tar.gz world && mv ${serverdirectory}/world.tar.gz ${backupdirectory}/cached/restore-${newdaily}.tar.gz
-
-# check if safety backup exists
-if ! [[ -s "${backupdirectory}/cached/restore-${newdaily}.tar.gz" ]]; then
-	echo "${yellow}warning: safety backup failed - proceeding to server restore${nocolor}"
-	echo "warning: safety backup failed - proceeding to server restore" >> ${screenlog}
-else
-	echo "info: created ${backupdirectory}/cached/restore-${newdaily}.tar.gz as a safety backup" >> ${backuplog}
-	echo "" >> ${backuplog}
-fi
+CachedBackup "restore"
 
 # create arrays with backupdirectorys
-CheckVerbose "info: scanning backup directory..."
-cd ${backupdirectory}
+Print "info" "scanning backup directory..."
+cd ${backupDirectory}
 backups=($(ls))
 cd hourly
-backupshourly=($(ls))
-cd ${backupdirectory}
+backupsHourly=($(ls))
+cd ${backupDirectory}
 cd daily
-backupsdaily=($(ls))
-cd ${backupdirectory}
+backupsDaily=($(ls))
+cd ${backupDirectory}
 cd weekly
-backupsweekly=($(ls))
-cd ${backupdirectory}
+backupsWeekly=($(ls))
+cd ${backupDirectory}
 cd monthly
-backupsmonthly=($(ls))
-cd ${backupdirectory}
+backupsMonthly=($(ls))
+cd ${backupDirectory}
 cd cached
-backupscached=($(ls))
-cd ${backupdirectory}
+backupsCached=($(ls))
+cd ${backupDirectory}
 
 # ask for daily or hourly backup to restore
-PS3="Would you like to restore a ${backups[0]}, ${backups[1]}, ${backups[2]}, ${backups[3]}, ${backups[4]}? "
-select dailyhourlyweeklymonthly in "${backups[@]}"
-do
-	echo "You chose: ${dailyhourlyweeklymonthly}"
+PS3="$(date +"%H:%M:%S") prompt: would you like to restore a ${backups[0]}, ${backups[1]}, ${backups[2]}, ${backups[3]}, ${backups[4]} backup? "
+select cachedDailyHourlyWeeklyMonthly in "${backups[@]}"; do
+	Print "info" "you chose: ${cachedDailyHourlyWeeklyMonthly}"
 	break
 done
 
 # select specific backup out of daily, hourly, monthly, weekly or a special backup
-if [[ "${dailyhourlyweeklymonthly}" == "${backups[0]}" ]]
-then
+if [[ "${cachedDailyHourlyWeeklyMonthly}" == "${backups[0]}" ]]; then
 	# ask for cached backup
-	PS3="Which ${backups[4]} backup would you like to restore?"
-	select backup in "${backupscached[@]}"
-	do
-		echo "You chose: ${backup}"
+	PS3="$(date +"%H:%M:%S") prompt: which ${backups[4]} backup would you like to restore?"
+	select backup in "${backupsCached[@]}"; do
+		Print "info" "you chose: ${backup}"
 		break
 	done
-elif [[ "${dailyhourlyweeklymonthly}" == "${backups[1]}" ]]
-then
+elif [[ "${cachedDailyHourlyWeeklyMonthly}" == "${backups[1]}" ]]; then
 	# ask for daily backup
-	PS3="Which ${backups[0]} backup would you like to restore? "
-	select backup in "${backupsdaily[@]}"
-	do 
-		echo "You chose: ${backup}"
+	PS3="$(date +"%H:%M:%S") prompt: which ${backups[0]} backup would you like to restore? "
+	select backup in "${backupsDaily[@]}"; do
+		Print "info" "you chose: ${backup}"
 		break
 	done
-elif [[ "${dailyhourlyweeklymonthly}" == "${backups[2]}" ]]
-then
+elif [[ "${cachedDailyHourlyWeeklyMonthly}" == "${backups[2]}" ]]; then
 	# ask for hourly backup
-	PS3="Which ${backups[1]} backup would you like to restore? "
-	select backup in "${backupshourly[@]}"
-	do
-		echo "You chose: ${backup}"
+	PS3="$(date +"%H:%M:%S") prompt: which ${backups[1]} backup would you like to restore? "
+	select backup in "${backupsHourly[@]}"; do
+		Print "info" "you chose: ${backup}"
 		break
 	done
-elif [[ "${dailyhourlyweeklymonthly}" == "${backups[3]}" ]]
-then
+elif [[ "${cachedDailyHourlyWeeklyMonthly}" == "${backups[3]}" ]]; then
 	# ask for monthly backup
-	PS3="Which ${backups[2]} backup would you like to restore? "
-	select backup in "${backupsmonthly[@]}"
-	do
-		echo "You chose: ${backup}"
+	PS3="$(date +"%H:%M:%S") prompt: which ${backups[2]} backup would you like to restore? "
+	select backup in "${backupsMonthly[@]}"; do
+		Print "info" "you chose: ${backup}"
 		break
 	done
-elif [[ "${dailyhourlyweeklymonthly}" == "${backups[4]}" ]]
-then
+elif [[ "${cachedDailyHourlyWeeklyMonthly}" == "${backups[4]}" ]]; then
 	# ask for weekly backup
-	PS3="Which ${backups[3]} backup would you like to restore? "
-	select backup in "${backupsweekly[@]}"
-	do
-		echo "You chose: ${backup}"
+	PS3="$(date +"%H:%M:%S") prompt: which ${backups[3]} backup would you like to restore? "
+	select backup in "${backupsWeekly[@]}"; do
+		Print "info" "you chose: ${backup}"
 		break
 	done
 fi
 
-# echo selected backup
-echo "selected backup to restore: ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup}"
-
 # ask for permission to proceed
-echo "I will now delete the current world-directory and replace it with your chosen backup"
-echo "You have chosen: ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} as a backup to restore"
-read -p "Continue? [Y/N]: "
+Print "info" "i will now delete the current world-directory and replace it with your chosen backup"
+Print "info" "you have chosen: ${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup} as a backup to restore"
+read -p "$(date +"%H:%M:%S") prompt: continue? (y/n): "
 
 # if user replys yes perform restore
+regex="^(Y|y|N|n)$"
+while [[ ! ${REPLY} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+done
 if [[ ${REPLY} =~ ^[Yy]$ ]]; then
-	cd ${serverdirectory}
-	echo "${cyan}restoring backup...${nocolor}"
-	mv ${serverdirectory}/world ${serverdirectory}/old-world
-	cp ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} ${serverdirectory}
-	mv ${backup} world.tar.gz
-	tar -xf world.tar.gz
-	rm world.tar.gz
+	cd "${serverDirectory}"
+	Print "action" "restoring backup..."
+	nice -n 19 mv "${serverDirectory}/world" "${serverDirectory}/old-world"
+	nice -n 19 cp "${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup}" "${serverDirectory}"
+	nice -n 19 mv "${backup}" "world.tar.gz"
+	nice -n 19 tar -xf "world.tar.gz"
+	nice -n 19 mv "tmp" "world"
+	nice -n 19 rm "world.tar.gz"
 	if [ -d "world" ]; then
-		echo "${green}ok: restore successful${nocolor}"
-		echo "${cyan}action: restarting server with restored backup...${nocolor}"
-		echo "${date} the backup ${backupdirectory}/${dailyhourlyweeklymonthly}/${backup} has been restored" >> ${screenlog}
-		rm -r ${serverdirectory}/old-world
+		Log "the backup ${backupDirectory}/${cachedDailyHourlyWeeklyMonthly}/${backup} has been restored" "${screenLog}"
+		Print "ok" "restore successful"
+		Print "action" "restarting server with restored backup..."
+		nice -n 19 rm -r "${serverDirectory}/old-world"
 	else
-		echo "${red}fatal: something went wrong - could not restore backup${nocolor}"
-		echo "fatal: something went wrong - could not restore backup" >> ${screenlog}
-		mv ${serverdirectory}/old-world ${serverdirectory}/world
+		Log "error" "something went wrong - could not restore backup" "${screenLog}"
+		Log "action" "reverting changes..." "${screenLog}"
+		Print "error" "something went wrong - could not restore backup"
+		Print "action" "reverting changes..."
+		nice -n 19 mv "${serverDirectory}/old-world" "${serverDirectory}/world"
 	fi
 	./start.sh "$@"
 # if user replys no cancel and restart server
-else cd ${serverdirectory}
-	echo "${yellow}warning: canceling backup restore...${nocolor}"
-	echo "${cyan}action: restarting server...${nocolor}"
-	echo "info: backup restore has been canceled" >> ${screenlog}
-	echo "info: resuming to current live world" >> ${screenlog}
-	./start.sh "$@"
+else
+	cd ${serverDirectory}
+	Print "warn" "backup restore has been canceled"
+	Print "info" "resuming to current live world"
+	Print "action" "restarting server..."
+	Log "info" "backup restore has been canceled" "${screenLog}"
+	Log "info" "resuming to current live world" "${screenLog}"
+	./start.sh --force "$@"
 fi
 
 # log to debug if true
-CheckDebug "executed restore script"
+Debug "executed $0 script"
 
 # exit with code 0
 exit 0
