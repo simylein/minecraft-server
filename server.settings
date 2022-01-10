@@ -14,7 +14,7 @@ adminContact="your admin did not edit the server settings file /:"
 welcome=("welcome on my server" "a warm welcome to" "greetings" "hello to" "welcome aboard" "make yourself at home" "have a nice time" "enjoy yourself")
 
 # arguments for java server
-javaArgs="-Xms2G -Xmx2G -XX:ParallelGCThreads=2"
+javaArgs="-Xmx2G -XX:ParallelGCThreads=2"
 
 # server resource paths
 serverName="replaceServerName"
