@@ -8,7 +8,7 @@
 TERM="xterm"
 
 # branch selection from for github
-branch="dev"
+branch="main"
 
 # command line colours
 black="$(tput setaf 0)"
