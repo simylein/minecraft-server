@@ -43,6 +43,43 @@ function Print {
 	fi
 }
 
+# function for parsing all arguments for a script
+function ParseArgs {
+	while [[ $# -gt 0 ]]; do
+		case "${1}" in
+		--name)
+			shift
+			name="${1}"
+			;;
+		--proceed)
+			shift
+			proceed="${1}"
+			;;
+		--version)
+			shift
+			version="${1}"
+			;;
+		--eula)
+			shift
+			eula="${1}"
+			;;
+		--remove)
+			shift
+			remove="${1}"
+			;;
+		--start)
+			shift
+			start="${1}"
+			;;
+		*)
+			Print "warn" "bad argument: ${1}"
+			Print "info" "for help use --help"
+			;;
+		esac
+		shift
+	done
+}
+
 # function for storing variables in server.settings
 function StoreSettings {
 	sed -i "s|${1}|${2}|g" server.settings
