@@ -137,10 +137,10 @@ There are lots of script in your ${serverdirectory}. Normally, the executable on
 ./${scriptname}.sh ${arguments}
 ```
 
-Example: `./start.sh -verbose`
-Example: `./start.sh -now`
+Example: `./start.sh --verbose`
+Example: `./start.sh --now`
 
-Arguments: `-f --force, -n --now -q --quiet -v --verbose`
+Arguments: `-h --help, -f --force, -n --now -q --quiet -v --verbose`
 
 ## crontab
 
