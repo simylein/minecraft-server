@@ -242,7 +242,7 @@ CheckWindows
 CheckUnsupported
 
 # arguments
-ParseArgs
+ParseArgs "$@"
 ArgHelp
 
 # user info about script
