@@ -16,13 +16,28 @@ sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreut
 ## setup
 
 Then, you can download and execute the setup script. <br>
-This command downloads, makes exectable and executes the setup script.
+
+Download
+```
+wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh
+```
+
+Make Executable
+```
+chmod +x setup.sh
+```
+
+This will start the script in interactive mode and you must answer questions
 
 ```
-wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh && chmod +x setup.sh && ./setup.sh
+./setup.sh
 ```
 
-The Script will ask you some Questions. Please answer them in order for the Server to work. If you do not know what you like right now you can edit all answers later in the server.\* files and going with the prefilled answer works for most people. Now you got yourself a server directory. It is called ${servername} (it's the name you have chosen for your server) and inside ${servername} a directory is called backups. Like you can imagine ${servername} holds your live server and backups stores your backups.
+If you like a straight one-liner wich is non-interactive you may use the setup arguments like this
+
+```
+./setup.sh --name minecraft --proceed true --version 1.18.1 --port 25567 --eula true --remove true --start true
+```
 
 ## serverstart
 
