@@ -43,33 +43,63 @@ function Print {
 	fi
 }
 
-# function for parsing all arguments for a script
+# prints arguments help
+function ArgHelp {
+	if [[ ${help} == true ]]; then
+		Print "info" "available arguments:"
+		Print "info" "argument   example     type     explanation"
+		Print "info" "--name     minecraft   string   (your server name)"
+		Print "info" "--proceed  true        boolean  (proceed without user input)"
+		Print "info" "--version  1.18.1      string   (minecraft server version)"
+		Print "info" "--eula     true        boolean  (accept eula from mojang)"
+		Print "info" "--port     25565       number   (server port to run on)"
+		Print "info" "--remove   true        boolean  (remove script after execution)"
+		Print "info" "--start    true        boolean  (start server after execution)"
+		exit 0
+	fi
+}
+
+# function for parsing all arguments of script
 function ParseArgs {
 	while [[ $# -gt 0 ]]; do
 		case "${1}" in
 		--name)
+			nameArg=true
 			shift
-			name="${1}"
+			nameVal="${1}"
 			;;
 		--proceed)
+			proceedArg=true
 			shift
-			proceed="${1}"
+			proceedVal="${1}"
 			;;
 		--version)
+			versionArg=true
 			shift
-			version="${1}"
+			versionVal="${1}"
 			;;
 		--eula)
+			eulaArg=true
 			shift
-			eula="${1}"
+			eulaVal="${1}"
+			;;
+		--port)
+			portArg=true
+			shift
+			portVal="${1}"
 			;;
 		--remove)
+			removeArg=true
 			shift
-			remove="${1}"
+			removeVal="${1}"
 			;;
 		--start)
+			startArg=true
 			shift
-			start="${1}"
+			startVal="${1}"
+			;;
+		--help)
+			help=true
 			;;
 		*)
 			Print "warn" "bad argument: ${1}"
@@ -203,13 +233,21 @@ CheckMacOS
 CheckWindows
 CheckUnsupported
 
+# arguments
+ParseArgs
+ArgHelp
+
 # user info about script
 Print "action" "i will setup a minecraft server for you ;^)"
 
 # initial question
-read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
+if ! [[ nameArg == true ]]; then
+	read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
+else
+	serverName="${nameVal}"
+fi
 regex="^[a-zA-Z0-9]+$"
-verify="false"
+verify=false
 while [[ ${verify} == false ]]; do
 	if [[ ! "${serverName}" =~ ${regex} ]]; then
 		read -p "$(date +"%H:%M:%S") prompt: please enter a name which only contains letters and numbers: " serverName
@@ -236,7 +274,15 @@ homeDirectory=$(pwd)
 
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
-read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): "
+if ! [[ proceedArg == true ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): "
+else
+	if [[ proceedVal == true ]]; then
+		REPLY=y
+	elif [[ proceedVal == false ]]; then
+		REPLY=n
+	fi
+fi
 regex="^(Y|y|N|n)$"
 while [[ ! ${REPLY} =~ ${regex} ]]; do
 	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
