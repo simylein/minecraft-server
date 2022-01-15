@@ -251,7 +251,7 @@ Print "action" "i will setup a minecraft server for you ;^)"
 # initial question
 if [[ nameArg == false ]]; then
 	read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
-else
+elif [[ nameArg == true ]]; then
 	serverName="${nameVal}"
 fi
 regex="^[a-zA-Z0-9]+$"
@@ -283,19 +283,19 @@ homeDirectory=$(pwd)
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
 if [[ proceedArg == false ]]; then
-	read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): "
-else
+	read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): " answer
+elif [[ proceedArg == true ]]; then
 	if [[ proceedVal == true ]]; then
-		REPLY=y
+		answer=y
 	elif [[ proceedVal == false ]]; then
-		REPLY=n
+		answer=n
 	fi
 fi
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ $answer =~ ^[Yy]$ ]]; then
 	Print "ok" "starting setup..."
 else
 	Print "error" "exiting..."
