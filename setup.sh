@@ -100,12 +100,6 @@ function ParseArgs {
 		esac
 		shift
 	done
-	# TODO: remove
-	Print "info" "${nameArg} ${nameVal}"
-	Print "info" "${proceedArg} ${proceedVal}"
-	Print "info" "${versionArg} ${versionVal}"
-	Print "info" "${eulaArg} ${eulaVal}"
-	# TODO: remove
 }
 
 # prints arguments help
@@ -414,6 +408,11 @@ if [[ ${answer} =~ ^[Yy]$ ]]; then
 else
 	Print "error" "declining eula..."
 	echo "eula=false" >>eula.txt
+fi
+
+# determine server port
+if [[ ${portArg} == true ]]; then
+	StoreProperties "server-port=25565" "server-port=${portVal}"
 fi
 
 # store to settings
