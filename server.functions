@@ -145,6 +145,7 @@ function ParseCategory {
 function ArgHelp {
 	if [[ ${help} == true ]]; then
 		Print "info" "available arguments:"
+		Print "info" "argument       explanation"
 		Print "info" "-f  --force    (ignores script safety checks)"
 		Print "info" "-h  --help     (prints this help page)"
 		Print "info" "-n  --now      (executes an action without countdown)"

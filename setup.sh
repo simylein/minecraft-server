@@ -43,6 +43,81 @@ function Print {
 	fi
 }
 
+# function for parsing all arguments of script
+function ParseArgs {
+	nameArg=false
+	proceedArg=false
+	versionArg=false
+	eulaArg=false
+	portArg=false
+	removeArg=false
+	startArg=false
+	help=false
+	while [[ $# -gt 0 ]]; do
+		case "${1}" in
+		--name)
+			nameArg=true
+			shift
+			nameVal="${1}"
+			;;
+		--proceed)
+			proceedArg=true
+			shift
+			proceedVal="${1}"
+			;;
+		--version)
+			versionArg=true
+			shift
+			versionVal="${1}"
+			;;
+		--eula)
+			eulaArg=true
+			shift
+			eulaVal="${1}"
+			;;
+		--port)
+			portArg=true
+			shift
+			portVal="${1}"
+			;;
+		--remove)
+			removeArg=true
+			shift
+			removeVal="${1}"
+			;;
+		--start)
+			startArg=true
+			shift
+			startVal="${1}"
+			;;
+		--help)
+			help=true
+			;;
+		*)
+			Print "warn" "bad argument: ${1}"
+			Print "info" "for help use --help"
+			;;
+		esac
+		shift
+	done
+}
+
+# prints arguments help
+function ArgHelp {
+	if [[ ${help} == true ]]; then
+		Print "info" "available arguments:"
+		Print "info" "argument   example     type     explanation"
+		Print "info" "--name     minecraft   string   (your server name)"
+		Print "info" "--proceed  true        boolean  (proceed without user input)"
+		Print "info" "--version  1.18.1      string   (minecraft server version)"
+		Print "info" "--eula     true        boolean  (accept eula from mojang)"
+		Print "info" "--port     25565       number   (server port to run on)"
+		Print "info" "--remove   true        boolean  (remove script after execution)"
+		Print "info" "--start    true        boolean  (start server after execution)"
+		exit 0
+	fi
+}
+
 # function for storing variables in server.settings
 function StoreSettings {
 	sed -i "s|${1}|${2}|g" server.settings
@@ -166,13 +241,21 @@ CheckMacOS
 CheckWindows
 CheckUnsupported
 
+# arguments
+ParseArgs "$@"
+ArgHelp
+
 # user info about script
 Print "action" "i will setup a minecraft server for you ;^)"
 
 # initial question
-read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
+if [[ ${nameArg} == false ]]; then
+	read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
+elif [[ ${nameArg} == true ]]; then
+	serverName="${nameVal}"
+fi
 regex="^[a-zA-Z0-9]+$"
-verify="false"
+verify=false
 while [[ ${verify} == false ]]; do
 	if [[ ! "${serverName}" =~ ${regex} ]]; then
 		read -p "$(date +"%H:%M:%S") prompt: please enter a name which only contains letters and numbers: " serverName
@@ -199,12 +282,20 @@ homeDirectory=$(pwd)
 
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
-read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): "
+if [[ ${proceedArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): " answer
+elif [[ ${proceedArg} == true ]]; then
+	if [[ ${proceedVal} == true ]]; then
+		answer=y
+	elif [[ ${proceedVal} == false ]]; then
+		answer=n
+	fi
+fi
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ $answer =~ ^[Yy]$ ]]; then
 	Print "ok" "starting setup..."
 else
 	Print "error" "exiting..."
@@ -240,27 +331,45 @@ done
 serverDirectory=$(pwd)
 
 # download java executable from mojang
-PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
-versions=("1.18.1" "1.17.1" "1.16.5")
-select version in "${versions[@]}"; do
+if [[ ${versionArg} == false ]]; then
+	PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
+	versions=("1.18.1" "1.17.1" "1.16.5")
+	select version in "${versions[@]}"; do
+		case ${version} in
+		"1.18.1")
+			FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
+			break
+			;;
+		"1.17.1")
+			FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
+			break
+			;;
+		"1.16.5")
+			FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
+			break
+			;;
+		*)
+			echo "please choose an option from the list: "
+			;;
+		esac
+	done
+elif [[ ${versionArg} == true ]]; then
+	version="${versionVal}"
 	case ${version} in
 	"1.18.1")
 		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
-		break
 		;;
 	"1.17.1")
 		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
-		break
 		;;
 	"1.16.5")
 		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
-		break
 		;;
 	*)
 		echo "please choose an option from the list: "
 		;;
 	esac
-done
+fi
 
 # user information about execute at start
 Print "info" "your server will execute ${executableServerFile} at start"
@@ -280,17 +389,30 @@ cd ${serverDirectory}
 
 # eula question
 Print "info" "would you like to accept the end user license agreement from mojang?"
-read -p "$(date +"%H:%M:%S") prompt: (y/n): "
+if [[ ${eulaArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: (y/n): " answer
+elif [[ ${eulaArg} == true ]]; then
+	if [[ ${eulaVal} == true ]]; then
+		answer=y
+	elif [[ ${eulaVal} == false ]]; then
+		answer=n
+	fi
+fi
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+if [[ ${answer} =~ ^[Yy]$ ]]; then
 	Print "ok" "accepting eula..."
 	echo "eula=true" >>eula.txt
 else
 	Print "error" "declining eula..."
 	echo "eula=false" >>eula.txt
+fi
+
+# determine server port
+if [[ ${portArg} == true ]]; then
+	StoreProperties "server-port=25565" "server-port=${portVal}"
 fi
 
 # store to settings
@@ -339,26 +461,43 @@ StoreCrontab ""
 Print "ok" "setup is complete!"
 
 # ask user for removal of setup script
-read -p "$(date +"%H:%M:%S") prompt: would you like to remove the setup script? (y/n): "
+if [[ ${removeArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: would you like to remove the setup script? (y/n): " answer
+elif [[ ${removeArg} == true ]]; then
+	if [[ ${removeVal} == true ]]; then
+		answer=y
+	elif [[ ${removeVal} == false ]]; then
+		answer=n
+	fi
+fi
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+if [[ ${answer} =~ ^[Yy]$ ]]; then
 	cd "${homeDirectory}"
 	rm setup.sh
 	cd "${serverDirectory}"
 fi
 
 # ask user to start server now
-read -p "$(date +"%H:%M:%S") prompt: would you like to start your server now? (y/n): "
+if [[ ${startArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: would you like to start your server now? (y/n): " answer
+elif [[ ${startArg} == true ]]; then
+	if [[ ${startVal} == true ]]; then
+		answer=y
+	elif [[ ${startVal} == false ]]; then
+		answer=n
+	fi
+fi
+
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+if [[ ${answer} =~ ^[Yy]$ ]]; then
 	Print "action" "starting up server..."
-	./start.sh --verbose
+	./start.sh
 else
 	Print "ok" "script has finished!"
 fi
