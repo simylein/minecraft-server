@@ -43,24 +43,16 @@ function Print {
 	fi
 }
 
-# prints arguments help
-function ArgHelp {
-	if [[ ${help} == true ]]; then
-		Print "info" "available arguments:"
-		Print "info" "argument   example     type     explanation"
-		Print "info" "--name     minecraft   string   (your server name)"
-		Print "info" "--proceed  true        boolean  (proceed without user input)"
-		Print "info" "--version  1.18.1      string   (minecraft server version)"
-		Print "info" "--eula     true        boolean  (accept eula from mojang)"
-		Print "info" "--port     25565       number   (server port to run on)"
-		Print "info" "--remove   true        boolean  (remove script after execution)"
-		Print "info" "--start    true        boolean  (start server after execution)"
-		exit 0
-	fi
-}
-
 # function for parsing all arguments of script
 function ParseArgs {
+	nameArg=false
+	proceedArg=false
+	versionArg=false
+	eulaArg=false
+	portArg=false
+	removeArg=false
+	startArg=false
+	help=false
 	while [[ $# -gt 0 ]]; do
 		case "${1}" in
 		--name)
@@ -108,6 +100,22 @@ function ParseArgs {
 		esac
 		shift
 	done
+}
+
+# prints arguments help
+function ArgHelp {
+	if [[ ${help} == true ]]; then
+		Print "info" "available arguments:"
+		Print "info" "argument   example     type     explanation"
+		Print "info" "--name     minecraft   string   (your server name)"
+		Print "info" "--proceed  true        boolean  (proceed without user input)"
+		Print "info" "--version  1.18.1      string   (minecraft server version)"
+		Print "info" "--eula     true        boolean  (accept eula from mojang)"
+		Print "info" "--port     25565       number   (server port to run on)"
+		Print "info" "--remove   true        boolean  (remove script after execution)"
+		Print "info" "--start    true        boolean  (start server after execution)"
+		exit 0
+	fi
 }
 
 # function for storing variables in server.settings
@@ -241,7 +249,7 @@ ArgHelp
 Print "action" "i will setup a minecraft server for you ;^)"
 
 # initial question
-if ! [[ nameArg == true ]]; then
+if [[ nameArg == false ]]; then
 	read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
 else
 	serverName="${nameVal}"
@@ -274,7 +282,7 @@ homeDirectory=$(pwd)
 
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
-if ! [[ proceedArg == true ]]; then
+if [[ proceedArg == false ]]; then
 	read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): "
 else
 	if [[ proceedVal == true ]]; then
