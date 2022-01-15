@@ -100,6 +100,12 @@ function ParseArgs {
 		esac
 		shift
 	done
+	# TODO: remove
+	Print "info" "${nameArg} ${nameVal}"
+	Print "info" "${proceedArg} ${proceedVal}"
+	Print "info" "${versionArg} ${versionVal}"
+	Print "info" "${eulaArg} ${eulaVal}"
+	# TODO: remove
 }
 
 # prints arguments help
@@ -249,9 +255,9 @@ ArgHelp
 Print "action" "i will setup a minecraft server for you ;^)"
 
 # initial question
-if [[ nameArg == false ]]; then
+if [[ ${nameArg} == false ]]; then
 	read -re -i "minecraft" -p "$(date +"%H:%M:%S") prompt: how should I call your server? your name: " serverName
-elif [[ nameArg == true ]]; then
+elif [[ ${nameArg} == true ]]; then
 	serverName="${nameVal}"
 fi
 regex="^[a-zA-Z0-9]+$"
@@ -282,12 +288,12 @@ homeDirectory=$(pwd)
 
 # ask for permission to proceed
 Print "info" "i will download start, stop, restart, backup and many more scripts from github"
-if [[ proceedArg == false ]]; then
+if [[ ${proceedArg} == false ]]; then
 	read -p "$(date +"%H:%M:%S") prompt: proceed? (y/n): " answer
-elif [[ proceedArg == true ]]; then
-	if [[ proceedVal == true ]]; then
+elif [[ ${proceedArg} == true ]]; then
+	if [[ ${proceedVal} == true ]]; then
 		answer=y
-	elif [[ proceedVal == false ]]; then
+	elif [[ ${proceedVal} == false ]]; then
 		answer=n
 	fi
 fi
