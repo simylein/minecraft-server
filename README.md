@@ -36,7 +36,7 @@ This will start the script in interactive mode and you must answer questions
 If you like a straight one-liner wich is non-interactive you may use the setup arguments like this
 
 ```
-./setup.sh --name minecraft --proceed true --version 1.18.1 --port 25567 --eula true --remove true --start true
+./setup.sh --name minecraft --proceed true --version 1.18.1 --port 25565 --eula true --remove true --start true
 ```
 
 ## serverstart
