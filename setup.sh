@@ -337,27 +337,45 @@ done
 serverDirectory=$(pwd)
 
 # download java executable from mojang
-PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
-versions=("1.18.1" "1.17.1" "1.16.5")
-select version in "${versions[@]}"; do
+if [[ ${versionArg} == false ]]; then
+	PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
+	versions=("1.18.1" "1.17.1" "1.16.5")
+	select version in "${versions[@]}"; do
+		case ${version} in
+		"1.18.1")
+			FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
+			break
+			;;
+		"1.17.1")
+			FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
+			break
+			;;
+		"1.16.5")
+			FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
+			break
+			;;
+		*)
+			echo "please choose an option from the list: "
+			;;
+		esac
+	done
+elif [[ ${versionArg} == true ]]; then
+	version="${versionVal}"
 	case ${version} in
 	"1.18.1")
 		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
-		break
 		;;
 	"1.17.1")
 		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
-		break
 		;;
 	"1.16.5")
 		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
-		break
 		;;
 	*)
 		echo "please choose an option from the list: "
 		;;
 	esac
-done
+fi
 
 # user information about execute at start
 Print "info" "your server will execute ${executableServerFile} at start"
@@ -377,12 +395,20 @@ cd ${serverDirectory}
 
 # eula question
 Print "info" "would you like to accept the end user license agreement from mojang?"
-read -p "$(date +"%H:%M:%S") prompt: (y/n): "
+if [[ ${eulaArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: (y/n): " answer
+elif [[ ${eulaArg} == true ]]; then
+	if [[ ${eulaVal} == true ]]; then
+		answer=y
+	elif [[ ${eulaVal} == false ]]; then
+		answer=n
+	fi
+fi
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+if [[ ${answer} =~ ^[Yy]$ ]]; then
 	Print "ok" "accepting eula..."
 	echo "eula=true" >>eula.txt
 else
@@ -436,26 +462,43 @@ StoreCrontab ""
 Print "ok" "setup is complete!"
 
 # ask user for removal of setup script
-read -p "$(date +"%H:%M:%S") prompt: would you like to remove the setup script? (y/n): "
+if [[ ${removeArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: would you like to remove the setup script? (y/n): " answer
+elif [[ ${removeArg} == true ]]; then
+	if [[ ${removeVal} == true ]]; then
+		answer=y
+	elif [[ ${removeVal} == false ]]; then
+		answer=n
+	fi
+fi
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+if [[ ${answer} =~ ^[Yy]$ ]]; then
 	cd "${homeDirectory}"
 	rm setup.sh
 	cd "${serverDirectory}"
 fi
 
 # ask user to start server now
-read -p "$(date +"%H:%M:%S") prompt: would you like to start your server now? (y/n): "
+if [[ ${startArg} == false ]]; then
+	read -p "$(date +"%H:%M:%S") prompt: would you like to start your server now? (y/n): " answer
+elif [[ ${startArg} == true ]]; then
+	if [[ ${startVal} == true ]]; then
+		answer=y
+	elif [[ ${startVal} == false ]]; then
+		answer=n
+	fi
+fi
+
 regex="^(Y|y|N|n)$"
-while [[ ! ${REPLY} =~ ${regex} ]]; do
-	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " REPLY
+while [[ ! ${answer} =~ ${regex} ]]; do
+	read -p "$(date +"%H:%M:%S") prompt: please press y or n: " answer
 done
-if [[ ${REPLY} =~ ^[Yy]$ ]]; then
+if [[ ${answer} =~ ^[Yy]$ ]]; then
 	Print "action" "starting up server..."
-	./start.sh --verbose
+	./start.sh
 else
 	Print "ok" "script has finished!"
 fi
