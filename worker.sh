@@ -43,7 +43,7 @@ while true; do
 			if tail -1 screen.log | grep -q "joined the game"; then
 				welcomeMessage=${welcome[$index]}
 				player=$(tail -1 screen.log | grep -oP '.*?(?=joined the game)' | cut -d ' ' -f 4- | sed 's/.$//')
-				TellrawScript "${welcomeMessage} ${player}" "player ${player} joined at ${timeStamp}"
+				TellrawWelcome "${welcomeMessage}" "${player}" "player ${player} joined at ${timeStamp}"
 			fi
 		fi
 

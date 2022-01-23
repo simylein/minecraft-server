@@ -260,6 +260,15 @@ function TellrawPlayer {
 	fi
 }
 
+# prints welcome to screen at every player
+function TellrawWelcome {
+	if [[ $# -eq 2 ]]; then
+		Screen "tellraw @a [\"\",{\"text\":\"[Welcome] \",\"color\":\"blue\"},{\"text\":\"${1}\"}],{\"text\":\"${2}\",\"color\":\"green\"}]"
+	else
+		Screen "tellraw @a [\"\",{\"text\":\"[Welcome] \",\"color\":\"blue\"},{\"text\":\"${1} \"},{\"text\":\"${2}\",\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"${3}\"}]}}}]"
+	fi
+}
+
 # checks private network availability
 function CheckPrivate {
 	privateChecks=0
