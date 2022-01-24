@@ -346,7 +346,19 @@ function AwaitStop {
 			break
 		fi
 		stopChecks=$((stopChecks + 1))
-		sleep 1
+		sleep 1s
+	done
+}
+
+# awaits given string in screen
+function AwaitString {
+	stringChecks=0
+	while [ ${stringChecks} -lt ${2} ]; do
+		if tail -1 "${screenLog}" | grep -q "${1}"; then
+			break
+		fi
+		stringChecks=$((stringChecks + 1))
+		sleep 1s
 	done
 }
 
