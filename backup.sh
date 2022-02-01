@@ -49,9 +49,13 @@ function RunBackup {
 	fi
 	# check if backup already exists
 	if ! [[ -s "${backupDirectory}/${1}/${serverName}-${2}.tar.gz" ]]; then
+		# save the world
+		Screen "save-all"
+		AwaitString "Saved the game" "10"
 		# disable auto save
 		Screen "save-off"
-		sleep 1s
+		AwaitString "Automatic saving is now disabled" "5"
+		# start timer
 		before=$(date +%s%3N)
 		# copy world
 		nice -n 19 cp -r "world" "tmp-${1}"
@@ -60,6 +64,9 @@ function RunBackup {
 			rm -r "tmp-${1}"
 			exit 1
 		fi
+		# enable auto save
+		Screen "save-on"
+		AwaitString "Automatic saving is now enabled" "5"
 		# compress world
 		nice -n 19 tar -czf "world-${1}.tar.gz" "tmp-${1}"
 		if [ $? != 0 ]; then
@@ -70,10 +77,8 @@ function RunBackup {
 		# mv backup and remove tmp
 		nice -n 19 mv "${serverDirectory}/world-${1}.tar.gz" "${backupDirectory}/${1}/${serverName}-${2}.tar.gz"
 		nice -n 19 rm -r "tmp-${1}"
-		# enable auto save
+		# stop timer
 		after=$(date +%s%3N)
-		Screen "save-on"
-		sleep 1s
 	else
 		OutputBackupAlreadyExists "${1}" "${2}" "${3}"
 		exit 1

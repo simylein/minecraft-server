@@ -35,7 +35,7 @@ function Print {
 		echo "$(date +"%H:%M:%S") ${green}ok${noColor}: ${2}"
 	fi
 	if [[ ${1} == "info" ]] && [[ ${quiet} == false ]]; then
-		echo "$(date +"%H:%M:%S") ${blue}info${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${cyan}info${noColor}: ${2}"
 	fi
 	if [[ ${1} == "warn" ]]; then
 		echo "$(date +"%H:%M:%S") ${yellow}warn${noColor}: ${2}"
@@ -47,7 +47,7 @@ function Print {
 		echo "$(date +"%H:%M:%S") ${red}fatal${noColor}: ${2}"
 	fi
 	if [[ ${1} == "action" ]] && [[ ${quiet} == false ]]; then
-		echo "$(date +"%H:%M:%S") ${cyan}action${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${blue}action${noColor}: ${2}"
 	fi
 	if [[ $1 == "debug" ]] && [[ ${quiet} == false ]]; then
 		echo "$(date +"%H:%M:%S") debug: ${2}"
@@ -260,6 +260,15 @@ function TellrawPlayer {
 	fi
 }
 
+# prints welcome to screen at every player
+function TellrawWelcome {
+	if [[ $# -eq 2 ]]; then
+		Screen "tellraw @a [\"\",{\"text\":\"[Welcome] \",\"color\":\"blue\"},{\"text\":\"${1}\"}],{\"text\":\"${2}\",\"color\":\"green\"}]"
+	else
+		Screen "tellraw @a [\"\",{\"text\":\"[Welcome] \",\"color\":\"blue\"},{\"text\":\"${1} \"},{\"text\":\"${2}\",\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"${3}\"}]}}}]"
+	fi
+}
+
 # checks private network availability
 function CheckPrivate {
 	privateChecks=0
@@ -337,7 +346,19 @@ function AwaitStop {
 			break
 		fi
 		stopChecks=$((stopChecks + 1))
-		sleep 1
+		sleep 1s
+	done
+}
+
+# awaits given string in screen
+function AwaitString {
+	stringChecks=0
+	while [ ${stringChecks} -lt ${2} ]; do
+		if tail -1 "${screenLog}" | grep -q "${1}"; then
+			break
+		fi
+		stringChecks=$((stringChecks + 1))
+		sleep 1s
 	done
 }
 

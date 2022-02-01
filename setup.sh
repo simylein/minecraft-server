@@ -27,7 +27,7 @@ function Print {
 		echo "$(date +"%H:%M:%S") ${green}ok${noColor}: ${2}"
 	fi
 	if [[ ${1} == "info" ]]; then
-		echo "$(date +"%H:%M:%S") ${blue}info${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${cyan}info${noColor}: ${2}"
 	fi
 	if [[ ${1} == "warn" ]]; then
 		echo "$(date +"%H:%M:%S") ${yellow}warn${noColor}: ${2}"
@@ -39,7 +39,7 @@ function Print {
 		echo "$(date +"%H:%M:%S") ${red}fatal${noColor}: ${2}"
 	fi
 	if [[ ${1} == "action" ]]; then
-		echo "$(date +"%H:%M:%S") ${cyan}action${noColor}: ${2}"
+		echo "$(date +"%H:%M:%S") ${blue}action${noColor}: ${2}"
 	fi
 }
 
