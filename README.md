@@ -17,14 +17,9 @@ sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreut
 
 Then, you can download and execute the setup script. <br>
 
-Download
+Download and make Executable
 ```
-wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh
-```
-
-Make Executable
-```
-chmod +x setup.sh
+wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh && chmod +x setup.sh
 ```
 
 This will start the script in interactive mode and you must answer questions
