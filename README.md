@@ -77,27 +77,18 @@ If you know what your are doing feel free to edit it to suit your needs.
 nano server.settings
 ```
 
-It looks like this: (there will be alot of variables after setup.sh)
+Important settings are:
 
-```
-#!/bin/bash
-# minecraft server settings
+`public=` (ip of a wan server which will be pinged to ensure network availability) <br>
+`private=` (ip of a lan server which will be pinged to ensure network availability) <br>
 
-# This file stores all the variables for the server.
-# If you know what you are doing, feel free to tinker with them ;^)
+`doHourly=` (enables hourly backups) <br>
+`doDaily=` (enables daily backups) <br>
+`doWeekly=` (enables weekly backups) <br>
+`doMonthly=` (enables monthly backups) <br>
 
-# command line colours
-black="$(tput setaf 0)"
-red="$(tput setaf 1)"
-green="$(tput setaf 2)"
-yellow="$(tput setaf 3)"
-blue="$(tput setaf 4)"
-magenta="$(tput setaf 5)"
-cyan="$(tput setaf 6)"
-white="$(tput setaf 7)"
-nocolor="$(tput sgr0)"
-...
-```
+`diskSpaceError=` (value in bytes for free disk space at which the backup script stops working) <br>
+`diskSpaceWarning=` (value in bytes for free disk space at which the backup script throws warnings) <br>
 
 ## server.properties
 
@@ -111,17 +102,25 @@ Important settings are:
 
 `max-players=` (limuts the maximumg amount of players on the server at the same time) <br>
 [Warning large numbers may impact performance] <br>
+
 `difficulty=` (defines ingame difficulty) [peaceful, easy, normal, hard] <br>
-`view-distance=` (defines number of ingame chnuks to be rendered) <br>
-[Warning large numbers may impact performance] <br>
-`white-list=` (turns on the whitelist) [I would strongely recomment to set this to true] <br>
-`motd=` (this will be displayed in the menu below your server - chose what you like) <br>
-`server-port=` (default by 25565. Only importent if you are dealing with multiple server) <br>
-[if you run multiple servers each server wants to have its own port] <br>
 `gamemode=` (default survival. Defines your game mode. For creative server replace with creative) <br>
 [survival/creative/adventure/spectator] <br>
-`spawn-protection=` (the number of block at the worldspawn only operators can touch) <br>
+
+`view-distance=` (defines number of ingame chnuks to be rendered) <br>
+[Warning large numbers may impact performance] <br>
+`simulation-distance=` (defines number of ingame chnuks in wich entities are computed) <br>
+[Warning large numbers may impact performance] <br>
+
+`motd=` (this will be displayed in the menu below your server - chose what you like) <br>
 `pvp=` (ability for player to do damage to oneanother) [true/false] <br>
+
+`server-port=` (default by 25565. Only importent if you are dealing with multiple server) <br>
+[if you run multiple servers each server wants to have its own port] <br>
+
+`white-list=` (turns on the whitelist) [I would strongely recomment to set this to true] <br>
+`spawn-protection=` (the number of block at the worldspawn only operators can touch) <br>
+
 `enable-command-block=` (enables command blocks to tinker with) [true/false] <br>
 
 ## scripts
@@ -132,10 +131,20 @@ There are lots of script in your ${serverdirectory}. Normally, the executable on
 ./${scriptname}.sh ${arguments}
 ```
 
-Example: `./start.sh --quiet`
+Example: `./start.sh --quiet` <br>
 Example: `./stop.sh --now`
 
 Arguments: `-h --help, -f --force, -n --now -q --quiet -v --verbose`
+
+The script name stands for the action the script will do. <br>
+
+start.sh (starts your server) <br>
+stop.sh (stops your server) <br>
+restart.sh (restarts your server) <br>
+update.sh (updates your server version) <br>
+restore.sh (restores the backup of your choice) <br>
+reset.sh (resets server world) <br>
+vent.sh (selft-destructs your server along its backups) <br>
 
 ## crontab
 
@@ -166,8 +175,7 @@ Close and save your crontab. (Press Ctrl X and Y)
 
 ## logfiles
 
-Your server will write two growing logfiles (located in your ${serverdirectory}) <br>
-screen.log and backup.log <br>
+Your server will write two growing logfiles [screen.log and backup.log] (located in your ${serverdirectory}) <br>
 screen.log contains everything that get's written inside your screen terminal while backup.log logs all action of the backup script.
 
 to view them:
