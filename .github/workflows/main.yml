@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -28,3 +28,12 @@ jobs:
       # install all packages
       - name: install packages
         run: sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreutils dnsutils sendmail screen grep nano wget less cron man sed pv
+
+      - name: download setup
+        run: wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh && chmod +x setup.sh
+
+      - name: execute setup
+        run: ./setup.sh --name minecraft --proceed true --version 1.18.2 --port 25565 --eula true --remove false --start false
+
+      - name: start server
+        run: cd minecraft && ./start.sh
