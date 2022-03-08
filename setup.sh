@@ -109,7 +109,7 @@ function ArgHelp {
 		Print "info" "argument   example     type     explanation"
 		Print "info" "--name     minecraft   string   (your server name)"
 		Print "info" "--proceed  true        boolean  (proceed without user input)"
-		Print "info" "--version  1.18.1      string   (minecraft server version)"
+		Print "info" "--version  1.18.2      string   (minecraft server version)"
 		Print "info" "--eula     true        boolean  (accept eula from mojang)"
 		Print "info" "--port     25565       number   (server port to run on)"
 		Print "info" "--remove   true        boolean  (remove script after execution)"
@@ -333,11 +333,11 @@ serverDirectory=$(pwd)
 # download java executable from mojang
 if [[ ${versionArg} == false ]]; then
 	PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
-	versions=("1.18.1" "1.17.1" "1.16.5")
+	versions=("1.18.2" "1.17.1" "1.16.5")
 	select version in "${versions[@]}"; do
 		case ${version} in
-		"1.18.1")
-			FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
+		"1.18.2")
+			FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
 			break
 			;;
 		"1.17.1")
@@ -356,8 +356,8 @@ if [[ ${versionArg} == false ]]; then
 elif [[ ${versionArg} == true ]]; then
 	version="${versionVal}"
 	case ${version} in
-	"1.18.1")
-		FetchServerFile "125e5adf40c659fd3bce3e66e67a16bb49ecc1b9"
+	"1.18.2")
+		FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
 		;;
 	"1.17.1")
 		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"

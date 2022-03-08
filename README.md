@@ -18,6 +18,7 @@ sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreut
 Then, you can download and execute the setup script. <br>
 
 Download and make Executable
+
 ```
 wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh && chmod +x setup.sh
 ```
@@ -31,7 +32,7 @@ This will start the script in interactive mode and you must answer questions
 If you like a straight one-liner wich is non-interactive you may use the setup arguments like this
 
 ```
-./setup.sh --name minecraft --proceed true --version 1.18.1 --port 25565 --eula true --remove true --start true
+./setup.sh --name minecraft --proceed true --version 1.18.2 --port 25565 --eula true --remove true --start true
 ```
 
 ## serverstart
