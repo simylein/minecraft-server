@@ -35,5 +35,8 @@ jobs:
       - name: execute setup
         run: ./setup.sh --name minecraft --proceed true --version 1.18.2 --port 25565 --eula true --remove false --start false
 
+      - name: java version
+        run: java --version
+
       - name: start server
         run: cd minecraft && ./start.sh
