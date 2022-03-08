@@ -27,7 +27,7 @@ jobs:
 
       # install all packages
       - name: install packages
-        run: sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreutils dnsutils sendmail screen grep nano wget less cron man sed pv
+        run: sudo apt update && sudo apt install openjdk-17-jre-headless iputils-ping net-tools mailutils coreutils dnsutils sendmail screen grep nano wget less cron man sed pv
 
       - name: download setup
         run: wget -O setup.sh https://raw.githubusercontent.com/Simylein/MinecraftServer/main/setup.sh && chmod +x setup.sh
