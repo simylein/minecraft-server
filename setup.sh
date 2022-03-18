@@ -314,7 +314,7 @@ Print "info" "downloading scripts from github..."
 declare -a scriptsDownload=("server.settings" "server.properties" "server.functions" "start.sh" "restore.sh" "reset.sh" "restart.sh" "stop.sh" "backup.sh" "update.sh" "worker.sh" "vent.sh")
 arrayLength=${#scriptsDownload[@]}
 for ((i = 0; i < ${arrayLength}; i++)); do
-	wget -q -O "${scriptsDownload[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scriptsDownload[${i}]}"
+	wget -q -O "${scriptsDownload[${i}]}" "https://raw.githubusercontent.com/simylein/minecraft-server/${branch}/${scriptsDownload[${i}]}"
 done
 
 # user info about download
