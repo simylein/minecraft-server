@@ -405,7 +405,7 @@ function DownloadScripts {
 	Print "info" "downloading scripts..."
 	for ((i = 0; i < ${scriptsLength}; i++)); do
 		Debug "downloading script ${scripts[${i}]} from branch ${branch} on github..."
-		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/Simylein/MinecraftServer/${branch}/${scripts[${i}]}"
+		wget -q -O "${scripts[${i}]}" "https://raw.githubusercontent.com/simylein/minecraft-server/${branch}/${scripts[${i}]}"
 	done
 }
 
