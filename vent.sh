@@ -29,7 +29,7 @@ CheckScreen
 
 # user safety function for confirmation
 Print "warn" "are you sure you want to vent your server?"
-read -p "$(date +"%H:%M:%S") prompt: if so, please type confirm venting "
+read -p "$(date +"%H:%M:%S") prompt: if so, please type confirm venting: "
 if [[ ${REPLY} == "confirm venting" ]]; then
 	Print "info" "you confirmed venting - server will self-destruct now"
 else
