@@ -43,8 +43,8 @@ diskSpaceError=2097152
 diskSpaceWarning=8208608
 
 # values in percent for backup size control
-backupSizeError=200
-backupSizeWarning=400
+backupSizeError=40
+backupSizeWarning=60
 
 # backup file formats
 newHourly=$(date +"%H:00")

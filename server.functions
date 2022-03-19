@@ -475,10 +475,10 @@ function OutputDiskSpaceWarning {
 # prints backup size warning to terminal screen and backup log
 function OutputBackupSizeWarning {
 	Log "warn" "the created ${1}-backup is only ${compressedBackupSize} - this may point to a corrupted backup" "${backupLog}"
-	Log "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+	Log "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at: ${backupSizeError} percent"
 
 	Print "warn" "the created ${1}-backup is only ${compressedBackupSize} - this may point to a corrupted backup"
-	Print "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+	Print "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at: ${backupSizeError} percent"
 
 	Debug "backup script reports potentially corrupted backup at ${backupDirectory}/${1}/${serverName}-${2}"
 
@@ -501,10 +501,10 @@ function OutputDiskSpaceError {
 # prints backup size error to terminal screen and backup log
 function OutputBackupSizeError {
 	Log "error" "the created ${1}-backup is only ${compressedBackupSize} - this will point to a corrupted backup" "${backupLog}"
-	Log "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+	Log "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at: ${backupSizeError} percent"
 
 	Print "error" "the created ${1}-backup is only ${compressedBackupSize} - this will point to a corrupted backup"
-	Print "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at ${backupSizeError} percent"
+	Print "info" "you may change the control variables in the server.settings file - warning at: ${backupSizeWarning} percent, error at: ${backupSizeError} percent"
 
 	Debug "backup script reports dangerous corrupted backup at ${backupDirectory}/${1}/${serverName}-${2}"
 
