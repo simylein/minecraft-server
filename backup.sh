@@ -90,6 +90,7 @@ function RunBackup {
 		fi
 		# calculate time spent and compression
 		timeSpent=$((${after} - ${before}))
+		compressedBackupSize=$(du -sh ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
 		compressedBackupSizeBytes=$(du -sb ${backupDirectory}/${1}/${serverName}-${2}.tar.gz | cut -f1)
 		# check if backup size is to small for a real backup
 		if ((${compressedBackupSizeBytes} < (${worldSizeBytes} / 100 * ${backupSizeError}))); then
