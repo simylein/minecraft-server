@@ -13,10 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
       - name: ShellCheck
-      uses: ludeeus/action-shellcheck@1.1.0
-      with:
-        severity: warning
-        format: gcc
+        uses: ludeeus/action-shellcheck@1.1.0
+        with:
+          severity: warning
+          format: gcc
