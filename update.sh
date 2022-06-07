@@ -19,7 +19,7 @@ Debug "executing $0 script"
 # change to server directory
 ChangeServerDirectory
 
-# check for existance of executable
+# check for existence of executable
 CheckExecutable
 
 # look if server is running
@@ -45,8 +45,8 @@ Print "ok" "server successfully stopped"
 CachedBackup "update"
 
 # update from url
-url="https://launcher.mojang.com/v1/objects/c8f83c5655308435b3dcf03c06d9fe8740a77469/server.jar"
-version="1.18.2"
+url="https://launcher.mojang.com/v1/objects/e00c4052dac1d59a1188b2aa9d5a87113aaf1122/server.jar"
+version="1.19"
 
 # Test internet connectivity and update on success
 wget --spider --quiet "${url}"
@@ -62,16 +62,16 @@ else
 		Print "info" "you are running the newest server version - skipping update"
 	else
 		wget -q -O "minecraft-server.${version}.jar" "${url}"
-		# update serverfile variable in server.settings
+		# update server-file variable in server.settings
 		newExecutableServerFile="${serverDirectory}/minecraft-server.${version}.jar"
-		# if new serverfile exists remove oldserverfile
+		# if new server-file exists remove old server-file
 		if [ -s "${newExecutableServerFile}" ]; then
-			Log "ok" "download sucessfull"
-			Print "ok" "download sucessfull"
+			Log "ok" "download successful"
+			Print "ok" "download successful"
 			Log "info" "updating server.settings for startup with new server version ${version}" "${screenLog}"
 			Print "info" "updating server.settings for startup with new server version ${version}"
 			sed -i "s|${executableServerFile}|${newExecutableServerFile}|g" "server.settings"
-			# remove old serverfile if it exists
+			# remove old server-file if it exists
 			if [ -s "${executableServerFile}" ]; then
 				rm "${executableServerFile}"
 			fi
@@ -82,7 +82,7 @@ else
 	fi
 fi
 
-# remove scripts from serverdirectory
+# remove scripts from server-directory
 RemoveScripts
 
 # downloading scripts from github
