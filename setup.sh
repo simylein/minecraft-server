@@ -4,7 +4,7 @@
 # this script has been tested on debian and runs only if all packages are installed
 # however you are welcome to try it on any other distribution you like ;^)
 
-# set color enviroment
+# set color environment
 TERM="xterm"
 
 # branch selection from for github
@@ -277,7 +277,7 @@ done
 # user info
 Print "info" "your server will be called ${green}${serverName}${noColor}"
 
-# store homedirectory
+# store home-directory
 homeDirectory=$(pwd)
 
 # ask for permission to proceed
@@ -303,7 +303,7 @@ else
 fi
 
 # set up server directory
-Print "info" "setting up a serverdirectory..."
+Print "info" "setting up a server-directory..."
 mkdir "${serverName}"
 cd "${serverName}"
 
@@ -327,15 +327,19 @@ for ((i = 0; i < ${arrayLength}; i++)); do
 	chmod +x "${scriptsExecutable[${i}]}"
 done
 
-# store serverdirectory
+# store server-directory
 serverDirectory=$(pwd)
 
 # download java executable from mojang
 if [[ ${versionArg} == false ]]; then
 	PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
-	versions=("1.18.2" "1.17.1" "1.16.5")
+	versions=("1.19" "1.18.2" "1.17.1" "1.16.5")
 	select version in "${versions[@]}"; do
 		case ${version} in
+		"1.19")
+			FetchServerFile "e00c4052dac1d59a1188b2aa9d5a87113aaf1122"
+			break
+			;;
 		"1.18.2")
 			FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
 			break
@@ -356,6 +360,9 @@ if [[ ${versionArg} == false ]]; then
 elif [[ ${versionArg} == true ]]; then
 	version="${versionVal}"
 	case ${version} in
+	"1.19")
+		FetchServerFile "e00c4052dac1d59a1188b2aa9d5a87113aaf1122"
+		;;
 	"1.18.2")
 		FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
 		;;
@@ -374,8 +381,8 @@ fi
 # user information about execute at start
 Print "info" "your server will execute ${executableServerFile} at start"
 
-# set up backupdirectory with child directories
-Print "info" "setting up a backupdirectory..."
+# set up backup-directory with child directories
+Print "info" "setting up a backup-directory..."
 mkdir world
 mkdir backups
 cd backups
