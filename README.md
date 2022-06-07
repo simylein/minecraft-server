@@ -29,10 +29,10 @@ This will start the script in interactive mode and you must answer questions
 ./setup.sh
 ```
 
-If you like a straight one-liner wich is non-interactive you may use the setup arguments like this
+If you like a straight one-liner which is non-interactive you may use the setup arguments like this
 
 ```
-./setup.sh --name minecraft --proceed true --version 1.18.2 --port 25565 --eula true --remove true --start true
+./setup.sh --name minecraft --proceed true --version 1.19 --port 25565 --eula true --remove true --start true
 ```
 
 ## serverstart
@@ -41,7 +41,7 @@ Start your Server for the first time: `./start.sh`
 
 ## screen
 
-Screen is an amzing comand line tool that creates a "virtual" terminal inside your terminal.
+Screen is an amazing command line tool that creates a "virtual" terminal inside your terminal.
 
 You can view all your active screens by typing: `screen -list`
 <br>
@@ -93,7 +93,7 @@ Important settings are:
 
 ## server.properties
 
-If you would like to costumize your server further have a look at your server.properties file.
+If you would like to customize your server further have a look at your server.properties file.
 
 ```
 nano server.properties
@@ -101,25 +101,25 @@ nano server.properties
 
 Important settings are:
 
-`max-players=` (limuts the maximumg amount of players on the server at the same time) <br>
+`max-players=` (limits the maximum amount of players on the server at the same time) <br>
 [Warning large numbers may impact performance] <br>
 
 `difficulty=` (defines ingame difficulty) [peaceful, easy, normal, hard] <br>
 `gamemode=` (default survival. Defines your game mode. For creative server replace with creative) <br>
 [survival/creative/adventure/spectator] <br>
 
-`view-distance=` (defines number of ingame chnuks to be rendered) <br>
+`view-distance=` (defines number of ingame chunks to be rendered) <br>
 [Warning large numbers may impact performance] <br>
-`simulation-distance=` (defines number of ingame chnuks in wich entities are computed) <br>
+`simulation-distance=` (defines number of ingame chunks in which entities are computed) <br>
 [Warning large numbers may impact performance] <br>
 
 `motd=` (this will be displayed in the menu below your server - chose what you like) <br>
-`pvp=` (ability for player to do damage to oneanother) [true/false] <br>
+`pvp=` (ability for player to do damage to each another) [true/false] <br>
 
-`server-port=` (default by 25565. Only importent if you are dealing with multiple server) <br>
+`server-port=` (default by 25565. Only important if you are dealing with multiple server) <br>
 [if you run multiple servers each server wants to have its own port] <br>
 
-`white-list=` (turns on the whitelist) [I would strongely recomment to set this to true] <br>
+`white-list=` (turns on the whitelist) [I would strongly recommend to set this to true] <br>
 `spawn-protection=` (the number of block at the worldspawn only operators can touch) <br>
 
 `enable-command-block=` (enables command blocks to tinker with) [true/false] <br>
@@ -145,7 +145,7 @@ restart.sh (restarts your server) <br>
 update.sh (updates your server version) <br>
 restore.sh (restores the backup of your choice) <br>
 reset.sh (resets server world) <br>
-vent.sh (selft-destructs your server along its backups) <br>
+vent.sh (self-destructs your server along its backups) <br>
 
 ## crontab
 
@@ -160,7 +160,7 @@ Side note: the setup script will already put these lines in your crontab if you 
 In this file, you can automate things as follows: <br>
 
 First star: Minutes [0 - 59] <br>
-Secound star: Hours [0 - 23] <br>
+Second star: Hours [0 - 23] <br>
 Third star: Day of Month [0 - 31] <br>
 Forth star: Month [0 - 12] <br>
 Fifth star: Day of Week [0 - 6]
