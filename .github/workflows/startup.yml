@@ -23,4 +23,4 @@ jobs:
         run: chmod +x setup.sh && ./setup.sh --name minecraft --proceed true --version 1.19 --port 25565 --eula true --remove true --start false
 
       - name: startup server
-        run: chmod +x start.sh && ./start.sh --verbose
+        run: cd minecraft && chmod +x start.sh && ./start.sh --verbose
