@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
 
       - name: setup server
-        run: ./setup.sh --name minecraft --proceed true --version 1.19 --port 25565 --eula true --remove true --start true
+        run: chmod +x setup.sh && ./setup.sh --name minecraft --proceed true --version 1.19 --port 25565 --eula true --remove true --start true
 
       - name: startup server
-        run: ./start.sh --verbose
+        run: chmod +x start.sh && ./start.sh --verbose
