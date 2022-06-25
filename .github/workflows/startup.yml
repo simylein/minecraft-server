@@ -19,6 +19,9 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: setup colors
+        run: export TERM="xterm-color"
+
       - name: setup server
         run: chmod +x setup.sh && ./setup.sh --name minecraft --proceed true --version 1.19 --port 25565 --eula true --remove true --start false
 
