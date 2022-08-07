@@ -45,8 +45,8 @@ Print "ok" "server successfully stopped"
 CachedBackup "update"
 
 # update from url
-url="https://launcher.mojang.com/v1/objects/e00c4052dac1d59a1188b2aa9d5a87113aaf1122/server.jar"
-version="1.19"
+url="https://launcher.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar"
+version="1.19.2"
 
 # Test internet connectivity and update on success
 wget --spider --quiet "${url}"

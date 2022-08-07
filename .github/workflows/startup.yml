@@ -23,7 +23,7 @@ jobs:
         run: TERM="xterm"
 
       - name: setup server
-        run: chmod +x setup.sh && ./setup.sh --name minecraft --proceed true --version 1.19 --port 25565 --eula true --remove true --start false
+        run: chmod +x setup.sh && ./setup.sh --name minecraft --proceed true --version 1.19.2 --port 25565 --eula true --remove true --start false
 
       - name: startup server
         run: cd minecraft && chmod +x start.sh && ./start.sh --verbose
