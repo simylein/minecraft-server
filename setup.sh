@@ -460,7 +460,7 @@ StoreCrontab "0 0 * * 0 cd ${serverDirectory} && ./backup.sh --weekly --quiet"
 StoreCrontab "# minecraft ${serverName} server backup monthly at **:00"
 StoreCrontab "0 0 1 * * cd ${serverDirectory} && ./backup.sh --monthly --quiet"
 StoreCrontab "# minecraft ${serverName} server startup at boot"
-StoreCrontab "@reboot cd ${serverDirectory} && ./start.sh --quiet"
+StoreCrontab "@reboot cd ${serverDirectory} && ./start.sh --quiet --force"
 StoreCrontab ""
 StoreCrontab ""
 
