@@ -169,7 +169,7 @@ Generic Example: (In order to work, please replace the variables with your own o
 
 ```
 # minecraft ${servername} your description of command here
-* * * * * cd ${serverdirectory} && ${serverdirectory}/NameOfScript.sh
+* * * * * cd ${serverdirectory} && ./${script}.sh
 ```
 
 Close and save your crontab. (Press Ctrl X and Y)
