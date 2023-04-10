@@ -362,19 +362,15 @@ elif [[ ${versionArg} == true ]]; then
 	case ${version} in
 	"1.19.4")
 		FetchServerFile "8f3112a1049751cc472ec13e397eade5336ca7ae"
-		break
 		;;
 	"1.18.2")
 		FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
-		break
 		;;
 	"1.17.1")
 		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
-		break
 		;;
 	"1.16.5")
 		FetchServerFile "1b557e7b033b583cd9f66746b7a9ab1ec1673ced"
-		break
 		;;
 	*)
 		echo "please choose an option from the list: "
