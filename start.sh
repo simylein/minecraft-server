@@ -19,7 +19,7 @@ Debug "executing $0 script"
 # change to server directory
 ChangeServerDirectory
 
-# check for existance of executable
+# check for existence of executable
 CheckExecutable
 
 # look if server is running
@@ -35,10 +35,10 @@ CheckPublic
 Print "info" "starting minecraft server. to view window type screen -r ${serverName}."
 Print "info" "to minimise the window and let the server run in the background, press ctrl+a then ctrl+d"
 
-# main start commmand
+# main start command
 Start
 
-# check if screen is avaible
+# check if screen is available
 AwaitStart
 
 # if no screen output error
@@ -50,11 +50,11 @@ if ! screen -list | grep -q "${serverName}"; then
 	exit 1
 fi
 
-# succesful start sequence
+# successful start sequence
 Log "ok" "server is on startup..." "${screenLog}"
 Print "ok" "server is on startup..."
 
-# check if screenlog contains start comfirmation
+# check if screen log contains start confirmation
 count="0"
 counter="0"
 startupChecks="0"
@@ -114,7 +114,7 @@ while [ ${startupChecks} -lt 120 ]; do
 	sleep 1s
 done
 
-# check if screenlog does not contain startup confirmation
+# check if screen log does not contain startup confirmation
 if ! tail "${screenLog}" | grep -q "Time elapsed:"; then
 	Log "warn" "server startup unsuccessful" "${screenLog}"
 	Print "warn" "server startup unsuccessful"
