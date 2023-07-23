@@ -722,12 +722,12 @@ function PerformBackup {
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform backup)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
 			Log "info" "the player ${player} requested a safety backup and has permission - server will perform safety backup" "${backupLog}"
-			TellrawPlayer "${player}" "info: you successfully requested a safety backup of the server\"}]"
+			TellrawPlayer "${player}" "info: you successfully requested a safety backup of the server"
 			# run safety backup
 			CachedBackup "safety"
 		else
 			Log "warn" "the player ${player} requested a safety backup and does not have permission to do so" "${backupLog}"
-			TellrawPlayer "${player}" "warn: you do not have permissions to safety backup the server\"}]"
+			TellrawPlayer "${player}" "warn: you do not have permissions to safety backup the server"
 		fi
 	fi
 }
@@ -739,12 +739,12 @@ function PerformRestart {
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform restart now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
 			Log "info" "the player ${player} requested a restart and has permission - server will restart" "${screenLog}"
-			TellrawPlayer "${player}" "info: you successfully requested a restart of the server\"}]"
+			TellrawPlayer "${player}" "info: you successfully requested a restart of the server"
 			./restart.sh --quiet --now
 			exit 0
 		else
 			Log "warn" "the player ${player} requested a restart and does not have permission to do so" "${screenLog}"
-			TellrawPlayer "${player}" "warn: you do not have permissions to restart the server\"}]"
+			TellrawPlayer "${player}" "warn: you do not have permissions to restart the server"
 		fi
 	fi
 	# check for perform restart string
@@ -752,12 +752,12 @@ function PerformRestart {
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform restart)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
 			Log "info" "the player ${player} requested a restart and has permission - server will restart" "${screenLog}"
-			TellrawPlayer "${player}" "info: you successfully requested a restart of the server\"}]"
+			TellrawPlayer "${player}" "info: you successfully requested a restart of the server"
 			./restart.sh --quiet
 			exit 0
 		else
 			Log "warn" "the player ${player} requested a restart and does not have permission to do so" "${screenLog}"
-			TellrawPlayer "${player}" "warn: you do not have permissions to restart the server\"}]"
+			TellrawPlayer "${player}" "warn: you do not have permissions to restart the server"
 		fi
 	fi
 }
@@ -769,12 +769,12 @@ function PerformUpdate {
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform update now)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
 			Log "info" "the player ${player} requested an update and has permission - server will update" "${screenLog}"
-			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
+			TellrawPlayer "${player}" "you successfully requested an update of the server"
 			./update.sh --quiet --now
 			exit 0
 		else
 			Log "warn" "the player ${player} requested an update and does not have permission to do so" "${screenLog}"
-			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
+			TellrawPlayer "${player}" "you do not have permissions to update the server"
 		fi
 	fi
 	# check for perform update string
@@ -782,12 +782,12 @@ function PerformUpdate {
 		player=$(tail -1 screen.log | grep -oP '.*?(?=perform update)' | cut -d ' ' -f 4- | sed 's/.$//' | rev | sed 's/.$//' | rev | sed 's/.$//')
 		if cat "ops.json" | grep -q "${player}"; then
 			Log "info" "the player ${player} requested an update and has permission - server will update" "${screenLog}"
-			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you successfully requested an update of the server\"}]"
+			TellrawPlayer "${player}" "you successfully requested an update of the server"
 			./update.sh --quiet
 			exit 0
 		else
 			Log "warn" "the player ${player} requested an update and does not have permission to do so" "${screenLog}"
-			TellrawPlayer "tellraw ${player} [\"\",{\"text\":\"[Script] \",\"color\":\"blue\"},{\"text\":\"you do not have permissions to update the server\"}]"
+			TellrawPlayer "${player}" "you do not have permissions to update the server"
 		fi
 	fi
 }
