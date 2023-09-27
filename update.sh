@@ -66,7 +66,7 @@ else
 		newExecutableServerFile="${serverDirectory}/minecraft-server.${version}.jar"
 		# if new server-file exists remove old server-file
 		if [ -s "${newExecutableServerFile}" ]; then
-			Log "ok" "download successful"
+			Log "ok" "download successful" "${screenLog}"
 			Print "ok" "download successful"
 			Log "info" "updating server.settings for startup with new server version ${version}" "${screenLog}"
 			Print "info" "updating server.settings for startup with new server version ${version}"
