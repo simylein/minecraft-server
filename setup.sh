@@ -333,9 +333,13 @@ serverDirectory=$(pwd)
 # download java executable from mojang
 if [[ ${versionArg} == false ]]; then
 	PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
-	versions=("1.20.5" "1.19.4" "1.18.2" "1.17.1")
+	versions=("1.21" "1.20.5" "1.19.4" "1.18.2")
 	select version in "${versions[@]}"; do
 		case ${version} in
+		"1.21")
+			FetchServerFile "450698d1863ab5180c25d7c804ef0fe6369dd1ba"
+			break
+			;;
 		"1.20.5")
 			FetchServerFile "79493072f65e17243fd36a699c9a96b4381feb91"
 			break
@@ -348,10 +352,6 @@ if [[ ${versionArg} == false ]]; then
 			FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
 			break
 			;;
-		"1.17.1")
-			FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
-			break
-			;;
 		*)
 			echo "please choose an option from the list: "
 			;;
@@ -360,6 +360,9 @@ if [[ ${versionArg} == false ]]; then
 elif [[ ${versionArg} == true ]]; then
 	version="${versionVal}"
 	case ${version} in
+	"1.21")
+		FetchServerFile "450698d1863ab5180c25d7c804ef0fe6369dd1ba"
+		;;
 	"1.20.5")
 		FetchServerFile "79493072f65e17243fd36a699c9a96b4381feb91"
 		;;
@@ -368,9 +371,6 @@ elif [[ ${versionArg} == true ]]; then
 		;;
 	"1.18.2")
 		FetchServerFile "c8f83c5655308435b3dcf03c06d9fe8740a77469"
-		;;
-	"1.17.1")
-		FetchServerFile "a16d67e5807f57fc4e550299cf20226194497dc2"
 		;;
 	*)
 		echo "please choose an option from the list: "
