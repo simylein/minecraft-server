@@ -360,7 +360,7 @@ if [[ ${versionArg} == false ]]; then
 elif [[ ${versionArg} == true ]]; then
 	version="${versionVal}"
 	case ${version} in
-	"1.21.4")
+	"1.21.5")
 		FetchServerFile "e6ec2f64e6080b9b5d9b471b291c33cc7f509733"
 		;;
 	"1.20.5")
