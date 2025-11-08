@@ -333,11 +333,11 @@ serverDirectory=$(pwd)
 # download java executable from mojang
 if [[ ${versionArg} == false ]]; then
 	PS3="$(date +"%H:%M:%S") prompt: which server version would you like to install? "
-	versions=("1.21.5" "1.20.5" "1.19.4" "1.18.2")
+	versions=("1.21.10" "1.20.5" "1.19.4" "1.18.2")
 	select version in "${versions[@]}"; do
 		case ${version} in
-		"1.21.5")
-			FetchServerFile "e6ec2f64e6080b9b5d9b471b291c33cc7f509733"
+		"1.21.10")
+			FetchServerFile "95495a7f485eedd84ce928cef5e223b757d2f764"
 			break
 			;;
 		"1.20.5")
@@ -360,8 +360,8 @@ if [[ ${versionArg} == false ]]; then
 elif [[ ${versionArg} == true ]]; then
 	version="${versionVal}"
 	case ${version} in
-	"1.21.5")
-		FetchServerFile "e6ec2f64e6080b9b5d9b471b291c33cc7f509733"
+	"1.21.10")
+		FetchServerFile "95495a7f485eedd84ce928cef5e223b757d2f764"
 		;;
 	"1.20.5")
 		FetchServerFile "79493072f65e17243fd36a699c9a96b4381feb91"
